@@ -40,7 +40,7 @@
 <p><br></p>
 <h2 id="利用GitHub创建仓库"><a href="#利用GitHub创建仓库" class="headerlink" title="利用GitHub创建仓库"></a>利用GitHub创建仓库</h2><p>创建网站不仅需要域名，而且需要网站空间。网站空间也叫虚拟主机，是用来存放网站内容的地方。但是租借虚拟主机需要很大的开销，幸运的是，我们可以把静态网站托管到GitHub上，GitHub是一个面向开源及私有软件项目的托管平台。</p>
 <p>首先需要登陆到GitHub：<a href="https://github.com" target="_blank" rel="external">Build software better, together</a>，如果没有GitHub账号，可以使用邮箱注册，然后点击GitHub中的New repository创建新仓库，仓库名为：<strong>用户名</strong>.github.io，这里命名格式为固定的，<strong>用户名</strong>是你的GitHub账号，比如我的仓库名为：</p>
-<center><img src="http://i1.buimg.com/597140/83c5b1e188d3363c.png" alt="zangbo1993"></center>
+<center><img src="http://i1.buimg.com/597140/7b25cf3124dbe956.png" alt="zangbo"></center>
 
 
 
@@ -59,7 +59,7 @@
 <p>在终端中检测GitHub公钥是否设置成功，输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh git@github.com</div></pre></td></tr></table></figure>
 <p>显示以下内容说明成功：</p>
-<center><img src="http://i2.muimg.com/597140/99e2f0df6cd975d1.png" alt="Markdown"></center>
+<center><img src="http://i1.buimg.com/597140/2a16f05c4e1935a5.png" alt="success"></center>
 
 <blockquote>
 <p>这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
@@ -108,11 +108,11 @@
 <p>其实就是给<code>hexo d</code>这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。</p>
 <p>接下来，我们输入三条命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo g</div><div class="line">hexo d</div></pre></td></tr></table></figure>
-<p>完成后打开浏览器，在地址栏输入 <strong>用户名</strong>.github.io ，这里的<strong>用户名</strong>为你的GitHub用户名，比如我的就是 <a href="zangbo1993.github.io">zangbo1993.github.io</a>，然后你就会发现你的博客已经可以在网络上被访问了。</p>
+<p>完成后打开浏览器，在地址栏输入 <strong>用户名</strong>.github.io ，这里的<strong>用户名</strong>为你的GitHub用户名，比如我的就是 <a href="zangbo.github.io">zangbo.github.io</a>，然后你就会发现你的博客已经可以在网络上被访问了。</p>
 <p><br></p>
 <h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的：<strong>xxx.github.io</strong> 而我们想使用我们自己刚买的个性化域名，这就需要绑定，这里以阿里云为例。登陆到阿里云：<a href="https://www.aliyun.com" target="_blank" rel="external">阿里云-为了无法计算的价值</a>，点击 <strong>控制台</strong> 进入管理控制台的域名列表，找到你的个性化域名，进入解析：</p>
 <p>点击 <strong>添加解析</strong> 按钮，添加三条记录：</p>
-<center><img src="http://i1.buimg.com/597140/c75570d4d720df39.png" alt="添加解析"></center>
+<center><img src="http://i1.buimg.com/597140/ce78933779e21a6e.png" alt="添加解析"></center>
 
 <p>这里两条A记录是固定的，从GitHub官方文档可以找到，这两条是指向GitHub的地址；一条CNAME地址，记录指向是 <strong>用户名</strong>.github.io ，这里的<strong>用户名</strong>是你自己的用户名。</p>
 <p>接着登陆GitHub，进入之前创建的仓库，点击 <strong>Settings</strong>，拉到最后，找到 <strong>Custom domain</strong>，填入自己申请的个性域名，点击 <strong>Save</strong>：</p>
