@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://zangbo.me/2017/06/01/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2017-06-11T08:18:34.000Z</lastmod>
+    <data>
+        <display>
+        <title>Mac环境利用GitHub和Hexo搭建个人博客</title>
+        <pubTime>2017-06-01T10:44:56.000Z</pubTime>
+        
+        <tag>个人网站</tag>
+         
+         
+           
+             
+              <breadCrumb title="教程" url="http://zangbo.me/categories/%E6%95%99%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://zangbo.me/2017/06/04/%E5%85%B3%E4%BA%8E%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/</loc>
-    <lastmod>2017-06-11T08:13:31.000Z</lastmod>
+    <lastmod>2017-06-11T08:18:17.000Z</lastmod>
     <data>
         <display>
         <title>深度学习中几种不同的梯度下降算法</title>
@@ -25,7 +45,7 @@
     
   <url>
     <loc>http://zangbo.me/2017/06/03/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
-    <lastmod>2017-06-11T08:13:23.000Z</lastmod>
+    <lastmod>2017-06-11T08:18:11.000Z</lastmod>
     <data>
         <display>
         <title>TensorFlow 官方文档学习笔记（二）</title>
@@ -45,7 +65,7 @@
     
   <url>
     <loc>http://zangbo.me/2017/06/02/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
-    <lastmod>2017-06-11T08:13:12.000Z</lastmod>
+    <lastmod>2017-06-11T08:18:03.000Z</lastmod>
     <data>
         <display>
         <title>TensorFlow 官方文档学习笔记（一）</title>
@@ -58,23 +78,6 @@
              
               <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/01/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2017-06-11T08:12:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>Mac环境利用GitHub和Hexo搭建个人博客</title>
-        <pubTime>2017-06-01T10:44:56.000Z</pubTime>
-        
-        <tag>个人网站</tag>
-         
-         
-           
         </display>
     </data>
     </url>
