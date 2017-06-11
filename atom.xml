@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ZangBo&#39;s Home</title>
   
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://zangbo.me/"/>
+  <updated>2017-06-11T06:17:40.000Z</updated>
+  <id>http://zangbo.me/</id>
+  
+  <author>
+    <name>Zang Bo</name>
     
-    <entry>
-      <title><![CDATA[Mac环境利用GitHub和Hexo搭建个人博客]]></title>
-      <url>/2017/06/09/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。<a id="more"></a></excerpt></p>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mac环境利用GitHub和Hexo搭建个人博客</title>
+    <link href="http://zangbo.me/2017/06/09/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
+    <id>http://zangbo.me/2017/06/09/Mac环境利用GitHub和Hexo搭建个人博客/</id>
+    <published>2017-06-09T10:44:56.000Z</published>
+    <updated>2017-06-11T06:17:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -153,16 +170,16 @@
 <li>Hexo 官方文档：<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">文档 | Hexo</a></li>
 </ul>
 </the>]]></content>
-      
-        
-        <tags>
-            
-            <tag> 个人网站 </tag>
-            
-        </tags>
-        
-    </entry>
     
+    <summary type="html">
+    
+      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。
+    
+    </summary>
+    
+    
+      <category term="个人网站" scheme="http://zangbo.me/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"/>
+    
+  </entry>
   
-  
-</search>
+</feed>
