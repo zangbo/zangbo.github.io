@@ -40,7 +40,7 @@
 <p><br></p>
 <h2 id="利用GitHub创建仓库"><a href="#利用GitHub创建仓库" class="headerlink" title="利用GitHub创建仓库"></a>利用GitHub创建仓库</h2><p>创建网站不仅需要域名，而且需要网站空间。网站空间也叫虚拟主机，是用来存放网站内容的地方。但是租借虚拟主机需要很大的开销，幸运的是，我们可以把静态网站托管到GitHub上，GitHub是一个面向开源及私有软件项目的托管平台。</p>
 <p>首先需要登陆到GitHub：<a href="https://github.com" target="_blank" rel="external">Build software better, together</a>，如果没有GitHub账号，可以使用邮箱注册，然后点击GitHub中的New repository创建新仓库，仓库名为：<strong>用户名</strong>.github.io，这里命名格式为固定的，<strong>用户名</strong>是你的GitHub账号，比如我的仓库名为：</p>
-<center><img src="http://i1.buimg.com/597140/7b25cf3124dbe956.png" alt="zangbo"></center>
+<center><img src="http://i2.muimg.com/597140/0f654496d2be7428.png" alt="zangbo"></center>
 
 
 
