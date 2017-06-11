@@ -15,15 +15,17 @@
 
 
 
-<meta name="description" content="A student from SJTU">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ZangBo&#39;s Home">
-<meta property="og:url" content="http://zangbo.me/archives/2017/index.html">
+<meta name="description" content="本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。">
+<meta name="keywords" content="梯度下降算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习中几种不同的梯度下降算法">
+<meta property="og:url" content="http://zangbo.me/2017/06/04/关于随机梯度下降/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="A student from SJTU">
+<meta property="og:description" content="本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。">
+<meta property="og:updated_time" content="2017-06-11T08:13:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ZangBo&#39;s Home">
-<meta name="twitter:description" content="A student from SJTU">
+<meta name="twitter:title" content="深度学习中几种不同的梯度下降算法">
+<meta name="twitter:description" content="本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -55,7 +57,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Archives: 2017 | ZangBo&#39;s Home</title>
+<title>深度学习中几种不同的梯度下降算法 | ZangBo&#39;s Home</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -65,8 +67,8 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
-        isArchive: true,
+        isPost: true,
+        isArchive: false,
         isTag: false,
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
@@ -237,167 +239,201 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-关于随机梯度下降" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/06/04/关于随机梯度下降/" class="archive-article-date">
-      <time datetime="2017-06-04T07:32:01.000Z" itemprop="datePublished">06-04</time>
+    <div class="article-meta">
+      <a href="/2017/06/04/关于随机梯度下降/" class="article-date">
+      <time datetime="2017-06-04T07:32:01.000Z" itemprop="datePublished">2017-06-04</time>
 </a>
 
 
-        </div>
-         
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/04/关于随机梯度下降/">深度学习中几种不同的梯度下降算法</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深度学习中几种不同的梯度下降算法
     </h1>
   
 
-        <div class="article-info info-on-archive">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
     <div class="article-category tagcloud">
     <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
     </div>
 
 
-          
+        
     <div class="article-tag tagcloud">
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li></ul>
     </div>
 
-        </div>
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。<a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<hr>
+<p>之前关于Tensorflow的笔记有一个地方提到了随机梯度下降，官方文档提到说“这种随机抓取一小部分数据训练的方法称为随机梯度下降(SGD)”，但后来我又查了资料，这种方法准确来说应该称为Mini-batch梯度下降，因为标准的SGD是每次只随机取一个样本进行训练的，关于梯度下降算法几个容易混淆的概念我整理了下，它们都属于最速下降法：</p>
+<p><br></p>
+<ol>
+<li><p><strong>批量梯度下降(Batch Gradient Descent，BGD)</strong></p>
+<p>每次迭代的梯度方向计算由所有训练样本共同投票决定，即每次的参数更新需要把所有的训练样本都迭代一遍，可以采用线性搜索来确定最优步长，但缺点是参数更新速度太慢，而且如果训练样本数量特别庞大，对显存要求会很高。“Batch”的含义是训练集中所有样本参与每一轮迭代。</p>
+</li>
+<li><p><strong>随机梯度下降(Stochastic Gradient Descent，SGD)</strong></p>
+<p>和BGD是两个极端，SGD每次迭代只选择一个训练样本，计算梯度然后进行参数的更新，直到收敛，这种方法也可用作online learning。这种方法的优点是参数更新速度很快，不需要占用较大显存。但缺点也很明显，因为不同训练样本的差距和噪声的影响，每次参数更新方向未必是正确的优化方向，但实践证明总体趋势一般是朝着最优点方向的。</p>
+</li>
+<li><p><strong>Mini-batch Gradient Descent</strong></p>
+<p>这种方法在前两种方法里取一个折中，每次在训练集中取一部分数据进行迭代，然后更新参数。这是实践中使用最多的一种方法，具体选取的batch大小取决于数据集和显卡的质量，实验证明太大和太小都不好，应该选择一个适中的尺寸来达到训练效果最优。具体怎么选那就是一门玄学了，不过普通研究生平时科研的情况下选择自己显存能承受的最大值就可以了吧。</p>
+</li>
+</ol>
+<p><br></p>
+<p>平时也有些地方把SGD和Mini-batch GD统称为SGD，前者是后者的一个特例，TensorFlow的官方文档大概就是这样。这两者虽然也叫最速下降法，但步长一般不采用线搜索来获得，因为参数更新频率太快，线搜索计算比较复杂会消耗大量时间，所以平时都是凭经验指定步长(即学习率)。因为只要下降方向正确，步长在一个可以接受的范围内依然可以迭代到最优值，但学习率如果选的太大则无法下降，选的太小又使得训练过程漫长很难达到最优值，因此关于学习率的选择又是一门玄学。</p>
+<p><br></p>
+</the>
+      
+    </div>
+    
   </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/06/04/关于随机梯度下降/">深度学习中几种不同的梯度下降算法</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Zang Bo</a></p>
+        <p><span>发布时间:</span>2017-06-04, 15:32:01</p>
+        <p><span>最后更新:</span>2017-06-11, 16:13:31</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/04/关于随机梯度下降/" title="深度学习中几种不同的梯度下降算法">http://zangbo.me/2017/06/04/关于随机梯度下降/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/04/关于随机梯度下降/　　作者: Zang Bo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">
+                    TensorFlow 官方文档学习笔记（二）
+                </a>
+            </div>
+        
+    </nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/" class="archive-article-date">
-      <time datetime="2017-06-03T07:28:10.000Z" itemprop="datePublished">06-03</time>
-</a>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
 
 
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
         </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 官方文档学习笔记（二）</a>
-    </h1>
-  
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"深度学习中几种不同的梯度下降算法　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
 
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2136080';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/" title="下一篇: TensorFlow 官方文档学习笔记（二）">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
     </div>
 
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/">Tensorflow</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/" class="archive-article-date">
-      <time datetime="2017-06-02T05:22:10.000Z" itemprop="datePublished">06-02</time>
-</a>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/关于随机梯度下降/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 官方文档学习笔记（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">TensorFlow 官方文档学习笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a></li></ul>
 
 
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">TensorFlow 官方文档学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
-    </div>
 
 
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/">Tensorflow</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/" class="archive-article-date">
-      <time datetime="2017-06-01T10:44:56.000Z" itemprop="datePublished">06-01</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人网站/">个人网站</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
