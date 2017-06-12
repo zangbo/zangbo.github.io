@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-06-11T09:32:46.000Z</updated>
+  <updated>2017-06-12T14:04:31.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -14,6 +14,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>送给女友的生日礼物</title>
+    <link href="http://zangbo.me/2017/06/07/%E9%80%81%E5%A5%B3%E5%8F%8B%E7%9A%84%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9/"/>
+    <id>http://zangbo.me/2017/06/07/送女友的生日礼物/</id>
+    <published>2017-06-07T13:36:59.000Z</published>
+    <updated>2017-06-12T14:04:31.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。<a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h2 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h2><p>以下是我的两个网站：</p>
+<ul>
+<li>博莎小站：<a href="http://lisa.zangbo.me" target="_blank" rel="external">http://lisa.zangbo.me</a></li>
+<li>送给Lisa的一封信：<a href="http://mylove.zangbo.me" target="_blank" rel="external">http://mylove.zangbo.me</a></li>
+</ul>
+<p><br></p>
+<h2 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h2><ul>
+<li><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
+<p>作者主页：<a href="http://chengdazhi.com" target="_blank" rel="external">程大治</a></p>
+<p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的网站模版进行的二次加工，于是我便直接拿来修改，应该没有侵犯版权，如果有的话请给我发邮件。</p>
+</li>
+</ul>
+<p><br></p>
+<ul>
+<li><p>第二个网站参考：<a href="http://hackerzhou.me/ex_love/" target="_blank" rel="external">Our Love Story</a></p>
+<p>作者GitHub：<a href="https://github.com/hackerzhou" target="_blank" rel="external">hackerzhou</a></p>
+<p>这个网站在圈子里可以说是很有名了，作者开发于2011年，当年送的人如今已经变成了前女友，不免一阵唏嘘。作者把代码放在GitHub上允许大家自由的进行二次开发，我便拿来进行修改，因为女朋友并非程序员，所以原本的网页中代码生成部分改为了一封信。</p>
+</li>
+</ul>
+<p><br></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>因为妹子是文科生，送之前我也不知道妹子会不会喜欢这种理工男的浪漫，所以这两个网页只能算是礼物的一部分，自然还是要准备其他实质性的东西的。</p>
+<p><br></p>
+</the>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。
+    
+    </summary>
+    
+    
+      <category term="个人网站" scheme="http://zangbo.me/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"/>
+    
+      <category term="前端" scheme="http://zangbo.me/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>Word2Vec笔记：Negative Sample</title>
