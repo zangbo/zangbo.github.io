@@ -15,22 +15,16 @@
 
 
 
-<meta name="description" content="本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。">
-<meta name="keywords" content="Word2Vec">
+<meta name="description" content="本站域名 http://zangbo.me。站内分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的文章，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Word2Vec笔记：Skip-Gram模型">
-<meta property="og:url" content="http://zangbo.me/2017/06/05/Word2Vec之skip-gram模型/index.html">
+<meta property="og:title" content="自我介绍">
+<meta property="og:url" content="http://zangbo.me/2017/06/12/自我介绍/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。">
-<meta property="og:image" content="http://i1.buimg.com/597140/923e201c4349030a.png">
-<meta property="og:image" content="http://i1.buimg.com/597140/aa670485ed5cbcd6.png">
-<meta property="og:image" content="http://i1.buimg.com/597140/46e9ea1ea480e295.png">
-<meta property="og:image" content="http://i1.buimg.com/597140/d9353ef612c1a615.png">
-<meta property="og:updated_time" content="2017-06-11T09:33:55.000Z">
+<meta property="og:description" content="本站域名 http://zangbo.me。站内分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的文章，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。">
+<meta property="og:updated_time" content="2017-06-12T15:24:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Word2Vec笔记：Skip-Gram模型">
-<meta name="twitter:description" content="本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。">
-<meta name="twitter:image" content="http://i1.buimg.com/597140/923e201c4349030a.png">
+<meta name="twitter:title" content="自我介绍">
+<meta name="twitter:description" content="本站域名 http://zangbo.me。站内分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的文章，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -62,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Word2Vec笔记：Skip-Gram模型 | ZangBo&#39;s Home</title>
+<title>自我介绍 | ZangBo&#39;s Home</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -252,11 +246,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Word2Vec之skip-gram模型" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-自我介绍" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/06/05/Word2Vec之skip-gram模型/" class="article-date">
-      <time datetime="2017-06-05T08:23:12.000Z" itemprop="datePublished">2017-06-05</time>
+      <a href="/2017/06/12/自我介绍/" class="article-date">
+      <time datetime="2017-06-12T15:17:46.000Z" itemprop="datePublished">2017-06-12</time>
 </a>
 
 
@@ -271,7 +265,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Word2Vec笔记：Skip-Gram模型
+      自我介绍
     </h1>
   
 
@@ -279,16 +273,8 @@
       
       <div class="article-info article-info-post">
         
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
-    </div>
-
 
         
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li></ul>
-    </div>
-
         <div class="clearfix"></div>
       </div>
       
@@ -296,40 +282,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。<a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<h2 id="模型任务"><a href="#模型任务" class="headerlink" title="模型任务"></a>模型任务</h2><p>我们将要训练一个简单的神经网络来执行某个确定的任务，它只有一个隐层，但是我们却不去使用该训练好的网络，我们只是来学习隐层的权值，该权值就是我们的词向量(word vectors)。</p>
-<p>具体任务如下：在一个句子中间部分选择一个单词作为输入单词，然后网络会告诉我们字典中每个单词在该单词附近的概率，这里的附近范围指的是该输入单词前面5个和后面5个(共10个)单词。比如我们输入单词是“苏联”，那么字典中“联邦”和“俄罗斯”的概率会高于“西瓜”和“袋鼠”</p>
-<p>我们训练文件中存在很多成对的单词，我们不停的把一对单词送入神经网络进行训练，神经网络会统计单词出现的频率，比如（“苏联”，“联邦”）出现的次数更多，那么当我们输入“苏联”这个单词时，“联邦”的概率将会更大。如下是一个窗口为2的例子，前面2个后面2个，蓝色的为输入单词。</p>
-<center><img src="http://i1.buimg.com/597140/923e201c4349030a.png" alt="Markdown"></center>
-
-<p><br></p>
-<h2 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h2><p>我们不可能直接把一个单词送入神经网络中训练，因此我们需要找到一个方式来代替单词。为了实现这点，我们先从训练文件中建立一个单词字典，假设我们有10000个独立单词。</p>
-<p>我们讲吧每个输入单词例如“ants”作为一个one-hot向量，这个向量有10000维，我们将某一维设置为1，其他位置设置为0来表示单词“蚂蚁”。在训练网络时，输入是10000维向量(表示输入单词)，输出标签是与它相关单词对中的另外一个单词的one-hot向量，也是10000维。但是当我们使用该网络时，输出层使用softmax层，输出将变成一个10000维的概率向量(因为字典中有10000个单词)，其中的每一个维度都表示字典中的一个单词在该输入单词附近的概率。下图为使用时的模型：</p>
-<center><img src="http://i1.buimg.com/597140/aa670485ed5cbcd6.png" alt="Markdown"></center>
-
-<h2 id="隐藏层"><a href="#隐藏层" class="headerlink" title="隐藏层"></a>隐藏层</h2><p>如果我们用300个单元来表示隐藏层，那么我们学到的词向量就是300维的，因此隐层的参数矩阵是[10000,300]的，300是Google在发行的数据库中使用的长度，这是个超参数，可以根据自己的需求更改。</p>
-<p>因此我们的目标实际上是学习这样一个参数矩阵，输出层在我们训练完网络就丢弃不用。那么输入的one-hot向量什么作用呢，因为该向量大部分都是0，只有一个维度是1，因此可以起到选择的作用，如下简单的例子：</p>
-<center><img src="http://i1.buimg.com/597140/46e9ea1ea480e295.png" alt="Markdown"></center>
-
-<p>我们可以看出隐层的输出是输入one-hot向量的一个词向量表示。</p>
-<p><br></p>
-<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>1*300的词向量”ants”将会被送到输出层，输出层是一个softmax回归分类器，分类器会输出字典中出现过的每一个单词在它附近的概率，这些概率在0-1之间，而且加起来的和为1。特别的，每个输出单元都有个权值向量和词向量相乘，然后用exp()函数得出结果，最后为了使得所有的向量概率加起来为1，还要除以10000个词向量的exp()结果的和。</p>
-<p>以下是计算输出神经元输出“car”这个单词的图示：</p>
-<center><img src="http://i1.buimg.com/597140/d9353ef612c1a615.png" alt="Markdown"></center>
-
-<p>注意即使训练时某个单词在另一个单词附近的概率是100%，但使用时输出改单词的概率也不是100%，这和softmax函数有关。</p>
-<p><br></p>
-<h2 id="一些直觉"><a href="#一些直觉" class="headerlink" title="一些直觉"></a>一些直觉</h2><p>如果两个单词又非常相似的语义，我们的模型将会对这两个单词的输入来输出非常相似的结果。其中的一个方法是这两个单词的词向量是相似的。因此如果两个单词有相似的语义，那么他们有相似的词向量。</p>
-<p>那么什么叫相似的语义呢？比如“intelligent”和“smart”这种有相似意思的单词，或者“engine”和“transmission”这种相关的单词，或者“ant”和“ants”这种具有相同意思的不同词性的单词。</p>
-<p><br></p>
-<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>这种模型包含了数量庞大的参数，对于300特征的隐层和10000单词的字典，需要隐层和输出层各3M大小的权值数量，训练一个庞大的数据库是很困难的，因此我们做了一些改进来便于训练，这就是下篇文章提到的Negative Sample。</p>
-<p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/" target="_blank" rel="external">Word2Vec Tutorial - The Skip-Gram Model · Chris McCormick</a></p>
-<p><br></p>
-</the>
+        <p><excerpt in="" index="" |="" 首页摘要=""><br>本站域名 <code>http://zangbo.me</code>。站内分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的文章，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。<a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文=""></the>
       
     </div>
     
@@ -337,13 +291,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/05/Word2Vec之skip-gram模型/">Word2Vec笔记：Skip-Gram模型</a></p>
+        <p><span>本文标题:</span><a href="/2017/06/12/自我介绍/">自我介绍</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Zang Bo</a></p>
-        <p><span>发布时间:</span>2017-06-05, 16:23:12</p>
-        <p><span>最后更新:</span>2017-06-11, 17:33:55</p>
+        <p><span>发布时间:</span>2017-06-12, 23:17:46</p>
+        <p><span>最后更新:</span>2017-06-12, 23:24:08</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/06/05/Word2Vec之skip-gram模型/" title="Word2Vec笔记：Skip-Gram模型">http://zangbo.me/2017/06/05/Word2Vec之skip-gram模型/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/05/Word2Vec之skip-gram模型/　　作者: Zang Bo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/12/自我介绍/" title="自我介绍">http://zangbo.me/2017/06/12/自我介绍/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/12/自我介绍/　　作者: Zang Bo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -355,16 +309,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/06/06/Word2Vec之Negative-Sample/">
-                    Word2Vec笔记：Negative Sample
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/06/04/关于随机梯度下降/">
-                    深度学习中几种不同的梯度下降算法
+                <a href="/2017/06/12/送女友的生日礼物/">
+                    送给女友的生日礼物
                 </a>
             </div>
         
@@ -376,7 +324,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#模型任务"><span class="toc-number">1.</span> <span class="toc-text">模型任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型细节"><span class="toc-number">2.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#隐藏层"><span class="toc-number">3.</span> <span class="toc-text">隐藏层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出层"><span class="toc-number">4.</span> <span class="toc-text">输出层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些直觉"><span class="toc-number">5.</span> <span class="toc-text">一些直觉</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-number">6.</span> <span class="toc-text">后续</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol>
+            
         
     </div>
     <style>
@@ -412,7 +360,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Word2Vec笔记：Skip-Gram模型　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"自我介绍　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -446,15 +394,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/06/06/Word2Vec之Negative-Sample/" title="上一篇: Word2Vec笔记：Negative Sample">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/04/关于随机梯度下降/" title="下一篇: 深度学习中几种不同的梯度下降算法">
+            <a href="/2017/06/12/送女友的生日礼物/" title="下一篇: 送给女友的生日礼物">
                 <i class="fa fa-angle-right"></i>
             </a>
         
