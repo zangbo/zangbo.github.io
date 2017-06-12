@@ -459,7 +459,7 @@
     <link href="http://zangbo.me/2017/06/01/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
     <id>http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/</id>
     <published>2017-06-01T10:44:56.000Z</published>
-    <updated>2017-06-11T08:18:34.000Z</updated>
+    <updated>2017-06-12T15:47:06.000Z</updated>
     
     <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -538,7 +538,7 @@
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure>
 <p>安装结束后，输入以下命令来初始化一个Hexo博客：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init &lt;folder&gt; </div><div class="line"><span class="built_in">cd</span> &lt;folder&gt;</div><div class="line">npm install</div></pre></td></tr></table></figure>
-<p>该命令会在当前文件夹下新建一个名叫<folder> 的文件夹来初始化一个博客，如果命令中没有<folder>，则在当前文件夹初始化博客。比如我要初始化一个名字叫blog的博客，则需要输入<code>hexoinit blog</code>，这样我们就在该目录下新建了一个名为blog的文件夹，接着我们利用命令<code>cd blog</code>进入该文件夹，输入<code>npm install</code>来安装必备的库。</folder></folder></p>
+<p>该命令会在当前文件夹下新建一个名叫folder的文件夹来初始化一个博客，如果命令中没有folder，则在当前文件夹初始化博客。比如我要初始化一个名字叫blog的博客，则需要输入<code>hexo init blog</code>，这样我们就在该目录下新建了一个名为blog的文件夹，接着我们利用命令<code>cd blog</code>进入该文件夹，输入<code>npm install</code>来安装必备的库。</p>
 <p>到这里我们的网站就初始化完毕了，下面我们尝试添加一篇新的文章并且在本地服务器上查看。不出意外当前终端定位是在我们刚建立的文件夹下，即刚刚的blog文件夹下，此时在终端输入以下命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo new [layout] &lt;title&gt;  <span class="comment">#等价于 hexo n [layout] &lt;title&gt;</span></div><div class="line">hexo generate  <span class="comment">#等价于 hexo g</span></div><div class="line">hexo server  <span class="comment">#等价于 hexo s</span></div></pre></td></tr></table></figure>
 <p>我新建了一篇名为“<em>The first article</em>”的文章。</p>

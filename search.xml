@@ -495,7 +495,7 @@
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure>
 <p>安装结束后，输入以下命令来初始化一个Hexo博客：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init &lt;folder&gt; </div><div class="line"><span class="built_in">cd</span> &lt;folder&gt;</div><div class="line">npm install</div></pre></td></tr></table></figure>
-<p>该命令会在当前文件夹下新建一个名叫<folder> 的文件夹来初始化一个博客，如果命令中没有<folder>，则在当前文件夹初始化博客。比如我要初始化一个名字叫blog的博客，则需要输入<code>hexoinit blog</code>，这样我们就在该目录下新建了一个名为blog的文件夹，接着我们利用命令<code>cd blog</code>进入该文件夹，输入<code>npm install</code>来安装必备的库。</folder></folder></p>
+<p>该命令会在当前文件夹下新建一个名叫folder的文件夹来初始化一个博客，如果命令中没有folder，则在当前文件夹初始化博客。比如我要初始化一个名字叫blog的博客，则需要输入<code>hexo init blog</code>，这样我们就在该目录下新建了一个名为blog的文件夹，接着我们利用命令<code>cd blog</code>进入该文件夹，输入<code>npm install</code>来安装必备的库。</p>
 <p>到这里我们的网站就初始化完毕了，下面我们尝试添加一篇新的文章并且在本地服务器上查看。不出意外当前终端定位是在我们刚建立的文件夹下，即刚刚的blog文件夹下，此时在终端输入以下命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo new [layout] &lt;title&gt;  <span class="comment">#等价于 hexo n [layout] &lt;title&gt;</span></div><div class="line">hexo generate  <span class="comment">#等价于 hexo g</span></div><div class="line">hexo server  <span class="comment">#等价于 hexo s</span></div></pre></td></tr></table></figure>
 <p>我新建了一篇名为“<em>The first article</em>”的文章。</p>
