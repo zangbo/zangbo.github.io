@@ -335,7 +335,7 @@
     <link href="http://zangbo.me/2017/06/02/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://zangbo.me/2017/06/02/Tensorflow-官方文档学习笔记（一）/</id>
     <published>2017-06-02T05:22:10.000Z</published>
-    <updated>2017-06-11T08:18:03.000Z</updated>
+    <updated>2017-06-13T07:34:15.000Z</updated>
     
     <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇主要关于Tensorflow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -360,7 +360,7 @@
 <p>2、<strong>变量(variable)</strong>，一般用来存储需要更新的参数，需要初始化。</p>
 <p>3、<strong>占位符(placeholder)</strong>，先定义好一个没有具体内容的节点，但需要指定数据类型，一般用作输入和输出节点，在执行会话run操作时用feed操作输入数据。</p>
 <p>4、表示某种操作，比如：</p>
-<p><em>+ - \</em> / *，均为矩阵间对应项操作。</p>
+<p><code>+ - * /</code>，均为矩阵间对应项操作。</p>
 <p><code>tf.matmul(a,b)</code>，矩阵乘法，不同于*。</p>
 <p><code>tf.assign(a,b)</code>，赋值操作，把b的值赋给a。</p>
 <center><img src="http://i2.muimg.com/597140/733290c20ed29338.jpg" alt="Markdown"></center>
@@ -375,8 +375,8 @@
 <p>需要注意的是，在执行会话的<code>sess.run()</code>操作之前，任何对op的定义都不会被执行。</p>
 <p><br></p>
 <h2 id="MNIST机器学习入门"><a href="#MNIST机器学习入门" class="headerlink" title="MNIST机器学习入门"></a>MNIST机器学习入门</h2><p>本章介绍了MNIST数据集和Softmax回归，前者是个入门级的计算机视觉数据集，包含各种手写数字图片，官方文档把MNIST称为机器学习届的“Hello World”。Softmax Regression是一个非常基础的数学模型，在多分类问题中被广泛使用，在斯坦福大学的公开课CS231n中，Softmax回归也被放在最前面来讲，可见其重要性。本章学习用Softmax回归训练一个机器学习模型用于预测MNIST数据集中的数字。</p>
-<p>首先下载MNIST数据集，官方提供了下载脚本，我们只需要用如下两行代码引用即可下载。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<p>首先下载MNIST数据集，我们只需要用如下两行代码自动下载并且引用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p> 每张图片包含28*28个像素点，我们可以用一个数字矩阵来表示它。</p>
 <center><img src="http://i2.muimg.com/597140/28fa4e89fec0aeff.jpg" alt="Markdown"></center>
 
@@ -395,7 +395,7 @@
 <center><img src="http://i4.piimg.com/597140/21e9f5ecbaa0ecac.jpg" alt="Markdown"></center>)<br><br>简写为：<br><br><center><img src="http://i4.piimg.com/597140/22dff7c217cdea78.png" alt="Markdown"></center>
 
 <p>在我们的模型中，训练数据共60000张图片，但由于我们采用随机梯度下降来优化，因此我们x的尺寸为[batch<em>size,784]，W的尺寸为[784,10]，b的尺寸为[1,10]，最终输出的y尺寸和标签y</em>尺寸均为[batch_size,10]。具体实现我用的jupyter notebook，过程如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=Ture)</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</div><div class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</div><div class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.5</span>).minimize(cross_entropy)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</div><div class="line">correct_prediction = tf.equal(tf.argmax(y,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">print(sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels&#125;))</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</div><div class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</div><div class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.5</span>).minimize(cross_entropy)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</div></pre></td></tr></table></figure>
 <p>我们首先定义了变量W和b，用来存储模型参数，在一遍遍迭代中不断的对其进行更新，初始化为全零矩阵。然后定义占位符x，先在图中分配好节点，类型为float型，None表示此张量的第一个维度可以是任何长度的，在执行时可以利用feed操作输入任何数量的图片。接着定义了矩阵乘法操作<code>tf.matmul()</code>和加操作+，以及定义了节点y进行softmax计算。</p>
 <p>我把数据流图简单画了下：</p>
 <center><img src="http://i2.muimg.com/597140/df1af0b22ce57023.jpg" alt="Markdown"></center>
@@ -407,7 +407,8 @@
 <p>y 是我们预测的概率分布, y’ 是实际的分布 </p>
 <p>因此需要定义一个新的占位符y_来表示标签数据，来计算交叉熵，我们采用的batch_size为100，这里计算的是100张图片的交叉熵总和。在这里，我们定义一个最优化操作train_step，要求TensorFlow用梯度下降算法(gradient descent algorithm)以0.01的学习速率最小化交叉熵。</p>
 <p>到这里，我们程序的构建阶段就完成了，接下来是执行阶段。我们启动一个会话<code>sess = tf.Session()</code>，首先初始化所有变量，然后开始启动训练，这里让模型循环训练迭代1000次，每次随机抓取训练数据中100个数据点，然后用它们替换之前定义的占位符x和y_中的参数(feed操作)。这种随机抓取数据训练的方法称为<strong>随机梯度下降</strong>，可以很好的节省训练开销，同时最大化的学习数据集的总体性能。</p>
-<p>训练用的时间比较短，用CUDA只要几秒钟，训练结束后我们需要验证模型的性能，MNIST数据集有10000张测试图片用于评估模型的泛化性能。</p>
+<p>训练用的时间比较短，用CUDA只要几秒钟，训练结束后我们需要验证模型的性能，MNIST数据集有10000张测试图片用于评估模型的泛化性能。下面是测试阶段代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">correct_prediction = tf.equal(tf.argmax(y,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">print(sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels&#125;))</div></pre></td></tr></table></figure>
 <p>先介绍下用到的几个主要函数：</p>
 <p><code>tf.argmax()</code>函数能给出tensor对象在某一维上的最大值所在的索引值。</p>
 <p><code>tf.equal()</code>函数来对比两个tensor是否相同，返回一组布尔值。</p>
