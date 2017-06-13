@@ -46,6 +46,65 @@
     </entry>
     
     <entry>
+      <title><![CDATA[爬虫笔记（一）：基础背景知识]]></title>
+      <url>/2017/06/07/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本系列记录了爬虫学习的历程，本文整理了学习爬虫需要掌握的基础背景知识，包括HTML、URL在内的基础概念以及爬虫的工作原理。<a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><p>HTML中文全称“超文本标记语言”。超文本指页面内可以包含图片、链接，甚至音乐、程序等非文字元素。</p>
+<p>超文本标记语言包括Head部分和Body部分，其中Head部分提供关于网页的信息，Body部分提供网页的具体内容。</p>
+<ul>
+<li><code>&lt;head&gt;&lt;/head&gt;；</code>这2个标记符分别表示头部信息的开始和结尾。头部中包含的标记是页面的标题、序言、说明等内容，它本身不作为内容来显示，但影响网页显示的效果。</li>
+<li><code>&lt;body&gt;&lt;/body&gt;；</code>网页中显示的实际内容均包含在这2个正文标记符之间。正文标记符又称为实体标记。</li>
+</ul>
+<p><br></p>
+<h2 id="URI"><a href="#URI" class="headerlink" title="URI"></a>URI</h2><p>统一资源标识符(Uniform Resource Identifier)，是一个用于标识某一互联网资源名称的字符串。Web上可用的每种资源：HTML文档、图像、视频片段、程序等，由一个URI进行定位。</p>
+<p>URI由三部分组成：</p>
+<ol>
+<li>访问资源的命名机制</li>
+<li>存放资源的主机名</li>
+<li>资源自身的名称，由路径表示，着重强调于资源。</li>
+</ol>
+<p><br></p>
+<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p>统一资源定位符(Uniform Resource Location)，是URI的一个子集，URI确定一个资源，URL不仅确定一个资源，还告诉你它在哪里。互联网上每个文件都有一个唯一的URL，它包含的信息指出文件的位置以及浏览器应该怎么处理它。</p>
+<p>URL一般由三部组成：</p>
+<ol>
+<li>协议(或称为服务方式)</li>
+<li>存有该资源的服务器名称或者主机IP地址(有时也包括端口号)</li>
+<li>主机资源的具体地址。如目录和文件名等。</li>
+</ol>
+<p>以下是一个例子：</p>
+<p><code>https://tianchi.aliyun.com/competition/information.htm?raceId=231602</code></p>
+<p>协议://授权/路径?查询</p>
+<ul>
+<li>第一部分和第二部分用“://”符号隔开，</li>
+<li>第二部分和第三部分用“/”符号隔开。</li>
+<li>第一部分和第二部分是不可缺少的，第三部分有时可以省略。</li>
+</ul>
+<p>URI表示请求服务器的路径，定义这么一个资源，而URL同时说明要如何访问这个资源（通过http://）</p>
+<p><br></p>
+<h2 id="浏览网页的过程和爬虫原理"><a href="#浏览网页的过程和爬虫原理" class="headerlink" title="浏览网页的过程和爬虫原理"></a>浏览网页的过程和爬虫原理</h2><p>浏览器作为一个客户端，输入地址后，会向服务器端发送一次请求(Request)，服务器正常的话会返回一个响应(Response)，响应的内容是请求打开的页面内容。浏览器收到相应后，对信息进行相应处理，页面就显示在我们面前了。</p>
+<p>爬虫的流程相似，我们通过http库向目标站点发送一个Request(里面包含URL)，如果服务器响应，会得到一个Response，我们在利用正则表达式等工具对它进行解析，最后保存数据。</p>
+<p><br></p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> 数据挖掘 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 爬虫 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Word2Vec笔记：Negative Sample]]></title>
       <url>/2017/06/06/Word2Vec%E4%B9%8BNegative-Sample/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
