@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。">
 <meta property="og:image" content="http://i1.buimg.com/597140/576550baa99295f6.png">
-<meta property="og:updated_time" content="2017-06-14T15:20:16.000Z">
+<meta property="og:updated_time" content="2017-06-14T15:40:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="编码相关知识">
 <meta name="twitter:description" content="本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。">
@@ -311,16 +311,16 @@
 <p>其中一种扩展的8位字符集是ISO 8859-1 Latin 1，也简称为ISOLatin-1。它把位于128-255之间的字符用于拉丁字母表中特殊语言字符的编码，也因此而得名。ISOLatin-1向下兼容ASCII。</p>
 <p><br></p>
 <h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h2><p>然而欧洲语言不是地球上的唯一语言，亚洲和非洲语言并不能被8位字符集所支持。仅汉语字母表就有80000以上个字符。但是把汉语、日语和越南语的一些相似的字符结合起来，在不同的语言里，使不同的字符代表不同的字，这样只用2个字节就可以编码地球上几乎所有地区的文字。因此，创建了Unicode编码，它通过增加一个高字节对ISO Latin-1字符集进行扩展，当这些高字节位为0时，低字节就是ISO Latin-1字符。最初的Unicode标准UCS-2是使用两个字节表示一个字符，后来有人嫌少使用4个字节表示一个字符，即UCS-4，不过我们用的最多的还是UCS-2。</p>
-<p>总的来说，Unicode是计算机科学领域里的一项业界标准,包括字符集、编码方案等。Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。</p>
+<p>总的来说，Unicode是计算机科学领域里的一项业界标准，包括字符集、编码方案等。Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。</p>
 <p><br></p>
-<h2 id="UTF"><a href="#UTF" class="headerlink" title="UTF"></a>UTF</h2><p>对可以用ASCII表示的字符使用UNICODE并不高效，因为UNICODE比ASCII占用大一倍的空间，而对ASCII来说高字节的0对他毫无用处。为了解决这个问题，就出现了通用转换格式，即UTF（Unicode Transformation Format）。</p>
+<h2 id="UTF"><a href="#UTF" class="headerlink" title="UTF"></a>UTF</h2><p>对可以用ASCII表示的字符使用Unicode并不高效，因为Unicode比ASCII占用大一倍的空间，而对ASCII来说高字节的0对他毫无用处。为了解决这个问题，就出现了通用转换格式，即UTF（Unicode Transformation Format）。</p>
 <center><img src="http://i1.buimg.com/597140/576550baa99295f6.png" alt="Markdown"></center>
 
 <p>换句话说，在计算机<strong>内存</strong>中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，是由UTF负责的。最简单的一种形式是直接用UCS的码位来保存，这就是UTF-16，比如，”汉”直接使用\x6C\x49保存(UTF-16-BE)，或是倒过来使用\x49\x6C保存(UTF-16-LE)。但用着用着美国人觉得自己吃了大亏，以前英文字母只需要一个字节就能保存了，现在大锅饭一吃变成了两个字节，空间消耗大了一倍……于是UTF-8横空出世。</p>
 <p><strong>UTF-8</strong>是一种可变长度字符编码。它用1到6个字节编码Unicode字符。用在网页上可以统一页面显示中文简体繁体及其它语言（如英文，日文，韩文）。</p>
 <p>此外，常见的UTF格式还有：UTF-7、UTF-7.5、UTF-8、UTF-16、UTF-32</p>
 <h3 id="Python-3中的编码"><a href="#Python-3中的编码" class="headerlink" title="Python 3中的编码"></a>Python 3中的编码</h3><p>在python 3版本中，字符串是以Unicode编码的，也就是说，python 3字符串支持中英或其他各种语言。此外，我们可以利用<code>.encode()</code>函数来把Unicode字符串进行编码，编码后的字符串前面会用b表示。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">u = <span class="string">u'汉'</span></div><div class="line">print(u)</div><div class="line">s = u.encode(<span class="string">'UTF-8'</span>)</div><div class="line">print(s)</div><div class="line">d = s.decode(<span class="string">'UTF-8'</span>)</div><div class="line">print(d)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">u = <span class="string">'汉'</span></div><div class="line">print(u)</div><div class="line">s = u.encode(<span class="string">'UTF-8'</span>)</div><div class="line">print(s)</div><div class="line">d = s.decode(<span class="string">'UTF-8'</span>)</div><div class="line">print(d)</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'汉'</span></div><div class="line">b<span class="string">'\xe6\xb1\x89'</span></div><div class="line"><span class="string">'汉'</span></div></pre></td></tr></table></figure>
 <p>关于python 3中读取文件：</p>
@@ -352,7 +352,7 @@
         <p><span>本文标题:</span><a href="/2017/06/14/编码相关知识/">编码相关知识</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-14, 17:40:30</p>
-        <p><span>最后更新:</span>2017-06-14, 23:20:16</p>
+        <p><span>最后更新:</span>2017-06-14, 23:40:50</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/14/编码相关知识/" title="编码相关知识">http://zangbo.me/2017/06/14/编码相关知识/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/14/编码相关知识/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
