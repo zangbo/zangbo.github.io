@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-06-14T15:15:31.000Z</updated>
+  <updated>2017-06-14T15:20:16.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://zangbo.me/2017/06/14/%E7%BC%96%E7%A0%81%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/"/>
     <id>http://zangbo.me/2017/06/14/编码相关知识/</id>
     <published>2017-06-14T09:40:30.000Z</published>
-    <updated>2017-06-14T15:15:31.000Z</updated>
+    <updated>2017-06-14T15:20:16.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了一些常见的编码，它们的起源以及区分，因为平时被各种不同的编码所困扰，索性就整理出来。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -69,7 +69,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文整理了一些常见的编码，它们的起源以及区分，因为平时被各种不同的编码所困扰，索性就整理出来。
+      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。
     
     </summary>
     
