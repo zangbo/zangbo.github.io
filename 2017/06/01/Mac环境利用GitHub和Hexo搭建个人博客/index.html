@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://i2.muimg.com/597140/08c515de8ad7b815.png">
 <meta property="og:image" content="http://i1.buimg.com/597140/ce78933779e21a6e.png">
 <meta property="og:image" content="http://i1.buimg.com/597140/19f190af52c4da14.png">
-<meta property="og:updated_time" content="2017-06-13T08:32:20.000Z">
+<meta property="og:updated_time" content="2017-06-15T09:14:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac环境利用GitHub和Hexo搭建个人博客">
 <meta name="twitter:description" content="本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。">
@@ -438,7 +438,7 @@
 <ol>
 <li>图像居中实现方法：<code>&lt;center&gt;图像&lt;/center&gt;</code></li>
 <li>字体加粗可以前后各加两个星号<em>来实现： **</em>需要加粗的文字<em>**</em></li>
-<li>换行标签<code>&lt;/br&gt;</code></li>
+<li>换行标签<code>&lt;br /&gt;</code></li>
 </ol>
 <p>大部分常用用法在上面教程都可以找到。这里注意，在本地修改网站或者更新文章时，可以用指令<code>hexo s</code>在本地服务器看修改效果，打开浏览器输入<code>localhost:4000</code>，每次修改后网站会实时的发生变动。但是修改后要用指令<code>hexo g</code>和<code>hexo d</code>部署到GitHub上，此时的CNAME文件和README.md文件往往会消失，需要重新创建。为了方便起见可以打开网站根目录的source文件夹，把CNAME文件和README.md文件存放在里面。注意CNAME文件没有扩展名。</p>
 <p>此时还有个问题，如果把README.md文件放在source文件夹中，执行<code>hexo g</code>指令时会被渲染，解决办法是只要在博客根目录下的配置文件_config.yml中配置一下”skip_render”选项，将不需要渲染的文件名称加入的其选项下就行了。</p>
@@ -467,7 +467,7 @@
         <p><span>本文标题:</span><a href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-01, 18:44:56</p>
-        <p><span>最后更新:</span>2017-06-13, 16:32:20</p>
+        <p><span>最后更新:</span>2017-06-15, 17:14:02</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/" title="Mac环境利用GitHub和Hexo搭建个人博客">http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

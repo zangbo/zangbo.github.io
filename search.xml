@@ -765,7 +765,7 @@
 <ol>
 <li>图像居中实现方法：<code>&lt;center&gt;图像&lt;/center&gt;</code></li>
 <li>字体加粗可以前后各加两个星号<em>来实现： **</em>需要加粗的文字<em>**</em></li>
-<li>换行标签<code>&lt;/br&gt;</code></li>
+<li>换行标签<code>&lt;br /&gt;</code></li>
 </ol>
 <p>大部分常用用法在上面教程都可以找到。这里注意，在本地修改网站或者更新文章时，可以用指令<code>hexo s</code>在本地服务器看修改效果，打开浏览器输入<code>localhost:4000</code>，每次修改后网站会实时的发生变动。但是修改后要用指令<code>hexo g</code>和<code>hexo d</code>部署到GitHub上，此时的CNAME文件和README.md文件往往会消失，需要重新创建。为了方便起见可以打开网站根目录的source文件夹，把CNAME文件和README.md文件存放在里面。注意CNAME文件没有扩展名。</p>
 <p>此时还有个问题，如果把README.md文件放在source文件夹中，执行<code>hexo g</code>指令时会被渲染，解决办法是只要在博客根目录下的配置文件_config.yml中配置一下”skip_render”选项，将不需要渲染的文件名称加入的其选项下就行了。</p>
@@ -803,7 +803,8 @@
     <entry>
       <title><![CDATA[自我介绍]]></title>
       <url>/2017/05/20/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本站域名 <code>http://zangbo.me</code>。站内分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的文章，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。<a id="more"></a></excerpt></p>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本站域名 <code>http://zangbo.me</code>。站内分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的文章，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。</excerpt></p>
+<p>本站全部文章均为个人原创，如需转载请注明出处和作者。</p>
 <the rest="" of="" contents="" |="" 余下全文=""></the>]]></content>
       
         
