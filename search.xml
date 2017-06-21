@@ -9,24 +9,25 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="编码的起源"><a href="#编码的起源" class="headerlink" title="编码的起源"></a>编码的起源</h2><p>在计算机中，所有的数据在存储和运算时都要使用二进制数表示（因为计算机用高电平和低电平分别表示1和0），例如像a、b、c、d这样的52个字母（包括大写）、以及0、1等数字还有一些常用的符号（例如*、#、@等）在计算机中存储时也要使用二进制数来表示，而具体用哪些二进制数字表示哪个符号，当然每个人都可以约定自己的一套（这就叫编码），而大家如果要想互相通信而不造成混乱，那么大家就必须使用相同的编码规则。</p>
+<h1 id="编码的起源"><a href="#编码的起源" class="headerlink" title="编码的起源"></a>编码的起源</h1><p>在计算机中，所有的数据在存储和运算时都要使用二进制数表示（因为计算机用高电平和低电平分别表示1和0），例如像a、b、c、d这样的52个字母（包括大写）、以及0、1等数字还有一些常用的符号（例如*、#、@等）在计算机中存储时也要使用二进制数来表示，而具体用哪些二进制数字表示哪个符号，当然每个人都可以约定自己的一套（这就叫编码），而大家如果要想互相通信而不造成混乱，那么大家就必须使用相同的编码规则。</p>
 <p><br></p>
-<h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h2><p>为了有一套统一的编码规则，美国国家标准协会就出台了ASCII编码，统一规定了上述常用符号用哪些二进制数来表示，后来被国际标准化组织（ISO）定位了国际标准。</p>
+<h1 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h1><p>为了有一套统一的编码规则，美国国家标准协会就出台了ASCII编码，统一规定了上述常用符号用哪些二进制数来表示，后来被国际标准化组织（ISO）定位了国际标准。</p>
 <p>标准ASCII码使用指定的7位二进制数组合来表示128种可能的字符，而由于电脑开发初期就建立了8位元位元组，即1byte=8bits，因此如果使用一个位元组来保存字元，则可以存储256个码，于是就诞生了扩展ASCII码。</p>
 <p><br></p>
-<h2 id="ISO8859-1"><a href="#ISO8859-1" class="headerlink" title="ISO8859-1"></a>ISO8859-1</h2><p>之前说过，标准ASCII是针对英语设计的，当处理带有音调标号（形如汉语的拼音）的亚洲文字时就会出现问题。因此，创建出了一些包括255个字符的由ASCII扩展的字符集。</p>
+<h1 id="ISO8859-1"><a href="#ISO8859-1" class="headerlink" title="ISO8859-1"></a>ISO8859-1</h1><p>之前说过，标准ASCII是针对英语设计的，当处理带有音调标号（形如汉语的拼音）的亚洲文字时就会出现问题。因此，创建出了一些包括255个字符的由ASCII扩展的字符集。</p>
 <p>其中一种扩展的8位字符集是ISO 8859-1 Latin 1，也简称为ISOLatin-1。它把位于128-255之间的字符用于拉丁字母表中特殊语言字符的编码，也因此而得名。ISOLatin-1向下兼容ASCII。</p>
 <p><br></p>
-<h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h2><p>然而欧洲语言不是地球上的唯一语言，亚洲和非洲语言并不能被8位字符集所支持。仅汉语字母表就有80000以上个字符。但是把汉语、日语和越南语的一些相似的字符结合起来，在不同的语言里，使不同的字符代表不同的字，这样只用2个字节就可以编码地球上几乎所有地区的文字。因此，创建了Unicode编码，它通过增加一个高字节对ISO Latin-1字符集进行扩展，当这些高字节位为0时，低字节就是ISO Latin-1字符。最初的Unicode标准UCS-2是使用两个字节表示一个字符，后来有人嫌少使用4个字节表示一个字符，即UCS-4，不过我们用的最多的还是UCS-2。</p>
+<h1 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h1><p>然而欧洲语言不是地球上的唯一语言，亚洲和非洲语言并不能被8位字符集所支持。仅汉语字母表就有80000以上个字符。但是把汉语、日语和越南语的一些相似的字符结合起来，在不同的语言里，使不同的字符代表不同的字，这样只用2个字节就可以编码地球上几乎所有地区的文字。因此，创建了Unicode编码，它通过增加一个高字节对ISO Latin-1字符集进行扩展，当这些高字节位为0时，低字节就是ISO Latin-1字符。最初的Unicode标准UCS-2是使用两个字节表示一个字符，后来有人嫌少使用4个字节表示一个字符，即UCS-4，不过我们用的最多的还是UCS-2。</p>
 <p>总的来说，Unicode是计算机科学领域里的一项业界标准，包括字符集、编码方案等。Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。</p>
 <p><br></p>
-<h2 id="UTF"><a href="#UTF" class="headerlink" title="UTF"></a>UTF</h2><p>对可以用ASCII表示的字符使用Unicode并不高效，因为Unicode比ASCII占用大一倍的空间，而对ASCII来说高字节的0对他毫无用处。为了解决这个问题，就出现了通用转换格式，即UTF（Unicode Transformation Format）。</p>
+<h1 id="UTF"><a href="#UTF" class="headerlink" title="UTF"></a>UTF</h1><p>对可以用ASCII表示的字符使用Unicode并不高效，因为Unicode比ASCII占用大一倍的空间，而对ASCII来说高字节的0对他毫无用处。为了解决这个问题，就出现了通用转换格式，即UTF（Unicode Transformation Format）。</p>
 <center><img src="http://i1.buimg.com/597140/576550baa99295f6.png" alt="Markdown"></center>
 
 <p>换句话说，在计算机<strong>内存</strong>中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，是由UTF负责的。最简单的一种形式是直接用UCS的码位来保存，这就是UTF-16，比如，”汉”直接使用\x6C\x49保存(UTF-16-BE)，或是倒过来使用\x49\x6C保存(UTF-16-LE)。但用着用着美国人觉得自己吃了大亏，以前英文字母只需要一个字节就能保存了，现在大锅饭一吃变成了两个字节，空间消耗大了一倍……于是UTF-8横空出世。</p>
 <p><strong>UTF-8</strong>是一种可变长度字符编码。它用1到6个字节编码Unicode字符。用在网页上可以统一页面显示中文简体繁体及其它语言（如英文，日文，韩文）。</p>
 <p>此外，常见的UTF格式还有：UTF-7、UTF-7.5、UTF-8、UTF-16、UTF-32</p>
-<h3 id="Python-3中的编码"><a href="#Python-3中的编码" class="headerlink" title="Python 3中的编码"></a>Python 3中的编码</h3><p>在python 3版本中，字符串是以Unicode编码的，也就是说，python 3字符串支持中英或其他各种语言。此外，我们可以利用<code>.encode()</code>函数来把Unicode字符串进行编码，编码后的字符串前面会用b表示。</p>
+<p><br></p>
+<h2 id="Python-3中的编码"><a href="#Python-3中的编码" class="headerlink" title="Python 3中的编码"></a>Python 3中的编码</h2><p>在python 3版本中，字符串是以Unicode编码的，也就是说，python 3字符串支持中英或其他各种语言。此外，我们可以利用<code>.encode()</code>函数来把Unicode字符串进行编码，编码后的字符串前面会用b表示。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">u = <span class="string">'汉'</span></div><div class="line">print(u)</div><div class="line">s = u.encode(<span class="string">'UTF-8'</span>)</div><div class="line">print(s)</div><div class="line">d = s.decode(<span class="string">'UTF-8'</span>)</div><div class="line">print(d)</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'汉'</span></div><div class="line">b<span class="string">'\xe6\xb1\x89'</span></div><div class="line"><span class="string">'汉'</span></div></pre></td></tr></table></figure>
@@ -36,14 +37,14 @@
 </blockquote>
 <p>注意：python 2和python 3在编码方面具有较大差别，具体可以查阅相关资料，因为我平时只用python 3，所以这里就不提供了。</p>
 <p><br></p>
-<h2 id="GB2312"><a href="#GB2312" class="headerlink" title="GB2312"></a>GB2312</h2><p>汉字编码字符集，GB2312编码适用于汉字处理、汉字通信等系统之间的信息交换，通行于中国大陆；新加坡等地也采用此编码。中国大陆几乎所有的中文系统和国际化的软件都支持GB 2312。</p>
+<h1 id="GB2312"><a href="#GB2312" class="headerlink" title="GB2312"></a>GB2312</h1><p>汉字编码字符集，GB2312编码适用于汉字处理、汉字通信等系统之间的信息交换，通行于中国大陆；新加坡等地也采用此编码。中国大陆几乎所有的中文系统和国际化的软件都支持GB 2312。</p>
 <p><br></p>
-<h2 id="GBK"><a href="#GBK" class="headerlink" title="GBK"></a>GBK</h2><p>GBK全称《汉字内码扩展规范》，向下与 GB 2312 编码兼容，使用了双字节编码方案，共23940个码位，共收录了21003个汉字。</p>
+<h1 id="GBK"><a href="#GBK" class="headerlink" title="GBK"></a>GBK</h1><p>GBK全称《汉字内码扩展规范》，向下与 GB 2312 编码兼容，使用了双字节编码方案，共23940个码位，共收录了21003个汉字。</p>
 <p><br></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在计算机<strong>内存</strong>中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，是由UTF负责的，所以在很多网页的头文件可以看到编码方式utf-8，这表明该网页使用utf-8编码的。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在计算机<strong>内存</strong>中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，是由UTF负责的，所以在很多网页的头文件可以看到编码方式utf-8，这表明该网页使用utf-8编码的。</p>
 <p>另外在编程语言的使用过程中，切记关注编码方式是很重要的一件事。</p>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a href="http://www.cnblogs.com/284628487a/p/5584714.html" target="_blank" rel="external">Python3 字符编码 - Coder25 - 博客园</a></li>
 <li>百度百科</li>
 </ul>
@@ -66,44 +67,44 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="Requests介绍"><a href="#Requests介绍" class="headerlink" title="Requests介绍"></a>Requests介绍</h2><p>Requests是一个基于urllib3的HTTP库，简单优美，支持python2.6–3.5的各版本，具有无比强大的功能，完全满足今日web的需求。在爬虫学习过程中，我们用它向服务器发送请求，以获取我们需要的信息。</p>
+<h1 id="Requests介绍"><a href="#Requests介绍" class="headerlink" title="Requests介绍"></a>Requests介绍</h1><p>Requests是一个基于urllib3的HTTP库，简单优美，支持python2.6–3.5的各版本，具有无比强大的功能，完全满足今日web的需求。在爬虫学习过程中，我们用它向服务器发送请求，以获取我们需要的信息。</p>
 <p><br></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>只需要在终端中运行以下代码：</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>只需要在终端中运行以下代码：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install requests</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>我们先来看一个具体的实例来感受下Request：</p>
+<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>我们先来看一个具体的实例来感受下Request：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"></div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>, auth=(<span class="string">'user'</span>, <span class="string">'pass'</span>))</div><div class="line">r.status_code</div><div class="line">r.headers[<span class="string">'content-type'</span>]</div><div class="line">r.encoding</div><div class="line">r.text</div></pre></td></tr></table></figure>
 <p>以下是输出：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">200</span></div><div class="line"><span class="string">'text/html; charset=utf-8'</span></div><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'&lt;!DOCTYPE html&gt;'</span></div></pre></td></tr></table></figure>
 <p>以上代码我们请求了本站的地址，然后依次打印出状态码，请求头，编码方式和相应内容。</p>
 <p>是不是功能强大，下面，我们正式开始学习Requests。</p>
 <p><br></p>
-<h2 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h2><p>首先导入Requests模块：</p>
+<h1 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h1><p>首先导入Requests模块：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div></pre></td></tr></table></figure>
 <p>Requests包含各种不同的请求方式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>)</div><div class="line">r = requests.put(<span class="string">"http://httpbin.org/put"</span>)</div><div class="line">r = requests.delete(<span class="string">"http://httpbin.org/delete"</span>)</div><div class="line">r = requests.head(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.options(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h3><p>我们用的最多的是get请求，用来获取某个网页：</p>
+<h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>我们用的最多的是get请求，用来获取某个网页：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
 <p>现在，我们有一个名叫r的Response对象，它包含了所有关于该页面的信息，我们可以从中提取出我们想要的信息。</p>
 <p><br></p>
-<h3 id="带参数的get请求"><a href="#带参数的get请求" class="headerlink" title="带参数的get请求"></a>带参数的get请求</h3><p>如果你是手工构建 URL，那么数据会以键/值对的形式置于 URL 中，跟在一个问号的后面，我们可以用字典的形式传递URL参数。</p>
+<h2 id="带参数的get请求"><a href="#带参数的get请求" class="headerlink" title="带参数的get请求"></a>带参数的get请求</h2><p>如果你是手工构建 URL，那么数据会以键/值对的形式置于 URL 中，跟在一个问号的后面，我们可以用字典的形式传递URL参数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>, params=payload)</div><div class="line">print(r.url)</div></pre></td></tr></table></figure>
 <p>可以得到输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://httpbin.org/get?key2=value2&amp;key1=value1</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h3><p>如果我们想要发送一些编码为表单形式的数据——非常像一个 HTML 表单。只需简单地传递一个字典给 data 参数，该字典在发出请求时会自动编码为表单形式：</p>
+<h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>如果我们想要发送一些编码为表单形式的数据——非常像一个 HTML 表单。只需简单地传递一个字典给 data 参数，该字典在发出请求时会自动编码为表单形式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>, data=payload)</div><div class="line">print(r.text)</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  <span class="string">"form"</span>: &#123;</div><div class="line">    <span class="string">"key2"</span>: <span class="string">"value2"</span>,</div><div class="line">    <span class="string">"key1"</span>: <span class="string">"value1"</span></div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="获取响应内容"><a href="#获取响应内容" class="headerlink" title="获取响应内容"></a>获取响应内容</h2><h3 id="响应状态码"><a href="#响应状态码" class="headerlink" title="响应状态码"></a>响应状态码</h3><p>我们可以检测发送请求是否成功获得想要的数据，通过检测响应状态码：</p>
+<h1 id="获取响应内容"><a href="#获取响应内容" class="headerlink" title="获取响应内容"></a>获取响应内容</h1><h2 id="响应状态码"><a href="#响应状态码" class="headerlink" title="响应状态码"></a>响应状态码</h2><p>我们可以检测发送请求是否成功获得想要的数据，通过检测响应状态码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://www.baidu.com'</span>)</div><div class="line">r.status_code</div></pre></td></tr></table></figure>
 <p>若输出为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">200</div></pre></td></tr></table></figure>
 <p>表明获取成功。</p>
 <p><br></p>
-<h3 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h3><p>以百度首页为例：</p>
+<h2 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h2><p>以百度首页为例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">r.text</div></pre></td></tr></table></figure>
 <p>Requests会基于HTTP的头部对响应的编码进行推测，让我们访问<code>r.text</code>时，Requests会使用其推测的文本编码，我们可以用<code>r.encoding</code>改变解码方式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r.encoding</div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span></div><div class="line">r.encoding</div></pre></td></tr></table></figure>
@@ -111,7 +112,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'ISO-8859-1'</span></div></pre></td></tr></table></figure>
 <p>如果你改变了编码，每当你访问 <code>r.text</code> ，Request 都将会使用 <code>r.encoding</code> 的新值。当不确定时，可以使用 <code>r.content</code> 来找到编码，然后设置 <code>r.encoding</code> 为相应的编码。这样就能使用正确的编码解析 <code>r.text</code> 了。关于<code>r.content</code>下面会介绍。</p>
 <p><br></p>
-<h3 id="二进制内容"><a href="#二进制内容" class="headerlink" title="二进制内容"></a>二进制内容</h3><p>对于非文本请求，例如图片等多媒体内容，可以以字节的方式访问：</p>
+<h2 id="二进制内容"><a href="#二进制内容" class="headerlink" title="二进制内容"></a>二进制内容</h2><p>对于非文本请求，例如图片等多媒体内容，可以以字节的方式访问：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r.content</div></pre></td></tr></table></figure>
 <p>这里注意两者的区别：</p>
 <ul>
@@ -121,26 +122,26 @@
 <p>例如我们下载并保存一张图片：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">jpg_url = <span class="string">'http://mm.howkuai.com/wp-content/uploads/2017a/04/13/01.jpg'</span><span class="comment">#一张美女图</span></div><div class="line">content = requests.get(jpg_url).content</div><div class="line"><span class="keyword">with</span> open(<span class="string">'image.jpg'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f: <span class="comment">#写入多媒体文件必须要 b 这个参数！</span></div><div class="line">    f.write(content)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</div><div class="line">r.json()</div></pre></td></tr></table></figure>
+<h2 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</div><div class="line">r.json()</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h3><p>通过命令可以查看服务器响应头，以一个Python字典形式展示：</p>
+<h2 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h2><p>通过命令可以查看服务器响应头，以一个Python字典形式展示：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>)</div><div class="line">r.headers</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	<span class="string">'Server'</span>: <span class="string">'GitHub.com'</span>, </div><div class="line">	<span class="string">'Date'</span>: <span class="string">'Thu, 15 Jun 2017 04:04:47 GMT'</span>, </div><div class="line">	<span class="string">'Content-Type'</span>: <span class="string">'text/html; charset=utf-8'</span>, </div><div class="line">	<span class="string">'Transfer-Encoding'</span>: <span class="string">'chunked'</span>, </div><div class="line">	<span class="string">'Last-Modified'</span>: <span class="string">'Wed, 14 Jun 2017 15:41:23 GMT'</span>, </div><div class="line">	<span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'*'</span>, </div><div class="line">	<span class="string">'Expires'</span>: <span class="string">'Thu, 15 Jun 2017 04:14:47 GMT'</span>, </div><div class="line">	<span class="string">'Cache-Control'</span>: <span class="string">'max-age=600'</span>, </div><div class="line">	<span class="string">'Content-Encoding'</span>: <span class="string">'gzip'</span>, </div><div class="line">	<span class="string">'X-GitHub-Request-Id'</span>: <span class="string">'E1D6:0B0F:15941BE:1E637E3:5942075F'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">r.status_code<span class="comment">#获取状态码</span></div><div class="line">r.text<span class="comment">#文本内容</span></div><div class="line">r.encoding<span class="comment">#查看编码</span></div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span><span class="comment">#改变编码</span></div><div class="line">r.content<span class="comment">#二进制内容</span></div><div class="line">r.json()<span class="comment">#JSON内容</span></div><div class="line">r.raw<span class="comment">#原始内容</span></div><div class="line">r.headers<span class="comment">#响应头</span></div></pre></td></tr></table></figure>
+<h2 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">r.status_code<span class="comment">#获取状态码</span></div><div class="line">r.text<span class="comment">#文本内容</span></div><div class="line">r.encoding<span class="comment">#查看编码</span></div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span><span class="comment">#改变编码</span></div><div class="line">r.content<span class="comment">#二进制内容</span></div><div class="line">r.json()<span class="comment">#JSON内容</span></div><div class="line">r.raw<span class="comment">#原始内容</span></div><div class="line">r.headers<span class="comment">#响应头</span></div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="定制请求头"><a href="#定制请求头" class="headerlink" title="定制请求头"></a>定制请求头</h2><p>有些网站具有反爬虫机制，我们有时候需要把爬虫伪装成浏览器来访问网页，因此我们需要为请求添加HTTP头部，只需要简单地传递一个<code>dict</code>给<code>headers</code>参数即可。</p>
+<h1 id="定制请求头"><a href="#定制请求头" class="headerlink" title="定制请求头"></a>定制请求头</h1><p>有些网站具有反爬虫机制，我们有时候需要把爬虫伪装成浏览器来访问网页，因此我们需要为请求添加HTTP头部，只需要简单地传递一个<code>dict</code>给<code>headers</code>参数即可。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">url = <span class="string">"https://www.baidu.com"</span></div><div class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'</span>&#125;</div><div class="line">r = requests.get(url,headers=headers)</div></pre></td></tr></table></figure>
 <p>注：如何查看自己浏览器的userAgent</p>
 <p>打开浏览器的控制台，输入：javascript:alert(navigator.userAgent)</p>
 <p><br></p>
-<h2 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h2><p>我们可以告诉 requests 在经过以 <code>timeout</code> 参数设定的秒数时间之后停止等待响应：</p>
+<h1 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h1><p>我们可以告诉 requests 在经过以 <code>timeout</code> 参数设定的秒数时间之后停止等待响应：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">requests.get(<span class="string">'http://github.com'</span>, timeout=<span class="number">0.001</span>)</div></pre></td></tr></table></figure>
 <p><strong>注意：</strong></p>
 <p><code>timeout</code> 仅对连接过程有效，与响应体的下载无关。 <code>timeout</code> 并不是整个下载响应的时间限制，而是如果服务器在 <code>timeout</code> 秒内没有应答，将会引发一个异常（更精确地说，是在 <code>timeout</code> 秒内没有从基础套接字上接收到任何字节的数据时）</p>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>本文基于Requests官方文档：</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>本文基于Requests官方文档：</p>
 <ul>
 <li>英文版：<a href="http://docs.python-requests.org/en/master/" target="_blank" rel="external">Requests: HTTP for Humans</a></li>
 <li>中文版：<a href="http://docs.python-requests.org/zh_CN/latest/" target="_blank" rel="external">Requests: 让HTTP服务人类</a></li>
@@ -171,14 +172,14 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><p>HTML中文全称“超文本标记语言”。超文本指页面内可以包含图片、链接，甚至音乐、程序等非文字元素。</p>
+<h1 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h1><p>HTML中文全称“超文本标记语言”。超文本指页面内可以包含图片、链接，甚至音乐、程序等非文字元素。</p>
 <p>超文本标记语言包括Head部分和Body部分，其中Head部分提供关于网页的信息，Body部分提供网页的具体内容。</p>
 <ul>
 <li><code>&lt;head&gt;&lt;/head&gt;；</code>这2个标记符分别表示头部信息的开始和结尾。头部中包含的标记是页面的标题、序言、说明等内容，它本身不作为内容来显示，但影响网页显示的效果。</li>
 <li><code>&lt;body&gt;&lt;/body&gt;；</code>网页中显示的实际内容均包含在这2个正文标记符之间。正文标记符又称为实体标记。</li>
 </ul>
 <p><br></p>
-<h2 id="URI"><a href="#URI" class="headerlink" title="URI"></a>URI</h2><p>统一资源标识符(Uniform Resource Identifier)，是一个用于标识某一互联网资源名称的字符串。Web上可用的每种资源：HTML文档、图像、视频片段、程序等，由一个URI进行定位。</p>
+<h1 id="URI"><a href="#URI" class="headerlink" title="URI"></a>URI</h1><p>统一资源标识符(Uniform Resource Identifier)，是一个用于标识某一互联网资源名称的字符串。Web上可用的每种资源：HTML文档、图像、视频片段、程序等，由一个URI进行定位。</p>
 <p>URI由三部分组成：</p>
 <ol>
 <li>访问资源的命名机制</li>
@@ -186,7 +187,7 @@
 <li>资源自身的名称，由路径表示，着重强调于资源。</li>
 </ol>
 <p><br></p>
-<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p>统一资源定位符(Uniform Resource Location)，是URI的一个子集，URI确定一个资源，URL不仅确定一个资源，还告诉你它在哪里。互联网上每个文件都有一个唯一的URL，它包含的信息指出文件的位置以及浏览器应该怎么处理它。</p>
+<h1 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h1><p>统一资源定位符(Uniform Resource Location)，是URI的一个子集，URI确定一个资源，URL不仅确定一个资源，还告诉你它在哪里。互联网上每个文件都有一个唯一的URL，它包含的信息指出文件的位置以及浏览器应该怎么处理它。</p>
 <p>URL一般由三部组成：</p>
 <ol>
 <li>协议(或称为服务方式)</li>
@@ -203,7 +204,7 @@
 </ul>
 <p>URI表示请求服务器的路径，定义这么一个资源，而URL同时说明要如何访问这个资源（通过http://）</p>
 <p><br></p>
-<h2 id="浏览网页的过程和爬虫原理"><a href="#浏览网页的过程和爬虫原理" class="headerlink" title="浏览网页的过程和爬虫原理"></a>浏览网页的过程和爬虫原理</h2><p>浏览器作为一个客户端，输入地址后，会向服务器端发送一次请求(Request)，服务器正常的话会返回一个响应(Response)，响应的内容是请求打开的页面内容。浏览器收到相应后，对信息进行相应处理，页面就显示在我们面前了。</p>
+<h1 id="浏览网页的过程和爬虫原理"><a href="#浏览网页的过程和爬虫原理" class="headerlink" title="浏览网页的过程和爬虫原理"></a>浏览网页的过程和爬虫原理</h1><p>浏览器作为一个客户端，输入地址后，会向服务器端发送一次请求(Request)，服务器正常的话会返回一个响应(Response)，响应的内容是请求打开的页面内容。浏览器收到相应后，对信息进行相应处理，页面就显示在我们面前了。</p>
 <p>爬虫的流程相似，我们通过http库向目标站点发送一个Request(里面包含URL)，如果服务器响应，会得到一个Response，我们在利用正则表达式等工具对它进行解析，最后保存数据。</p>
 <p><br></p>
 </the>]]></content>
@@ -230,20 +231,19 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h2><p>以下是我的两个网站：</p>
+<h1 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h1><p>以下是我的两个网站：</p>
 <ul>
 <li>博莎小站：<a href="http://lisa.zangbo.me" target="_blank" rel="external">http://lisa.zangbo.me</a></li>
 <li>送给Lisa的一封信：<a href="http://mylove.zangbo.me" target="_blank" rel="external">http://mylove.zangbo.me</a></li>
 </ul>
 <p>注：手机端打开会出现排版问题，建议电脑浏览器浏览。</p>
 <p><br></p>
-<h2 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h2><ul>
+<h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><ul>
 <li><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
 <p>作者主页：<a href="http://chengdazhi.com" target="_blank" rel="external">程大治</a></p>
 <p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的网站模版进行的二次加工，于是我便直接拿来修改，应该没有侵犯版权，如果有的话请给我发邮件。</p>
 </li>
 </ul>
-<p><br></p>
 <ul>
 <li><p>第二个网站参考：<a href="http://hackerzhou.me/ex_love/" target="_blank" rel="external">Our Love Story</a></p>
 <p>作者GitHub：<a href="https://github.com/hackerzhou" target="_blank" rel="external">hackerzhou</a></p>
@@ -251,7 +251,7 @@
 </li>
 </ul>
 <p><br></p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>因为妹子是文科生，送之前我也不知道妹子会不会喜欢这种理工男的浪漫，所以这两个网页只能算是礼物的一部分，自然还是要准备其他实质性的东西的。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>因为妹子是文科生，送之前我也不知道妹子会不会喜欢这种理工男的浪漫，所以这两个网页只能算是礼物的一部分，自然还是要准备其他实质性的东西的。</p>
 <p><br></p>
 </the>]]></content>
       
@@ -273,7 +273,7 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在skip-gram模型中，我们发现这是个十分庞大的神经网络，如果我们把词向量设置成300，那么在一个具有10000个单词的字典中，隐层和输出层分别具有3百万个参数。执行梯度下降算法时将会十分缓慢，更糟糕的是，我们需要事先在一个数量庞大的数据集上训练，以便于fine-tune参数和避免过拟合。因此对模型的训练将十分困难。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在skip-gram模型中，我们发现这是个十分庞大的神经网络，如果我们把词向量设置成300，那么在一个具有10000个单词的字典中，隐层和输出层分别具有3百万个参数。执行梯度下降算法时将会十分缓慢，更糟糕的是，我们需要事先在一个数量庞大的数据集上训练，以便于fine-tune参数和避免过拟合。因此对模型的训练将十分困难。</p>
 <p>为了解决这个问题，作者提出了三个修改方案：</p>
 <ol>
 <li>把常见的短语或单词对当成一个单词来对待</li>
@@ -282,9 +282,9 @@
 </ol>
 <p>它们均可以使得训练变的可行同时也改善了结果词向量的质量。</p>
 <p><br></p>
-<h2 id="单词对和短语"><a href="#单词对和短语" class="headerlink" title="单词对和短语"></a>单词对和短语</h2><p>作者指出一个单词对像“Boston Globe”(一个报纸名)，它的含义和“Boston”以及“Globe”都有着很大的区别，因此把“Boston Globe”当作一个单词来对待是很有意义的，它将会得到一个词向量来表示。在Google News数据集上，这个改变可以把模型字典尺寸从一千亿降低为三百万。Google开源了它们训练好得到的词向量，长度是300，共计三百万个。至于如何从单词中区分短语并且缩短字典尺寸，一个方法是可以参考维基百科的词条目录。</p>
+<h1 id="单词对和短语"><a href="#单词对和短语" class="headerlink" title="单词对和短语"></a>单词对和短语</h1><p>作者指出一个单词对像“Boston Globe”(一个报纸名)，它的含义和“Boston”以及“Globe”都有着很大的区别，因此把“Boston Globe”当作一个单词来对待是很有意义的，它将会得到一个词向量来表示。在Google News数据集上，这个改变可以把模型字典尺寸从一千亿降低为三百万。Google开源了它们训练好得到的词向量，长度是300，共计三百万个。至于如何从单词中区分短语并且缩短字典尺寸，一个方法是可以参考维基百科的词条目录。</p>
 <p><br></p>
-<h2 id="降采样高频单词"><a href="#降采样高频单词" class="headerlink" title="降采样高频单词"></a>降采样高频单词</h2><p>在之前的例子中，针对一些通用单词例如“the”存在一些问题：</p>
+<h1 id="降采样高频单词"><a href="#降采样高频单词" class="headerlink" title="降采样高频单词"></a>降采样高频单词</h1><p>在之前的例子中，针对一些通用单词例如“the”存在一些问题：</p>
 <ol>
 <li>当我们看一些单词对的时候，(“fox”，“the”)没有告诉我们过多的关于“fox”的含义的信息，“the”出现在几乎每个单词的前面。</li>
 <li>我们拥有太多的关于(“the”，…)的采样，而我们学习一个好的关于“the”的向量不需要这么多的采样。</li>
@@ -298,7 +298,7 @@
 <li>当我们训练“the”作为输入时，窗口尺寸会小于10。</li>
 </ol>
 <p><br></p>
-<h2 id="采样频率"><a href="#采样频率" class="headerlink" title="采样频率"></a>采样频率</h2><p>关于如何计算字典中一个单词被保留下来的概率，有一套C语言的代码实现的公式。</p>
+<h1 id="采样频率"><a href="#采样频率" class="headerlink" title="采样频率"></a>采样频率</h1><p>关于如何计算字典中一个单词被保留下来的概率，有一套C语言的代码实现的公式。</p>
 <p>Wi代表单词，z(wi)表示单词在语料库中出现的频率，例如“peanut”在一个拥有10亿单词语料库中出现了1000次，那么z(‘peanut’)=1E-6。</p>
 <p>代码中还有一个参数称之为’sample’，它将控制采样发生的力度，默认是0.001，该数值越小则单词越不可能被保存。</p>
 <p>P(wi)为保留单词的概率：</p>
@@ -315,21 +315,21 @@
 </ul>
 <p>论文中定义的公式和C语言代码中有所区别，我觉得C语言代码的实现更加权威。</p>
 <p><br></p>
-<h2 id="负采样-Negative-Sampling"><a href="#负采样-Negative-Sampling" class="headerlink" title="负采样(Negative Sampling)"></a>负采样(Negative Sampling)</h2><p>训练一个神经网络意味着每个样本都要更新所有参数，使用skip-gram模型将会每次都要更新数量庞大的模型，负采样采用的策略是更新每个样本时之更新很小比例的参数，而不是更新所有参数。</p>
+<h1 id="负采样-Negative-Sampling"><a href="#负采样-Negative-Sampling" class="headerlink" title="负采样(Negative Sampling)"></a>负采样(Negative Sampling)</h1><p>训练一个神经网络意味着每个样本都要更新所有参数，使用skip-gram模型将会每次都要更新数量庞大的模型，负采样采用的策略是更新每个样本时之更新很小比例的参数，而不是更新所有参数。</p>
 <p>我们训练一个单词对时，例如(“fox”，“quick”)，当输入是“fox”时标签是“quick”的one-hot向量，那么也就是说输出标签神经元中只有一个是1，其他的成千上万个都是0。</p>
 <p>因此当我们使用负采样时，我们将随机选择很小数量的“负”单词(例如选择5个)来更新权值，在我们的语料库中，一个“负”单词指的是我们希望让输出的标签的神经元为0，我们依然会更新“正”单词的神经元参数(也就是标签中为1的神经元)，论文中提到对于一个小规模的数据集，可以选择5-20个单词，如果是庞大的数据集，可以选择2-5个。</p>
 <p>之前我们的输出层是300<em>10000的参数矩阵，但如今我们更新权值时只需要更新(“quick”)所代表的神经元的参数(输出为1)，以及再加上5个随机的输出为0的神经元，总共只需要更新6个神经元的参数，也就是300</em>6=1800个参数，这仅仅是原来输出层参数的0.06%！</p>
 <p>注意在隐藏层中，不管是否使用负采样策略，都只有输入单词的权值被更新。</p>
 <p><br></p>
-<h2 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h2><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
+<h1 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h1><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg" alt=""></center>
 
 <p>这种在C语言中实现的方式很有趣。他们有一个100M大小的元素数组（他们称之为unigram表），他们用词表中每个单词的索引多次填充这个表。然后，要实际选择一个负样本，只需生成0到100M之间的随机整数，并选择表中该索引处的单词。由于较高概率单词在表中出现次数较多，因此更有可能选择这些单词。</p>
 <p><br></p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>这里有一些关于Word2Vec的学习资源：</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这里有一些关于Word2Vec的学习资源：</p>
 <p><a href="http://mccormickml.com/2016/04/27/word2vec-resources/" target="_blank" rel="external">Word2Vec Resources · Chris McCormick</a></p>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="external">Word2Vec Tutorial Part 2 - Negative Sampling · Chris McCormick</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="external">Word2Vec Tutorial Part 2 - Negative Sampling · Chris McCormick</a></p>
 <p><br></p>
 </the>]]></content>
       
@@ -355,34 +355,34 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="模型任务"><a href="#模型任务" class="headerlink" title="模型任务"></a>模型任务</h2><p>我们将要训练一个简单的神经网络来执行某个确定的任务，它只有一个隐层，但是我们却不去使用该训练好的网络，我们只是来学习隐层的权值，该权值就是我们的词向量(word vectors)。</p>
+<h1 id="模型任务"><a href="#模型任务" class="headerlink" title="模型任务"></a>模型任务</h1><p>我们将要训练一个简单的神经网络来执行某个确定的任务，它只有一个隐层，但是我们却不去使用该训练好的网络，我们只是来学习隐层的权值，该权值就是我们的词向量(word vectors)。</p>
 <p>具体任务如下：在一个句子中间部分选择一个单词作为输入单词，然后网络会告诉我们字典中每个单词在该单词附近的概率，这里的附近范围指的是该输入单词前面5个和后面5个(共10个)单词。比如我们输入单词是“苏联”，那么字典中“联邦”和“俄罗斯”的概率会高于“西瓜”和“袋鼠”</p>
 <p>我们训练文件中存在很多成对的单词，我们不停的把一对单词送入神经网络进行训练，神经网络会统计单词出现的频率，比如（“苏联”，“联邦”）出现的次数更多，那么当我们输入“苏联”这个单词时，“联邦”的概率将会更大。如下是一个窗口为2的例子，前面2个后面2个，蓝色的为输入单词。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
 
 <p><br></p>
-<h2 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h2><p>我们不可能直接把一个单词送入神经网络中训练，因此我们需要找到一个方式来代替单词。为了实现这点，我们先从训练文件中建立一个单词字典，假设我们有10000个独立单词。</p>
+<h1 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h1><p>我们不可能直接把一个单词送入神经网络中训练，因此我们需要找到一个方式来代替单词。为了实现这点，我们先从训练文件中建立一个单词字典，假设我们有10000个独立单词。</p>
 <p>我们讲吧每个输入单词例如“ants”作为一个one-hot向量，这个向量有10000维，我们将某一维设置为1，其他位置设置为0来表示单词“蚂蚁”。在训练网络时，输入是10000维向量(表示输入单词)，输出标签是与它相关单词对中的另外一个单词的one-hot向量，也是10000维。但是当我们使用该网络时，输出层使用softmax层，输出将变成一个10000维的概率向量(因为字典中有10000个单词)，其中的每一个维度都表示字典中的一个单词在该输入单词附近的概率。下图为使用时的模型：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_EBQYfm_2.jpeg" alt=""></center>
 
-<h2 id="隐藏层"><a href="#隐藏层" class="headerlink" title="隐藏层"></a>隐藏层</h2><p>如果我们用300个单元来表示隐藏层，那么我们学到的词向量就是300维的，因此隐层的参数矩阵是[10000,300]的，300是Google在发行的数据库中使用的长度，这是个超参数，可以根据自己的需求更改。</p>
+<h1 id="隐藏层"><a href="#隐藏层" class="headerlink" title="隐藏层"></a>隐藏层</h1><p>如果我们用300个单元来表示隐藏层，那么我们学到的词向量就是300维的，因此隐层的参数矩阵是[10000,300]的，300是Google在发行的数据库中使用的长度，这是个超参数，可以根据自己的需求更改。</p>
 <p>因此我们的目标实际上是学习这样一个参数矩阵，输出层在我们训练完网络就丢弃不用。那么输入的one-hot向量什么作用呢，因为该向量大部分都是0，只有一个维度是1，因此可以起到选择的作用，如下简单的例子：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_HQ30yx_3.jpeg" alt=""></center>
 
 <p>我们可以看出隐层的输出是输入one-hot向量的一个词向量表示。</p>
 <p><br></p>
-<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>1*300的词向量”ants”将会被送到输出层，输出层是一个softmax回归分类器，分类器会输出字典中出现过的每一个单词在它附近的概率，这些概率在0-1之间，而且加起来的和为1。特别的，每个输出单元都有个权值向量和词向量相乘，然后用exp()函数得出结果，最后为了使得所有的向量概率加起来为1，还要除以10000个词向量的exp()结果的和。</p>
+<h1 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h1><p>1*300的词向量”ants”将会被送到输出层，输出层是一个softmax回归分类器，分类器会输出字典中出现过的每一个单词在它附近的概率，这些概率在0-1之间，而且加起来的和为1。特别的，每个输出单元都有个权值向量和词向量相乘，然后用exp()函数得出结果，最后为了使得所有的向量概率加起来为1，还要除以10000个词向量的exp()结果的和。</p>
 <p>以下是计算输出神经元输出“car”这个单词的图示：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_XjsDH7_4.jpeg" alt=""></center>
 
 <p>注意即使训练时某个单词在另一个单词附近的概率是100%，但使用时输出改单词的概率也不是100%，这和softmax函数有关。</p>
 <p><br></p>
-<h2 id="一些直觉"><a href="#一些直觉" class="headerlink" title="一些直觉"></a>一些直觉</h2><p>如果两个单词又非常相似的语义，我们的模型将会对这两个单词的输入来输出非常相似的结果。其中的一个方法是这两个单词的词向量是相似的。因此如果两个单词有相似的语义，那么他们有相似的词向量。</p>
+<h1 id="一些直觉"><a href="#一些直觉" class="headerlink" title="一些直觉"></a>一些直觉</h1><p>如果两个单词又非常相似的语义，我们的模型将会对这两个单词的输入来输出非常相似的结果。其中的一个方法是这两个单词的词向量是相似的。因此如果两个单词有相似的语义，那么他们有相似的词向量。</p>
 <p>那么什么叫相似的语义呢？比如“intelligent”和“smart”这种有相似意思的单词，或者“engine”和“transmission”这种相关的单词，或者“ant”和“ants”这种具有相同意思的不同词性的单词。</p>
 <p><br></p>
-<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>这种模型包含了数量庞大的参数，对于300特征的隐层和10000单词的字典，需要隐层和输出层各3M大小的权值数量，训练一个庞大的数据库是很困难的，因此我们做了一些改进来便于训练，这就是下篇文章提到的Negative Sample。</p>
+<h1 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h1><p>这种模型包含了数量庞大的参数，对于300特征的隐层和10000单词的字典，需要隐层和输出层各3M大小的权值数量，训练一个庞大的数据库是很困难的，因此我们做了一些改进来便于训练，这就是下篇文章提到的Negative Sample。</p>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/" target="_blank" rel="external">Word2Vec Tutorial - The Skip-Gram Model · Chris McCormick</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/" target="_blank" rel="external">Word2Vec Tutorial - The Skip-Gram Model · Chris McCormick</a></p>
 <p><br></p>
 </the>]]></content>
       
@@ -448,10 +448,10 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这两天完成了官方文档第二部分的学习，之前我们用TensorFlow在MNIST数据集上实现了简单的Softmax回归，但准确率只有92%左右。因为这种方法忽略了图片的空间结构信息，而只是把图像展开成一维向量来输入。今天我们使用TensorFlow来搭建一个卷积神经网络，用它来对MNIST数据集进行分类。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这两天完成了官方文档第二部分的学习，之前我们用TensorFlow在MNIST数据集上实现了简单的Softmax回归，但准确率只有92%左右。因为这种方法忽略了图片的空间结构信息，而只是把图像展开成一维向量来输入。今天我们使用TensorFlow来搭建一个卷积神经网络，用它来对MNIST数据集进行分类。</p>
 <p>接下来我们进行卷积神经网络的学习，我会一行行的解释用到的代码。</p>
 <p><br></p>
-<h2 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h2><p>首先是训练数据的准备工作，下面两行代码会下载并引用MNIST数据集：</p>
+<h1 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h1><p>首先是训练数据的准备工作，下面两行代码会下载并引用MNIST数据集：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">'MNIST_data'</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p>然后我们启动一个会话，这里我们没有选择之前使用的<code>tf.Session()</code>，而是采用了交互式编程中更方便的Interactive类，这样我们可以在运行图的时候插入新的图，这在一些交互式环境比如ipython中更便利，我使用的是jupyter notebook，同样是交互式环境。如果没有使用 InteractiveSession ，那么需要在启动Session之前构建好整个计算图，然后才能启动该计算图。具体方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">sess = tf.InteractiveSession()</div></pre></td></tr></table></figure>
@@ -481,30 +481,30 @@
 <p>这里我们的卷积使用1步长(stride size)，补0(padding size)模板，保证输出和输入是同一个大小。我们的池化用简单传统的2x2大小的模板做max pooling。为了代码更简洁，我们把这部分抽象成一个函数。 </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d</span><span class="params">(x, W)</span>:</span></div><div class="line">  <span class="keyword">return</span> tf.nn.conv2d(x, W, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_pool_2x2</span><span class="params">(x)</span>:</span></div><div class="line">  <span class="keyword">return</span> tf.nn.max_pool(x, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="第一层卷积和池化"><a href="#第一层卷积和池化" class="headerlink" title="第一层卷积和池化"></a>第一层卷积和池化</h2><p>下面我们可以实现第一层了，它由一个卷积接一个max pooling完成。卷积在每个5x5的patch(卷积核)中算出32个特征。卷积的权重张量形状是[5, 5, 1, 32]，前两个维度是patch的大小，接着是输入的通道数目，最后是输出的通道数目。而对于每一个输出通道都有一个对应的偏置量。 </p>
+<h1 id="第一层卷积和池化"><a href="#第一层卷积和池化" class="headerlink" title="第一层卷积和池化"></a>第一层卷积和池化</h1><p>下面我们可以实现第一层了，它由一个卷积接一个max pooling完成。卷积在每个5x5的patch(卷积核)中算出32个特征。卷积的权重张量形状是[5, 5, 1, 32]，前两个维度是patch的大小，接着是输入的通道数目，最后是输出的通道数目。而对于每一个输出通道都有一个对应的偏置量。 </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">W_conv1 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">32</span>])</div><div class="line">b_conv1 = bias_variable([<span class="number">32</span>])</div></pre></td></tr></table></figure>
 <p>为了用这一层，我们把x变成一个4d向量，其第2、第3维对应图片的高、宽，最后一维代表图片的颜色通道数(因为是灰度图所以这里的通道数为1，如果是rgb彩色图，则为3)。 然后我们进行卷积和池化操作，卷积后要用ReLU激活函数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x_image = tf.reshape(x, [<span class="number">-1</span>,<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>])</div><div class="line">h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)</div><div class="line">h_pool1 = max_pool_2x2(h_conv1)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="第二层卷积和池化"><a href="#第二层卷积和池化" class="headerlink" title="第二层卷积和池化"></a>第二层卷积和池化</h2><p>第二层中，每个5x5的patch会得到64个特征。</p>
+<h1 id="第二层卷积和池化"><a href="#第二层卷积和池化" class="headerlink" title="第二层卷积和池化"></a>第二层卷积和池化</h1><p>第二层中，每个5x5的patch会得到64个特征。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">W_conv2 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>])</div><div class="line">b_conv2 = bias_variable([<span class="number">64</span>])</div><div class="line"></div><div class="line">h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)</div><div class="line">h_pool2 = max_pool_2x2(h_conv2)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="全连接层fc1"><a href="#全连接层fc1" class="headerlink" title="全连接层fc1"></a>全连接层fc1</h2><p>现在，图片尺寸减小到7x7，我们加入一个有1024个神经元的全连接层，用于处理整个图片。我们把池化层输出的张量reshape成一些向量，乘上权重矩阵，加上偏置，然后对其使用ReLU。</p>
+<h1 id="全连接层fc1"><a href="#全连接层fc1" class="headerlink" title="全连接层fc1"></a>全连接层fc1</h1><p>现在，图片尺寸减小到7x7，我们加入一个有1024个神经元的全连接层，用于处理整个图片。我们把池化层输出的张量reshape成一些向量，乘上权重矩阵，加上偏置，然后对其使用ReLU。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">W_fc1 = weight_variable([<span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>, <span class="number">1024</span>])</div><div class="line">b_fc1 = bias_variable([<span class="number">1024</span>])</div><div class="line"></div><div class="line">h_pool2_flat = tf.reshape(h_pool2, [<span class="number">-1</span>, <span class="number">7</span>*<span class="number">7</span>*<span class="number">64</span>])</div><div class="line">h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h2><p>为了减少过拟合，我们采用dropout。说起dropout，这又是一门玄学了，dropout是指在网络的训练过程中，对于神经网络单元，按照一定的概率将其暂时从网络中丢弃，即随机让一些节点参数不工作。注意是暂时，对于随机梯度下降来说，由于是随机丢弃，故而每一个mini-batch都在训练不同的网络。实验证明这种方法能有效的减少过拟合。</p>
+<h1 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h1><p>为了减少过拟合，我们采用dropout。说起dropout，这又是一门玄学了，dropout是指在网络的训练过程中，对于神经网络单元，按照一定的概率将其暂时从网络中丢弃，即随机让一些节点参数不工作。注意是暂时，对于随机梯度下降来说，由于是随机丢弃，故而每一个mini-batch都在训练不同的网络。实验证明这种方法能有效的减少过拟合。</p>
 <p>我们用一个placeholder来代表神经元的输出在dropout中保持不变的概率，这样我们可以在训练过程中启用dropout，在测试过程中关闭dropout。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">keep_prob = tf.placeholder(tf.float32)</div><div class="line">h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>最后，我们添加一个softmax层，就像前面的单层softmax regression一样。 </p>
+<h1 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h1><p>最后，我们添加一个softmax层，就像前面的单层softmax regression一样。 </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">W_fc2 = weight_variable([<span class="number">1024</span>, <span class="number">10</span>])</div><div class="line">b_fc2 = bias_variable([<span class="number">10</span>])</div><div class="line">y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="训练和评估"><a href="#训练和评估" class="headerlink" title="训练和评估"></a>训练和评估</h2><p>为了进行训练和评估，我们使用与之前简单的单层SoftMax神经网络模型几乎相同的一套代码，只是我们会用更加复杂的ADAM优化器来做梯度最速下降，在feed_dict中加入额外的参数keep_prob来控制dropout比例。然后每100次迭代输出一次日志。 一共进行了20000次迭代，batch_size是50。实现代码如下：</p>
+<h1 id="训练和评估"><a href="#训练和评估" class="headerlink" title="训练和评估"></a>训练和评估</h1><p>为了进行训练和评估，我们使用与之前简单的单层SoftMax神经网络模型几乎相同的一套代码，只是我们会用更加复杂的ADAM优化器来做梯度最速下降，在feed_dict中加入额外的参数keep_prob来控制dropout比例。然后每100次迭代输出一次日志。 一共进行了20000次迭代，batch_size是50。实现代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">cross_entropy = tf.reduce_mean(</div><div class="line">    tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))</div><div class="line">train_step = tf.train.AdamOptimizer(<span class="number">1e-4</span>).minimize(cross_entropy)</div><div class="line">correct_prediction = tf.equal(tf.argmax(y_conv,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">sess.run(tf.global_variables_initializer())</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20000</span>):</div><div class="line">  batch = mnist.train.next_batch(<span class="number">50</span>)</div><div class="line">  <span class="keyword">if</span> i%<span class="number">100</span> == <span class="number">0</span>:</div><div class="line">    train_accuracy = accuracy.eval(feed_dict=&#123;</div><div class="line">        x:batch[<span class="number">0</span>], y_: batch[<span class="number">1</span>], keep_prob: <span class="number">1.0</span>&#125;)</div><div class="line">    print(<span class="string">"step %d, training accuracy %g"</span>%(i, train_accuracy))</div><div class="line">  train_step.run(feed_dict=&#123;x: batch[<span class="number">0</span>], y_: batch[<span class="number">1</span>], keep_prob: <span class="number">0.5</span>&#125;)</div><div class="line"></div><div class="line">print(<span class="string">"test accuracy %g"</span>%accuracy.eval(feed_dict=&#123;</div><div class="line">    x: mnist.test.images, y_: mnist.test.labels, keep_prob: <span class="number">1.0</span>&#125;))</div></pre></td></tr></table></figure>
 <p>我用的jupyter notebook交互式环境。官网给出的训练时间大概是一个半小时，但我只用了16分钟左右就训练完了，可能官网给的是用CPU训练的参考时间。最后我们得到的准确率是99.2%，和官方文档得到的是一样的。这个网络模型是两层卷积两层池化两层全连接，最后一层全连接是softmax层。</p>
 <p>至此我们就用TensorFlow从头到尾实现了一个卷积神经网络，中间涉及了很多矩阵运算，且都是4维向量之间的运算。期间用到了部分最优化里的东西，比如最速下降法，但并不深入。</p>
 <p><br></p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>深度学习到底还是个偏工程应用的学科，对于理论知识涉及面极广但并非很深入，而且很多地方还是玄学。比如dropout、迭代次数、学习率、batch size、正则项系数等等，这些参数全都要靠自己凭借经验调试，能出什么结果全凭运气。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>深度学习到底还是个偏工程应用的学科，对于理论知识涉及面极广但并非很深入，而且很多地方还是玄学。比如dropout、迭代次数、学习率、batch size、正则项系数等等，这些参数全都要靠自己凭借经验调试，能出什么结果全凭运气。</p>
 <p>好啦，我们关于卷积神经网络实现MNIST的内容就学习完啦，终于自己实现了一个网络hin开心，下面有时间会继续学习TensorFlow的其他部分。</p>
 <p><br></p>
 </the>]]></content>
@@ -530,12 +530,13 @@
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇主要关于Tensorflow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近开始学习TensorFlow，后面也会继续学习Keras。Keras是用Python编写的深度学习库，基于TensorFlow或Theano，本身高度模块化，并且已经实现了绝大多数神经网络，如今已经被Google添加进TensorFLow核心模块成为了其默认API，一些简单的网络可以选择用Keras实现。不过正是因为它高度模块化，用起来很容易忽略底层原理，不利于后期调试和扩展。对于一些复杂的神经网络，还是应该选择Tensorflow来实现。</p>
+<p><br></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近开始学习TensorFlow，后面也会继续学习Keras。Keras是用Python编写的深度学习库，基于TensorFlow或Theano，本身高度模块化，并且已经实现了绝大多数神经网络，如今已经被Google添加进TensorFLow核心模块成为了其默认API，一些简单的网络可以选择用Keras实现。不过正是因为它高度模块化，用起来很容易忽略底层原理，不利于后期调试和扩展。对于一些复杂的神经网络，还是应该选择Tensorflow来实现。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230301_Z8l9h5_unnamed.jpeg" alt=""></center>
 
 <p>关于TensorFlow网上有很多学习笔记，但基本上都来源于官方文档，目前已经有翻译好的中文版，因此决定直接从官方文档学起。代码部分我用的是Python3.5版本。</p>
 <p><br></p>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>TensorFlow支持Python、C和C++三种语言，但Python的库是最全的，也是使用最广泛的。</p>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p>TensorFlow支持Python、C和C++三种语言，但Python的库是最全的，也是使用最广泛的。</p>
 <p>TensorFlow用<strong>张量(Tensor)</strong>表示数据，数据一般是多维数组，在Python中为numpy的ndarray对象。<strong>Flow(流)</strong>意味着基于数据流图(Data Flow Graphs)进行数值计算。TensorFlow即为张量从图的一端流动到另一端。</p>
 <p>TensorFlow的运算可以用有向图表示，其中<strong>节点</strong>(operation,简称op)代表数学运算，<strong>边</strong>表示节点之间的某种联系，负责传输多维数据(Tensors)。节点可以被分配到多个计算设备上，可以异步和并行的地执行操作。因为是有向图，所以只有等到之前的入度节点们的计算状态完成后，当前节点才能执行操作。</p>
 <p>图在定义的过程中不会被执行，必须在会话(Session)中被启动，会话把op分发到GPU或CPU设备上，同时提供执行方法。因此TensorFlow的程序通常被组织成<strong>构建阶段</strong>和<strong>执行阶段</strong>，在构建阶段，我们把所有op描述成一个图；在执行阶段，我们通过会话执行之前构建好的图。</p>
@@ -564,7 +565,7 @@
 <p>执行阶段结束后需要通过命令<code>sess.close()</code>结束会话，释放空间。也可以使用<code>with tf.Session() as sess:</code>代替<code>sess = tf.Session()</code>来建立会话，这样不需要手动释放空间。</p>
 <p>需要注意的是，在执行会话的<code>sess.run()</code>操作之前，任何对op的定义都不会被执行。</p>
 <p><br></p>
-<h2 id="MNIST机器学习入门"><a href="#MNIST机器学习入门" class="headerlink" title="MNIST机器学习入门"></a>MNIST机器学习入门</h2><p>本章介绍了MNIST数据集和Softmax回归，前者是个入门级的计算机视觉数据集，包含各种手写数字图片，官方文档把MNIST称为机器学习届的“Hello World”。Softmax Regression是一个非常基础的数学模型，在多分类问题中被广泛使用，在斯坦福大学的公开课CS231n中，Softmax回归也被放在最前面来讲，可见其重要性。本章学习用Softmax回归训练一个机器学习模型用于预测MNIST数据集中的数字。</p>
+<h1 id="MNIST机器学习入门"><a href="#MNIST机器学习入门" class="headerlink" title="MNIST机器学习入门"></a>MNIST机器学习入门</h1><p>本章介绍了MNIST数据集和Softmax回归，前者是个入门级的计算机视觉数据集，包含各种手写数字图片，官方文档把MNIST称为机器学习届的“Hello World”。Softmax Regression是一个非常基础的数学模型，在多分类问题中被广泛使用，在斯坦福大学的公开课CS231n中，Softmax回归也被放在最前面来讲，可见其重要性。本章学习用Softmax回归训练一个机器学习模型用于预测MNIST数据集中的数字。</p>
 <p>首先下载MNIST数据集，我们只需要用如下两行代码自动下载并且引用：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p> 每张图片包含28*28个像素点，我们可以用一个数字矩阵来表示它。</p>
@@ -598,7 +599,7 @@
 <p>在本模型中，我们定义节点correct_prediction来计算输出值和标签值的比较结果，得到一组布尔值；随后定义节点accuracy来执行转化浮点数操作和取平均值操作，最后返回的值即为我们模型最终测试的准确率。在测试时的执行阶段，我们用测试数据对占位符<code>x</code>和<code>y_</code>进行feed操作。</p>
 <p>最终的准确率大约为91%，因为忽略了图片的空间结构信息，因此得到的准确率并非特别高，下一章会学习用卷积神经网络进行预测，可以达到99%的准确率。</p>
 <p><br></p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>TensorFlow相比于Caffe确实是难了一个等级，Caffe的模块化程度较高，给人一种黑箱子的感觉，模型建好是建好了，也能跑出来结果，但却对其中的运行过程毫不知情，就像搭积木。相比之下TensorFlow是一点点的自己去构造整个模型，更偏底层一些，因此真的是越用越喜欢，尤其是自己能独立的把整个模型构建起来后，成就感自然是Caffe不能比的。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>TensorFlow相比于Caffe确实是难了一个等级，Caffe的模块化程度较高，给人一种黑箱子的感觉，模型建好是建好了，也能跑出来结果，但却对其中的运行过程毫不知情，就像搭积木。相比之下TensorFlow是一点点的自己去构造整个模型，更偏底层一些，因此真的是越用越喜欢，尤其是自己能独立的把整个模型构建起来后，成就感自然是Caffe不能比的。</p>
 <p>因为Python进行复杂运算的效率较低，所以我们通常会使用各种函数库，比如NumPy，会把类似矩阵乘法这样的复杂运算使用其他外部语言实现。但是从外部计算切回Python又是很大的开销，因此TensorFlow使用的方案是先一次性定义好所有需要的操作，然后全部一起放在Python外运行，这也是TensorFlow的程序分为构建阶段和执行阶段的原因。</p>
 <p>因为节点可以被分配到多个计算设备上，可以异步和并行的地执行操作，所以我们就可以通过分布式运算极大的提高运行速度，这算是TensorFlow的优点之一吧。</p>
 <p>本文部分图片和代码引用自TensorFlow官方文档，手绘数据流图为原创.</p>
@@ -623,16 +624,15 @@
     <entry>
       <title><![CDATA[Mac环境利用GitHub和Hexo搭建个人博客]]></title>
       <url>/2017/06/01/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。<a id="more"></a></excerpt></p>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。</excerpt></p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-<p><br></p>
-<h2 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h2><p>互联网时代很多人选择用个人博客来展示自己，试想一下拥有一个属于自己的域名，同时搭建一个属于自己的博客是多么炫酷的一件事。然而做独立博客在技术上要面对一堆需要解决的问题，于是就催生出一些自动化的搭建和维护博客的工具。目前比较流行的工具有ghost、Jekyll和Hexo，ghost可以生成动态网站，依赖于数据库，对环境的依赖相对较高，操作起来也更复杂一些。只是构建个人独立博客的话，更建议选择后两者。Jekyll和hexo都是用来生成静态网站的工具，对环境依赖少，可移植性更高，两者都可以托管在GitHub上。Jekyll需要安装python、ruby和一些库，而Hexo仅仅依赖于node，于是思虑再三我决定选择Hexo。</p>
-<p><br></p>
+<h1 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h1><p>互联网时代很多人选择用个人博客来展示自己，试想一下拥有一个属于自己的域名，同时搭建一个属于自己的博客是多么炫酷的一件事。然而做独立博客在技术上要面对一堆需要解决的问题，于是就催生出一些自动化的搭建和维护博客的工具。目前比较流行的工具有ghost、Jekyll和Hexo，ghost可以生成动态网站，依赖于数据库，对环境的依赖相对较高，操作起来也更复杂一些。只是构建个人独立博客的话，更建议选择后两者。Jekyll和hexo都是用来生成静态网站的工具，对环境依赖少，可移植性更高，两者都可以托管在GitHub上。Jekyll需要安装python、ruby和一些库，而Hexo仅仅依赖于node，于是思虑再三我决定选择Hexo。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_XCXY5G_1.jpeg" alt=""></center>
 
 <p><br></p>
-<h2 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h2><ol>
+<h1 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h1><ol>
 <li>获得域名</li>
 <li>利用GitHub创建仓库</li>
 <li>安装Git</li>
@@ -646,7 +646,7 @@
 <li>功能扩展</li>
 </ol>
 <p><br></p>
-<h2 id="获得域名"><a href="#获得域名" class="headerlink" title="获得域名"></a>获得域名</h2><p>域名是网站的一个入口，也是别人对网站的第一印象，常见的域名有.com、.cn、.net等后缀，也有io、me、vip等后缀，一个巧妙的域名能给人留下深刻的印象，比如饿了么的域名：<a href="https://www.ele.me/" target="_blank" rel="external">https://www.ele.me/</a> 。要想搭建一个个人博客，给别人留下深刻印象，拥有一个属于自己的域名是必不可少的，而购买域名也是我们整个搭建过程中唯一需要花钱的地方，但花费并不多。</p>
+<h1 id="获得域名"><a href="#获得域名" class="headerlink" title="获得域名"></a>获得域名</h1><p>域名是网站的一个入口，也是别人对网站的第一印象，常见的域名有.com、.cn、.net等后缀，也有io、me、vip等后缀，一个巧妙的域名能给人留下深刻的印象，比如饿了么的域名：<a href="https://www.ele.me/" target="_blank" rel="external">https://www.ele.me/</a> 。要想搭建一个个人博客，给别人留下深刻印象，拥有一个属于自己的域名是必不可少的，而购买域名也是我们整个搭建过程中唯一需要花钱的地方，但花费并不多。</p>
 <p>申请域名的地方有很多，以下列举了几个常用的注册商：</p>
 <ul>
 <li><a href="https://www.aliyun.com" target="_blank" rel="external">阿里云-为了无法计算的价值</a></li>
@@ -657,7 +657,7 @@
 <p>这里推荐阿里云，域名种类多而且提供隐私保护，购买后需要实名认证，如果不喜欢实名认证的同学可以选择最后一个GoDaddy，但是GoDaddy不提供隐私保护，会把你的邮箱和手机信息暴露出来，导致可能收到很多垃圾邮件和短信，而且GoDaddy提供的域名后缀种类有限，比如我喜欢的.me就没有。因此我选择了阿里云，申请入口<a href="https://wanwang.aliyun.com/domain/" target="_blank" rel="external">域名注册</a>。</p>
 <p>阿里云购买.me域名首年只需要13元，支持支付宝付款，实名认证比较简单，只需要提交一张身份证照片即可，经过实名认证审核后，我们就拥有了属于自己的域名。</p>
 <p><br></p>
-<h2 id="利用GitHub创建仓库"><a href="#利用GitHub创建仓库" class="headerlink" title="利用GitHub创建仓库"></a>利用GitHub创建仓库</h2><p>创建网站不仅需要域名，而且需要网站空间。网站空间也叫虚拟主机，是用来存放网站内容的地方。但是租借虚拟主机需要很大的开销，幸运的是，我们可以把静态网站托管到GitHub上，GitHub是一个面向开源及私有软件项目的托管平台。</p>
+<h1 id="利用GitHub创建仓库"><a href="#利用GitHub创建仓库" class="headerlink" title="利用GitHub创建仓库"></a>利用GitHub创建仓库</h1><p>创建网站不仅需要域名，而且需要网站空间。网站空间也叫虚拟主机，是用来存放网站内容的地方。但是租借虚拟主机需要很大的开销，幸运的是，我们可以把静态网站托管到GitHub上，GitHub是一个面向开源及私有软件项目的托管平台。</p>
 <p>首先需要登陆到GitHub：<a href="https://github.com" target="_blank" rel="external">Build software better, together</a>，如果没有GitHub账号，可以使用邮箱注册，然后点击GitHub中的New repository创建新仓库，仓库名为：<strong>用户名</strong>.github.io，这里命名格式为固定的，<strong>用户名</strong>是你的GitHub账号，比如我的仓库名为：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_HZdID1_2.jpeg" alt=""></center>
 
@@ -665,7 +665,7 @@
 
 <p>建好之后，我们就拥有了用于搭建个人博客的网站空间。</p>
 <p><br></p>
-<h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><p>Git是一款免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。具体的细节可以看廖雪峰老师的教程：<a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">Git教程 - 廖雪峰的官方网站</a>，打开Git的官方网站下载Git安装包：<a href="https://git-scm.com/downloads" target="_blank" rel="external">Git - Downloads</a>，由于我们是Mac OS系统，这里选择相关的下载包，下载后根据提示安装。</p>
+<h1 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h1><p>Git是一款免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。具体的细节可以看廖雪峰老师的教程：<a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">Git教程 - 廖雪峰的官方网站</a>，打开Git的官方网站下载Git安装包：<a href="https://git-scm.com/downloads" target="_blank" rel="external">Git - Downloads</a>，由于我们是Mac OS系统，这里选择相关的下载包，下载后根据提示安装。</p>
 <p>安装结束后，打开终端输入git测试是否安装成功，安装成功后，需要把Git和GitHub账号绑定，首先设置user.name和user.email信息，在终端中输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"你的GitHub用户名"</span></div><div class="line">git config --global user.email <span class="string">"你的GitHub注册邮箱"</span></div></pre></td></tr></table></figure>
 <p>生成ssh密钥文件：</p>
@@ -684,7 +684,7 @@
 <p>这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 </blockquote>
 <p><br></p>
-<h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><p>hexo基于Node.js，我们需要首先安装Node.js，下载地址<a href="https://nodejs.org/en/download/" target="_blank" rel="external">Download | Node.js</a>，注意安装Node.js会包含环境变量及npm的安装。</p>
+<h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><p>hexo基于Node.js，我们需要首先安装Node.js，下载地址<a href="https://nodejs.org/en/download/" target="_blank" rel="external">Download | Node.js</a>，注意安装Node.js会包含环境变量及npm的安装。</p>
 <p>检测Node.js是否安装成功，在命令行中输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node -v</div></pre></td></tr></table></figure>
 <p>检查npm是否安装成功，在命令行输入：</p>
@@ -697,7 +697,7 @@
 <p>若显示command line tools are already installed，则表明安装成功。</p>
 <p>到此，Hexo所需要的环境已经全部搭建完成。</p>
 <p> <br></p>
-<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>我们可以用npm命令安装Hexo，打开终端输入：</p>
+<h1 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h1><p>我们可以用npm命令安装Hexo，打开终端输入：</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure>
 <p>安装结束后，输入以下命令来初始化一个Hexo博客：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init &lt;folder&gt; </div><div class="line"><span class="built_in">cd</span> &lt;folder&gt;</div><div class="line">npm install</div></pre></td></tr></table></figure>
@@ -721,7 +721,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo n <span class="string">"我的博客"</span> <span class="comment">#  == hexo new "我的博客" ：新建文章</span></div><div class="line">hexo g <span class="comment"># == hexo generate ：生成</span></div><div class="line">hexo s <span class="comment"># == hexo server ：启动服务预览</span></div><div class="line">hexo d <span class="comment"># == hexo deploy ：部署</span></div></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo server <span class="comment">#Hexo会监视文件变动并自动更新，无须重启服务器</span></div><div class="line">hexo server -s <span class="comment">#静态模式</span></div><div class="line">hexo server -p 5000 <span class="comment">#更改端口</span></div><div class="line">hexo server -i 192.168.1.1 <span class="comment">#自定义 IP</span></div><div class="line">hexo clean <span class="comment">#清除缓存，若是网页正常情况下可以忽略这条命令</span></div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a>推送网站</h2><p>推送网站需要关联Github和Hexo，官方文档下的关联步骤，输入第一行代码后，需要打开blog根目录下的 <em>_config.yml</em> 文件，按照下面所示要求进行配置。在 Hexo中有两份主要的配置文件，其名称都是 <em>_config.yml</em>。其中，一份位于站点根目录下，主要包含Hexo本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为站点配置文件，后者称为主题配置文件。我们在这一步只需要修改站点配置文件。</p>
+<h1 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a>推送网站</h1><p>推送网站需要关联Github和Hexo，官方文档下的关联步骤，输入第一行代码后，需要打开blog根目录下的 <em>_config.yml</em> 文件，按照下面所示要求进行配置。在 Hexo中有两份主要的配置文件，其名称都是 <em>_config.yml</em>。其中，一份位于站点根目录下，主要包含Hexo本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为站点配置文件，后者称为主题配置文件。我们在这一步只需要修改站点配置文件。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_CCOYpH_8.jpeg" alt=""></center>
 
 <p>其实就是给<code>hexo d</code>这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。</p>
@@ -729,7 +729,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo g</div><div class="line">hexo d</div></pre></td></tr></table></figure>
 <p>完成后打开浏览器，在地址栏输入 <strong>用户名</strong>.github.io ，这里的<strong>用户名</strong>为你的GitHub用户名，比如我的就是 <a href="zangbo.github.io">zangbo.github.io</a>，然后你就会发现你的博客已经可以在网络上被访问了。</p>
 <p><br></p>
-<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的：<strong>xxx.github.io</strong> 而我们想使用我们自己刚买的个性化域名，这就需要绑定，这里以阿里云为例。登陆到阿里云：<a href="https://www.aliyun.com" target="_blank" rel="external">阿里云-为了无法计算的价值</a>，点击 <strong>控制台</strong> 进入管理控制台的域名列表，找到你的个性化域名，进入解析：</p>
+<h1 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h1><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的：<strong>xxx.github.io</strong> 而我们想使用我们自己刚买的个性化域名，这就需要绑定，这里以阿里云为例。登陆到阿里云：<a href="https://www.aliyun.com" target="_blank" rel="external">阿里云-为了无法计算的价值</a>，点击 <strong>控制台</strong> 进入管理控制台的域名列表，找到你的个性化域名，进入解析：</p>
 <p>点击 <strong>添加解析</strong> 按钮，添加三条记录：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_6oNP5k_9.jpeg" alt=""></center>
 
@@ -739,7 +739,7 @@
 
 <p>完成后打开浏览器，在地址栏输入你的个性化域名，就可以直接进入你自己搭建的网站。这一步操作相当于在GitHub仓库目录添加一个CNAME文件，文件中的内容为你刚输入的domain，当GithubPage服务器接收到访问请求时，就知道对应的是这个工程了。</p>
 <p><br></p>
-<h2 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h2><p>我们刚得到的为Hexo的默认主题 <strong>landscape</strong>，Hexo官网提供了很多可供选择的主题：<a href="https://hexo.io/themes/" target="_blank" rel="external">Themes | Hexo</a>，目前比较流行的是 <strong>Next</strong>，<strong>Casper</strong>，<strong>Uno</strong>，<strong>Modernist</strong>，<strong>yilia</strong> 等等，每个人喜欢的风格不同，最终我选择了一款叫做 <strong>yelee</strong> 的主题，是作者在 <strong>yilia</strong> 的基础上改动来的。以下是几个主题的展示demo：</p>
+<h1 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h1><p>我们刚得到的为Hexo的默认主题 <strong>landscape</strong>，Hexo官网提供了很多可供选择的主题：<a href="https://hexo.io/themes/" target="_blank" rel="external">Themes | Hexo</a>，目前比较流行的是 <strong>Next</strong>，<strong>Casper</strong>，<strong>Uno</strong>，<strong>Modernist</strong>，<strong>yilia</strong> 等等，每个人喜欢的风格不同，最终我选择了一款叫做 <strong>yelee</strong> 的主题，是作者在 <strong>yilia</strong> 的基础上改动来的。以下是几个主题的展示demo：</p>
 <p><a href="http://notes.iissnan.com" target="_blank" rel="external">Next</a></p>
 <p><a href="https://demo.ghost.io" target="_blank" rel="external">Casper</a></p>
 <p><a href="http://daleanthony.com" target="_blank" rel="external">Uno</a></p>
@@ -750,7 +750,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: next</div></pre></td></tr></table></figure>
 <p>具体的主题配置需要修改各自主题下的主题配置文件 _config.yml，大家可以去各主题的GitHub上查看教程，还是比较详细的。</p>
 <p><br></p>
-<h2 id="更新文章"><a href="#更新文章" class="headerlink" title="更新文章"></a>更新文章</h2><p>更新文章可以打开终端进入博客根目录，输入指令<code>hexo n &quot;文章名&quot;</code>来实现，然后打开根目录下的source/_posts文件夹，可以发现我们新建的 <strong>文章名.md</strong> 文件，然后就可以打开它用Markdown语法来写文章了，具体的Markdown语法教程可以参看这篇：<a href="http://www.appinn.com/markdown/#code" target="_blank" rel="external">Markdown语法说明(简体中文版) </a>。另外补充几点上面没有的：</p>
+<h1 id="更新文章"><a href="#更新文章" class="headerlink" title="更新文章"></a>更新文章</h1><p>更新文章可以打开终端进入博客根目录，输入指令<code>hexo n &quot;文章名&quot;</code>来实现，然后打开根目录下的source/_posts文件夹，可以发现我们新建的 <strong>文章名.md</strong> 文件，然后就可以打开它用Markdown语法来写文章了，具体的Markdown语法教程可以参看这篇：<a href="http://www.appinn.com/markdown/#code" target="_blank" rel="external">Markdown语法说明(简体中文版) </a>。另外补充几点上面没有的：</p>
 <ol>
 <li>图像居中实现方法：<code>&lt;center&gt;图像&lt;/center&gt;</code></li>
 <li>字体加粗可以前后各加两个星号<em>来实现： **</em>需要加粗的文字<em>**</em></li>
@@ -760,15 +760,15 @@
 <p>此时还有个问题，如果把README.md文件放在source文件夹中，执行<code>hexo g</code>指令时会被渲染，解决办法是只要在博客根目录下的配置文件_config.yml中配置一下”skip_render”选项，将不需要渲染的文件名称加入的其选项下就行了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">skip_render: README.md</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="寻找图床"><a href="#寻找图床" class="headerlink" title="寻找图床"></a>寻找图床</h2><p>当文章中有图片时，若是少量图片，可以直接把图片存放在source文件夹中，但图片会占据大量的存储的空间，加载的时候相对缓慢 ，这时考虑把博文里的图片上传到某一网站，然后获得外部链接，使用Markdown语法： <strong>![图片信息](外部链接)</strong> 完成图片的插入，这种网站就被成为图床。这里推荐<a href="https://www.qiniu.com" target="_blank" rel="external">七牛云</a>，新人有10G的免费流量，对于个人博客来说是足够了，超出后的的费用也不贵，也是学生党可以负担得起的。</p>
+<h1 id="寻找图床"><a href="#寻找图床" class="headerlink" title="寻找图床"></a>寻找图床</h1><p>当文章中有图片时，若是少量图片，可以直接把图片存放在source文件夹中，但图片会占据大量的存储的空间，加载的时候相对缓慢 ，这时考虑把博文里的图片上传到某一网站，然后获得外部链接，使用Markdown语法： <strong>![图片信息](外部链接)</strong> 完成图片的插入，这种网站就被成为图床。这里推荐<a href="https://www.qiniu.com" target="_blank" rel="external">七牛云</a>，新人有10G的免费流量，对于个人博客来说是足够了，超出后的的费用也不贵，也是学生党可以负担得起的。</p>
 <p><br></p>
-<h2 id="功能扩展"><a href="#功能扩展" class="headerlink" title="功能扩展"></a>功能扩展</h2><h3 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h3><p>打开文件：</p>
+<h1 id="功能扩展"><a href="#功能扩展" class="headerlink" title="功能扩展"></a>功能扩展</h1><h2 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h2><p>打开文件：</p>
 <p><code>根目录/node_modules/hexo-generator-index/lib/generator.js</code></p>
 <p>替换为以下代码并保存：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> pagination = <span class="built_in">require</span>(<span class="string">'hexo-pagination'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">locals</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> config = <span class="keyword">this</span>.config;</div><div class="line">  <span class="keyword">var</span> posts = locals.posts;</div><div class="line"></div><div class="line">    posts.data = posts.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span>(a.top &amp;&amp; b.top) &#123; <span class="comment">// 两篇文章top都有定义</span></div><div class="line">            <span class="keyword">if</span>(a.top == b.top) <span class="keyword">return</span> b.date - a.date; <span class="comment">// 若top值一样则按照文章日期降序排</span></div><div class="line">            <span class="keyword">else</span> <span class="keyword">return</span> b.top - a.top; <span class="comment">// 否则按照top值降序排</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a.top &amp;&amp; !b.top) &#123; <span class="comment">// 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）</span></div><div class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!a.top &amp;&amp; b.top) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">return</span> b.date - a.date; <span class="comment">// 都没定义按照文章日期降序排</span></div><div class="line"></div><div class="line">    &#125;);</div><div class="line"></div><div class="line">  <span class="keyword">var</span> paginationDir = config.pagination_dir || <span class="string">'page'</span>;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> pagination(<span class="string">''</span>, posts, &#123;</div><div class="line">    <span class="attr">perPage</span>: config.index_generator.per_page,</div><div class="line">    <span class="attr">layout</span>: [<span class="string">'index'</span>, <span class="string">'archive'</span>],</div><div class="line">    <span class="attr">format</span>: paginationDir + <span class="string">'/%d/'</span>,</div><div class="line">    <span class="attr">data</span>: &#123;</div><div class="line">      <span class="attr">__index</span>: <span class="literal">true</span></div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>在写文章时，只需要设置top参数为1即可。</p>
 <p><br></p>
-<h3 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h3><p>Hexo允许使用MathJax来渲染LaTeX数学公式，首先安装自动部署MathJax的插件：</p>
+<h2 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h2><p>Hexo允许使用MathJax来渲染LaTeX数学公式，首先安装自动部署MathJax的插件：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math --save</div><div class="line">hexo math install</div></pre></td></tr></table></figure>
 <p>接着把主题配置文件下的mathjax选项设置为true：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mathjax: true</div></pre></td></tr></table></figure>
@@ -790,10 +790,10 @@
 <li>行间：<code>$$数学公式$$</code></li>
 </ul>
 <p><br></p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>当初也是看到很多人有自己的网站，所以才萌生了这个想法，希望这篇文章能给大家一点启发，如果后面有更多的心得，也会另发文总结下来。另外推荐一个我比较喜欢的个人博客：<a href="http://www.dandyweng.com" target="_blank" rel="external">翁天信 · Dandy Weng</a></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>当初也是看到很多人有自己的网站，所以才萌生了这个想法，希望这篇文章能给大家一点启发，如果后面有更多的心得，也会另发文总结下来。另外推荐一个我比较喜欢的个人博客：<a href="http://www.dandyweng.com" target="_blank" rel="external">翁天信 · Dandy Weng</a></p>
 <p>有任何问题欢迎留言或者发邮件。</p>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li>知乎<a href="https://www.zhihu.com/people/wurun/answers" target="_blank" rel="external">吴润</a>的专栏文章在Windows的环境的配置教程：<a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="external">GitHub+Hexo 搭建个人网站详细教程 - 知乎专栏</a></li>
 <li>GitHub Pages 官方使用说明：<a href="https://pages.github.com" target="_blank" rel="external">GitHub Pages</a></li>
 <li>GitHub 官方文档，如何绑定个人域名：<a href="https://help.github.com/articles/using-a-custom-domain-with-github-pages/" target="_blank" rel="external">Using a custom domain with GitHub Pages</a></li>

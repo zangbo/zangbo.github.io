@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230309_tE1HOU_11.jpeg?imageView2/2/w/800">
 <meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230307_YKyvO7_softmax-regression-vectorequation.jpeg?imageView2/2/w/800">
 <meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg?imageView2/2/w/800">
-<meta property="og:updated_time" content="2017-06-21T16:16:28.000Z">
+<meta property="og:updated_time" content="2017-06-21T17:00:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorFlow 官方文档学习笔记（一）">
 <meta name="twitter:description" content="本系列是对Tensorflow官方文档进行学习的总结，本篇主要关于Tensorflow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。">
@@ -119,7 +119,7 @@
         </hgroup>
 
         
-        <p class="header-subtitle">一往无前，为成为一个一流的科研工作者而努力。</p>
+        <p class="header-subtitle">永远年轻，永远热泪盈眶。</p>
         
 
         
@@ -229,7 +229,7 @@
               <h1 class="header-author"><a href="/" title="回到主页">ZangBo</a></h1>
             </hgroup>
             
-            <p class="header-subtitle">一往无前，为成为一个一流的科研工作者而努力。</p>
+            <p class="header-subtitle">永远年轻，永远热泪盈眶。</p>
             
             <nav class="header-menu">
                 <ul>
@@ -303,12 +303,13 @@
         <p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇主要关于Tensorflow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近开始学习TensorFlow，后面也会继续学习Keras。Keras是用Python编写的深度学习库，基于TensorFlow或Theano，本身高度模块化，并且已经实现了绝大多数神经网络，如今已经被Google添加进TensorFLow核心模块成为了其默认API，一些简单的网络可以选择用Keras实现。不过正是因为它高度模块化，用起来很容易忽略底层原理，不利于后期调试和扩展。对于一些复杂的神经网络，还是应该选择Tensorflow来实现。</p>
+<p><br></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近开始学习TensorFlow，后面也会继续学习Keras。Keras是用Python编写的深度学习库，基于TensorFlow或Theano，本身高度模块化，并且已经实现了绝大多数神经网络，如今已经被Google添加进TensorFLow核心模块成为了其默认API，一些简单的网络可以选择用Keras实现。不过正是因为它高度模块化，用起来很容易忽略底层原理，不利于后期调试和扩展。对于一些复杂的神经网络，还是应该选择Tensorflow来实现。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230301_Z8l9h5_unnamed.jpeg" alt=""></center>
 
 <p>关于TensorFlow网上有很多学习笔记，但基本上都来源于官方文档，目前已经有翻译好的中文版，因此决定直接从官方文档学起。代码部分我用的是Python3.5版本。</p>
 <p><br></p>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>TensorFlow支持Python、C和C++三种语言，但Python的库是最全的，也是使用最广泛的。</p>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p>TensorFlow支持Python、C和C++三种语言，但Python的库是最全的，也是使用最广泛的。</p>
 <p>TensorFlow用<strong>张量(Tensor)</strong>表示数据，数据一般是多维数组，在Python中为numpy的ndarray对象。<strong>Flow(流)</strong>意味着基于数据流图(Data Flow Graphs)进行数值计算。TensorFlow即为张量从图的一端流动到另一端。</p>
 <p>TensorFlow的运算可以用有向图表示，其中<strong>节点</strong>(operation,简称op)代表数学运算，<strong>边</strong>表示节点之间的某种联系，负责传输多维数据(Tensors)。节点可以被分配到多个计算设备上，可以异步和并行的地执行操作。因为是有向图，所以只有等到之前的入度节点们的计算状态完成后，当前节点才能执行操作。</p>
 <p>图在定义的过程中不会被执行，必须在会话(Session)中被启动，会话把op分发到GPU或CPU设备上，同时提供执行方法。因此TensorFlow的程序通常被组织成<strong>构建阶段</strong>和<strong>执行阶段</strong>，在构建阶段，我们把所有op描述成一个图；在执行阶段，我们通过会话执行之前构建好的图。</p>
@@ -337,7 +338,7 @@
 <p>执行阶段结束后需要通过命令<code>sess.close()</code>结束会话，释放空间。也可以使用<code>with tf.Session() as sess:</code>代替<code>sess = tf.Session()</code>来建立会话，这样不需要手动释放空间。</p>
 <p>需要注意的是，在执行会话的<code>sess.run()</code>操作之前，任何对op的定义都不会被执行。</p>
 <p><br></p>
-<h2 id="MNIST机器学习入门"><a href="#MNIST机器学习入门" class="headerlink" title="MNIST机器学习入门"></a>MNIST机器学习入门</h2><p>本章介绍了MNIST数据集和Softmax回归，前者是个入门级的计算机视觉数据集，包含各种手写数字图片，官方文档把MNIST称为机器学习届的“Hello World”。Softmax Regression是一个非常基础的数学模型，在多分类问题中被广泛使用，在斯坦福大学的公开课CS231n中，Softmax回归也被放在最前面来讲，可见其重要性。本章学习用Softmax回归训练一个机器学习模型用于预测MNIST数据集中的数字。</p>
+<h1 id="MNIST机器学习入门"><a href="#MNIST机器学习入门" class="headerlink" title="MNIST机器学习入门"></a>MNIST机器学习入门</h1><p>本章介绍了MNIST数据集和Softmax回归，前者是个入门级的计算机视觉数据集，包含各种手写数字图片，官方文档把MNIST称为机器学习届的“Hello World”。Softmax Regression是一个非常基础的数学模型，在多分类问题中被广泛使用，在斯坦福大学的公开课CS231n中，Softmax回归也被放在最前面来讲，可见其重要性。本章学习用Softmax回归训练一个机器学习模型用于预测MNIST数据集中的数字。</p>
 <p>首先下载MNIST数据集，我们只需要用如下两行代码自动下载并且引用：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p> 每张图片包含28*28个像素点，我们可以用一个数字矩阵来表示它。</p>
@@ -371,7 +372,7 @@
 <p>在本模型中，我们定义节点correct_prediction来计算输出值和标签值的比较结果，得到一组布尔值；随后定义节点accuracy来执行转化浮点数操作和取平均值操作，最后返回的值即为我们模型最终测试的准确率。在测试时的执行阶段，我们用测试数据对占位符<code>x</code>和<code>y_</code>进行feed操作。</p>
 <p>最终的准确率大约为91%，因为忽略了图片的空间结构信息，因此得到的准确率并非特别高，下一章会学习用卷积神经网络进行预测，可以达到99%的准确率。</p>
 <p><br></p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>TensorFlow相比于Caffe确实是难了一个等级，Caffe的模块化程度较高，给人一种黑箱子的感觉，模型建好是建好了，也能跑出来结果，但却对其中的运行过程毫不知情，就像搭积木。相比之下TensorFlow是一点点的自己去构造整个模型，更偏底层一些，因此真的是越用越喜欢，尤其是自己能独立的把整个模型构建起来后，成就感自然是Caffe不能比的。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>TensorFlow相比于Caffe确实是难了一个等级，Caffe的模块化程度较高，给人一种黑箱子的感觉，模型建好是建好了，也能跑出来结果，但却对其中的运行过程毫不知情，就像搭积木。相比之下TensorFlow是一点点的自己去构造整个模型，更偏底层一些，因此真的是越用越喜欢，尤其是自己能独立的把整个模型构建起来后，成就感自然是Caffe不能比的。</p>
 <p>因为Python进行复杂运算的效率较低，所以我们通常会使用各种函数库，比如NumPy，会把类似矩阵乘法这样的复杂运算使用其他外部语言实现。但是从外部计算切回Python又是很大的开销，因此TensorFlow使用的方案是先一次性定义好所有需要的操作，然后全部一起放在Python外运行，这也是TensorFlow的程序分为构建阶段和执行阶段的原因。</p>
 <p>因为节点可以被分配到多个计算设备上，可以异步和并行的地执行操作，所以我们就可以通过分布式运算极大的提高运行速度，这算是TensorFlow的优点之一吧。</p>
 <p>本文部分图片和代码引用自TensorFlow官方文档，手绘数据流图为原创.</p>
@@ -387,7 +388,7 @@
         <p><span>本文标题:</span><a href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">TensorFlow 官方文档学习笔记（一）</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-02, 13:22:10</p>
-        <p><span>最后更新:</span>2017-06-22, 00:16:28</p>
+        <p><span>最后更新:</span>2017-06-22, 01:00:21</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/" title="TensorFlow 官方文档学习笔记（一）">http://zangbo.me/2017/06/02/Tensorflow-官方文档学习笔记（一）/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/02/Tensorflow-官方文档学习笔记（一）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -423,7 +424,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MNIST机器学习入门"><span class="toc-number">3.</span> <span class="toc-text">MNIST机器学习入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基础知识"><span class="toc-number">2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MNIST机器学习入门"><span class="toc-number">3.</span> <span class="toc-text">MNIST机器学习入门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
         
     </div>
     <style>
@@ -551,22 +552,6 @@
     </div>
     
 <script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            var iPad = window.navigator.userAgent.indexOf('iPad');
-            if (iPad > -1 || $(".left-col").css("display") === "none") {
-                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
-                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
-                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
-            }
-            else {
-                var backgroundnum = 5;
-                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
-                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
-            }
-        })
-    </script>
 
 
 

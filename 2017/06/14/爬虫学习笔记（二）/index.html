@@ -22,7 +22,7 @@
 <meta property="og:url" content="http://zangbo.me/2017/06/14/爬虫学习笔记（二）/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本文介绍了Requests库以及一些基础用法，基于python3.5版本">
-<meta property="og:updated_time" content="2017-06-15T04:25:19.000Z">
+<meta property="og:updated_time" content="2017-06-21T16:54:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬虫笔记（二）：Requests基础">
 <meta name="twitter:description" content="本文介绍了Requests库以及一些基础用法，基于python3.5版本">
@@ -113,7 +113,7 @@
         </hgroup>
 
         
-        <p class="header-subtitle">一往无前，为成为一个一流的科研工作者而努力。</p>
+        <p class="header-subtitle">永远年轻，永远热泪盈眶。</p>
         
 
         
@@ -223,7 +223,7 @@
               <h1 class="header-author"><a href="/" title="回到主页">ZangBo</a></h1>
             </hgroup>
             
-            <p class="header-subtitle">一往无前，为成为一个一流的科研工作者而努力。</p>
+            <p class="header-subtitle">永远年轻，永远热泪盈眶。</p>
             
             <nav class="header-menu">
                 <ul>
@@ -298,44 +298,44 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h2 id="Requests介绍"><a href="#Requests介绍" class="headerlink" title="Requests介绍"></a>Requests介绍</h2><p>Requests是一个基于urllib3的HTTP库，简单优美，支持python2.6–3.5的各版本，具有无比强大的功能，完全满足今日web的需求。在爬虫学习过程中，我们用它向服务器发送请求，以获取我们需要的信息。</p>
+<h1 id="Requests介绍"><a href="#Requests介绍" class="headerlink" title="Requests介绍"></a>Requests介绍</h1><p>Requests是一个基于urllib3的HTTP库，简单优美，支持python2.6–3.5的各版本，具有无比强大的功能，完全满足今日web的需求。在爬虫学习过程中，我们用它向服务器发送请求，以获取我们需要的信息。</p>
 <p><br></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>只需要在终端中运行以下代码：</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>只需要在终端中运行以下代码：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install requests</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>我们先来看一个具体的实例来感受下Request：</p>
+<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>我们先来看一个具体的实例来感受下Request：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"></div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>, auth=(<span class="string">'user'</span>, <span class="string">'pass'</span>))</div><div class="line">r.status_code</div><div class="line">r.headers[<span class="string">'content-type'</span>]</div><div class="line">r.encoding</div><div class="line">r.text</div></pre></td></tr></table></figure>
 <p>以下是输出：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">200</span></div><div class="line"><span class="string">'text/html; charset=utf-8'</span></div><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'&lt;!DOCTYPE html&gt;'</span></div></pre></td></tr></table></figure>
 <p>以上代码我们请求了本站的地址，然后依次打印出状态码，请求头，编码方式和相应内容。</p>
 <p>是不是功能强大，下面，我们正式开始学习Requests。</p>
 <p><br></p>
-<h2 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h2><p>首先导入Requests模块：</p>
+<h1 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h1><p>首先导入Requests模块：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div></pre></td></tr></table></figure>
 <p>Requests包含各种不同的请求方式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>)</div><div class="line">r = requests.put(<span class="string">"http://httpbin.org/put"</span>)</div><div class="line">r = requests.delete(<span class="string">"http://httpbin.org/delete"</span>)</div><div class="line">r = requests.head(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.options(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h3><p>我们用的最多的是get请求，用来获取某个网页：</p>
+<h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>我们用的最多的是get请求，用来获取某个网页：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
 <p>现在，我们有一个名叫r的Response对象，它包含了所有关于该页面的信息，我们可以从中提取出我们想要的信息。</p>
 <p><br></p>
-<h3 id="带参数的get请求"><a href="#带参数的get请求" class="headerlink" title="带参数的get请求"></a>带参数的get请求</h3><p>如果你是手工构建 URL，那么数据会以键/值对的形式置于 URL 中，跟在一个问号的后面，我们可以用字典的形式传递URL参数。</p>
+<h2 id="带参数的get请求"><a href="#带参数的get请求" class="headerlink" title="带参数的get请求"></a>带参数的get请求</h2><p>如果你是手工构建 URL，那么数据会以键/值对的形式置于 URL 中，跟在一个问号的后面，我们可以用字典的形式传递URL参数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>, params=payload)</div><div class="line">print(r.url)</div></pre></td></tr></table></figure>
 <p>可以得到输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://httpbin.org/get?key2=value2&amp;key1=value1</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h3><p>如果我们想要发送一些编码为表单形式的数据——非常像一个 HTML 表单。只需简单地传递一个字典给 data 参数，该字典在发出请求时会自动编码为表单形式：</p>
+<h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>如果我们想要发送一些编码为表单形式的数据——非常像一个 HTML 表单。只需简单地传递一个字典给 data 参数，该字典在发出请求时会自动编码为表单形式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>, data=payload)</div><div class="line">print(r.text)</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  <span class="string">"form"</span>: &#123;</div><div class="line">    <span class="string">"key2"</span>: <span class="string">"value2"</span>,</div><div class="line">    <span class="string">"key1"</span>: <span class="string">"value1"</span></div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="获取响应内容"><a href="#获取响应内容" class="headerlink" title="获取响应内容"></a>获取响应内容</h2><h3 id="响应状态码"><a href="#响应状态码" class="headerlink" title="响应状态码"></a>响应状态码</h3><p>我们可以检测发送请求是否成功获得想要的数据，通过检测响应状态码：</p>
+<h1 id="获取响应内容"><a href="#获取响应内容" class="headerlink" title="获取响应内容"></a>获取响应内容</h1><h2 id="响应状态码"><a href="#响应状态码" class="headerlink" title="响应状态码"></a>响应状态码</h2><p>我们可以检测发送请求是否成功获得想要的数据，通过检测响应状态码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://www.baidu.com'</span>)</div><div class="line">r.status_code</div></pre></td></tr></table></figure>
 <p>若输出为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">200</div></pre></td></tr></table></figure>
 <p>表明获取成功。</p>
 <p><br></p>
-<h3 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h3><p>以百度首页为例：</p>
+<h2 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h2><p>以百度首页为例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">r.text</div></pre></td></tr></table></figure>
 <p>Requests会基于HTTP的头部对响应的编码进行推测，让我们访问<code>r.text</code>时，Requests会使用其推测的文本编码，我们可以用<code>r.encoding</code>改变解码方式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r.encoding</div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span></div><div class="line">r.encoding</div></pre></td></tr></table></figure>
@@ -343,7 +343,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'ISO-8859-1'</span></div></pre></td></tr></table></figure>
 <p>如果你改变了编码，每当你访问 <code>r.text</code> ，Request 都将会使用 <code>r.encoding</code> 的新值。当不确定时，可以使用 <code>r.content</code> 来找到编码，然后设置 <code>r.encoding</code> 为相应的编码。这样就能使用正确的编码解析 <code>r.text</code> 了。关于<code>r.content</code>下面会介绍。</p>
 <p><br></p>
-<h3 id="二进制内容"><a href="#二进制内容" class="headerlink" title="二进制内容"></a>二进制内容</h3><p>对于非文本请求，例如图片等多媒体内容，可以以字节的方式访问：</p>
+<h2 id="二进制内容"><a href="#二进制内容" class="headerlink" title="二进制内容"></a>二进制内容</h2><p>对于非文本请求，例如图片等多媒体内容，可以以字节的方式访问：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r.content</div></pre></td></tr></table></figure>
 <p>这里注意两者的区别：</p>
 <ul>
@@ -353,26 +353,26 @@
 <p>例如我们下载并保存一张图片：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">jpg_url = <span class="string">'http://mm.howkuai.com/wp-content/uploads/2017a/04/13/01.jpg'</span><span class="comment">#一张美女图</span></div><div class="line">content = requests.get(jpg_url).content</div><div class="line"><span class="keyword">with</span> open(<span class="string">'image.jpg'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f: <span class="comment">#写入多媒体文件必须要 b 这个参数！</span></div><div class="line">    f.write(content)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</div><div class="line">r.json()</div></pre></td></tr></table></figure>
+<h2 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</div><div class="line">r.json()</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h3><p>通过命令可以查看服务器响应头，以一个Python字典形式展示：</p>
+<h2 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h2><p>通过命令可以查看服务器响应头，以一个Python字典形式展示：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>)</div><div class="line">r.headers</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	<span class="string">'Server'</span>: <span class="string">'GitHub.com'</span>, </div><div class="line">	<span class="string">'Date'</span>: <span class="string">'Thu, 15 Jun 2017 04:04:47 GMT'</span>, </div><div class="line">	<span class="string">'Content-Type'</span>: <span class="string">'text/html; charset=utf-8'</span>, </div><div class="line">	<span class="string">'Transfer-Encoding'</span>: <span class="string">'chunked'</span>, </div><div class="line">	<span class="string">'Last-Modified'</span>: <span class="string">'Wed, 14 Jun 2017 15:41:23 GMT'</span>, </div><div class="line">	<span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'*'</span>, </div><div class="line">	<span class="string">'Expires'</span>: <span class="string">'Thu, 15 Jun 2017 04:14:47 GMT'</span>, </div><div class="line">	<span class="string">'Cache-Control'</span>: <span class="string">'max-age=600'</span>, </div><div class="line">	<span class="string">'Content-Encoding'</span>: <span class="string">'gzip'</span>, </div><div class="line">	<span class="string">'X-GitHub-Request-Id'</span>: <span class="string">'E1D6:0B0F:15941BE:1E637E3:5942075F'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">r.status_code<span class="comment">#获取状态码</span></div><div class="line">r.text<span class="comment">#文本内容</span></div><div class="line">r.encoding<span class="comment">#查看编码</span></div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span><span class="comment">#改变编码</span></div><div class="line">r.content<span class="comment">#二进制内容</span></div><div class="line">r.json()<span class="comment">#JSON内容</span></div><div class="line">r.raw<span class="comment">#原始内容</span></div><div class="line">r.headers<span class="comment">#响应头</span></div></pre></td></tr></table></figure>
+<h2 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">r.status_code<span class="comment">#获取状态码</span></div><div class="line">r.text<span class="comment">#文本内容</span></div><div class="line">r.encoding<span class="comment">#查看编码</span></div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span><span class="comment">#改变编码</span></div><div class="line">r.content<span class="comment">#二进制内容</span></div><div class="line">r.json()<span class="comment">#JSON内容</span></div><div class="line">r.raw<span class="comment">#原始内容</span></div><div class="line">r.headers<span class="comment">#响应头</span></div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="定制请求头"><a href="#定制请求头" class="headerlink" title="定制请求头"></a>定制请求头</h2><p>有些网站具有反爬虫机制，我们有时候需要把爬虫伪装成浏览器来访问网页，因此我们需要为请求添加HTTP头部，只需要简单地传递一个<code>dict</code>给<code>headers</code>参数即可。</p>
+<h1 id="定制请求头"><a href="#定制请求头" class="headerlink" title="定制请求头"></a>定制请求头</h1><p>有些网站具有反爬虫机制，我们有时候需要把爬虫伪装成浏览器来访问网页，因此我们需要为请求添加HTTP头部，只需要简单地传递一个<code>dict</code>给<code>headers</code>参数即可。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">url = <span class="string">"https://www.baidu.com"</span></div><div class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'</span>&#125;</div><div class="line">r = requests.get(url,headers=headers)</div></pre></td></tr></table></figure>
 <p>注：如何查看自己浏览器的userAgent</p>
 <p>打开浏览器的控制台，输入：javascript:alert(navigator.userAgent)</p>
 <p><br></p>
-<h2 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h2><p>我们可以告诉 requests 在经过以 <code>timeout</code> 参数设定的秒数时间之后停止等待响应：</p>
+<h1 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h1><p>我们可以告诉 requests 在经过以 <code>timeout</code> 参数设定的秒数时间之后停止等待响应：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">requests.get(<span class="string">'http://github.com'</span>, timeout=<span class="number">0.001</span>)</div></pre></td></tr></table></figure>
 <p><strong>注意：</strong></p>
 <p><code>timeout</code> 仅对连接过程有效，与响应体的下载无关。 <code>timeout</code> 并不是整个下载响应的时间限制，而是如果服务器在 <code>timeout</code> 秒内没有应答，将会引发一个异常（更精确地说，是在 <code>timeout</code> 秒内没有从基础套接字上接收到任何字节的数据时）</p>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>本文基于Requests官方文档：</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>本文基于Requests官方文档：</p>
 <ul>
 <li>英文版：<a href="http://docs.python-requests.org/en/master/" target="_blank" rel="external">Requests: HTTP for Humans</a></li>
 <li>中文版：<a href="http://docs.python-requests.org/zh_CN/latest/" target="_blank" rel="external">Requests: 让HTTP服务人类</a></li>
@@ -390,7 +390,7 @@
         <p><span>本文标题:</span><a href="/2017/06/14/爬虫学习笔记（二）/">爬虫笔记（二）：Requests基础</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-14, 10:47:57</p>
-        <p><span>最后更新:</span>2017-06-15, 12:25:19</p>
+        <p><span>最后更新:</span>2017-06-22, 00:54:59</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/14/爬虫学习笔记（二）/" title="爬虫笔记（二）：Requests基础">http://zangbo.me/2017/06/14/爬虫学习笔记（二）/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/14/爬虫学习笔记（二）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -426,7 +426,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Requests介绍"><span class="toc-number">1.</span> <span class="toc-text">Requests介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引入"><span class="toc-number">3.</span> <span class="toc-text">引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发送请求"><span class="toc-number">4.</span> <span class="toc-text">发送请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#get请求"><span class="toc-number">4.1.</span> <span class="toc-text">get请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#带参数的get请求"><span class="toc-number">4.2.</span> <span class="toc-text">带参数的get请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST请求"><span class="toc-number">4.3.</span> <span class="toc-text">POST请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取响应内容"><span class="toc-number">5.</span> <span class="toc-text">获取响应内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#响应状态码"><span class="toc-number">5.1.</span> <span class="toc-text">响应状态码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本内容"><span class="toc-number">5.2.</span> <span class="toc-text">文本内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二进制内容"><span class="toc-number">5.3.</span> <span class="toc-text">二进制内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JSON内容"><span class="toc-number">5.4.</span> <span class="toc-text">JSON内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应头"><span class="toc-number">5.5.</span> <span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取响应内容总结"><span class="toc-number">5.6.</span> <span class="toc-text">获取响应内容总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定制请求头"><span class="toc-number">6.</span> <span class="toc-text">定制请求头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#超时"><span class="toc-number">7.</span> <span class="toc-text">超时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Requests介绍"><span class="toc-number">1.</span> <span class="toc-text">Requests介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引入"><span class="toc-number">3.</span> <span class="toc-text">引入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#发送请求"><span class="toc-number">4.</span> <span class="toc-text">发送请求</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#get请求"><span class="toc-number">4.1.</span> <span class="toc-text">get请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#带参数的get请求"><span class="toc-number">4.2.</span> <span class="toc-text">带参数的get请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#POST请求"><span class="toc-number">4.3.</span> <span class="toc-text">POST请求</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#获取响应内容"><span class="toc-number">5.</span> <span class="toc-text">获取响应内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#响应状态码"><span class="toc-number">5.1.</span> <span class="toc-text">响应状态码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文本内容"><span class="toc-number">5.2.</span> <span class="toc-text">文本内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制内容"><span class="toc-number">5.3.</span> <span class="toc-text">二进制内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON内容"><span class="toc-number">5.4.</span> <span class="toc-text">JSON内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#响应头"><span class="toc-number">5.5.</span> <span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取响应内容总结"><span class="toc-number">5.6.</span> <span class="toc-text">获取响应内容总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定制请求头"><span class="toc-number">6.</span> <span class="toc-text">定制请求头</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#超时"><span class="toc-number">7.</span> <span class="toc-text">超时</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
         
     </div>
     <style>
@@ -554,22 +554,6 @@
     </div>
     
 <script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            var iPad = window.navigator.userAgent.indexOf('iPad');
-            if (iPad > -1 || $(".left-col").css("display") === "none") {
-                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
-                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
-                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
-            }
-            else {
-                var backgroundnum = 5;
-                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
-                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
-            }
-        })
-    </script>
 
 
 
