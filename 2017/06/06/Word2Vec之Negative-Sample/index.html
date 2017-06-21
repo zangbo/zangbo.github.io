@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 <head>
 
-    <!--[if lt IE 9]>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!--[if lt IE 9]>
         <style>body {display: none; background: none !important} </style>
         <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
     <![endif]-->
@@ -22,15 +22,15 @@
 <meta property="og:url" content="http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta property="og:image" content="http://i1.buimg.com/597140/923e201c4349030a.png">
-<meta property="og:image" content="http://i4.piimg.com/597140/990cb0628b5b7113.png">
-<meta property="og:image" content="http://i4.piimg.com/597140/56de277d7bf15ac3.png">
-<meta property="og:image" content="http://i4.piimg.com/597140/784bde92993d6445.png">
-<meta property="og:updated_time" content="2017-06-11T09:32:46.000Z">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg">
+<meta property="og:updated_time" content="2017-06-21T13:35:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Word2Vec笔记：Negative Sample">
 <meta name="twitter:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="twitter:image" content="http://i1.buimg.com/597140/923e201c4349030a.png">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -100,12 +100,12 @@
             var s = document.getElementsByTagName("script")[0]; 
             s.parentNode.insertBefore(hm, s);
         })();
-    </script>
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </head>
 <body>
-  <div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div class="left-col">
     <div class="overlay"></div>
 <div class="intrude-less">
@@ -319,7 +319,7 @@
 <li>当我们看一些单词对的时候，(“fox”，“the”)没有告诉我们过多的关于“fox”的含义的信息，“the”出现在几乎每个单词的前面。</li>
 <li>我们拥有太多的关于(“the”，…)的采样，而我们学习一个好的关于“the”的向量不需要这么多的采样。</li>
 </ol>
-<center><img src="http://i1.buimg.com/597140/923e201c4349030a.png" alt="Markdown"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
 
 <p>Word2Vec采用了一个叫做“降采样”的框架来解决这个问题。对于每个出现在我们训练文件中的单词，它们将会有一定的概率被删除相关的训练数据，概率的高低取决于它们出现的频率。</p>
 <p>如果我们有一个尺寸为10的窗口，那么我们将移除一个特定的关于“the”的训练样本：</p>
@@ -332,10 +332,10 @@
 <p>Wi代表单词，z(wi)表示单词在语料库中出现的频率，例如“peanut”在一个拥有10亿单词语料库中出现了1000次，那么z(‘peanut’)=1E-6。</p>
 <p>代码中还有一个参数称之为’sample’，它将控制采样发生的力度，默认是0.001，该数值越小则单词越不可能被保存。</p>
 <p>P(wi)为保留单词的概率：</p>
-<center><img src="http://i4.piimg.com/597140/990cb0628b5b7113.png" alt="Markdown"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg" alt=""></center>
 
 <p>我们可以画出该公式的图：</p>
-<center><img src="http://i4.piimg.com/597140/56de277d7bf15ac3.png" alt="Markdown"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg" alt=""></center>
 
 <p>如果我们使用默认采样值为0.001，那么有以下有趣的点：</p>
 <ul>
@@ -352,7 +352,7 @@
 <p>注意在隐藏层中，不管是否使用负采样策略，都只有输入单词的权值被更新。</p>
 <p><br></p>
 <h2 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h2><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
-<center><img src="http://i4.piimg.com/597140/784bde92993d6445.png" alt="Markdown"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg" alt=""></center>
 
 <p>这种在C语言中实现的方式很有趣。他们有一个100M大小的元素数组（他们称之为unigram表），他们用词表中每个单词的索引多次填充这个表。然后，要实际选择一个负样本，只需生成0到100M之间的随机整数，并选择表中该索引处的单词。由于较高概率单词在表中出现次数较多，因此更有可能选择这些单词。</p>
 <p><br></p>
@@ -372,7 +372,7 @@
         <p><span>本文标题:</span><a href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-06, 17:08:43</p>
-        <p><span>最后更新:</span>2017-06-11, 17:32:46</p>
+        <p><span>最后更新:</span>2017-06-21, 21:35:11</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/06/Word2Vec之Negative-Sample/" title="Word2Vec笔记：Negative Sample">http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -570,6 +570,27 @@ ga('send', 'pageview');
 
 
 
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
 <div class="scroll" id="scroll">
     <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
     <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
@@ -616,6 +637,23 @@ ga('send', 'pageview');
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
-  </div>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 <head>
 
-    <!--[if lt IE 9]>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!--[if lt IE 9]>
         <style>body {display: none; background: none !important} </style>
         <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
     <![endif]-->
@@ -22,21 +22,21 @@
 <meta property="og:url" content="http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。">
-<meta property="og:image" content="http://i4.piimg.com/597140/676b5b752b168b52.jpg">
-<meta property="og:image" content="http://i2.muimg.com/597140/0f654496d2be7428.png">
-<meta property="og:image" content="http://i2.muimg.com/597140/080e99343c3cc4aa.jpg">
-<meta property="og:image" content="http://i1.buimg.com/597140/2a16f05c4e1935a5.png">
-<meta property="og:image" content="http://i2.muimg.com/597140/48b907e31519fdab.png">
-<meta property="og:image" content="http://i2.muimg.com/597140/6ea5d178de587fd0.png">
-<meta property="og:image" content="http://i2.muimg.com/597140/c8b89acbd496def9.png">
-<meta property="og:image" content="http://i2.muimg.com/597140/08c515de8ad7b815.png">
-<meta property="og:image" content="http://i1.buimg.com/597140/ce78933779e21a6e.png">
-<meta property="og:image" content="http://i1.buimg.com/597140/19f190af52c4da14.png">
-<meta property="og:updated_time" content="2017-06-15T09:14:02.000Z">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_XCXY5G_1.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_HZdID1_2.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_ujfyFj_3.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_0OonVo_4.jpeg?imageView2/2/w/800">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_1ieo4u_5.jpeg?imageView2/2/w/800">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_Mm7oau_6.jpeg?imageView2/2/w/800">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_k0kChT_7.jpeg?imageView2/2/w/800">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_CCOYpH_8.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_6oNP5k_9.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_nNgXBn_10.jpeg">
+<meta property="og:updated_time" content="2017-06-21T16:10:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac环境利用GitHub和Hexo搭建个人博客">
 <meta name="twitter:description" content="本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。">
-<meta name="twitter:image" content="http://i4.piimg.com/597140/676b5b752b168b52.jpg">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_XCXY5G_1.jpeg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -106,12 +106,12 @@
             var s = document.getElementsByTagName("script")[0]; 
             s.parentNode.insertBefore(hm, s);
         })();
-    </script>
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </head>
 <body>
-  <div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div class="left-col">
     <div class="overlay"></div>
 <div class="intrude-less">
@@ -311,7 +311,7 @@
 <p><br></p>
 <h2 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h2><p>互联网时代很多人选择用个人博客来展示自己，试想一下拥有一个属于自己的域名，同时搭建一个属于自己的博客是多么炫酷的一件事。然而做独立博客在技术上要面对一堆需要解决的问题，于是就催生出一些自动化的搭建和维护博客的工具。目前比较流行的工具有ghost、Jekyll和Hexo，ghost可以生成动态网站，依赖于数据库，对环境的依赖相对较高，操作起来也更复杂一些。只是构建个人独立博客的话，更建议选择后两者。Jekyll和hexo都是用来生成静态网站的工具，对环境依赖少，可移植性更高，两者都可以托管在GitHub上。Jekyll需要安装python、ruby和一些库，而Hexo仅仅依赖于node，于是思虑再三我决定选择Hexo。</p>
 <p><br></p>
-<center><img src="http://i4.piimg.com/597140/676b5b752b168b52.jpg" alt="GitHub+HEXO"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_XCXY5G_1.jpeg" alt=""></center>
 
 <p><br></p>
 <h2 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h2><ol>
@@ -325,6 +325,7 @@
 <li>配置主题</li>
 <li>更新文章</li>
 <li>寻找图床</li>
+<li>功能扩展</li>
 </ol>
 <p><br></p>
 <h2 id="获得域名"><a href="#获得域名" class="headerlink" title="获得域名"></a>获得域名</h2><p>域名是网站的一个入口，也是别人对网站的第一印象，常见的域名有.com、.cn、.net等后缀，也有io、me、vip等后缀，一个巧妙的域名能给人留下深刻的印象，比如饿了么的域名：<a href="https://www.ele.me/" target="_blank" rel="external">https://www.ele.me/</a> 。要想搭建一个个人博客，给别人留下深刻印象，拥有一个属于自己的域名是必不可少的，而购买域名也是我们整个搭建过程中唯一需要花钱的地方，但花费并不多。</p>
@@ -340,7 +341,7 @@
 <p><br></p>
 <h2 id="利用GitHub创建仓库"><a href="#利用GitHub创建仓库" class="headerlink" title="利用GitHub创建仓库"></a>利用GitHub创建仓库</h2><p>创建网站不仅需要域名，而且需要网站空间。网站空间也叫虚拟主机，是用来存放网站内容的地方。但是租借虚拟主机需要很大的开销，幸运的是，我们可以把静态网站托管到GitHub上，GitHub是一个面向开源及私有软件项目的托管平台。</p>
 <p>首先需要登陆到GitHub：<a href="https://github.com" target="_blank" rel="external">Build software better, together</a>，如果没有GitHub账号，可以使用邮箱注册，然后点击GitHub中的New repository创建新仓库，仓库名为：<strong>用户名</strong>.github.io，这里命名格式为固定的，<strong>用户名</strong>是你的GitHub账号，比如我的仓库名为：</p>
-<center><img src="http://i2.muimg.com/597140/0f654496d2be7428.png" alt="zangbo"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_HZdID1_2.jpeg" alt=""></center>
 
 
 
@@ -353,13 +354,13 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa -C <span class="string">"你的GitHub注册邮箱"</span></div></pre></td></tr></table></figure>
 <p>然后连续按三个回车即可，这里默认不需要设置密码。我们根据终端中提示的地址找到生成的 .ssh 文件夹，该文件夹为隐藏文件夹，可以在终端中用 cd 指令进入，我们需要的Key就存放在该文件夹下面的 id_rsa.pub 文件中，我们可以用指令<code>cat id_rsa.pub</code>打印出该文件中的内容，然后复制全部内容（以ssh-rsa开头）。</p>
 <p>打开<a href="https://github.com/settings/keys" target="_blank" rel="external">GitHub_Settings_keys</a>页面，点击 new SSH Key 按钮：</p>
-<center><img src="http://i2.muimg.com/597140/080e99343c3cc4aa.jpg" alt="new SSH Key"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_ujfyFj_3.jpeg" alt=""></center>
 
 <p>其中Title可以随意填，因为我们可能会用不同的电脑连接GitHub，比如家里的电脑，公司的电脑等等，所以后面可能会添加多个Key，可以把Title取为Home或者School等方便区分。把刚复制的内容粘贴进去，点击Add SSH key。</p>
 <p>在终端中检测GitHub公钥是否设置成功，输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh git@github.com</div></pre></td></tr></table></figure>
 <p>显示以下内容说明成功：</p>
-<center><img src="http://i1.buimg.com/597140/2a16f05c4e1935a5.png" alt="success"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_0OonVo_4.jpeg?imageView2/2/w/800" alt=""></center>
 
 <blockquote>
 <p>这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
@@ -386,15 +387,15 @@
 <p>到这里我们的网站就初始化完毕了，下面我们尝试添加一篇新的文章并且在本地服务器上查看。不出意外当前终端定位是在我们刚建立的文件夹下，即刚刚的blog文件夹下，此时在终端输入以下命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo new [layout] &lt;title&gt;  <span class="comment">#等价于 hexo n [layout] &lt;title&gt;</span></div><div class="line">hexo generate  <span class="comment">#等价于 hexo g</span></div><div class="line">hexo server  <span class="comment">#等价于 hexo s</span></div></pre></td></tr></table></figure>
 <p>我新建了一篇名为“<em>The first article</em>”的文章。</p>
-<center><img src="http://i2.muimg.com/597140/48b907e31519fdab.png" alt="Hexo"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_1ieo4u_5.jpeg?imageView2/2/w/800" alt=""></center>
 
-<center><img src="http://i2.muimg.com/597140/6ea5d178de587fd0.png" alt="Hexo"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_Mm7oau_6.jpeg?imageView2/2/w/800" alt=""></center>
 
 <p>完成后打开浏览器输入地址：</p>
 <p>Localhost:4000</p>
 <p>刚刚的三个命令依次是新建一篇博客文章、生成网页、在本地预览的操作。</p>
 <p>可以进入我们刚刚建立的博客，看到我们刚刚建立的文章，以及Hexo默认自带的一篇文章。</p>
-<center><img src="http://i2.muimg.com/597140/c8b89acbd496def9.png" alt="Hexo"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_k0kChT_7.jpeg?imageView2/2/w/800" alt=""></center>
 
 <p>接下来我们来介绍常用的Hexo命令（详细用法可查看Hexo官方文档<a href="https://hexo.io/docs/commands.html" target="_blank" rel="external">Commands | Hexo</a>）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init <span class="comment">#初始化博客</span></div></pre></td></tr></table></figure>
@@ -403,7 +404,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo server <span class="comment">#Hexo会监视文件变动并自动更新，无须重启服务器</span></div><div class="line">hexo server -s <span class="comment">#静态模式</span></div><div class="line">hexo server -p 5000 <span class="comment">#更改端口</span></div><div class="line">hexo server -i 192.168.1.1 <span class="comment">#自定义 IP</span></div><div class="line">hexo clean <span class="comment">#清除缓存，若是网页正常情况下可以忽略这条命令</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h2 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a>推送网站</h2><p>推送网站需要关联Github和Hexo，官方文档下的关联步骤，输入第一行代码后，需要打开blog根目录下的 <em>_config.yml</em> 文件，按照下面所示要求进行配置。在 Hexo中有两份主要的配置文件，其名称都是 <em>_config.yml</em>。其中，一份位于站点根目录下，主要包含Hexo本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为站点配置文件，后者称为主题配置文件。我们在这一步只需要修改站点配置文件。</p>
-<center><img src="http://i2.muimg.com/597140/08c515de8ad7b815.png" alt="Git"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_CCOYpH_8.jpeg" alt=""></center>
 
 <p>其实就是给<code>hexo d</code>这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。</p>
 <p>接下来，我们输入三条命令：</p>
@@ -412,11 +413,11 @@
 <p><br></p>
 <h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的：<strong>xxx.github.io</strong> 而我们想使用我们自己刚买的个性化域名，这就需要绑定，这里以阿里云为例。登陆到阿里云：<a href="https://www.aliyun.com" target="_blank" rel="external">阿里云-为了无法计算的价值</a>，点击 <strong>控制台</strong> 进入管理控制台的域名列表，找到你的个性化域名，进入解析：</p>
 <p>点击 <strong>添加解析</strong> 按钮，添加三条记录：</p>
-<center><img src="http://i1.buimg.com/597140/ce78933779e21a6e.png" alt="添加解析"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_6oNP5k_9.jpeg" alt=""></center>
 
 <p>这里两条A记录是固定的，从GitHub官方文档可以找到，这两条是指向GitHub的地址；一条CNAME地址，记录指向是 <strong>用户名</strong>.github.io ，这里的<strong>用户名</strong>是你自己的用户名。</p>
 <p>接着登陆GitHub，进入之前创建的仓库，点击 <strong>Settings</strong>，拉到最后，找到 <strong>Custom domain</strong>，填入自己申请的个性域名，点击 <strong>Save</strong>：</p>
-<center><img src="http://i1.buimg.com/597140/19f190af52c4da14.png" alt="Markdown"></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_nNgXBn_10.jpeg" alt=""></center>
 
 <p>完成后打开浏览器，在地址栏输入你的个性化域名，就可以直接进入你自己搭建的网站。这一步操作相当于在GitHub仓库目录添加一个CNAME文件，文件中的内容为你刚输入的domain，当GithubPage服务器接收到访问请求时，就知道对应的是这个工程了。</p>
 <p><br></p>
@@ -441,7 +442,35 @@
 <p>此时还有个问题，如果把README.md文件放在source文件夹中，执行<code>hexo g</code>指令时会被渲染，解决办法是只要在博客根目录下的配置文件_config.yml中配置一下”skip_render”选项，将不需要渲染的文件名称加入的其选项下就行了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">skip_render: README.md</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="寻找图床"><a href="#寻找图床" class="headerlink" title="寻找图床"></a>寻找图床</h2><p>当文章中有图片时，若是少量图片，可以直接把图片存放在source文件夹中，但图片会占据大量的存储的空间，加载的时候相对缓慢 ，这时考虑把博文里的图片上传到某一网站，然后获得外部链接，使用Markdown语法： <strong>![图片信息](外部链接)</strong> 完成图片的插入，这种网站就被成为图床。我一般用的图床网站是<a href="http://www.tietuku.com/" target="_blank" rel="external">贴图库</a>，也可以使用<a href="https://www.qiniu.com" target="_blank" rel="external">七牛云</a>。</p>
+<h2 id="寻找图床"><a href="#寻找图床" class="headerlink" title="寻找图床"></a>寻找图床</h2><p>当文章中有图片时，若是少量图片，可以直接把图片存放在source文件夹中，但图片会占据大量的存储的空间，加载的时候相对缓慢 ，这时考虑把博文里的图片上传到某一网站，然后获得外部链接，使用Markdown语法： <strong>![图片信息](外部链接)</strong> 完成图片的插入，这种网站就被成为图床。这里推荐<a href="https://www.qiniu.com" target="_blank" rel="external">七牛云</a>，新人有10G的免费流量，对于个人博客来说是足够了，超出后的的费用也不贵，也是学生党可以负担得起的。</p>
+<p><br></p>
+<h2 id="功能扩展"><a href="#功能扩展" class="headerlink" title="功能扩展"></a>功能扩展</h2><h3 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h3><p>打开文件：</p>
+<p><code>根目录/node_modules/hexo-generator-index/lib/generator.js</code></p>
+<p>替换为以下代码并保存：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> pagination = <span class="built_in">require</span>(<span class="string">'hexo-pagination'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">locals</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> config = <span class="keyword">this</span>.config;</div><div class="line">  <span class="keyword">var</span> posts = locals.posts;</div><div class="line"></div><div class="line">    posts.data = posts.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span>(a.top &amp;&amp; b.top) &#123; <span class="comment">// 两篇文章top都有定义</span></div><div class="line">            <span class="keyword">if</span>(a.top == b.top) <span class="keyword">return</span> b.date - a.date; <span class="comment">// 若top值一样则按照文章日期降序排</span></div><div class="line">            <span class="keyword">else</span> <span class="keyword">return</span> b.top - a.top; <span class="comment">// 否则按照top值降序排</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a.top &amp;&amp; !b.top) &#123; <span class="comment">// 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）</span></div><div class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!a.top &amp;&amp; b.top) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">return</span> b.date - a.date; <span class="comment">// 都没定义按照文章日期降序排</span></div><div class="line"></div><div class="line">    &#125;);</div><div class="line"></div><div class="line">  <span class="keyword">var</span> paginationDir = config.pagination_dir || <span class="string">'page'</span>;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> pagination(<span class="string">''</span>, posts, &#123;</div><div class="line">    <span class="attr">perPage</span>: config.index_generator.per_page,</div><div class="line">    <span class="attr">layout</span>: [<span class="string">'index'</span>, <span class="string">'archive'</span>],</div><div class="line">    <span class="attr">format</span>: paginationDir + <span class="string">'/%d/'</span>,</div><div class="line">    <span class="attr">data</span>: &#123;</div><div class="line">      <span class="attr">__index</span>: <span class="literal">true</span></div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>在写文章时，只需要设置top参数为1即可。</p>
+<p><br></p>
+<h3 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h3><p>Hexo允许使用MathJax来渲染LaTeX数学公式，首先安装自动部署MathJax的插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math --save</div><div class="line">hexo math install</div></pre></td></tr></table></figure>
+<p>接着把主题配置文件下的mathjax选项设置为true：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mathjax: true</div></pre></td></tr></table></figure>
+<p>如果直接在新建的博文中使用LaTeX格式的公式会出现一些问题，原因是hexo先用marked.<a href="http://lib.csdn.net/base/javascript" target="_blank" rel="external">js</a>渲染，然后再交给MathJax渲染。在marked.js渲染的时候下划线<code>_</code>是被escape掉并且换成了<code>&lt;em&gt;</code>标签，即斜体字，另外LaTeX中的<code>\\</code>也会被转义成一个<code>\</code>，这样会导致MathJax渲染时不认为它是一个换行符了。</p>
+<p>我们只要不让marked.js去转义<code>\\</code>,<code>\{</code>,<code>\}</code>在MathJax中有特殊用途的字符就行了。<br>具体修改方式，用编辑器打开marked.js（在<code>./node_modules/marked/lib/</code>中）</p>
+<p><strong>Step 1:</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">escape</span>: <span class="regexp">/^\\([\\`*&#123;&#125;\[\]()# +\-.!_&gt;])/</span>,</div></pre></td></tr></table></figure>
+<p>替换成</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">escape</span>: <span class="regexp">/^\\([`*\[\]()# +\-.!_&gt;])/</span>,</div></pre></td></tr></table></figure>
+<p>这一步是在原基础上取消了对<code>\\</code>,<code>\{</code>,<code>\}</code>的转义(escape)</p>
+<p><strong>Step 2:</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">em: <span class="regexp">/^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span>,</div></pre></td></tr></table></figure>
+<p>替换成</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">em:<span class="regexp">/^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span>,</div></pre></td></tr></table></figure>
+<p>这样一来MathJax就能与marked.js共存了。</p>
+<p>在Markdown中输入数学公式：</p>
+<ul>
+<li>行内：<code>$数学公式$</code></li>
+<li>行间：<code>$$数学公式$$</code></li>
+</ul>
 <p><br></p>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>当初也是看到很多人有自己的网站，所以才萌生了这个想法，希望这篇文章能给大家一点启发，如果后面有更多的心得，也会另发文总结下来。另外推荐一个我比较喜欢的个人博客：<a href="http://www.dandyweng.com" target="_blank" rel="external">翁天信 · Dandy Weng</a></p>
 <p>有任何问题欢迎留言或者发邮件。</p>
@@ -451,6 +480,8 @@
 <li>GitHub Pages 官方使用说明：<a href="https://pages.github.com" target="_blank" rel="external">GitHub Pages</a></li>
 <li>GitHub 官方文档，如何绑定个人域名：<a href="https://help.github.com/articles/using-a-custom-domain-with-github-pages/" target="_blank" rel="external">Using a custom domain with GitHub Pages</a></li>
 <li>Hexo 官方文档：<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">文档 | Hexo</a></li>
+<li><a href="http://www.netcan666.com/2015/11/22/%E8%A7%A3%E5%86%B3Hexo%E7%BD%AE%E9%A1%B6%E9%97%AE%E9%A2%98/" target="_blank" rel="external">解决Hexo置顶问题 | Netcan_Space</a></li>
+<li><a href="http://blog.csdn.net/emptyset110/article/details/50123231" target="_blank" rel="external">搭建一个支持LaTEX的hexo博客 - Platonic Time - 博客频道 - CSDN.NET</a></li>
 </ul>
 <p><br></p>
 </the>
@@ -464,7 +495,7 @@
         <p><span>本文标题:</span><a href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-01, 18:44:56</p>
-        <p><span>最后更新:</span>2017-06-15, 17:14:02</p>
+        <p><span>最后更新:</span>2017-06-22, 00:10:59</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/" title="Mac环境利用GitHub和Hexo搭建个人博客">http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -500,7 +531,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo介绍"><span class="toc-number">1.</span> <span class="toc-text">Hexo介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建流程"><span class="toc-number">2.</span> <span class="toc-text">搭建流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获得域名"><span class="toc-number">3.</span> <span class="toc-text">获得域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用GitHub创建仓库"><span class="toc-number">4.</span> <span class="toc-text">利用GitHub创建仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Git"><span class="toc-number">5.</span> <span class="toc-text">安装Git</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Node-js"><span class="toc-number">6.</span> <span class="toc-text">安装Node.js</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">7.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推送网站"><span class="toc-number">8.</span> <span class="toc-text">推送网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定域名"><span class="toc-number">9.</span> <span class="toc-text">绑定域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置主题"><span class="toc-number">10.</span> <span class="toc-text">配置主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新文章"><span class="toc-number">11.</span> <span class="toc-text">更新文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#寻找图床"><span class="toc-number">12.</span> <span class="toc-text">寻找图床</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">13.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">14.</span> <span class="toc-text">参考</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo介绍"><span class="toc-number">1.</span> <span class="toc-text">Hexo介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建流程"><span class="toc-number">2.</span> <span class="toc-text">搭建流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获得域名"><span class="toc-number">3.</span> <span class="toc-text">获得域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用GitHub创建仓库"><span class="toc-number">4.</span> <span class="toc-text">利用GitHub创建仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Git"><span class="toc-number">5.</span> <span class="toc-text">安装Git</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Node-js"><span class="toc-number">6.</span> <span class="toc-text">安装Node.js</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">7.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推送网站"><span class="toc-number">8.</span> <span class="toc-text">推送网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定域名"><span class="toc-number">9.</span> <span class="toc-text">绑定域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置主题"><span class="toc-number">10.</span> <span class="toc-text">配置主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新文章"><span class="toc-number">11.</span> <span class="toc-text">更新文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#寻找图床"><span class="toc-number">12.</span> <span class="toc-text">寻找图床</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#功能扩展"><span class="toc-number">13.</span> <span class="toc-text">功能扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文章置顶"><span class="toc-number">13.1.</span> <span class="toc-text">文章置顶</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数学公式"><span class="toc-number">13.2.</span> <span class="toc-text">数学公式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">14.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">15.</span> <span class="toc-text">参考</span></a></li></ol>
         
     </div>
     <style>
@@ -662,6 +693,27 @@ ga('send', 'pageview');
 
 
 
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
 <div class="scroll" id="scroll">
     <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
     <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
@@ -708,6 +760,23 @@ ga('send', 'pageview');
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
-  </div>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 </body>
 </html>
