@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-06-22T09:25:02.000Z</updated>
+  <updated>2017-06-22T10:59:29.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://zangbo.me/2017/06/15/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/"/>
     <id>http://zangbo.me/2017/06/15/爬虫学习笔记（三）/</id>
     <published>2017-06-15T13:48:57.000Z</published>
-    <updated>2017-06-22T09:25:02.000Z</updated>
+    <updated>2017-06-22T10:59:29.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -135,10 +135,18 @@
 <h3 id="简写-1"><a href="#简写-1" class="headerlink" title="简写"></a>简写</h3><p><code>soup.head.title</code>是利用tag的名字来简写，这个简写的原理就是多次调用当前tag的<code>find()</code>方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.head.title</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">"head"</span>).find(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
 <p><br></p>
+<h1 id="输出文本"><a href="#输出文本" class="headerlink" title="输出文本"></a>输出文本</h1><p>如果只想得到tag中包含的文本内容，那么可以采用<code>get_text()</code>方法，这个方法获取到tag中包含的所有文版内容，包括子孙tag中的内容，并将结果作为Unicode字符串返回：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">'&lt;a href="http://example.com/"&gt;\nI linked to &lt;i&gt;example.com&lt;/i&gt;\n&lt;/a&gt;'</span></div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">	</div><div class="line">soup.get_text()</div><div class="line"><span class="comment"># u'\nI linked to example.com\n'</span></div><div class="line">soup.i.get_text()</div><div class="line"><span class="comment"># u'example.com'</span></div></pre></td></tr></table></figure>
+<p><br></p>
 <h1 id="关于编码"><a href="#关于编码" class="headerlink" title="关于编码"></a>关于编码</h1><p>使用Beautiful Soup解析后，文档都被转换成了Unicode。</p>
 <p>Beautiful Soup用了<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码。<code>BeautifulSoup</code>对象的<code>.original_encoding</code>属性记录了自动识别编码的结果：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.original_encoding</div><div class="line"><span class="comment"># 'utf-8'</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">"&lt;h1&gt;Sacr\xc3\xa9 bleu!&lt;/h1&gt;"</span></div><div class="line">soup = BeautifulSoup(markup,<span class="string">'lxml'</span>)</div><div class="line">soup.original_encoding</div><div class="line"><span class="comment"># 'utf-8'</span></div></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<p>如果先用<code>r = requests.get(url)</code>指令获得了html页面，建议先用指令<code>r.encoding</code>判断<code>r.text</code>所用的编码方式和源html是否相同（可以通过查看html中的charset= 来判断源html采用的编码方式），如果不同的话要用<code>r.encoding=</code>进行修改，再用<code>soup = BeautifulSoup(r.text,&#39;lxml&#39;)</code>命令。因为<code>r.text</code>会根据当前的编码方式把html转化为Unicode编码输出，如果html包含汉字，而没有采用<code>utf-8</code>进行编码的话，<code>r.text</code>没有办法把汉字转化为相应的Unicode编码，再送进Beautiful Soup中也就无法得到汉字信息了。</p>
+<p>也可以直接用<code>soup = BeautifulSoup(r.content,&#39;lxml&#39;)</code>指令，因为<code>r.content</code>返回的是bytes型原始编码信息，而Beautiful Soup可以用<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码，但获取文本信息时不建议这样使用，一般来说图像等多媒体内容用content更多一些。</p>
+<p><br></p>
 <p>而通过Beautiful Soup<strong>输出文档</strong>时，不管输入文档是什么编码方式，输出编码均为UTF-8编码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">b'''</span></div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;meta content="text/html; charset=ISO-Latin-1" http-equiv="Content-type" /&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body&gt;</div><div class="line">    &lt;p&gt;Sacr\xe9 bleu!&lt;/p&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div><div class="line">'''</div><div class="line">	</div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=utf-8" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p&gt;</span></div><div class="line"><span class="comment">#    Sacré bleu!</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
 <p>如果不想用UTF-8编码输出，可以将编码方式传入<code>prettify()</code>方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">print(soup.prettify(<span class="string">"latin-1"</span>))</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=latin-1" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment"># ...</span></div></pre></td></tr></table></figure>
 <p><br></p>
@@ -150,7 +158,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了Beautiful Soup库以及一些基础用法，该库兼容python2和3版本。
+      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了&lt;code&gt;find_all()&lt;/code&gt;和&lt;code&gt;find()&lt;/code&gt;    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。
     
     </summary>
     
