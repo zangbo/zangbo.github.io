@@ -3,6 +3,150 @@
   
     
     <entry>
+      <title><![CDATA[爬虫笔记（三）：BeautifulSoup基础]]></title>
+      <url>/2017/06/15/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="Beautiful-Soup介绍"><a href="#Beautiful-Soup介绍" class="headerlink" title="Beautiful Soup介绍"></a>Beautiful Soup介绍</h1><p>我们之前已经用Requests获得了需要的页面，接下来需要从页面中提取出我们想要的信息，我们可以选择用正则表达式，但对于很多新手来说正则表达式使用的不熟练会产生很多不必要的麻烦。而对于很多任务来说，有一个工具即高效又便捷，它就是Beautiful Soup。</p>
+<p>Beautiful Soup是一个可以从HTML或XML文件中提取数据的Python库，它能够通过你喜欢的转换器实现惯用的文档导航，查找，修改文档的方式。因为BeautifulSoup用法太多，本文仅介绍在爬虫中常用的功能，如果需要了解更多，请查阅官方文档。</p>
+<p>文章中代码输出结果用#表示。</p>
+<p><br></p>
+<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>下面一段HTML代码将作为我们的例子反复使用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">html_doc = """</div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>Once upon a time there were three little sisters; and their names were</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/elsie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link1"</span>&gt;</span>Elsie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>,</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/lacie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link2"</span>&gt;</span>Lacie<span class="tag">&lt;/<span class="name">a</span>&gt;</span> and</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/tillie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link3"</span>&gt;</span>Tillie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>;</div><div class="line">and they lived at the bottom of a well.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">"""</div></pre></td></tr></table></figure>
+<p>使用BeautifulSoup解析这段代码，能够得到一个<code>BeautifulSoup</code>的对象，并能按照标准的缩进格式的结构输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc)</div><div class="line">	</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;title&gt;</span></div><div class="line"><span class="comment">#    The Dormouse's story</span></div><div class="line"><span class="comment">#   &lt;/title&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="title"&gt;</span></div><div class="line"><span class="comment">#    &lt;b&gt;</span></div><div class="line"><span class="comment">#     The Dormouse's story</span></div><div class="line"><span class="comment">#    &lt;/b&gt;</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    Once upon a time there were three little sisters; and their names were</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;</span></div><div class="line"><span class="comment">#     Elsie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ,</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Lacie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    and</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/tillie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Tillie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ; and they lived at the bottom of a well.</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    ...</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="安装-Beautiful-Soup"><a href="#安装-Beautiful-Soup" class="headerlink" title="安装 Beautiful Soup"></a>安装 Beautiful Soup</h1><p>Beautiful Soup有3和4两个版本，3版本目前已经停止开发，建议使用4版本。</p>
+<p>我们可以很方便的使用pip进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install beautifulsoup4</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="安装解析器"><a href="#安装解析器" class="headerlink" title="安装解析器"></a>安装解析器</h1><p>Beautiful Soup支持Python标准库中的HTML解析器，还支持一些第三方的解析器，下表列出了主要的解析器，以及它们的优缺点：</p>
+<table>
+<thead>
+<tr>
+<th>解析器</th>
+<th>使用方法</th>
+<th>优势</th>
+<th>劣势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python标准库</td>
+<td><code>BeautifulSoup(markup, &quot;html.parser&quot;)</code></td>
+<td>Python的内置标准库执行速度适中文档容错能力强</td>
+<td>Python 2.7.3 or 3.2.2前的版本中文档容错能力差</td>
+</tr>
+<tr>
+<td>lxml HTML 解析器</td>
+<td><code>BeautifulSoup(markup, &quot;lxml&quot;)</code></td>
+<td>速度快文档容错能力强</td>
+<td>需要安装C语言库</td>
+</tr>
+<tr>
+<td>lxml XML 解析器</td>
+<td><code>BeautifulSoup(markup, [&quot;lxml&quot;, &quot;xml&quot;])``BeautifulSoup(markup, &quot;xml&quot;)</code></td>
+<td>速度快唯一支持XML的解析器</td>
+<td>需要安装C语言库</td>
+</tr>
+<tr>
+<td>html5lib</td>
+<td><code>BeautifulSoup(markup, &quot;html5lib&quot;)</code></td>
+<td>最好的容错性以浏览器的方式解析文档生成HTML5格式的文档</td>
+<td>速度慢不依赖外部扩展</td>
+</tr>
+</tbody>
+</table>
+<p>这里推荐使用lxml作为解析器，因为它的效率更高。</p>
+<p>可以用pip来安装lxml：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install lxml</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="使用Beautiful-Soup"><a href="#使用Beautiful-Soup" class="headerlink" title="使用Beautiful Soup"></a>使用Beautiful Soup</h1><p>将一段文档传入BeautifulSoup 的构造方法，就能得到一个文档的对象，我们可以制定解析器。例如，我们将开头的例子传入BeautifulSoup，并使用lxml解析器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc, <span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
+<p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构，每个节点都是Python对象，所有对象可以归纳为4种： <code>Tag</code> , <code>NavigableString</code> , <code>BeautifulSoup</code> , <code>Comment</code> 。</p>
+<p><br></p>
+<p>我们重点讲两个搜索方法：<code>find()</code>和<code>find_all()</code>，我们用这两种方法可以根据HTML文档的标签快速找到我们需要的内容。</p>
+<p>以开头提到的文档作为例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">html_doc = <span class="string">"""</span></div><div class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;p class="title"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;Once upon a time there were three little sisters; and their names were</div><div class="line">&lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;Elsie&lt;/a&gt;,</div><div class="line">&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; and</div><div class="line">&lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;;</div><div class="line">and they lived at the bottom of a well.&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;...&lt;/p&gt;</div><div class="line">"""</div><div class="line">	</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc,<span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="find-all"><a href="#find-all" class="headerlink" title="find_all()"></a>find_all()</h2><p><strong>find_all(name, attrs, recursive, text, kwargs)</strong></p>
+<h3 id="name-参数"><a href="#name-参数" class="headerlink" title="name 参数"></a>name 参数</h3><p><code>name</code> 参数可以查找所有名字为 <code>name</code> 的tag：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div></pre></td></tr></table></figure>
+<p>name参数的值可以是字符串、正则表达式、列表、方法或是 <code>True</code></p>
+<p>例如：</p>
+<p>在<code>find_all()</code>中传入一个<strong>字符串</strong>参数，Beautiful Soup会查找与字符串完整匹配的内容，下面的例子用于查找文档中所有的<code>&lt;b&gt;</code>标签:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'b'</span>)</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;]</span></div></pre></td></tr></table></figure>
+<p>如果传入<strong>列表</strong>参数，Beautiful Soup会将与列表中任一元素匹配的内容返回。下面代码找到文档中所有<code>&lt;a&gt;</code>标签和<code>&lt;b&gt;</code>标签:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all([<span class="string">"a"</span>, <span class="string">"b"</span>])</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<p><code>find_all()</code> 方法搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。</p>
+<p><br></p>
+<h3 id="keyword-参数"><a href="#keyword-参数" class="headerlink" title="keyword 参数"></a>keyword 参数</h3><ol>
+<li><p>如果一个指定名字的参数不是搜索内置的参数名，搜索时会把该参数当作指定名字tag的属性来搜索，如果包含一个名字为 <code>id</code> 的参数，Beautiful Soup会搜索每个tag的”id”属性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="string">'link2'</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<p><br></p>
+</li>
+<li><p>如果传入 <code>href</code> 参数，Beautiful Soup会搜索每个tag的”href”属性:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(href=re.compile(<span class="string">"elsie"</span>))</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<p><br></p>
+</li>
+<li><p>利用<code>true</code>参数在文档树中查找所有包含 <code>id</code> 属性的tag，无论 <code>id</code> 的值是什么:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="keyword">True</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>搜索指定名字的属性时可以使用的参数值包括字符串、正则表达式、列表或是 <code>True</code></p>
+<p><br></p>
+<h3 id="按CSS搜索"><a href="#按CSS搜索" class="headerlink" title="按CSS搜索"></a>按CSS搜索</h3><p>按照CSS类名搜索tag的功能非常实用，但标识CSS类名的关键字 <code>class</code> 在Python中是保留字，使用 <code>class</code> 做参数会导致语法错误。这里我们可以通过 <code>class_</code> 参数搜索有指定CSS类名的tag:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>, class_=<span class="string">"sister"</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<p><code>class_</code> 参数同样接受不同类型的过滤器：字符串、正则表达式、方法或 <code>True</code> 。</p>
+<p><br></p>
+<h3 id="text-参数"><a href="#text-参数" class="headerlink" title="text 参数"></a>text 参数</h3><p>通过 <code>text</code> 参数可以搜搜文档中的字符串内容。与 <code>name</code> 参数的可选值一样，<code>text</code> 参数接受字符串、正则表达式、方法或 <code>True</code> ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">soup.find_all(text=<span class="string">"Elsie"</span>)</div><div class="line"><span class="comment"># [u'Elsie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=[<span class="string">"Tillie"</span>, <span class="string">"Elsie"</span>, <span class="string">"Lacie"</span>])</div><div class="line"><span class="comment"># [u'Elsie', u'Lacie', u'Tillie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=re.compile(<span class="string">"Dormouse"</span>))</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story"]</span></div><div class="line">	</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_the_only_string_within_a_tag</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="string">""</span>Return <span class="keyword">True</span> <span class="keyword">if</span> this string <span class="keyword">is</span> the only child of its parent tag.<span class="string">""</span></div><div class="line">    <span class="keyword">return</span> (s == s.parent.string)</div><div class="line">	</div><div class="line">soup.find_all(text=is_the_only_string_within_a_tag)</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story", u'Elsie', u'Lacie', u'Tillie', u'...']</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><p>下面两行代码是等价的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>)</div><div class="line">soup(<span class="string">"a"</span>)</div></pre></td></tr></table></figure>
+<p>这两行也是等价的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.title.find_all(text=<span class="keyword">True</span>)</div><div class="line">soup.title(text=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="find"><a href="#find" class="headerlink" title="find()"></a>find()</h2><p><strong>find(name, attrs, recursive, text, kwargs)</strong></p>
+<p><code>find_all()</code> 方法将返回文档中符合条件的所有tag，尽管有时候我们只想得到一个结果.比如文档中只有一个<code>&lt;body&gt;</code>标签，那么使用 <code>find_all()</code>方法来查找<code>&lt;body&gt;</code>标签就不太合适， 使用 <code>find_all</code> 方法并设置 <code>limit=1</code> 参数不如直接使用 <code>find()</code> 方法。下面两行代码是等价的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'title'</span>, limit=<span class="number">1</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">'title'</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
+<p>唯一的区别是 <code>find_all()</code> 方法的返回结果是值包含一个元素的列表,而 <code>find()</code> 方法直接返回结果.</p>
+<p><code>find_all()</code> 方法没有找到目标是返回空列表， <code>find()</code> 方法找不到目标时返回 <code>None</code>。</p>
+<p><br></p>
+<h3 id="简写-1"><a href="#简写-1" class="headerlink" title="简写"></a>简写</h3><p><code>soup.head.title</code>是利用tag的名字来简写，这个简写的原理就是多次调用当前tag的<code>find()</code>方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.head.title</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">"head"</span>).find(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="关于编码"><a href="#关于编码" class="headerlink" title="关于编码"></a>关于编码</h1><p>使用Beautiful Soup解析后，文档都被转换成了Unicode。</p>
+<p>Beautiful Soup用了<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码。<code>BeautifulSoup</code>对象的<code>.original_encoding</code>属性记录了自动识别编码的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.original_encoding</div><div class="line"><span class="comment"># 'utf-8'</span></div></pre></td></tr></table></figure>
+<p>而通过Beautiful Soup<strong>输出文档</strong>时，不管输入文档是什么编码方式，输出编码均为UTF-8编码。</p>
+<p>如果不想用UTF-8编码输出，可以将编码方式传入<code>prettify()</code>方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">print(soup.prettify(<span class="string">"latin-1"</span>))</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=latin-1" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment"># ...</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>关于Beautiful Soup还有很多其他用法，这里只是重点介绍了运用最多的两个搜索方法<code>find_all()</code>和<code>find()</code>，如果想了解更多的使用方法，请参考官方文档。</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>官方文档：<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.html#" target="_blank" rel="external">Beautiful Soup Documentation — Beautiful Soup 4.4.0 documentation</a></p>
+<p><br></p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> 数据挖掘 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 爬虫 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[编码相关知识]]></title>
       <url>/2017/06/14/%E7%BC%96%E7%A0%81%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。<a id="more"></a></excerpt></p>
