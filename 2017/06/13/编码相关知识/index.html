@@ -96,12 +96,14 @@
             var s = document.getElementsByTagName("script")[0]; 
             s.parentNode.insertBefore(hm, s);
         })();
-    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    </script>
 
 
-</head>
+<link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
     <div class="left-col">
     <div class="overlay"></div>
 <div class="intrude-less">
@@ -318,9 +320,18 @@
 <p>此外，常见的UTF格式还有：UTF-7、UTF-7.5、UTF-8、UTF-16、UTF-32</p>
 <p><br></p>
 <h2 id="Python-3中的编码"><a href="#Python-3中的编码" class="headerlink" title="Python 3中的编码"></a>Python 3中的编码</h2><p>在python 3版本中，字符串是以Unicode编码的，也就是说，python 3字符串支持中英或其他各种语言。此外，我们可以利用<code>.encode()</code>函数来把Unicode字符串进行编码，编码后的字符串前面会用b表示。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">u = <span class="string">'汉'</span></div><div class="line">print(u)</div><div class="line">s = u.encode(<span class="string">'UTF-8'</span>)</div><div class="line">print(s)</div><div class="line">d = s.decode(<span class="string">'UTF-8'</span>)</div><div class="line">print(d)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">u <span class="token operator">=</span> <span class="token string">'汉'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>u<span class="token punctuation">)</span>
+s <span class="token operator">=</span> u<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'UTF-8'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+d <span class="token operator">=</span> s<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'UTF-8'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'汉'</span></div><div class="line">b<span class="string">'\xe6\xb1\x89'</span></div><div class="line"><span class="string">'汉'</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token string">'汉'</span>
+b<span class="token string">'\xe6\xb1\x89'</span>
+<span class="token string">'汉'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>关于python 3中读取文件：</p>
 <blockquote>
 <p>文件总是存储为编码好的数据，因此，为了使用文件中读取的文本数据，必须首先将其解码为一个Unicode字符串。python 3中，文本正常情况下会自动为你解码，所以打开或读取文件会得到一个Unicode字符串。使用的解码方式取决系统，在Mac OS 或者 大多数Linux系统中，首选编码是UTF-8，但Windows不一定。可以使用locale.getpreferredencoding()方法得到系统的默认解码方式。</p>
@@ -422,15 +433,12 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"编码相关知识　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"编码相关知识　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
     
 </div>
-
-
-
 
 
 

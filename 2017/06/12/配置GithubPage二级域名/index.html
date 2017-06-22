@@ -95,12 +95,14 @@
             var s = document.getElementsByTagName("script")[0]; 
             s.parentNode.insertBefore(hm, s);
         })();
-    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    </script>
 
 
-</head>
+<link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
     <div class="left-col">
     <div class="overlay"></div>
 <div class="intrude-less">
@@ -304,8 +306,7 @@
 
 <p><br></p>
 <h1 id="Github-Page种类"><a href="#Github-Page种类" class="headerlink" title="Github Page种类"></a>Github Page种类</h1><ol>
-<li><p><code>UserPage</code>: 用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p>
-</li>
+<li><figcaption>用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p></figcaption><pre class="line-numbers language-UserPage</code>:"><code class="language-UserPage</code>:"></li>
 <li><p><code>ProjectPage</code>: 用户创建出来的其他网站项目也可以托管在github上，首先新建一个项目，然后建立一个名叫<code>gh-pages</code>的branch，这个branch里的文件就是page的站点文件。</p>
 <p><br></p>
 </li>
@@ -320,7 +321,7 @@
 <p>CNAME指向之后，当浏览器访问<code>www.zangbo.me</code>的时候浏览器就知道<code>实际上</code>是访问<code>zangbo.github.io</code><br>添加CNAME 文件之后，当GithubPage服务器接收到访问<code>www.zangbo.me</code>的http请求，就知道，对应的是这个工程了。</p>
 </blockquote>
 <p><br></p>
-<h1 id="ProjectPage自定义域名"><a href="#ProjectPage自定义域名" class="headerlink" title="ProjectPage自定义域名"></a>ProjectPage自定义域名</h1><p>比如用<code>mylove.zangbo.me</code>替代<code>zangbo.github.io/mylove</code></p>
+<h1 id="ProjectPage自定义域名"><a href="#ProjectPage自定义域名" class="headerlink" title="ProjectPage自定义域名"></a>ProjectPage自定义域名</h1><p>比如用<code>mylove.zangbo.me</code>替代<code>zangbo.github.io/mylove<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ol>
 <li><p>同样的，去域名注册商那里，做一个<code>CNAME</code>指向，将<code>mylove.zangbo.me</code> 指向 <code>zangbo.github.io</code>，如果以后会有很多二级域名都指过来，操作方式相同。</p>
 </li>
@@ -415,15 +416,12 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"配置GithubPage二级域名　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"配置GithubPage二级域名　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
     
 </div>
-
-
-
 
 
 

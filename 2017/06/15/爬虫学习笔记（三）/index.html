@@ -22,7 +22,7 @@
 <meta property="og:url" content="http://zangbo.me/2017/06/15/爬虫学习笔记（三）/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了find_all()和find()    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。">
-<meta property="og:updated_time" content="2017-06-22T10:59:29.000Z">
+<meta property="og:updated_time" content="2017-06-22T17:31:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬虫笔记（三）：BeautifulSoup基础">
 <meta name="twitter:description" content="本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了find_all()和find()    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。">
@@ -95,12 +95,14 @@
             var s = document.getElementsByTagName("script")[0]; 
             s.parentNode.insertBefore(hm, s);
         })();
-    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    </script>
 
 
-</head>
+<link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
     <div class="left-col">
     <div class="overlay"></div>
 <div class="intrude-less">
@@ -307,13 +309,61 @@
 <p>文章中代码输出结果用#表示。</p>
 <p><br></p>
 <h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>下面一段HTML代码将作为我们的例子反复使用：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">html_doc = """</div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>Once upon a time there were three little sisters; and their names were</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/elsie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link1"</span>&gt;</span>Elsie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>,</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/lacie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link2"</span>&gt;</span>Lacie<span class="tag">&lt;/<span class="name">a</span>&gt;</span> and</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/tillie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link3"</span>&gt;</span>Tillie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>;</div><div class="line">and they lived at the bottom of a well.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">"""</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-html"><code class="language-html">html_doc = """
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>The Dormouse's story<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>title<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>b</span><span class="token punctuation">></span></span>The Dormouse's story<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>b</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>story<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Once upon a time there were three little sisters; and their names were
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://example.com/elsie<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sister<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>link1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Elsie<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>,
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://example.com/lacie<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sister<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>link2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Lacie<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span> and
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://example.com/tillie<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sister<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>link3<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Tillie<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>;
+and they lived at the bottom of a well.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>story<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+"""
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用BeautifulSoup解析这段代码，能够得到一个<code>BeautifulSoup</code>的对象，并能按照标准的缩进格式的结构输出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc)</div><div class="line">	</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;title&gt;</span></div><div class="line"><span class="comment">#    The Dormouse's story</span></div><div class="line"><span class="comment">#   &lt;/title&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="title"&gt;</span></div><div class="line"><span class="comment">#    &lt;b&gt;</span></div><div class="line"><span class="comment">#     The Dormouse's story</span></div><div class="line"><span class="comment">#    &lt;/b&gt;</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    Once upon a time there were three little sisters; and their names were</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;</span></div><div class="line"><span class="comment">#     Elsie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ,</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Lacie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    and</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/tillie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Tillie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ; and they lived at the bottom of a well.</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    ...</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
+soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>html_doc<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>soup<span class="token punctuation">.</span>prettify<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># &lt;html></span>
+<span class="token comment" spellcheck="true">#  &lt;head></span>
+<span class="token comment" spellcheck="true">#   &lt;title></span>
+<span class="token comment" spellcheck="true">#    The Dormouse's story</span>
+<span class="token comment" spellcheck="true">#   &lt;/title></span>
+<span class="token comment" spellcheck="true">#  &lt;/head></span>
+<span class="token comment" spellcheck="true">#  &lt;body></span>
+<span class="token comment" spellcheck="true">#   &lt;p class="title"></span>
+<span class="token comment" spellcheck="true">#    &lt;b></span>
+<span class="token comment" spellcheck="true">#     The Dormouse's story</span>
+<span class="token comment" spellcheck="true">#    &lt;/b></span>
+<span class="token comment" spellcheck="true">#   &lt;/p></span>
+<span class="token comment" spellcheck="true">#   &lt;p class="story"></span>
+<span class="token comment" spellcheck="true">#    Once upon a time there were three little sisters; and their names were</span>
+<span class="token comment" spellcheck="true">#    &lt;a class="sister" href="http://example.com/elsie" id="link1"></span>
+<span class="token comment" spellcheck="true">#     Elsie</span>
+<span class="token comment" spellcheck="true">#    &lt;/a></span>
+<span class="token comment" spellcheck="true">#    ,</span>
+<span class="token comment" spellcheck="true">#    &lt;a class="sister" href="http://example.com/lacie" id="link2"></span>
+<span class="token comment" spellcheck="true">#     Lacie</span>
+<span class="token comment" spellcheck="true">#    &lt;/a></span>
+<span class="token comment" spellcheck="true">#    and</span>
+<span class="token comment" spellcheck="true">#    &lt;a class="sister" href="http://example.com/tillie" id="link2"></span>
+<span class="token comment" spellcheck="true">#     Tillie</span>
+<span class="token comment" spellcheck="true">#    &lt;/a></span>
+<span class="token comment" spellcheck="true">#    ; and they lived at the bottom of a well.</span>
+<span class="token comment" spellcheck="true">#   &lt;/p></span>
+<span class="token comment" spellcheck="true">#   &lt;p class="story"></span>
+<span class="token comment" spellcheck="true">#    ...</span>
+<span class="token comment" spellcheck="true">#   &lt;/p></span>
+<span class="token comment" spellcheck="true">#  &lt;/body></span>
+<span class="token comment" spellcheck="true"># &lt;/html></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><br></p>
 <h1 id="安装-Beautiful-Soup"><a href="#安装-Beautiful-Soup" class="headerlink" title="安装 Beautiful Soup"></a>安装 Beautiful Soup</h1><p>Beautiful Soup有3和4两个版本，3版本目前已经停止开发，建议使用4版本。</p>
 <p>我们可以很方便的使用pip进行安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install beautifulsoup4</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> beautifulsoup4
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><br></p>
 <h1 id="安装解析器"><a href="#安装解析器" class="headerlink" title="安装解析器"></a>安装解析器</h1><p>Beautiful Soup支持Python标准库中的HTML解析器，还支持一些第三方的解析器，下表列出了主要的解析器，以及它们的优缺点：</p>
 <table>
@@ -354,77 +404,182 @@
 </table>
 <p>这里推荐使用lxml作为解析器，因为它的效率更高。</p>
 <p>可以用pip来安装lxml：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install lxml</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> lxml
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><br></p>
 <h1 id="使用Beautiful-Soup"><a href="#使用Beautiful-Soup" class="headerlink" title="使用Beautiful Soup"></a>使用Beautiful Soup</h1><p>将一段文档传入BeautifulSoup 的构造方法，就能得到一个文档的对象，我们可以制定解析器。例如，我们将开头的例子传入BeautifulSoup，并使用lxml解析器：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc, <span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
+soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>html_doc<span class="token punctuation">,</span> <span class="token string">'lxml'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构，每个节点都是Python对象，所有对象可以归纳为4种： <code>Tag</code> , <code>NavigableString</code> , <code>BeautifulSoup</code> , <code>Comment</code> 。</p>
 <p><br></p>
 <p>我们重点讲两个搜索方法：<code>find()</code>和<code>find_all()</code>，我们用这两种方法可以根据HTML文档的标签快速找到我们需要的内容。</p>
 <p>以开头提到的文档作为例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">html_doc = <span class="string">"""</span></div><div class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;p class="title"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;Once upon a time there were three little sisters; and their names were</div><div class="line">&lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;Elsie&lt;/a&gt;,</div><div class="line">&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; and</div><div class="line">&lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;;</div><div class="line">and they lived at the bottom of a well.&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;...&lt;/p&gt;</div><div class="line">"""</div><div class="line">	</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc,<span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">html_doc <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
+&lt;html>&lt;head>&lt;title>The Dormouse's story&lt;/title>&lt;/head>
+&lt;p class="title">&lt;b>The Dormouse's story&lt;/b>&lt;/p>
+&lt;p class="story">Once upon a time there were three little sisters; and their names were
+&lt;a href="http://example.com/elsie" class="sister" id="link1">Elsie&lt;/a>,
+&lt;a href="http://example.com/lacie" class="sister" id="link2">Lacie&lt;/a> and
+&lt;a href="http://example.com/tillie" class="sister" id="link3">Tillie&lt;/a>;
+and they lived at the bottom of a well.&lt;/p>
+&lt;p class="story">...&lt;/p>
+"""</span>
+
+<span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
+soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>html_doc<span class="token punctuation">,</span><span class="token string">'lxml'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><br></p>
 <h2 id="find-all"><a href="#find-all" class="headerlink" title="find_all()"></a>find_all()</h2><p><strong>find_all(name, attrs, recursive, text, kwargs)</strong></p>
-<h3 id="name-参数"><a href="#name-参数" class="headerlink" title="name 参数"></a>name 参数</h3><p><code>name</code> 参数可以查找所有名字为 <code>name</code> 的tag：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div></pre></td></tr></table></figure>
-<p>name参数的值可以是字符串、正则表达式、列表、方法或是 <code>True</code></p>
+<h3 id="name-参数"><a href="#name-参数" class="headerlink" title="name 参数"></a>name 参数</h3><p>name参数可以查找所有名字为 <code>name</code> 的tag：</p>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;title>The Dormouse's story&lt;/title>]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p> <code>name</code>参数的值可以是字符串、正则表达式、列表、方法或是 <code>True</code></p>
 <p>例如：</p>
 <p>在<code>find_all()</code>中传入一个<strong>字符串</strong>参数，Beautiful Soup会查找与字符串完整匹配的内容，下面的例子用于查找文档中所有的<code>&lt;b&gt;</code>标签:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'b'</span>)</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;]</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;b>The Dormouse's story&lt;/b>]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>如果传入<strong>列表</strong>参数，Beautiful Soup会将与列表中任一元素匹配的内容返回。下面代码找到文档中所有<code>&lt;a&gt;</code>标签和<code>&lt;b&gt;</code>标签:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all([<span class="string">"a"</span>, <span class="string">"b"</span>])</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
-<p><code>find_all()</code> 方法搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。</p>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"b"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;b>The Dormouse's story&lt;/b>, </span>
+<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>, </span>
+<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>, </span>
+<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/tillie" id="link3">Tillie&lt;/a>]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> <code>find_all()</code>方法搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。</p>
 <p><br></p>
 <h3 id="keyword-参数"><a href="#keyword-参数" class="headerlink" title="keyword 参数"></a>keyword 参数</h3><ol>
 <li><p>如果一个指定名字的参数不是搜索内置的参数名，搜索时会把该参数当作指定名字tag的属性来搜索，如果包含一个名字为 <code>id</code> 的参数，Beautiful Soup会搜索每个tag的”id”属性：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="string">'link2'</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>id<span class="token operator">=</span><span class="token string">'link2'</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><br></p>
 </li>
 <li><p>如果传入 <code>href</code> 参数，Beautiful Soup会搜索每个tag的”href”属性:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(href=re.compile(<span class="string">"elsie"</span>))</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>href<span class="token operator">=</span>re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"elsie"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><br></p>
 </li>
 <li><p>利用<code>true</code>参数在文档树中查找所有包含 <code>id</code> 属性的tag，无论 <code>id</code> 的值是什么:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="keyword">True</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>id<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>,</span>
+<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>,</span>
+<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/tillie" id="link3">Tillie&lt;/a>]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ol>
 <p>搜索指定名字的属性时可以使用的参数值包括字符串、正则表达式、列表或是 <code>True</code></p>
 <p><br></p>
 <h3 id="按CSS搜索"><a href="#按CSS搜索" class="headerlink" title="按CSS搜索"></a>按CSS搜索</h3><p>按照CSS类名搜索tag的功能非常实用，但标识CSS类名的关键字 <code>class</code> 在Python中是保留字，使用 <code>class</code> 做参数会导致语法错误。这里我们可以通过 <code>class_</code> 参数搜索有指定CSS类名的tag:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>, class_=<span class="string">"sister"</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">,</span> class_<span class="token operator">=</span><span class="token string">"sister"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>,</span>
+<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>,</span>
+<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/tillie" id="link3">Tillie&lt;/a>]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>class_</code> 参数同样接受不同类型的过滤器：字符串、正则表达式、方法或 <code>True</code> 。</p>
 <p><br></p>
 <h3 id="text-参数"><a href="#text-参数" class="headerlink" title="text 参数"></a>text 参数</h3><p>通过 <code>text</code> 参数可以搜搜文档中的字符串内容。与 <code>name</code> 参数的可选值一样，<code>text</code> 参数接受字符串、正则表达式、方法或 <code>True</code> ：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">soup.find_all(text=<span class="string">"Elsie"</span>)</div><div class="line"><span class="comment"># [u'Elsie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=[<span class="string">"Tillie"</span>, <span class="string">"Elsie"</span>, <span class="string">"Lacie"</span>])</div><div class="line"><span class="comment"># [u'Elsie', u'Lacie', u'Tillie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=re.compile(<span class="string">"Dormouse"</span>))</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story"]</span></div><div class="line">	</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_the_only_string_within_a_tag</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="string">""</span>Return <span class="keyword">True</span> <span class="keyword">if</span> this string <span class="keyword">is</span> the only child of its parent tag.<span class="string">""</span></div><div class="line">    <span class="keyword">return</span> (s == s.parent.string)</div><div class="line">	</div><div class="line">soup.find_all(text=is_the_only_string_within_a_tag)</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story", u'Elsie', u'Lacie', u'Tillie', u'...']</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token string">"Elsie"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [u'Elsie']</span>
+
+soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"Tillie"</span><span class="token punctuation">,</span> <span class="token string">"Elsie"</span><span class="token punctuation">,</span> <span class="token string">"Lacie"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [u'Elsie', u'Lacie', u'Tillie']</span>
+
+soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span>re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"Dormouse"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [u"The Dormouse's story", u"The Dormouse's story"]</span>
+
+<span class="token keyword">def</span> <span class="token function">is_the_only_string_within_a_tag</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token string">""</span>Return <span class="token boolean">True</span> <span class="token keyword">if</span> this string <span class="token keyword">is</span> the only child of its parent tag<span class="token punctuation">.</span><span class="token string">""</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>s <span class="token operator">==</span> s<span class="token punctuation">.</span>parent<span class="token punctuation">.</span>string<span class="token punctuation">)</span>
+
+soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span>is_the_only_string_within_a_tag<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [u"The Dormouse's story", u"The Dormouse's story", u'Elsie', u'Lacie', u'Tillie', u'...']</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><br></p>
 <h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><p>下面两行代码是等价的:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>)</div><div class="line">soup(<span class="string">"a"</span>)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span>
+soup<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>这两行也是等价的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.title.find_all(text=<span class="keyword">True</span>)</div><div class="line">soup.title(text=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>title<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+soup<span class="token punctuation">.</span>title<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><br></p>
 <h2 id="find"><a href="#find" class="headerlink" title="find()"></a>find()</h2><p><strong>find(name, attrs, recursive, text, kwargs)</strong></p>
 <p><code>find_all()</code> 方法将返回文档中符合条件的所有tag，尽管有时候我们只想得到一个结果.比如文档中只有一个<code>&lt;body&gt;</code>标签，那么使用 <code>find_all()</code>方法来查找<code>&lt;body&gt;</code>标签就不太合适， 使用 <code>find_all</code> 方法并设置 <code>limit=1</code> 参数不如直接使用 <code>find()</code> 方法。下面两行代码是等价的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'title'</span>, limit=<span class="number">1</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">'title'</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> limit<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># [&lt;title>The Dormouse's story&lt;/title>]</span>
+
+soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># &lt;title>The Dormouse's story&lt;/title></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>唯一的区别是 <code>find_all()</code> 方法的返回结果是值包含一个元素的列表,而 <code>find()</code> 方法直接返回结果.</p>
 <p><code>find_all()</code> 方法没有找到目标是返回空列表， <code>find()</code> 方法找不到目标时返回 <code>None</code>。</p>
 <p><br></p>
 <h3 id="简写-1"><a href="#简写-1" class="headerlink" title="简写"></a>简写</h3><p><code>soup.head.title</code>是利用tag的名字来简写，这个简写的原理就是多次调用当前tag的<code>find()</code>方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.head.title</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">"head"</span>).find(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>head<span class="token punctuation">.</span>title
+<span class="token comment" spellcheck="true"># &lt;title>The Dormouse's story&lt;/title></span>
+
+soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token string">"head"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># &lt;title>The Dormouse's story&lt;/title></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><br></p>
 <h1 id="输出文本"><a href="#输出文本" class="headerlink" title="输出文本"></a>输出文本</h1><p>如果只想得到tag中包含的文本内容，那么可以采用<code>get_text()</code>方法，这个方法获取到tag中包含的所有文版内容，包括子孙tag中的内容，并将结果作为Unicode字符串返回：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">'&lt;a href="http://example.com/"&gt;\nI linked to &lt;i&gt;example.com&lt;/i&gt;\n&lt;/a&gt;'</span></div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">	</div><div class="line">soup.get_text()</div><div class="line"><span class="comment"># u'\nI linked to example.com\n'</span></div><div class="line">soup.i.get_text()</div><div class="line"><span class="comment"># u'example.com'</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">markup <span class="token operator">=</span> <span class="token string">'&lt;a href="http://example.com/">\nI linked to &lt;i>example.com&lt;/i>\n&lt;/a>'</span>
+soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>markup<span class="token punctuation">)</span>
+
+soup<span class="token punctuation">.</span>get_text<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># u'\nI linked to example.com\n'</span>
+soup<span class="token punctuation">.</span>i<span class="token punctuation">.</span>get_text<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># u'example.com'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><br></p>
 <h1 id="关于编码"><a href="#关于编码" class="headerlink" title="关于编码"></a>关于编码</h1><p>使用Beautiful Soup解析后，文档都被转换成了Unicode。</p>
 <p>Beautiful Soup用了<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码。<code>BeautifulSoup</code>对象的<code>.original_encoding</code>属性记录了自动识别编码的结果：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">"&lt;h1&gt;Sacr\xc3\xa9 bleu!&lt;/h1&gt;"</span></div><div class="line">soup = BeautifulSoup(markup,<span class="string">'lxml'</span>)</div><div class="line">soup.original_encoding</div><div class="line"><span class="comment"># 'utf-8'</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">markup <span class="token operator">=</span> <span class="token string">"&lt;h1>Sacr\xc3\xa9 bleu!&lt;/h1>"</span>
+soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>markup<span class="token punctuation">,</span><span class="token string">'lxml'</span><span class="token punctuation">)</span>
+soup<span class="token punctuation">.</span>original_encoding
+<span class="token comment" spellcheck="true"># 'utf-8'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>注意：</strong></p>
 <p>如果先用<code>r = requests.get(url)</code>指令获得了html页面，建议先用指令<code>r.encoding</code>判断<code>r.text</code>所用的编码方式和源html是否相同（可以通过查看html中的charset= 来判断源html采用的编码方式），如果不同的话要用<code>r.encoding=</code>进行修改，再用<code>soup = BeautifulSoup(r.text,&#39;lxml&#39;)</code>命令。因为<code>r.text</code>会根据当前的编码方式把html转化为Unicode编码输出，如果html包含汉字，而没有采用<code>utf-8</code>进行编码的话，<code>r.text</code>没有办法把汉字转化为相应的Unicode编码，再送进Beautiful Soup中也就无法得到汉字信息了。</p>
 <p>也可以直接用<code>soup = BeautifulSoup(r.content,&#39;lxml&#39;)</code>指令，因为<code>r.content</code>返回的是bytes型原始编码信息，而Beautiful Soup可以用<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码，但获取文本信息时不建议这样使用，一般来说图像等多媒体内容用content更多一些。</p>
 <p><br></p>
 <p>而通过Beautiful Soup<strong>输出文档</strong>时，不管输入文档是什么编码方式，输出编码均为UTF-8编码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">b'''</span></div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;meta content="text/html; charset=ISO-Latin-1" http-equiv="Content-type" /&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body&gt;</div><div class="line">    &lt;p&gt;Sacr\xe9 bleu!&lt;/p&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div><div class="line">'''</div><div class="line">	</div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=utf-8" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p&gt;</span></div><div class="line"><span class="comment">#    Sacré bleu!</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">markup <span class="token operator">=</span> b<span class="token triple-quoted-string string">'''
+&lt;html>
+  &lt;head>
+    &lt;meta content="text/html; charset=ISO-Latin-1" http-equiv="Content-type" />
+  &lt;/head>
+  &lt;body>
+    &lt;p>Sacr\xe9 bleu!&lt;/p>
+  &lt;/body>
+&lt;/html>
+'''</span>
+
+soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>markup<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>soup<span class="token punctuation">.</span>prettify<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># &lt;html></span>
+<span class="token comment" spellcheck="true">#  &lt;head></span>
+<span class="token comment" spellcheck="true">#   &lt;meta content="text/html; charset=utf-8" http-equiv="Content-type" /></span>
+<span class="token comment" spellcheck="true">#  &lt;/head></span>
+<span class="token comment" spellcheck="true">#  &lt;body></span>
+<span class="token comment" spellcheck="true">#   &lt;p></span>
+<span class="token comment" spellcheck="true">#    Sacré bleu!</span>
+<span class="token comment" spellcheck="true">#   &lt;/p></span>
+<span class="token comment" spellcheck="true">#  &lt;/body></span>
+<span class="token comment" spellcheck="true"># &lt;/html></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果不想用UTF-8编码输出，可以将编码方式传入<code>prettify()</code>方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">print(soup.prettify(<span class="string">"latin-1"</span>))</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=latin-1" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment"># ...</span></div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>soup<span class="token punctuation">.</span>prettify<span class="token punctuation">(</span><span class="token string">"latin-1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># &lt;html></span>
+<span class="token comment" spellcheck="true">#  &lt;head></span>
+<span class="token comment" spellcheck="true">#   &lt;meta content="text/html; charset=latin-1" http-equiv="Content-type" /></span>
+<span class="token comment" spellcheck="true"># ...</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><br></p>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>关于Beautiful Soup还有很多其他用法，这里只是重点介绍了运用最多的两个搜索方法<code>find_all()</code>和<code>find()</code>，如果想了解更多的使用方法，请参考官方文档。</p>
 <p><br></p>
@@ -441,7 +596,7 @@
         <p><span>本文标题:</span><a href="/2017/06/15/爬虫学习笔记（三）/">爬虫笔记（三）：BeautifulSoup基础</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-15, 21:48:57</p>
-        <p><span>最后更新:</span>2017-06-22, 18:59:29</p>
+        <p><span>最后更新:</span>2017-06-23, 01:31:34</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/15/爬虫学习笔记（三）/" title="爬虫笔记（三）：BeautifulSoup基础">http://zangbo.me/2017/06/15/爬虫学习笔记（三）/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/15/爬虫学习笔记（三）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -513,15 +668,12 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"爬虫笔记（三）：BeautifulSoup基础　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"爬虫笔记（三）：BeautifulSoup基础　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
     
 </div>
-
-
-
 
 
 

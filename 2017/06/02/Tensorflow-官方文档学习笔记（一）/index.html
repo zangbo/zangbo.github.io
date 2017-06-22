@@ -101,12 +101,14 @@
             var s = document.getElementsByTagName("script")[0]; 
             s.parentNode.insertBefore(hm, s);
         })();
-    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    </script>
 
 
-</head>
+<link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
     <div class="left-col">
     <div class="overlay"></div>
 <div class="intrude-less">
@@ -318,11 +320,26 @@
 <p>TensorFlow的运算可以用有向图表示，其中<strong>节点</strong>(operation,简称op)代表数学运算，<strong>边</strong>表示节点之间的某种联系，负责传输多维数据(Tensors)。节点可以被分配到多个计算设备上，可以异步和并行的地执行操作。因为是有向图，所以只有等到之前的入度节点们的计算状态完成后，当前节点才能执行操作。</p>
 <p>图在定义的过程中不会被执行，必须在会话(Session)中被启动，会话把op分发到GPU或CPU设备上，同时提供执行方法。因此TensorFlow的程序通常被组织成<strong>构建阶段</strong>和<strong>执行阶段</strong>，在构建阶段，我们把所有op描述成一个图；在执行阶段，我们通过会话执行之前构建好的图。</p>
 <p>如下例子是实现一个简单计数器:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">one = tf.constant(<span class="number">1</span>)</div><div class="line">state = tf.Variable(<span class="number">0</span>)</div><div class="line">new_value = tf.add(state, one)</div><div class="line">update = tf.assign(state, new_value)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">    print(sess.run(state))</div><div class="line">    sess.run(update)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> tensorflow <span class="token keyword">as</span> tf
+one <span class="token operator">=</span> tf<span class="token punctuation">.</span>constant<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+state <span class="token operator">=</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+new_value <span class="token operator">=</span> tf<span class="token punctuation">.</span>add<span class="token punctuation">(</span>state<span class="token punctuation">,</span> one<span class="token punctuation">)</span>
+update <span class="token operator">=</span> tf<span class="token punctuation">.</span>assign<span class="token punctuation">(</span>state<span class="token punctuation">,</span> new_value<span class="token punctuation">)</span>
+sess <span class="token operator">=</span> tf<span class="token punctuation">.</span>Session<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tf<span class="token punctuation">.</span>global_variables_initializer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>update<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>以下是输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">0</div><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td></tr></table></figure>
-<p>最后记得关闭会话：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sess.close()</div></pre></td></tr></table></figure>
+<pre><code>0
+1
+2
+3
+4
+</code></pre><p>最后记得关闭会话：</p>
+<pre class="line-numbers language-python"><code class="language-python">sess<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>节点(op)的常用定义：</p>
 <p>1、<strong>常量(constant)</strong>，一般用作源节点，输出给其他节点做运算。</p>
 <p>2、<strong>变量(variable)</strong>，一般用来存储需要更新的参数，需要初始化。</p>
@@ -337,14 +354,17 @@
 
 <p>上例中，在<strong>构建阶段</strong>，我们定义一个常量one令它为1；定义了一个变量state令初始值为0；定义了一个加法操作<code>tf.add()</code>，它等同于+；定义了一个赋值操作<code>tf.assign()</code>，把更新后的值new_value赋给state。在该阶段所有操作都不会被执行。</p>
 <p>在<strong>执行阶段</strong>，我们需要启动一个会话来执行图。我们定义一个会话<code>sess = tf.Session()</code>，通过<code>sess.run()</code>执行操作。如果括号内为常量、变量等，则会取出相应的值，我们称该操作为<strong>Fetch</strong>；如果括号内为某个运算操作，则会执行该操作同时返回结果tensor。在执行阶段的最初我们首先需要初始化所有变量：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.global_variables_initializer().run()</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">tf<span class="token punctuation">.</span>global_variables_initializer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在该例中我们通过循环反复执行update节点，并打印出state变量中的值，实现一个简单计数器的操作。</p>
 <p>执行阶段结束后需要通过命令<code>sess.close()</code>结束会话，释放空间。也可以使用<code>with tf.Session() as sess:</code>代替<code>sess = tf.Session()</code>来建立会话，这样不需要手动释放空间。</p>
 <p>需要注意的是，在执行会话的<code>sess.run()</code>操作之前，任何对op的定义都不会被执行。</p>
 <p><br></p>
 <h1 id="MNIST机器学习入门"><a href="#MNIST机器学习入门" class="headerlink" title="MNIST机器学习入门"></a>MNIST机器学习入门</h1><p>本章介绍了MNIST数据集和Softmax回归，前者是个入门级的计算机视觉数据集，包含各种手写数字图片，官方文档把MNIST称为机器学习届的“Hello World”。Softmax Regression是一个非常基础的数学模型，在多分类问题中被广泛使用，在斯坦福大学的公开课CS231n中，Softmax回归也被放在最前面来讲，可见其重要性。本章学习用Softmax回归训练一个机器学习模型用于预测MNIST数据集中的数字。</p>
 <p>首先下载MNIST数据集，我们只需要用如下两行代码自动下载并且引用：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>examples<span class="token punctuation">.</span>tutorials<span class="token punctuation">.</span>mnist <span class="token keyword">import</span> input_data
+mnist <span class="token operator">=</span> input_data<span class="token punctuation">.</span>read_data_sets<span class="token punctuation">(</span><span class="token string">"MNIST_data/"</span><span class="token punctuation">,</span> one_hot<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p> 每张图片包含28*28个像素点，我们可以用一个数字矩阵来表示它。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230309_tE1HOU_11.jpeg?imageView2/2/w/800" alt=""></center>
 
@@ -356,7 +376,20 @@
 
 <p>简写为：</p>
 <p>$$<br>y = \text{softmax}(Wx + b)<br>$$<br>在我们的模型中，训练数据共60000张图片，但由于我们采用随机梯度下降来优化，因此我们x的尺寸为[batch_size,784]，W的尺寸为[784,10]，b的尺寸为[1,10]，最终输出的<code>y</code>尺寸和标签<code>y_</code>尺寸均为[batch_size,10]。具体实现我用的jupyter notebook，过程如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</div><div class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</div><div class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.5</span>).minimize(cross_entropy)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> tensorflow <span class="token keyword">as</span> tf
+x <span class="token operator">=</span> tf<span class="token punctuation">.</span>placeholder<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>float32<span class="token punctuation">,</span> <span class="token punctuation">[</span>None<span class="token punctuation">,</span> <span class="token number">784</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+W <span class="token operator">=</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">784</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+y <span class="token operator">=</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>softmax<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>x<span class="token punctuation">,</span> W<span class="token punctuation">)</span> <span class="token operator">+</span> b<span class="token punctuation">)</span>
+y_ <span class="token operator">=</span> tf<span class="token punctuation">.</span>placeholder<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>float32<span class="token punctuation">,</span> <span class="token punctuation">[</span>None<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+cross_entropy <span class="token operator">=</span> tf<span class="token punctuation">.</span>reduce_mean<span class="token punctuation">(</span><span class="token operator">-</span>tf<span class="token punctuation">.</span>reduce_sum<span class="token punctuation">(</span>y_ <span class="token operator">*</span> tf<span class="token punctuation">.</span>log<span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">,</span> reduction_indices<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+train_step <span class="token operator">=</span> tf<span class="token punctuation">.</span>train<span class="token punctuation">.</span>GradientDescentOptimizer<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">.</span>minimize<span class="token punctuation">(</span>cross_entropy<span class="token punctuation">)</span>
+sess <span class="token operator">=</span> tf<span class="token punctuation">.</span>Session<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tf<span class="token punctuation">.</span>global_variables_initializer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    batch_xs<span class="token punctuation">,</span> batch_ys <span class="token operator">=</span> mnist<span class="token punctuation">.</span>train<span class="token punctuation">.</span>next_batch<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
+    sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>train_step<span class="token punctuation">,</span> feed_dict<span class="token operator">=</span><span class="token punctuation">{</span>x<span class="token punctuation">:</span> batch_xs<span class="token punctuation">,</span> y_<span class="token punctuation">:</span> batch_ys<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>我们首先定义了变量W和b，用来存储模型参数，在一遍遍迭代中不断的对其进行更新，初始化为全零矩阵。然后定义占位符x，先在图中分配好节点，类型为float型，None表示此张量的第一个维度可以是任何长度的，在执行时可以利用feed操作输入任何数量的图片。接着定义了矩阵乘法操作<code>tf.matmul()</code>和加操作+，以及定义了节点y进行softmax计算。</p>
 <p>我把数据流图简单画了下：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg?imageView2/2/w/800" alt=""></center>
@@ -367,7 +400,10 @@
 <p>因此需要定义一个新的占位符<code>y_</code>来表示标签数据，来计算交叉熵，我们采用的batch_size为100，这里计算的是100张图片的交叉熵总和。在这里，我们定义一个最优化操作train_step，要求TensorFlow用梯度下降算法(gradient descent algorithm)以0.01的学习速率最小化交叉熵。</p>
 <p>到这里，我们程序的构建阶段就完成了，接下来是执行阶段。我们启动一个会话<code>sess = tf.Session()</code>，首先初始化所有变量，然后开始启动训练，这里让模型循环训练迭代1000次，每次随机抓取训练数据中100个数据点，然后用它们替换之前定义的占位符<code>x</code>和<code>y_</code>中的参数(feed操作)。这种随机抓取数据训练的方法称为<strong>随机梯度下降</strong>，可以很好的节省训练开销，同时最大化的学习数据集的总体性能。</p>
 <p>训练用的时间比较短，用CUDA只要几秒钟，训练结束后我们需要验证模型的性能，MNIST数据集有10000张测试图片用于评估模型的泛化性能。下面是测试阶段代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">correct_prediction = tf.equal(tf.argmax(y,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">print(sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels&#125;))</div></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python">correct_prediction <span class="token operator">=</span> tf<span class="token punctuation">.</span>equal<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>y<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tf<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>y_<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+accuracy <span class="token operator">=</span> tf<span class="token punctuation">.</span>reduce_mean<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>cast<span class="token punctuation">(</span>correct_prediction<span class="token punctuation">,</span> tf<span class="token punctuation">.</span>float32<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>accuracy<span class="token punctuation">,</span> feed_dict<span class="token operator">=</span><span class="token punctuation">{</span>x<span class="token punctuation">:</span> mnist<span class="token punctuation">.</span>test<span class="token punctuation">.</span>images<span class="token punctuation">,</span> y_<span class="token punctuation">:</span> mnist<span class="token punctuation">.</span>test<span class="token punctuation">.</span>labels<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>先介绍下用到的几个主要函数：</p>
 <p><code>tf.argmax()</code>函数能给出tensor对象在某一维上的最大值所在的索引值。</p>
 <p><code>tf.equal()</code>函数来对比两个tensor是否相同，返回一组布尔值。</p>
@@ -464,15 +500,12 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"TensorFlow 官方文档学习笔记（一）　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 官方文档学习笔记（一）　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
     
 </div>
-
-
-
 
 
 
