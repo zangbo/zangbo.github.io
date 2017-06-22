@@ -206,7 +206,7 @@
                 
                 <section class="switch-part switch-part3">
                 
-                    <div id="js-aboutme">SJTU在读，机器学习相关都感兴趣，摄影爱好者。</div>
+                    <div id="js-aboutme">SJTU在读研究生，机器学习相关，摄影爱好者，喜欢写一些随笔。</div>
                 </section>
                 
             </div>
@@ -483,7 +483,30 @@
         }
     </script>
     
-    <script> loadComment(); </script>
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
 
     <div id="uyan_frame"></div>
 </section>
@@ -509,7 +532,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/编码相关知识/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/爬虫学习笔记（二）/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/爬虫学习笔记（一）/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/送女友的生日礼物/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec之skip-gram模型/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/关于随机梯度下降/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 官方文档学习笔记（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">TensorFlow 官方文档学习笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/自我介绍/">自我介绍</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/编码相关知识/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/爬虫学习笔记（二）/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/爬虫学习笔记（一）/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/送女友的生日礼物/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec之skip-gram模型/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/关于随机梯度下降/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 官方文档学习笔记（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">TensorFlow 官方文档学习笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/自我介绍/">欢迎来到我的小站</a></li></ul>
 
 
 
