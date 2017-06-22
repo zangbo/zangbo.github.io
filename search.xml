@@ -3,60 +3,6 @@
   
     
     <entry>
-      <title><![CDATA[配置GithubPage二级域名]]></title>
-      <url>/2017/06/22/%E9%85%8D%E7%BD%AEGithubPage%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
-<a id="more"></a>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<h1 id="Github-Page种类"><a href="#Github-Page种类" class="headerlink" title="Github Page种类"></a>Github Page种类</h1><ol>
-<li><p><code>UserPage</code>: 用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p>
-</li>
-<li><p><code>ProjectPage</code>: 用户创建出来的其他网站项目也可以托管在github上，首先新建一个项目，然后建立一个名叫<code>gh-pages</code>的branch，这个branch里的文件就是page的站点文件。</p>
-<p><br></p>
-</li>
-</ol>
-<h1 id="UserPage默认域名"><a href="#UserPage默认域名" class="headerlink" title="UserPage默认域名"></a>UserPage默认域名</h1><p>用户站点的默认域名是<code>username.github.io</code>，比如我的站点就是<code>zangbo.github.io</code></p>
-<p><br></p>
-<h1 id="ProjectPage默认域名"><a href="#ProjectPage默认域名" class="headerlink" title="ProjectPage默认域名"></a>ProjectPage默认域名</h1><p>其他网站项目的默认域名，是使用UserPage域名加上二级目录实现的，比如我有个项目叫<code>mylove</code>，那么该项目的站点就是访问 <code>zangbo.github.io/mylove</code></p>
-<p><br></p>
-<h1 id="UserPage自定义域名"><a href="#UserPage自定义域名" class="headerlink" title="UserPage自定义域名"></a>UserPage自定义域名</h1><p>我有自己的域名，如何绑定到UserPage? 比如用<code>www.zangbo.me</code>替代<code>zangbo.github.io</code>，它是使用CNAME技术来实现的。</p>
-<p>具体步骤可以参考我前些日子写的文章：《Mac环境利用GitHub和Hexo搭建个人博客》，除了添加<code>CNAME</code>指向还应添加<code>A</code>指向。</p>
-<blockquote>
-<p>CNAME指向之后，当浏览器访问<code>www.zangbo.me</code>的时候浏览器就知道<code>实际上</code>是访问<code>zangbo.github.io</code><br>添加CNAME 文件之后，当GithubPage服务器接收到访问<code>www.zangbo.me</code>的http请求，就知道，对应的是这个工程了。</p>
-</blockquote>
-<p><br></p>
-<h1 id="ProjectPage自定义域名"><a href="#ProjectPage自定义域名" class="headerlink" title="ProjectPage自定义域名"></a>ProjectPage自定义域名</h1><p>比如用<code>mylove.zangbo.me</code>替代<code>zangbo.github.io/mylove</code></p>
-<ol>
-<li><p>同样的，去域名注册商那里，做一个<code>CNAME</code>指向，将<code>mylove.zangbo.me</code> 指向 <code>zangbo.github.io</code>，如果以后会有很多二级域名都指过来，操作方式相同。</p>
-</li>
-<li><p>在<code>zangbo/mylove</code>这个项目(也就是page项目)根目录下建一个<code>CNAME</code>文件，里面填写<code>mylove.zangbo.me</code>，然后提交到仓库;</p>
-</li>
-<li><p>等几分钟。</p>
-<p><br></p>
-</li>
-</ol>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.zhaoxiaodan.com/%E5%85%B6%E4%BB%96/%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AEGithubPage%E7%9A%84%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D.html" target="_blank" rel="external">如何配置GithubPage的二级域名</a></p>
-<p><br></p>
-</the>]]></content>
-      
-        <categories>
-            
-            <category> 教程 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 个人网站 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[爬虫笔记（四）：获取某地历史天气数据]]></title>
       <url>/2017/06/22/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
       <content type="html"><![CDATA[<excerpt in="" index="" |="" 首页摘要=""> 
@@ -549,6 +495,60 @@
             
         </categories>
         
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[配置GithubPage二级域名]]></title>
+      <url>/2017/06/12/%E9%85%8D%E7%BD%AEGithubPage%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="Github-Page种类"><a href="#Github-Page种类" class="headerlink" title="Github Page种类"></a>Github Page种类</h1><ol>
+<li><p><code>UserPage</code>: 用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p>
+</li>
+<li><p><code>ProjectPage</code>: 用户创建出来的其他网站项目也可以托管在github上，首先新建一个项目，然后建立一个名叫<code>gh-pages</code>的branch，这个branch里的文件就是page的站点文件。</p>
+<p><br></p>
+</li>
+</ol>
+<h1 id="UserPage默认域名"><a href="#UserPage默认域名" class="headerlink" title="UserPage默认域名"></a>UserPage默认域名</h1><p>用户站点的默认域名是<code>username.github.io</code>，比如我的站点就是<code>zangbo.github.io</code></p>
+<p><br></p>
+<h1 id="ProjectPage默认域名"><a href="#ProjectPage默认域名" class="headerlink" title="ProjectPage默认域名"></a>ProjectPage默认域名</h1><p>其他网站项目的默认域名，是使用UserPage域名加上二级目录实现的，比如我有个项目叫<code>mylove</code>，那么该项目的站点就是访问 <code>zangbo.github.io/mylove</code></p>
+<p><br></p>
+<h1 id="UserPage自定义域名"><a href="#UserPage自定义域名" class="headerlink" title="UserPage自定义域名"></a>UserPage自定义域名</h1><p>我有自己的域名，如何绑定到UserPage? 比如用<code>www.zangbo.me</code>替代<code>zangbo.github.io</code>，它是使用CNAME技术来实现的。</p>
+<p>具体步骤可以参考我前些日子写的文章：《Mac环境利用GitHub和Hexo搭建个人博客》，除了添加<code>CNAME</code>指向还应添加<code>A</code>指向。</p>
+<blockquote>
+<p>CNAME指向之后，当浏览器访问<code>www.zangbo.me</code>的时候浏览器就知道<code>实际上</code>是访问<code>zangbo.github.io</code><br>添加CNAME 文件之后，当GithubPage服务器接收到访问<code>www.zangbo.me</code>的http请求，就知道，对应的是这个工程了。</p>
+</blockquote>
+<p><br></p>
+<h1 id="ProjectPage自定义域名"><a href="#ProjectPage自定义域名" class="headerlink" title="ProjectPage自定义域名"></a>ProjectPage自定义域名</h1><p>比如用<code>mylove.zangbo.me</code>替代<code>zangbo.github.io/mylove</code></p>
+<ol>
+<li><p>同样的，去域名注册商那里，做一个<code>CNAME</code>指向，将<code>mylove.zangbo.me</code> 指向 <code>zangbo.github.io</code>，如果以后会有很多二级域名都指过来，操作方式相同。</p>
+</li>
+<li><p>在<code>zangbo/mylove</code>这个项目(也就是page项目)根目录下建一个<code>CNAME</code>文件，里面填写<code>mylove.zangbo.me</code>，然后提交到仓库;</p>
+</li>
+<li><p>等几分钟。</p>
+<p><br></p>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.zhaoxiaodan.com/%E5%85%B6%E4%BB%96/%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AEGithubPage%E7%9A%84%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D.html" target="_blank" rel="external">如何配置GithubPage的二级域名</a></p>
+<p><br></p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> 教程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 个人网站 </tag>
+            
+        </tags>
         
     </entry>
     
