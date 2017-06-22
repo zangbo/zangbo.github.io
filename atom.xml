@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-06-22T14:43:23.000Z</updated>
+  <updated>2017-06-22T14:48:33.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://zangbo.me/2017/06/22/%E9%85%8D%E7%BD%AEGithubPage%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/"/>
     <id>http://zangbo.me/2017/06/22/配置GithubPage二级域名/</id>
     <published>2017-06-22T14:10:55.000Z</published>
-    <updated>2017-06-22T14:43:23.000Z</updated>
+    <updated>2017-06-22T14:48:33.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个子网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
+    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -60,7 +60,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;因为女友生日做了两个子网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。&lt;/excerpt&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。&lt;/excerpt&gt;&lt;/p&gt;
     
     </summary>
     
