@@ -3,6 +3,128 @@
   
     
     <entry>
+      <title><![CDATA[爬虫笔记（四）：获取某地历史天气数据]]></title>
+      <url>/2017/06/22/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
+      <content type="html"><![CDATA[<excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。</p>
+<p>中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。</p>
+<p>所有代码基于python3.5版本。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近参加了天池的一个大数据竞赛，因为需要用到江苏省扬中市的历史天气信息，所以就写了个简单的爬虫程序来爬取。有很多网站都提供了历史天气，这里我们选择的网站是：<a href="http://lishi.tianqi.com/yangzhong/index.html" target="_blank" rel="external">扬中市历史天气-历史天气网</a>。</p>
+<p><br></p>
+<h1 id="分析网站"><a href="#分析网站" class="headerlink" title="分析网站"></a>分析网站</h1><ol>
+<li><p>打开上述网站，往下滑动，可以看到有一栏记录了该地每个月的天气信息，右键打开审查元素，查看该信息所在的标签，发现每个月的天气信息都在标签<code>&lt;div class=&#39;tqtongji1&#39;&gt;</code>下面的<code>&lt;a&gt;</code>标签中。</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_p0q980_2.jpeg" alt="历史月份信息"></center>
+
+<p><br></p>
+</li>
+<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji1&#39;).find_all(&#39;a&#39;)</code>命令得到所有月份的信息，提取出其中的链接，这里只提取最近30个月的信息。</p>
+<p><br></p>
+</li>
+<li><p>打开其中一个月份链接，右键审查元素，发现该月份每天的天气信息都在标签<code>&lt;div class=&#39;tqtongji2&#39;&gt;</code>下面的<code>&lt;li&gt;</code>标签中。</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XtWKBE_3.jpeg" alt="部分天气信息"></center>
+
+<p><br></p>
+</li>
+<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;li&#39;)</code>命令得到该月份每天的部分天气信息并保存在<code>list</code>中，同时用<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;a&#39;)</code>命令提取出其中的链接。</p>
+<p><br></p>
+</li>
+<li><p>打开其中一天的链接，右键审查元素，发现该天的其他天气信息都在标签<code>&lt;div class=&#39;history_sh&#39;&gt;</code>下面的<code>&lt;span&gt;</code>标签中。</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XNW30r_4.jpeg" alt="其他天气信息"></center>
+
+<p><br></p>
+</li>
+<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;history_sh&#39;).find_all(&#39;span&#39;)</code>命令提取出该天的其他天气信息并保存在<code>list</code>中。</p>
+<p><br></p>
+</li>
+<li><p>利用numpy数组和pandas的DataFrame结构对提取出的数据进行整合，最后输出为CSV文件。</p>
+</li>
+</ol>
+<p><br></p>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">	</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">History_weather</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">begin_url</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_index = self.get_all_weather_index(url)</div><div class="line">        all_weather_index = all_weather_index[:<span class="number">30</span>]</div><div class="line">        print(<span class="string">"Get all weather index!"</span>)</div><div class="line">        result_weather = self.get_all_weather(all_weather_index)</div><div class="line">        result_weather.to_csv(<span class="string">'all_weather.csv'</span>, index=<span class="keyword">False</span>)</div><div class="line">        print(<span class="string">'Save all weather success!'</span>)</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_soup</span><span class="params">(self, url)</span>:</span></div><div class="line">        headers = &#123;</div><div class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 \</span></div><div class="line">            (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'&#125;</div><div class="line">        html = requests.get(url, headers)</div><div class="line">        soup = BeautifulSoup(html.text, <span class="string">'lxml'</span>)</div><div class="line">        <span class="keyword">return</span> soup</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather_index</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_soup = self.get_soup(url)</div><div class="line">        all_weather_index = all_weather_soup.find(</div><div class="line">            <span class="string">'div'</span>, class_=<span class="string">'tqtongji1'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">        <span class="keyword">return</span> all_weather_index</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather</span><span class="params">(self, all_weather_index)</span>:</span></div><div class="line">        all_month_weather = list()</div><div class="line">        day_weather = list()</div><div class="line">        	</div><div class="line">        <span class="keyword">for</span> weather <span class="keyword">in</span> all_weather_index:</div><div class="line">            month_url = weather[<span class="string">'href'</span>]</div><div class="line">            month_name = weather.get_text()</div><div class="line">            month_weather_soup = self.get_soup(month_url)</div><div class="line">            month_weather = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'li'</span>)</div><div class="line">            day_weather_url = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">            <span class="keyword">for</span> day <span class="keyword">in</span> day_weather_url:</div><div class="line">                day_url = day[<span class="string">'href'</span>]</div><div class="line">                day_soup = self.get_soup(day_url)</div><div class="line">                day_text = day_soup.find(</div><div class="line">                    <span class="string">'div'</span>, class_=<span class="string">'history_sh'</span>).find_all(<span class="string">'span'</span>)</div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> day_text:</div><div class="line">                    day_weather.append(i.get_text())</div><div class="line">            weather_list = list()</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> month_weather:</div><div class="line">                weather_list.append(i.get_text())</div><div class="line">            weather_list = weather_list[<span class="number">6</span>:]</div><div class="line">            all_month_weather = all_month_weather + weather_list</div><div class="line">            print(<span class="string">"Get weather :"</span> + month_name)</div><div class="line">            	</div><div class="line">        day_weather = np.array(day_weather).reshape(<span class="number">-1</span>, <span class="number">8</span>)</div><div class="line">        day_weather = DataFrame(day_weather, columns=[</div><div class="line">            <span class="string">'Ultraviolet'</span>, <span class="string">'Dress'</span>, <span class="string">'Travel'</span>, <span class="string">'Comfort_level'</span>,</div><div class="line">            <span class="string">'Morning_exercise'</span>, <span class="string">'Car_wash'</span>, <span class="string">'Drying_index'</span>, <span class="string">'Breath_allergy'</span>])</div><div class="line">        all_month_weather = np.array(all_month_weather).reshape(<span class="number">-1</span>, <span class="number">6</span>)</div><div class="line">        all_month_weather = DataFrame(all_month_weather, columns=[</div><div class="line">            <span class="string">'Date'</span>, <span class="string">'Max_temp'</span>, <span class="string">'Min_temp'</span>, </div><div class="line">            <span class="string">'Whether'</span>, <span class="string">'Wind_direction'</span>, <span class="string">'Wind_power'</span>])</div><div class="line">        print(all_month_weather.shape)</div><div class="line">        print(day_weather.shape)</div><div class="line">        result_weather = pd.merge(</div><div class="line">            all_month_weather, day_weather, left_index=<span class="keyword">True</span>, right_index=<span class="keyword">True</span>)</div><div class="line">        <span class="keyword">return</span> result_weather</div><div class="line">	</div><div class="line">history_weather = History_weather()</div><div class="line">begin_url = <span class="string">'http://lishi.tianqi.com/yangzhong/index.html'</span></div><div class="line">history_weather.begin_url(begin_url)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>打开<code>all_weather.csv</code>文件：</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Max_temp</th>
+<th>Min_temp</th>
+<th>Whether</th>
+<th>…</th>
+<th>Breath_allergy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-04-01</td>
+<td>18</td>
+<td>8</td>
+<td>晴</td>
+<td>…</td>
+<td>极易</td>
+</tr>
+<tr>
+<td>2017-04-02</td>
+<td>22</td>
+<td>10</td>
+<td>晴</td>
+<td>…</td>
+<td>极易</td>
+</tr>
+<tr>
+<td>2017-04-03</td>
+<td>24</td>
+<td>12</td>
+<td>多云</td>
+<td>…</td>
+<td>极易</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>2014-11-30</td>
+<td>10</td>
+<td>2</td>
+<td>多云转晴</td>
+<td>…</td>
+<td>极不易发</td>
+</tr>
+</tbody>
+</table>
+<p>共得到910天、14项天气特征数据。</p>
+<p><br></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>以上只是简单的调用Requests和Beautiful Soup来进行爬取，是一个非常简单的爬虫实现，后面我们会学习更加高阶的爬虫方法。</p>
+<p>爬虫源代码可以在我的<a href="https://github.com/zangbo/MachineLearning/tree/master/Web%20Crawler/history%20weather" target="_blank" rel="external">Github</a>上下载。</p>
+<p><br></p>
+</the></excerpt>]]></content>
+      
+        <categories>
+            
+            <category> 数据挖掘 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 爬虫 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[爬虫笔记（三）：BeautifulSoup基础]]></title>
       <url>/2017/06/15/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
