@@ -564,6 +564,22 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
+<div id="aplayer1" class="aplayer" style="margin-bottom: 20px;"></div>
+		<script>
+			new APlayer({
+				element: document.getElementById("aplayer1"),
+				narrow: false,
+				autoplay: false,
+				showlrc: 0,
+				music: {
+					title: "童话镇",
+					author: "陈一发儿",
+					url: "http://mp3.haoduoge.com/s/2016-12-24/1482568978.mp3",
+					pic: "http://p4.music.126.net/tfa811GLreJI_S0h9epqRA==/3394192426154346.jpg?param=130y130",
+				}
+			});
+		</script>
+<p><br></p>
 <h1 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h1><p>以下是我的两个网站：</p>
 <ul>
 <li>博莎小站：<a href="http://lisa.zangbo.me" target="_blank" rel="external">http://lisa.zangbo.me</a></li>

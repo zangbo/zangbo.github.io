@@ -590,7 +590,7 @@
     <link href="http://zangbo.me/2017/06/12/%E9%80%81%E5%A5%B3%E5%8F%8B%E7%9A%84%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9/"/>
     <id>http://zangbo.me/2017/06/12/送女友的生日礼物/</id>
     <published>2017-06-12T13:36:59.000Z</published>
-    <updated>2017-06-22T05:36:38.000Z</updated>
+    <updated>2017-06-23T07:40:01.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -600,6 +600,22 @@
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
+<p><br></p>
+<div id="aplayer1" class="aplayer" style="margin-bottom: 20px;"></div>
+		<script>
+			new APlayer({
+				element: document.getElementById("aplayer1"),
+				narrow: false,
+				autoplay: false,
+				showlrc: 0,
+				music: {
+					title: "童话镇",
+					author: "陈一发儿",
+					url: "http://mp3.haoduoge.com/s/2016-12-24/1482568978.mp3",
+					pic: "http://p4.music.126.net/tfa811GLreJI_S0h9epqRA==/3394192426154346.jpg?param=130y130",
+				}
+			});
+		</script>
 <p><br></p>
 <h1 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h1><p>以下是我的两个网站：</p>
 <ul>
