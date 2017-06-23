@@ -62,79 +62,7 @@
 </li>
 </ol>
 <p><br></p>
-<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-<span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
-<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
-<span class="token keyword">from</span> pandas <span class="token keyword">import</span> DataFrame
-<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-
-<span class="token keyword">class</span> <span class="token class-name">History_weather</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">begin_url</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> url<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        all_weather_index <span class="token operator">=</span> self<span class="token punctuation">.</span>get_all_weather_index<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-        all_weather_index <span class="token operator">=</span> all_weather_index<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">30</span><span class="token punctuation">]</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Get all weather index!"</span><span class="token punctuation">)</span>
-        result_weather <span class="token operator">=</span> self<span class="token punctuation">.</span>get_all_weather<span class="token punctuation">(</span>all_weather_index<span class="token punctuation">)</span>
-        result_weather<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span><span class="token string">'all_weather.csv'</span><span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Save all weather success!'</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">def</span> <span class="token function">get_soup</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> url<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        headers <span class="token operator">=</span> <span class="token punctuation">{</span>
-            <span class="token string">'User-Agent'</span><span class="token punctuation">:</span> 'Mozilla<span class="token operator">/</span><span class="token number">5.0</span> <span class="token punctuation">(</span>Macintosh<span class="token punctuation">;</span> Intel Mac OS X 10_12_3<span class="token punctuation">)</span> AppleWebKit<span class="token operator">/</span><span class="token number">602.4</span><span class="token punctuation">.</span><span class="token number">8</span> \
-            <span class="token punctuation">(</span>KHTML<span class="token punctuation">,</span> like Gecko<span class="token punctuation">)</span> Version<span class="token operator">/</span><span class="token number">10.0</span><span class="token punctuation">.</span><span class="token number">3</span> Safari<span class="token operator">/</span><span class="token number">602.4</span><span class="token punctuation">.</span><span class="token number">8</span>'<span class="token punctuation">}</span>
-        html <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">,</span> headers<span class="token punctuation">)</span>
-        soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>html<span class="token punctuation">.</span>text<span class="token punctuation">,</span> <span class="token string">'lxml'</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> soup
-
-    <span class="token keyword">def</span> <span class="token function">get_all_weather_index</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> url<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        all_weather_soup <span class="token operator">=</span> self<span class="token punctuation">.</span>get_soup<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-        all_weather_index <span class="token operator">=</span> all_weather_soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span>
-            <span class="token string">'div'</span><span class="token punctuation">,</span> class_<span class="token operator">=</span><span class="token string">'tqtongji1'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> all_weather_index
-
-    <span class="token keyword">def</span> <span class="token function">get_all_weather</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> all_weather_index<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        all_month_weather <span class="token operator">=</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        day_weather <span class="token operator">=</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-        <span class="token keyword">for</span> weather <span class="token keyword">in</span> all_weather_index<span class="token punctuation">:</span>
-            month_url <span class="token operator">=</span> weather<span class="token punctuation">[</span><span class="token string">'href'</span><span class="token punctuation">]</span>
-            month_name <span class="token operator">=</span> weather<span class="token punctuation">.</span>get_text<span class="token punctuation">(</span><span class="token punctuation">)</span>
-            month_weather_soup <span class="token operator">=</span> self<span class="token punctuation">.</span>get_soup<span class="token punctuation">(</span>month_url<span class="token punctuation">)</span>
-            month_weather <span class="token operator">=</span> month_weather_soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span>
-                <span class="token string">'div'</span><span class="token punctuation">,</span> class_<span class="token operator">=</span><span class="token string">'tqtongji2'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'li'</span><span class="token punctuation">)</span>
-            day_weather_url <span class="token operator">=</span> month_weather_soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span>
-                <span class="token string">'div'</span><span class="token punctuation">,</span> class_<span class="token operator">=</span><span class="token string">'tqtongji2'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
-            <span class="token keyword">for</span> day <span class="token keyword">in</span> day_weather_url<span class="token punctuation">:</span>
-                day_url <span class="token operator">=</span> day<span class="token punctuation">[</span><span class="token string">'href'</span><span class="token punctuation">]</span>
-                day_soup <span class="token operator">=</span> self<span class="token punctuation">.</span>get_soup<span class="token punctuation">(</span>day_url<span class="token punctuation">)</span>
-                day_text <span class="token operator">=</span> day_soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span>
-                    <span class="token string">'div'</span><span class="token punctuation">,</span> class_<span class="token operator">=</span><span class="token string">'history_sh'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'span'</span><span class="token punctuation">)</span>
-                <span class="token keyword">for</span> i <span class="token keyword">in</span> day_text<span class="token punctuation">:</span>
-                    day_weather<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token punctuation">.</span>get_text<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            weather_list <span class="token operator">=</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token keyword">for</span> i <span class="token keyword">in</span> month_weather<span class="token punctuation">:</span>
-                weather_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token punctuation">.</span>get_text<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            weather_list <span class="token operator">=</span> weather_list<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
-            all_month_weather <span class="token operator">=</span> all_month_weather <span class="token operator">+</span> weather_list
-            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Get weather :"</span> <span class="token operator">+</span> month_name<span class="token punctuation">)</span>
-
-        day_weather <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>day_weather<span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span>
-        day_weather <span class="token operator">=</span> DataFrame<span class="token punctuation">(</span>day_weather<span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span>
-            <span class="token string">'Ultraviolet'</span><span class="token punctuation">,</span> <span class="token string">'Dress'</span><span class="token punctuation">,</span> <span class="token string">'Travel'</span><span class="token punctuation">,</span> <span class="token string">'Comfort_level'</span><span class="token punctuation">,</span>
-            <span class="token string">'Morning_exercise'</span><span class="token punctuation">,</span> <span class="token string">'Car_wash'</span><span class="token punctuation">,</span> <span class="token string">'Drying_index'</span><span class="token punctuation">,</span> <span class="token string">'Breath_allergy'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-        all_month_weather <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>all_month_weather<span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>
-        all_month_weather <span class="token operator">=</span> DataFrame<span class="token punctuation">(</span>all_month_weather<span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span>
-            <span class="token string">'Date'</span><span class="token punctuation">,</span> <span class="token string">'Max_temp'</span><span class="token punctuation">,</span> <span class="token string">'Min_temp'</span><span class="token punctuation">,</span> 
-            <span class="token string">'Whether'</span><span class="token punctuation">,</span> <span class="token string">'Wind_direction'</span><span class="token punctuation">,</span> <span class="token string">'Wind_power'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>all_month_weather<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>day_weather<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
-        result_weather <span class="token operator">=</span> pd<span class="token punctuation">.</span>merge<span class="token punctuation">(</span>
-            all_month_weather<span class="token punctuation">,</span> day_weather<span class="token punctuation">,</span> left_index<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> right_index<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> result_weather
-
-history_weather <span class="token operator">=</span> History_weather<span class="token punctuation">(</span><span class="token punctuation">)</span>
-begin_url <span class="token operator">=</span> <span class="token string">'http://lishi.tianqi.com/yangzhong/index.html'</span>
-history_weather<span class="token punctuation">.</span>begin_url<span class="token punctuation">(</span>begin_url<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">	</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">History_weather</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">begin_url</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_index = self.get_all_weather_index(url)</div><div class="line">        all_weather_index = all_weather_index[:<span class="number">30</span>]</div><div class="line">        print(<span class="string">"Get all weather index!"</span>)</div><div class="line">        result_weather = self.get_all_weather(all_weather_index)</div><div class="line">        result_weather.to_csv(<span class="string">'all_weather.csv'</span>, index=<span class="keyword">False</span>)</div><div class="line">        print(<span class="string">'Save all weather success!'</span>)</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_soup</span><span class="params">(self, url)</span>:</span></div><div class="line">        headers = &#123;</div><div class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 \</span></div><div class="line">            (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'&#125;</div><div class="line">        html = requests.get(url, headers)</div><div class="line">        soup = BeautifulSoup(html.text, <span class="string">'lxml'</span>)</div><div class="line">        <span class="keyword">return</span> soup</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather_index</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_soup = self.get_soup(url)</div><div class="line">        all_weather_index = all_weather_soup.find(</div><div class="line">            <span class="string">'div'</span>, class_=<span class="string">'tqtongji1'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">        <span class="keyword">return</span> all_weather_index</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather</span><span class="params">(self, all_weather_index)</span>:</span></div><div class="line">        all_month_weather = list()</div><div class="line">        day_weather = list()</div><div class="line">        	</div><div class="line">        <span class="keyword">for</span> weather <span class="keyword">in</span> all_weather_index:</div><div class="line">            month_url = weather[<span class="string">'href'</span>]</div><div class="line">            month_name = weather.get_text()</div><div class="line">            month_weather_soup = self.get_soup(month_url)</div><div class="line">            month_weather = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'li'</span>)</div><div class="line">            day_weather_url = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">            <span class="keyword">for</span> day <span class="keyword">in</span> day_weather_url:</div><div class="line">                day_url = day[<span class="string">'href'</span>]</div><div class="line">                day_soup = self.get_soup(day_url)</div><div class="line">                day_text = day_soup.find(</div><div class="line">                    <span class="string">'div'</span>, class_=<span class="string">'history_sh'</span>).find_all(<span class="string">'span'</span>)</div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> day_text:</div><div class="line">                    day_weather.append(i.get_text())</div><div class="line">            weather_list = list()</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> month_weather:</div><div class="line">                weather_list.append(i.get_text())</div><div class="line">            weather_list = weather_list[<span class="number">6</span>:]</div><div class="line">            all_month_weather = all_month_weather + weather_list</div><div class="line">            print(<span class="string">"Get weather :"</span> + month_name)</div><div class="line">            	</div><div class="line">        day_weather = np.array(day_weather).reshape(<span class="number">-1</span>, <span class="number">8</span>)</div><div class="line">        day_weather = DataFrame(day_weather, columns=[</div><div class="line">            <span class="string">'Ultraviolet'</span>, <span class="string">'Dress'</span>, <span class="string">'Travel'</span>, <span class="string">'Comfort_level'</span>,</div><div class="line">            <span class="string">'Morning_exercise'</span>, <span class="string">'Car_wash'</span>, <span class="string">'Drying_index'</span>, <span class="string">'Breath_allergy'</span>])</div><div class="line">        all_month_weather = np.array(all_month_weather).reshape(<span class="number">-1</span>, <span class="number">6</span>)</div><div class="line">        all_month_weather = DataFrame(all_month_weather, columns=[</div><div class="line">            <span class="string">'Date'</span>, <span class="string">'Max_temp'</span>, <span class="string">'Min_temp'</span>, </div><div class="line">            <span class="string">'Whether'</span>, <span class="string">'Wind_direction'</span>, <span class="string">'Wind_power'</span>])</div><div class="line">        print(all_month_weather.shape)</div><div class="line">        print(day_weather.shape)</div><div class="line">        result_weather = pd.merge(</div><div class="line">            all_month_weather, day_weather, left_index=<span class="keyword">True</span>, right_index=<span class="keyword">True</span>)</div><div class="line">        <span class="keyword">return</span> result_weather</div><div class="line">	</div><div class="line">history_weather = History_weather()</div><div class="line">begin_url = <span class="string">'http://lishi.tianqi.com/yangzhong/index.html'</span></div><div class="line">history_weather.begin_url(begin_url)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>打开<code>all_weather.csv</code>文件：</p>
 <table>
@@ -220,7 +148,7 @@ history_weather<span class="token punctuation">.</span>begin_url<span class="tok
     <link href="http://zangbo.me/2017/06/15/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/"/>
     <id>http://zangbo.me/2017/06/15/爬虫学习笔记（三）/</id>
     <published>2017-06-15T13:48:57.000Z</published>
-    <updated>2017-06-22T17:31:34.000Z</updated>
+    <updated>2017-06-23T02:17:12.000Z</updated>
     
     <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -231,61 +159,13 @@ history_weather<span class="token punctuation">.</span>begin_url<span class="tok
 <p>文章中代码输出结果用#表示。</p>
 <p><br></p>
 <h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>下面一段HTML代码将作为我们的例子反复使用：</p>
-<pre class="line-numbers language-html"><code class="language-html">html_doc = """
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>The Dormouse's story<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>title<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>b</span><span class="token punctuation">></span></span>The Dormouse's story<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>b</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>story<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Once upon a time there were three little sisters; and their names were
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://example.com/elsie<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sister<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>link1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Elsie<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>,
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://example.com/lacie<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sister<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>link2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Lacie<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span> and
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://example.com/tillie<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sister<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>link3<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Tillie<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>;
-and they lived at the bottom of a well.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>story<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
-"""
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">html_doc = """</div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>Once upon a time there were three little sisters; and their names were</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/elsie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link1"</span>&gt;</span>Elsie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>,</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/lacie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link2"</span>&gt;</span>Lacie<span class="tag">&lt;/<span class="name">a</span>&gt;</span> and</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/tillie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link3"</span>&gt;</span>Tillie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>;</div><div class="line">and they lived at the bottom of a well.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">"""</div></pre></td></tr></table></figure>
 <p>使用BeautifulSoup解析这段代码，能够得到一个<code>BeautifulSoup</code>的对象，并能按照标准的缩进格式的结构输出：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
-soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>html_doc<span class="token punctuation">)</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span>soup<span class="token punctuation">.</span>prettify<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># &lt;html></span>
-<span class="token comment" spellcheck="true">#  &lt;head></span>
-<span class="token comment" spellcheck="true">#   &lt;title></span>
-<span class="token comment" spellcheck="true">#    The Dormouse's story</span>
-<span class="token comment" spellcheck="true">#   &lt;/title></span>
-<span class="token comment" spellcheck="true">#  &lt;/head></span>
-<span class="token comment" spellcheck="true">#  &lt;body></span>
-<span class="token comment" spellcheck="true">#   &lt;p class="title"></span>
-<span class="token comment" spellcheck="true">#    &lt;b></span>
-<span class="token comment" spellcheck="true">#     The Dormouse's story</span>
-<span class="token comment" spellcheck="true">#    &lt;/b></span>
-<span class="token comment" spellcheck="true">#   &lt;/p></span>
-<span class="token comment" spellcheck="true">#   &lt;p class="story"></span>
-<span class="token comment" spellcheck="true">#    Once upon a time there were three little sisters; and their names were</span>
-<span class="token comment" spellcheck="true">#    &lt;a class="sister" href="http://example.com/elsie" id="link1"></span>
-<span class="token comment" spellcheck="true">#     Elsie</span>
-<span class="token comment" spellcheck="true">#    &lt;/a></span>
-<span class="token comment" spellcheck="true">#    ,</span>
-<span class="token comment" spellcheck="true">#    &lt;a class="sister" href="http://example.com/lacie" id="link2"></span>
-<span class="token comment" spellcheck="true">#     Lacie</span>
-<span class="token comment" spellcheck="true">#    &lt;/a></span>
-<span class="token comment" spellcheck="true">#    and</span>
-<span class="token comment" spellcheck="true">#    &lt;a class="sister" href="http://example.com/tillie" id="link2"></span>
-<span class="token comment" spellcheck="true">#     Tillie</span>
-<span class="token comment" spellcheck="true">#    &lt;/a></span>
-<span class="token comment" spellcheck="true">#    ; and they lived at the bottom of a well.</span>
-<span class="token comment" spellcheck="true">#   &lt;/p></span>
-<span class="token comment" spellcheck="true">#   &lt;p class="story"></span>
-<span class="token comment" spellcheck="true">#    ...</span>
-<span class="token comment" spellcheck="true">#   &lt;/p></span>
-<span class="token comment" spellcheck="true">#  &lt;/body></span>
-<span class="token comment" spellcheck="true"># &lt;/html></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc)</div><div class="line">	</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;title&gt;</span></div><div class="line"><span class="comment">#    The Dormouse's story</span></div><div class="line"><span class="comment">#   &lt;/title&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="title"&gt;</span></div><div class="line"><span class="comment">#    &lt;b&gt;</span></div><div class="line"><span class="comment">#     The Dormouse's story</span></div><div class="line"><span class="comment">#    &lt;/b&gt;</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    Once upon a time there were three little sisters; and their names were</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;</span></div><div class="line"><span class="comment">#     Elsie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ,</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Lacie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    and</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/tillie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Tillie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ; and they lived at the bottom of a well.</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    ...</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="安装-Beautiful-Soup"><a href="#安装-Beautiful-Soup" class="headerlink" title="安装 Beautiful Soup"></a>安装 Beautiful Soup</h1><p>Beautiful Soup有3和4两个版本，3版本目前已经停止开发，建议使用4版本。</p>
 <p>我们可以很方便的使用pip进行安装：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> beautifulsoup4
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install beautifulsoup4</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="安装解析器"><a href="#安装解析器" class="headerlink" title="安装解析器"></a>安装解析器</h1><p>Beautiful Soup支持Python标准库中的HTML解析器，还支持一些第三方的解析器，下表列出了主要的解析器，以及它们的优缺点：</p>
 <table>
@@ -326,182 +206,77 @@ soup <span class="token operator">=</span> BeautifulSoup<span class="token punct
 </table>
 <p>这里推荐使用lxml作为解析器，因为它的效率更高。</p>
 <p>可以用pip来安装lxml：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> lxml
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install lxml</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="使用Beautiful-Soup"><a href="#使用Beautiful-Soup" class="headerlink" title="使用Beautiful Soup"></a>使用Beautiful Soup</h1><p>将一段文档传入BeautifulSoup 的构造方法，就能得到一个文档的对象，我们可以制定解析器。例如，我们将开头的例子传入BeautifulSoup，并使用lxml解析器：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
-soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>html_doc<span class="token punctuation">,</span> <span class="token string">'lxml'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc, <span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
 <p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构，每个节点都是Python对象，所有对象可以归纳为4种： <code>Tag</code> , <code>NavigableString</code> , <code>BeautifulSoup</code> , <code>Comment</code> 。</p>
 <p><br></p>
 <p>我们重点讲两个搜索方法：<code>find()</code>和<code>find_all()</code>，我们用这两种方法可以根据HTML文档的标签快速找到我们需要的内容。</p>
 <p>以开头提到的文档作为例子：</p>
-<pre class="line-numbers language-python"><code class="language-python">html_doc <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
-&lt;html>&lt;head>&lt;title>The Dormouse's story&lt;/title>&lt;/head>
-&lt;p class="title">&lt;b>The Dormouse's story&lt;/b>&lt;/p>
-&lt;p class="story">Once upon a time there were three little sisters; and their names were
-&lt;a href="http://example.com/elsie" class="sister" id="link1">Elsie&lt;/a>,
-&lt;a href="http://example.com/lacie" class="sister" id="link2">Lacie&lt;/a> and
-&lt;a href="http://example.com/tillie" class="sister" id="link3">Tillie&lt;/a>;
-and they lived at the bottom of a well.&lt;/p>
-&lt;p class="story">...&lt;/p>
-"""</span>
-
-<span class="token keyword">from</span> bs4 <span class="token keyword">import</span> BeautifulSoup
-soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>html_doc<span class="token punctuation">,</span><span class="token string">'lxml'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">html_doc = <span class="string">"""</span></div><div class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;p class="title"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;Once upon a time there were three little sisters; and their names were</div><div class="line">&lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;Elsie&lt;/a&gt;,</div><div class="line">&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; and</div><div class="line">&lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;;</div><div class="line">and they lived at the bottom of a well.&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;...&lt;/p&gt;</div><div class="line">"""</div><div class="line">	</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc,<span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h2 id="find-all"><a href="#find-all" class="headerlink" title="find_all()"></a>find_all()</h2><p><strong>find_all(name, attrs, recursive, text, kwargs)</strong></p>
-<h3 id="name-参数"><a href="#name-参数" class="headerlink" title="name 参数"></a>name 参数</h3><p>name参数可以查找所有名字为 <code>name</code> 的tag：</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;title>The Dormouse's story&lt;/title>]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p> <code>name</code>参数的值可以是字符串、正则表达式、列表、方法或是 <code>True</code></p>
+<h3 id="name-参数"><a href="#name-参数" class="headerlink" title="name 参数"></a>name 参数</h3><p><code>name</code>参数可以查找所有名字为 <code>name</code> 的tag：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div></pre></td></tr></table></figure>
+<p><code>name</code>参数的值可以是字符串、正则表达式、列表、方法或是 <code>True</code></p>
 <p>例如：</p>
 <p>在<code>find_all()</code>中传入一个<strong>字符串</strong>参数，Beautiful Soup会查找与字符串完整匹配的内容，下面的例子用于查找文档中所有的<code>&lt;b&gt;</code>标签:</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;b>The Dormouse's story&lt;/b>]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'b'</span>)</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;]</span></div></pre></td></tr></table></figure>
 <p>如果传入<strong>列表</strong>参数，Beautiful Soup会将与列表中任一元素匹配的内容返回。下面代码找到文档中所有<code>&lt;a&gt;</code>标签和<code>&lt;b&gt;</code>标签:</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"b"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;b>The Dormouse's story&lt;/b>, </span>
-<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>, </span>
-<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>, </span>
-<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/tillie" id="link3">Tillie&lt;/a>]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p> <code>find_all()</code>方法搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all([<span class="string">"a"</span>, <span class="string">"b"</span>])</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
+<p><code>find_all()</code>方法搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。</p>
 <p><br></p>
 <h3 id="keyword-参数"><a href="#keyword-参数" class="headerlink" title="keyword 参数"></a>keyword 参数</h3><ol>
 <li><p>如果一个指定名字的参数不是搜索内置的参数名，搜索时会把该参数当作指定名字tag的属性来搜索，如果包含一个名字为 <code>id</code> 的参数，Beautiful Soup会搜索每个tag的”id”属性：</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>id<span class="token operator">=</span><span class="token string">'link2'</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="string">'link2'</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
 <p><br></p>
 </li>
 <li><p>如果传入 <code>href</code> 参数，Beautiful Soup会搜索每个tag的”href”属性:</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>href<span class="token operator">=</span>re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"elsie"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(href=re.compile(<span class="string">"elsie"</span>))</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
 <p><br></p>
 </li>
 <li><p>利用<code>true</code>参数在文档树中查找所有包含 <code>id</code> 属性的tag，无论 <code>id</code> 的值是什么:</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>id<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>,</span>
-<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>,</span>
-<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/tillie" id="link3">Tillie&lt;/a>]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="keyword">True</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>搜索指定名字的属性时可以使用的参数值包括字符串、正则表达式、列表或是 <code>True</code></p>
 <p><br></p>
 <h3 id="按CSS搜索"><a href="#按CSS搜索" class="headerlink" title="按CSS搜索"></a>按CSS搜索</h3><p>按照CSS类名搜索tag的功能非常实用，但标识CSS类名的关键字 <code>class</code> 在Python中是保留字，使用 <code>class</code> 做参数会导致语法错误。这里我们可以通过 <code>class_</code> 参数搜索有指定CSS类名的tag:</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">,</span> class_<span class="token operator">=</span><span class="token string">"sister"</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;a class="sister" href="http://example.com/elsie" id="link1">Elsie&lt;/a>,</span>
-<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/lacie" id="link2">Lacie&lt;/a>,</span>
-<span class="token comment" spellcheck="true"># &lt;a class="sister" href="http://example.com/tillie" id="link3">Tillie&lt;/a>]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>, class_=<span class="string">"sister"</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
 <p><code>class_</code> 参数同样接受不同类型的过滤器：字符串、正则表达式、方法或 <code>True</code> 。</p>
 <p><br></p>
 <h3 id="text-参数"><a href="#text-参数" class="headerlink" title="text 参数"></a>text 参数</h3><p>通过 <code>text</code> 参数可以搜搜文档中的字符串内容。与 <code>name</code> 参数的可选值一样，<code>text</code> 参数接受字符串、正则表达式、方法或 <code>True</code> ：</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token string">"Elsie"</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [u'Elsie']</span>
-
-soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"Tillie"</span><span class="token punctuation">,</span> <span class="token string">"Elsie"</span><span class="token punctuation">,</span> <span class="token string">"Lacie"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [u'Elsie', u'Lacie', u'Tillie']</span>
-
-soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span>re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"Dormouse"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [u"The Dormouse's story", u"The Dormouse's story"]</span>
-
-<span class="token keyword">def</span> <span class="token function">is_the_only_string_within_a_tag</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token string">""</span>Return <span class="token boolean">True</span> <span class="token keyword">if</span> this string <span class="token keyword">is</span> the only child of its parent tag<span class="token punctuation">.</span><span class="token string">""</span>
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>s <span class="token operator">==</span> s<span class="token punctuation">.</span>parent<span class="token punctuation">.</span>string<span class="token punctuation">)</span>
-
-soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span>is_the_only_string_within_a_tag<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [u"The Dormouse's story", u"The Dormouse's story", u'Elsie', u'Lacie', u'Tillie', u'...']</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">soup.find_all(text=<span class="string">"Elsie"</span>)</div><div class="line"><span class="comment"># [u'Elsie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=[<span class="string">"Tillie"</span>, <span class="string">"Elsie"</span>, <span class="string">"Lacie"</span>])</div><div class="line"><span class="comment"># [u'Elsie', u'Lacie', u'Tillie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=re.compile(<span class="string">"Dormouse"</span>))</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story"]</span></div><div class="line">	</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_the_only_string_within_a_tag</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="string">""</span>Return <span class="keyword">True</span> <span class="keyword">if</span> this string <span class="keyword">is</span> the only child of its parent tag.<span class="string">""</span></div><div class="line">    <span class="keyword">return</span> (s == s.parent.string)</div><div class="line">	</div><div class="line">soup.find_all(text=is_the_only_string_within_a_tag)</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story", u'Elsie', u'Lacie', u'Tillie', u'...']</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><p>下面两行代码是等价的:</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span>
-soup<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>)</div><div class="line">soup(<span class="string">"a"</span>)</div></pre></td></tr></table></figure>
 <p>这两行也是等价的：</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>title<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-soup<span class="token punctuation">.</span>title<span class="token punctuation">(</span>text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.title.find_all(text=<span class="keyword">True</span>)</div><div class="line">soup.title(text=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h2 id="find"><a href="#find" class="headerlink" title="find()"></a>find()</h2><p><strong>find(name, attrs, recursive, text, kwargs)</strong></p>
 <p><code>find_all()</code> 方法将返回文档中符合条件的所有tag，尽管有时候我们只想得到一个结果.比如文档中只有一个<code>&lt;body&gt;</code>标签，那么使用 <code>find_all()</code>方法来查找<code>&lt;body&gt;</code>标签就不太合适， 使用 <code>find_all</code> 方法并设置 <code>limit=1</code> 参数不如直接使用 <code>find()</code> 方法。下面两行代码是等价的：</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>find_all<span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> limit<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># [&lt;title>The Dormouse's story&lt;/title>]</span>
-
-soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># &lt;title>The Dormouse's story&lt;/title></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'title'</span>, limit=<span class="number">1</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">'title'</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
 <p>唯一的区别是 <code>find_all()</code> 方法的返回结果是值包含一个元素的列表,而 <code>find()</code> 方法直接返回结果.</p>
 <p><code>find_all()</code> 方法没有找到目标是返回空列表， <code>find()</code> 方法找不到目标时返回 <code>None</code>。</p>
 <p><br></p>
 <h3 id="简写-1"><a href="#简写-1" class="headerlink" title="简写"></a>简写</h3><p><code>soup.head.title</code>是利用tag的名字来简写，这个简写的原理就是多次调用当前tag的<code>find()</code>方法：</p>
-<pre class="line-numbers language-python"><code class="language-python">soup<span class="token punctuation">.</span>head<span class="token punctuation">.</span>title
-<span class="token comment" spellcheck="true"># &lt;title>The Dormouse's story&lt;/title></span>
-
-soup<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token string">"head"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># &lt;title>The Dormouse's story&lt;/title></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.head.title</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">"head"</span>).find(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="输出文本"><a href="#输出文本" class="headerlink" title="输出文本"></a>输出文本</h1><p>如果只想得到tag中包含的文本内容，那么可以采用<code>get_text()</code>方法，这个方法获取到tag中包含的所有文版内容，包括子孙tag中的内容，并将结果作为Unicode字符串返回：</p>
-<pre class="line-numbers language-python"><code class="language-python">markup <span class="token operator">=</span> <span class="token string">'&lt;a href="http://example.com/">\nI linked to &lt;i>example.com&lt;/i>\n&lt;/a>'</span>
-soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>markup<span class="token punctuation">)</span>
-
-soup<span class="token punctuation">.</span>get_text<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># u'\nI linked to example.com\n'</span>
-soup<span class="token punctuation">.</span>i<span class="token punctuation">.</span>get_text<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># u'example.com'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">'&lt;a href="http://example.com/"&gt;\nI linked to &lt;i&gt;example.com&lt;/i&gt;\n&lt;/a&gt;'</span></div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">	</div><div class="line">soup.get_text()</div><div class="line"><span class="comment"># u'\nI linked to example.com\n'</span></div><div class="line">soup.i.get_text()</div><div class="line"><span class="comment"># u'example.com'</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="关于编码"><a href="#关于编码" class="headerlink" title="关于编码"></a>关于编码</h1><p>使用Beautiful Soup解析后，文档都被转换成了Unicode。</p>
 <p>Beautiful Soup用了<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码。<code>BeautifulSoup</code>对象的<code>.original_encoding</code>属性记录了自动识别编码的结果：</p>
-<pre class="line-numbers language-python"><code class="language-python">markup <span class="token operator">=</span> <span class="token string">"&lt;h1>Sacr\xc3\xa9 bleu!&lt;/h1>"</span>
-soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>markup<span class="token punctuation">,</span><span class="token string">'lxml'</span><span class="token punctuation">)</span>
-soup<span class="token punctuation">.</span>original_encoding
-<span class="token comment" spellcheck="true"># 'utf-8'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">"&lt;h1&gt;Sacr\xc3\xa9 bleu!&lt;/h1&gt;"</span></div><div class="line">soup = BeautifulSoup(markup,<span class="string">'lxml'</span>)</div><div class="line">soup.original_encoding</div><div class="line"><span class="comment"># 'utf-8'</span></div></pre></td></tr></table></figure>
 <p><strong>注意：</strong></p>
 <p>如果先用<code>r = requests.get(url)</code>指令获得了html页面，建议先用指令<code>r.encoding</code>判断<code>r.text</code>所用的编码方式和源html是否相同（可以通过查看html中的charset= 来判断源html采用的编码方式），如果不同的话要用<code>r.encoding=</code>进行修改，再用<code>soup = BeautifulSoup(r.text,&#39;lxml&#39;)</code>命令。因为<code>r.text</code>会根据当前的编码方式把html转化为Unicode编码输出，如果html包含汉字，而没有采用<code>utf-8</code>进行编码的话，<code>r.text</code>没有办法把汉字转化为相应的Unicode编码，再送进Beautiful Soup中也就无法得到汉字信息了。</p>
 <p>也可以直接用<code>soup = BeautifulSoup(r.content,&#39;lxml&#39;)</code>指令，因为<code>r.content</code>返回的是bytes型原始编码信息，而Beautiful Soup可以用<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码，但获取文本信息时不建议这样使用，一般来说图像等多媒体内容用content更多一些。</p>
 <p><br></p>
 <p>而通过Beautiful Soup<strong>输出文档</strong>时，不管输入文档是什么编码方式，输出编码均为UTF-8编码。</p>
-<pre class="line-numbers language-python"><code class="language-python">markup <span class="token operator">=</span> b<span class="token triple-quoted-string string">'''
-&lt;html>
-  &lt;head>
-    &lt;meta content="text/html; charset=ISO-Latin-1" http-equiv="Content-type" />
-  &lt;/head>
-  &lt;body>
-    &lt;p>Sacr\xe9 bleu!&lt;/p>
-  &lt;/body>
-&lt;/html>
-'''</span>
-
-soup <span class="token operator">=</span> BeautifulSoup<span class="token punctuation">(</span>markup<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>soup<span class="token punctuation">.</span>prettify<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># &lt;html></span>
-<span class="token comment" spellcheck="true">#  &lt;head></span>
-<span class="token comment" spellcheck="true">#   &lt;meta content="text/html; charset=utf-8" http-equiv="Content-type" /></span>
-<span class="token comment" spellcheck="true">#  &lt;/head></span>
-<span class="token comment" spellcheck="true">#  &lt;body></span>
-<span class="token comment" spellcheck="true">#   &lt;p></span>
-<span class="token comment" spellcheck="true">#    Sacré bleu!</span>
-<span class="token comment" spellcheck="true">#   &lt;/p></span>
-<span class="token comment" spellcheck="true">#  &lt;/body></span>
-<span class="token comment" spellcheck="true"># &lt;/html></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">b'''</span></div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;meta content="text/html; charset=ISO-Latin-1" http-equiv="Content-type" /&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body&gt;</div><div class="line">    &lt;p&gt;Sacr\xe9 bleu!&lt;/p&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div><div class="line">'''</div><div class="line">	</div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=utf-8" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p&gt;</span></div><div class="line"><span class="comment">#    Sacré bleu!</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
 <p>如果不想用UTF-8编码输出，可以将编码方式传入<code>prettify()</code>方法：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>soup<span class="token punctuation">.</span>prettify<span class="token punctuation">(</span><span class="token string">"latin-1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># &lt;html></span>
-<span class="token comment" spellcheck="true">#  &lt;head></span>
-<span class="token comment" spellcheck="true">#   &lt;meta content="text/html; charset=latin-1" http-equiv="Content-type" /></span>
-<span class="token comment" spellcheck="true"># ...</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">print(soup.prettify(<span class="string">"latin-1"</span>))</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=latin-1" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment"># ...</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>关于Beautiful Soup还有很多其他用法，这里只是重点介绍了运用最多的两个搜索方法<code>find_all()</code>和<code>find()</code>，如果想了解更多的使用方法，请参考官方文档。</p>
 <p><br></p>
@@ -536,159 +311,74 @@ soup <span class="token operator">=</span> BeautifulSoup<span class="token punct
 <h1 id="Requests介绍"><a href="#Requests介绍" class="headerlink" title="Requests介绍"></a>Requests介绍</h1><p>Requests是一个基于urllib3的HTTP库，简单优美，支持python2.6–3.5的各版本，具有无比强大的功能，完全满足今日web的需求。在爬虫学习过程中，我们用它向服务器发送请求，以获取我们需要的信息。</p>
 <p><br></p>
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>只需要在终端中运行以下代码：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">pip install requests
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install requests</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>我们先来看一个具体的实例来感受下Request：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'http://zangbo.me'</span><span class="token punctuation">,</span> auth<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'user'</span><span class="token punctuation">,</span> <span class="token string">'pass'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-r<span class="token punctuation">.</span>status_code
-r<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">'content-type'</span><span class="token punctuation">]</span>
-r<span class="token punctuation">.</span>encoding
-r<span class="token punctuation">.</span>text
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"></div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>, auth=(<span class="string">'user'</span>, <span class="string">'pass'</span>))</div><div class="line">r.status_code</div><div class="line">r.headers[<span class="string">'content-type'</span>]</div><div class="line">r.encoding</div><div class="line">r.text</div></pre></td></tr></table></figure>
 <p>以下是输出：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token number">200</span>
-<span class="token string">'text/html; charset=utf-8'</span>
-<span class="token string">'utf-8'</span>
-<span class="token string">'&lt;!DOCTYPE html>'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">200</span></div><div class="line"><span class="string">'text/html; charset=utf-8'</span></div><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'&lt;!DOCTYPE html&gt;'</span></div></pre></td></tr></table></figure>
 <p>以上代码我们请求了本站的地址，然后依次打印出状态码，请求头，编码方式和相应内容。</p>
 <p>是不是功能强大，下面，我们正式开始学习Requests。</p>
 <p><br></p>
 <h1 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h1><p>首先导入Requests模块：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div></pre></td></tr></table></figure>
 <p>Requests包含各种不同的请求方式：</p>
-<pre class="line-numbers language-python"><code class="language-python">r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/get"</span><span class="token punctuation">)</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/post"</span><span class="token punctuation">)</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/put"</span><span class="token punctuation">)</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>delete<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/delete"</span><span class="token punctuation">)</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/get"</span><span class="token punctuation">)</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>options<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/get"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>)</div><div class="line">r = requests.put(<span class="string">"http://httpbin.org/put"</span>)</div><div class="line">r = requests.delete(<span class="string">"http://httpbin.org/delete"</span>)</div><div class="line">r = requests.head(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.options(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>我们用的最多的是get请求，用来获取某个网页：</p>
-<pre class="line-numbers language-python"><code class="language-python">r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/get"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
 <p>现在，我们有一个名叫r的Response对象，它包含了所有关于该页面的信息，我们可以从中提取出我们想要的信息。</p>
 <p><br></p>
 <h2 id="带参数的get请求"><a href="#带参数的get请求" class="headerlink" title="带参数的get请求"></a>带参数的get请求</h2><p>如果你是手工构建 URL，那么数据会以键/值对的形式置于 URL 中，跟在一个问号的后面，我们可以用字典的形式传递URL参数。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-payload <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'key1'</span><span class="token punctuation">:</span> <span class="token string">'value1'</span><span class="token punctuation">,</span> <span class="token string">'key2'</span><span class="token punctuation">:</span> <span class="token string">'value2'</span><span class="token punctuation">}</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/get"</span><span class="token punctuation">,</span> params<span class="token operator">=</span>payload<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>url<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>, params=payload)</div><div class="line">print(r.url)</div></pre></td></tr></table></figure>
 <p>可以得到输出：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">http://httpbin.org/get?key2<span class="token operator">=</span>value2<span class="token operator">&amp;</span>key1<span class="token operator">=</span>value1
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://httpbin.org/get?key2=value2&amp;key1=value1</div></pre></td></tr></table></figure>
 <p><br></p>
 <h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>如果我们想要发送一些编码为表单形式的数据——非常像一个 HTML 表单。只需简单地传递一个字典给 data 参数，该字典在发出请求时会自动编码为表单形式：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-payload <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'key1'</span><span class="token punctuation">:</span> <span class="token string">'value1'</span><span class="token punctuation">,</span> <span class="token string">'key2'</span><span class="token punctuation">:</span> <span class="token string">'value2'</span><span class="token punctuation">}</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/post"</span><span class="token punctuation">,</span> data<span class="token operator">=</span>payload<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>, data=payload)</div><div class="line">print(r.text)</div></pre></td></tr></table></figure>
 <p>输出：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">{</span>
-  <span class="token punctuation">..</span>.
-  <span class="token string">"form"</span><span class="token keyword">:</span> <span class="token punctuation">{</span>
-    <span class="token string">"key2"</span><span class="token keyword">:</span> <span class="token string">"value2"</span>,
-    <span class="token string">"key1"</span><span class="token keyword">:</span> <span class="token string">"value1"</span>
-  <span class="token punctuation">}</span>,
-  <span class="token punctuation">..</span>.
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  <span class="string">"form"</span>: &#123;</div><div class="line">    <span class="string">"key2"</span>: <span class="string">"value2"</span>,</div><div class="line">    <span class="string">"key1"</span>: <span class="string">"value1"</span></div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="获取响应内容"><a href="#获取响应内容" class="headerlink" title="获取响应内容"></a>获取响应内容</h1><h2 id="响应状态码"><a href="#响应状态码" class="headerlink" title="响应状态码"></a>响应状态码</h2><p>我们可以检测发送请求是否成功获得想要的数据，通过检测响应状态码：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.baidu.com'</span><span class="token punctuation">)</span>
-r<span class="token punctuation">.</span>status_code
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://www.baidu.com'</span>)</div><div class="line">r.status_code</div></pre></td></tr></table></figure>
 <p>若输出为：</p>
-<pre><code>200
-</code></pre><p>表明获取成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">200</div></pre></td></tr></table></figure>
+<p>表明获取成功。</p>
 <p><br></p>
 <h2 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h2><p>以百度首页为例：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"https://www.baidu.com"</span><span class="token punctuation">)</span>
-r<span class="token punctuation">.</span>text
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">r.text</div></pre></td></tr></table></figure>
 <p>Requests会基于HTTP的头部对响应的编码进行推测，让我们访问<code>r.text</code>时，Requests会使用其推测的文本编码，我们可以用<code>r.encoding</code>改变解码方式：</p>
-<pre class="line-numbers language-python"><code class="language-python">r<span class="token punctuation">.</span>encoding
-r<span class="token punctuation">.</span>encoding <span class="token operator">=</span> <span class="token string">'ISO-8859-1'</span>
-r<span class="token punctuation">.</span>encoding
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r.encoding</div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span></div><div class="line">r.encoding</div></pre></td></tr></table></figure>
 <p>以上代码输出为：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token string">'utf-8'</span>
-<span class="token string">'ISO-8859-1'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'ISO-8859-1'</span></div></pre></td></tr></table></figure>
 <p>如果你改变了编码，每当你访问 <code>r.text</code> ，Request 都将会使用 <code>r.encoding</code> 的新值。当不确定时，可以使用 <code>r.content</code> 来找到编码，然后设置 <code>r.encoding</code> 为相应的编码。这样就能使用正确的编码解析 <code>r.text</code> 了。关于<code>r.content</code>下面会介绍。</p>
 <p><br></p>
 <h2 id="二进制内容"><a href="#二进制内容" class="headerlink" title="二进制内容"></a>二进制内容</h2><p>对于非文本请求，例如图片等多媒体内容，可以以字节的方式访问：</p>
-<pre class="line-numbers language-python"><code class="language-python">r<span class="token punctuation">.</span>content
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r.content</div></pre></td></tr></table></figure>
 <p>这里注意两者的区别：</p>
 <ul>
 <li>r.text返回的是Unicode型的数据。如果是读取文本，可以通过r.text。</li>
 <li>r.content返回的是bytes型也就是二进制的数据。如果读取图片，文件，可以通过r.content来实现。</li>
 </ul>
 <p>例如我们下载并保存一张图片：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-jpg_url <span class="token operator">=</span> <span class="token string">'http://mm.howkuai.com/wp-content/uploads/2017a/04/13/01.jpg'</span><span class="token comment" spellcheck="true">#一张美女图</span>
-content <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>jpg_url<span class="token punctuation">)</span><span class="token punctuation">.</span>content
-<span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'image.jpg'</span><span class="token punctuation">,</span><span class="token string">'wb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span> <span class="token comment" spellcheck="true">#写入多媒体文件必须要 b 这个参数！</span>
-    f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>content<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">jpg_url = <span class="string">'http://mm.howkuai.com/wp-content/uploads/2017a/04/13/01.jpg'</span><span class="comment">#一张美女图</span></div><div class="line">content = requests.get(jpg_url).content</div><div class="line"><span class="keyword">with</span> open(<span class="string">'image.jpg'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f: <span class="comment">#写入多媒体文件必须要 b 这个参数！</span></div><div class="line">    f.write(content)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://github.com/timeline.json'</span><span class="token punctuation">)</span>
-r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</div><div class="line">r.json()</div></pre></td></tr></table></figure>
 <p><br></p>
 <h2 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h2><p>通过命令可以查看服务器响应头，以一个Python字典形式展示：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'http://zangbo.me'</span><span class="token punctuation">)</span>
-r<span class="token punctuation">.</span>headers
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>)</div><div class="line">r.headers</div></pre></td></tr></table></figure>
 <p>输出：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
-    <span class="token string">'Server'</span><span class="token punctuation">:</span> <span class="token string">'GitHub.com'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Date'</span><span class="token punctuation">:</span> <span class="token string">'Thu, 15 Jun 2017 04:04:47 GMT'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Content-Type'</span><span class="token punctuation">:</span> <span class="token string">'text/html; charset=utf-8'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Transfer-Encoding'</span><span class="token punctuation">:</span> <span class="token string">'chunked'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Last-Modified'</span><span class="token punctuation">:</span> <span class="token string">'Wed, 14 Jun 2017 15:41:23 GMT'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Access-Control-Allow-Origin'</span><span class="token punctuation">:</span> <span class="token string">'*'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Expires'</span><span class="token punctuation">:</span> <span class="token string">'Thu, 15 Jun 2017 04:14:47 GMT'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Cache-Control'</span><span class="token punctuation">:</span> <span class="token string">'max-age=600'</span><span class="token punctuation">,</span> 
-    <span class="token string">'Content-Encoding'</span><span class="token punctuation">:</span> <span class="token string">'gzip'</span><span class="token punctuation">,</span> 
-    <span class="token string">'X-GitHub-Request-Id'</span><span class="token punctuation">:</span> <span class="token string">'E1D6:0B0F:15941BE:1E637E3:5942075F'</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	<span class="string">'Server'</span>: <span class="string">'GitHub.com'</span>, </div><div class="line">	<span class="string">'Date'</span>: <span class="string">'Thu, 15 Jun 2017 04:04:47 GMT'</span>, </div><div class="line">	<span class="string">'Content-Type'</span>: <span class="string">'text/html; charset=utf-8'</span>, </div><div class="line">	<span class="string">'Transfer-Encoding'</span>: <span class="string">'chunked'</span>, </div><div class="line">	<span class="string">'Last-Modified'</span>: <span class="string">'Wed, 14 Jun 2017 15:41:23 GMT'</span>, </div><div class="line">	<span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'*'</span>, </div><div class="line">	<span class="string">'Expires'</span>: <span class="string">'Thu, 15 Jun 2017 04:14:47 GMT'</span>, </div><div class="line">	<span class="string">'Cache-Control'</span>: <span class="string">'max-age=600'</span>, </div><div class="line">	<span class="string">'Content-Encoding'</span>: <span class="string">'gzip'</span>, </div><div class="line">	<span class="string">'X-GitHub-Request-Id'</span>: <span class="string">'E1D6:0B0F:15941BE:1E637E3:5942075F'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h2><pre class="line-numbers language-python"><code class="language-python">r<span class="token punctuation">.</span>status_code<span class="token comment" spellcheck="true">#获取状态码</span>
-r<span class="token punctuation">.</span>text<span class="token comment" spellcheck="true">#文本内容</span>
-r<span class="token punctuation">.</span>encoding<span class="token comment" spellcheck="true">#查看编码</span>
-r<span class="token punctuation">.</span>encoding <span class="token operator">=</span> <span class="token string">'ISO-8859-1'</span><span class="token comment" spellcheck="true">#改变编码</span>
-r<span class="token punctuation">.</span>content<span class="token comment" spellcheck="true">#二进制内容</span>
-r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">#JSON内容</span>
-r<span class="token punctuation">.</span>raw<span class="token comment" spellcheck="true">#原始内容</span>
-r<span class="token punctuation">.</span>headers<span class="token comment" spellcheck="true">#响应头</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">r.status_code<span class="comment">#获取状态码</span></div><div class="line">r.text<span class="comment">#文本内容</span></div><div class="line">r.encoding<span class="comment">#查看编码</span></div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span><span class="comment">#改变编码</span></div><div class="line">r.content<span class="comment">#二进制内容</span></div><div class="line">r.json()<span class="comment">#JSON内容</span></div><div class="line">r.raw<span class="comment">#原始内容</span></div><div class="line">r.headers<span class="comment">#响应头</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="定制请求头"><a href="#定制请求头" class="headerlink" title="定制请求头"></a>定制请求头</h1><p>有些网站具有反爬虫机制，我们有时候需要把爬虫伪装成浏览器来访问网页，因此我们需要为请求添加HTTP头部，只需要简单地传递一个<code>dict</code>给<code>headers</code>参数即可。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-url <span class="token operator">=</span> <span class="token string">"https://www.baidu.com"</span>
-headers <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'user-agent'</span><span class="token punctuation">:</span> <span class="token string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'</span><span class="token punctuation">}</span>
-r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">url = <span class="string">"https://www.baidu.com"</span></div><div class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'</span>&#125;</div><div class="line">r = requests.get(url,headers=headers)</div></pre></td></tr></table></figure>
 <p>注：如何查看自己浏览器的userAgent</p>
 <p>打开浏览器的控制台，输入：javascript:alert(navigator.userAgent)</p>
 <p><br></p>
 <h1 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h1><p>我们可以告诉 requests 在经过以 <code>timeout</code> 参数设定的秒数时间之后停止等待响应：</p>
-<pre class="line-numbers language-python"><code class="language-python">requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'http://github.com'</span><span class="token punctuation">,</span> timeout<span class="token operator">=</span><span class="token number">0.001</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">requests.get(<span class="string">'http://github.com'</span>, timeout=<span class="number">0.001</span>)</div></pre></td></tr></table></figure>
 <p><strong>注意：</strong></p>
 <p><code>timeout</code> 仅对连接过程有效，与响应体的下载无关。 <code>timeout</code> 并不是整个下载响应的时间限制，而是如果服务器在 <code>timeout</code> 秒内没有应答，将会引发一个异常（更精确地说，是在 <code>timeout</code> 秒内没有从基础套接字上接收到任何字节的数据时）</p>
 <p><br></p>
@@ -805,18 +495,9 @@ r <span class="token operator">=</span> requests<span class="token punctuation">
 <p>此外，常见的UTF格式还有：UTF-7、UTF-7.5、UTF-8、UTF-16、UTF-32</p>
 <p><br></p>
 <h2 id="Python-3中的编码"><a href="#Python-3中的编码" class="headerlink" title="Python 3中的编码"></a>Python 3中的编码</h2><p>在python 3版本中，字符串是以Unicode编码的，也就是说，python 3字符串支持中英或其他各种语言。此外，我们可以利用<code>.encode()</code>函数来把Unicode字符串进行编码，编码后的字符串前面会用b表示。</p>
-<pre class="line-numbers language-python"><code class="language-python">u <span class="token operator">=</span> <span class="token string">'汉'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>u<span class="token punctuation">)</span>
-s <span class="token operator">=</span> u<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'UTF-8'</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-d <span class="token operator">=</span> s<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'UTF-8'</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">u = <span class="string">'汉'</span></div><div class="line">print(u)</div><div class="line">s = u.encode(<span class="string">'UTF-8'</span>)</div><div class="line">print(s)</div><div class="line">d = s.decode(<span class="string">'UTF-8'</span>)</div><div class="line">print(d)</div></pre></td></tr></table></figure>
 <p>输出：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token string">'汉'</span>
-b<span class="token string">'\xe6\xb1\x89'</span>
-<span class="token string">'汉'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'汉'</span></div><div class="line">b<span class="string">'\xe6\xb1\x89'</span></div><div class="line"><span class="string">'汉'</span></div></pre></td></tr></table></figure>
 <p>关于python 3中读取文件：</p>
 <blockquote>
 <p>文件总是存储为编码好的数据，因此，为了使用文件中读取的文本数据，必须首先将其解码为一个Unicode字符串。python 3中，文本正常情况下会自动为你解码，所以打开或读取文件会得到一个Unicode字符串。使用的解码方式取决系统，在Mac OS 或者 大多数Linux系统中，首选编码是UTF-8，但Windows不一定。可以使用locale.getpreferredencoding()方法得到系统的默认解码方式。</p>
@@ -861,7 +542,8 @@ b<span class="token string">'\xe6\xb1\x89'</span>
 
 <p><br></p>
 <h1 id="Github-Page种类"><a href="#Github-Page种类" class="headerlink" title="Github Page种类"></a>Github Page种类</h1><ol>
-<li><figcaption>用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p></figcaption><pre class="line-numbers language-UserPage</code>:"><code class="language-UserPage</code>:"></li>
+<li><p><code>UserPage</code>: 用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p>
+</li>
 <li><p><code>ProjectPage</code>: 用户创建出来的其他网站项目也可以托管在github上，首先新建一个项目，然后建立一个名叫<code>gh-pages</code>的branch，这个branch里的文件就是page的站点文件。</p>
 <p><br></p>
 </li>
@@ -876,7 +558,7 @@ b<span class="token string">'\xe6\xb1\x89'</span>
 <p>CNAME指向之后，当浏览器访问<code>www.zangbo.me</code>的时候浏览器就知道<code>实际上</code>是访问<code>zangbo.github.io</code><br>添加CNAME 文件之后，当GithubPage服务器接收到访问<code>www.zangbo.me</code>的http请求，就知道，对应的是这个工程了。</p>
 </blockquote>
 <p><br></p>
-<h1 id="ProjectPage自定义域名"><a href="#ProjectPage自定义域名" class="headerlink" title="ProjectPage自定义域名"></a>ProjectPage自定义域名</h1><p>比如用<code>mylove.zangbo.me</code>替代<code>zangbo.github.io/mylove<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="ProjectPage自定义域名"><a href="#ProjectPage自定义域名" class="headerlink" title="ProjectPage自定义域名"></a>ProjectPage自定义域名</h1><p>比如用<code>mylove.zangbo.me</code>替代<code>zangbo.github.io/mylove</code></p>
 <ol>
 <li><p>同样的，去域名注册商那里，做一个<code>CNAME</code>指向，将<code>mylove.zangbo.me</code> 指向 <code>zangbo.github.io</code>，如果以后会有很多二级域名都指过来，操作方式相同。</p>
 </li>
@@ -1146,7 +828,7 @@ b<span class="token string">'\xe6\xb1\x89'</span>
     <link href="http://zangbo.me/2017/06/03/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://zangbo.me/2017/06/03/Tensorflow-官方文档学习笔记（二）/</id>
     <published>2017-06-03T07:28:10.000Z</published>
-    <updated>2017-06-22T17:37:50.000Z</updated>
+    <updated>2017-06-23T02:18:03.000Z</updated>
     
     <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇介绍了利用Tensorflow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -1156,36 +838,23 @@ b<span class="token string">'\xe6\xb1\x89'</span>
 <p>接下来我们进行卷积神经网络的学习，我会一行行的解释用到的代码。</p>
 <p><br></p>
 <h1 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h1><p>首先是训练数据的准备工作，下面两行代码会下载并引用MNIST数据集：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>examples<span class="token punctuation">.</span>tutorials<span class="token punctuation">.</span>mnist <span class="token keyword">import</span> input_data
-mnist <span class="token operator">=</span> input_data<span class="token punctuation">.</span>read_data_sets<span class="token punctuation">(</span><span class="token string">'MNIST_data'</span><span class="token punctuation">,</span> one_hot<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">'MNIST_data'</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p>然后我们启动一个会话，这里我们没有选择之前使用的<code>tf.Session()</code>，而是采用了交互式编程中更方便的Interactive类，这样我们可以在运行图的时候插入新的图，这在一些交互式环境比如ipython中更便利，我使用的是jupyter notebook，同样是交互式环境。如果没有使用 InteractiveSession ，那么需要在启动Session之前构建好整个计算图，然后才能启动该计算图。具体方法：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> tensorflow <span class="token keyword">as</span> tf
-sess <span class="token operator">=</span> tf<span class="token punctuation">.</span>InteractiveSession<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">sess = tf.InteractiveSession()</div></pre></td></tr></table></figure>
 <p>接着我们定义两个占位符x和y_，分别用来输入图片数据和标签。它们均为二维向量，第一个维度用None来指代Batch大小。</p>
-<pre class="line-numbers language-python"><code class="language-python">x <span class="token operator">=</span> tf<span class="token punctuation">.</span>placeholder<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>float32<span class="token punctuation">,</span> shape<span class="token operator">=</span><span class="token punctuation">[</span>None<span class="token punctuation">,</span> <span class="token number">784</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-y_ <span class="token operator">=</span> tf<span class="token punctuation">.</span>placeholder<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>float32<span class="token punctuation">,</span> shape<span class="token operator">=</span><span class="token punctuation">[</span>None<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">x = tf.placeholder(tf.float32, shape=[<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">y_ = tf.placeholder(tf.float32, shape=[<span class="keyword">None</span>, <span class="number">10</span>])</div></pre></td></tr></table></figure>
 <p>为了创建这个模型，我们需要创建大量的权重和偏置项。这个模型中的权重在初始化时应该加入少量的噪声来打破对称性以及避免0梯度。由于我们使用的是ReLU神经元，因此比较好的做法是用一个较小的正数来初始化偏置项，以避免神经元节点输出恒为0的问题(dead neurons)。为了不在建立模型的时候反复做初始化操作，我们定义两个函数用于初始化。 </p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">weight_variable</span><span class="token punctuation">(</span>shape<span class="token punctuation">)</span><span class="token punctuation">:</span>
-  initial <span class="token operator">=</span> tf<span class="token punctuation">.</span>truncated_normal<span class="token punctuation">(</span>shape<span class="token punctuation">,</span> stddev<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">)</span>
-  <span class="token keyword">return</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span>initial<span class="token punctuation">)</span>
-
-<span class="token keyword">def</span> <span class="token function">bias_variable</span><span class="token punctuation">(</span>shape<span class="token punctuation">)</span><span class="token punctuation">:</span>
-  initial <span class="token operator">=</span> tf<span class="token punctuation">.</span>constant<span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">,</span> shape<span class="token operator">=</span>shape<span class="token punctuation">)</span>
-  <span class="token keyword">return</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span>initial<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">weight_variable</span><span class="params">(shape)</span>:</span></div><div class="line">  initial = tf.truncated_normal(shape, stddev=<span class="number">0.1</span>)</div><div class="line">  <span class="keyword">return</span> tf.Variable(initial)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bias_variable</span><span class="params">(shape)</span>:</span></div><div class="line">  initial = tf.constant(<span class="number">0.1</span>, shape=shape)</div><div class="line">  <span class="keyword">return</span> tf.Variable(initial)</div></pre></td></tr></table></figure>
 <p>下面重点讲一下TensorFlow中的两个函数，它们分别用来做卷积操作和池化操作。</p>
 <ul>
-<li><p><strong><code>tf.nn.conv2d(x,W,strides,padding)</code></strong></p>
+<li><p><code>tf.nn.conv2d(x,W,strides,padding)</code></p>
 <p>参数有四个：</p>
 <p>第一个参数x：4D的tensor，格式为[batch,height,width,channels]。</p>
 <p>第二个参数W：核函数，同样是4D的tensor，格式为[height,width,in_channel,out_channel]。</p>
 <p>第三个参数strides：步长，也是4D的tensor，格式为[1,stride,stride,1]，一般第一维和第四维都是1，因为很少有对batch和channel进行卷积计算。</p>
 <p>第四个参数padding：分“SAME”或者“VALID”两种，前者会进行补0，使得卷积前后的尺寸相同，后者不补0。</p>
 </li>
-<li><p><strong><code>tf.nn.max_pool(value, ksize, strides, padding)</code></strong></p>
+<li><p><code>tf.nn.max_pool(value, ksize, strides, padding)</code></p>
 <p>参数是四个，和卷积很类似：</p>
 <p>第一个参数value：需要池化的输入，一般池化层接在卷积层后面，所以输入通常是feature map，依然是[batch, height, width, channels]这样的shape</p>
 <p>第二个参数ksize：池化窗口的大小，取一个四维向量，一般是[1, height, width, 1]，因为我们不想在batch和channels上做池化，所以这两个维度设为了1</p>
@@ -1194,69 +863,28 @@ y_ <span class="token operator">=</span> tf<span class="token punctuation">.</sp
 </li>
 </ul>
 <p>这里我们的卷积使用1步长(stride size)，补0(padding size)模板，保证输出和输入是同一个大小。我们的池化用简单传统的2x2大小的模板做max pooling。为了代码更简洁，我们把这部分抽象成一个函数。 </p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">conv2d</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> W<span class="token punctuation">)</span><span class="token punctuation">:</span>
-  <span class="token keyword">return</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>conv2d<span class="token punctuation">(</span>x<span class="token punctuation">,</span> W<span class="token punctuation">,</span> strides<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token string">'SAME'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">def</span> <span class="token function">max_pool_2x2</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-  <span class="token keyword">return</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>max_pool<span class="token punctuation">(</span>x<span class="token punctuation">,</span> ksize<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> strides<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token string">'SAME'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d</span><span class="params">(x, W)</span>:</span></div><div class="line">  <span class="keyword">return</span> tf.nn.conv2d(x, W, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_pool_2x2</span><span class="params">(x)</span>:</span></div><div class="line">  <span class="keyword">return</span> tf.nn.max_pool(x, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="第一层卷积和池化"><a href="#第一层卷积和池化" class="headerlink" title="第一层卷积和池化"></a>第一层卷积和池化</h1><p>下面我们可以实现第一层了，它由一个卷积接一个max pooling完成。卷积在每个5x5的patch(卷积核)中算出32个特征。卷积的权重张量形状是[5, 5, 1, 32]，前两个维度是patch的大小，接着是输入的通道数目，最后是输出的通道数目。而对于每一个输出通道都有一个对应的偏置量。 </p>
-<pre class="line-numbers language-python"><code class="language-python">W_conv1 <span class="token operator">=</span> weight_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-b_conv1 <span class="token operator">=</span> bias_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">32</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">W_conv1 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">32</span>])</div><div class="line">b_conv1 = bias_variable([<span class="number">32</span>])</div></pre></td></tr></table></figure>
 <p>为了用这一层，我们把x变成一个4d向量，其第2、第3维对应图片的高、宽，最后一维代表图片的颜色通道数(因为是灰度图所以这里的通道数为1，如果是rgb彩色图，则为3)。 然后我们进行卷积和池化操作，卷积后要用ReLU激活函数。</p>
-<pre class="line-numbers language-python"><code class="language-python">x_image <span class="token operator">=</span> tf<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-h_conv1 <span class="token operator">=</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>conv2d<span class="token punctuation">(</span>x_image<span class="token punctuation">,</span> W_conv1<span class="token punctuation">)</span> <span class="token operator">+</span> b_conv1<span class="token punctuation">)</span>
-h_pool1 <span class="token operator">=</span> max_pool_2x2<span class="token punctuation">(</span>h_conv1<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x_image = tf.reshape(x, [<span class="number">-1</span>,<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>])</div><div class="line">h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)</div><div class="line">h_pool1 = max_pool_2x2(h_conv1)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="第二层卷积和池化"><a href="#第二层卷积和池化" class="headerlink" title="第二层卷积和池化"></a>第二层卷积和池化</h1><p>第二层中，每个5x5的patch会得到64个特征。</p>
-<pre class="line-numbers language-python"><code class="language-python">W_conv2 <span class="token operator">=</span> weight_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-b_conv2 <span class="token operator">=</span> bias_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">64</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-h_conv2 <span class="token operator">=</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>conv2d<span class="token punctuation">(</span>h_pool1<span class="token punctuation">,</span> W_conv2<span class="token punctuation">)</span> <span class="token operator">+</span> b_conv2<span class="token punctuation">)</span>
-h_pool2 <span class="token operator">=</span> max_pool_2x2<span class="token punctuation">(</span>h_conv2<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">W_conv2 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>])</div><div class="line">b_conv2 = bias_variable([<span class="number">64</span>])</div><div class="line"></div><div class="line">h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)</div><div class="line">h_pool2 = max_pool_2x2(h_conv2)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="全连接层fc1"><a href="#全连接层fc1" class="headerlink" title="全连接层fc1"></a>全连接层fc1</h1><p>现在，图片尺寸减小到7x7，我们加入一个有1024个神经元的全连接层，用于处理整个图片。我们把池化层输出的张量reshape成一些向量，乘上权重矩阵，加上偏置，然后对其使用ReLU。</p>
-<pre class="line-numbers language-python"><code class="language-python">W_fc1 <span class="token operator">=</span> weight_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">7</span> <span class="token operator">*</span> <span class="token number">7</span> <span class="token operator">*</span> <span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">1024</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-b_fc1 <span class="token operator">=</span> bias_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1024</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-h_pool2_flat <span class="token operator">=</span> tf<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>h_pool2<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token operator">*</span><span class="token number">7</span><span class="token operator">*</span><span class="token number">64</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-h_fc1 <span class="token operator">=</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>h_pool2_flat<span class="token punctuation">,</span> W_fc1<span class="token punctuation">)</span> <span class="token operator">+</span> b_fc1<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">W_fc1 = weight_variable([<span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>, <span class="number">1024</span>])</div><div class="line">b_fc1 = bias_variable([<span class="number">1024</span>])</div><div class="line"></div><div class="line">h_pool2_flat = tf.reshape(h_pool2, [<span class="number">-1</span>, <span class="number">7</span>*<span class="number">7</span>*<span class="number">64</span>])</div><div class="line">h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h1><p>为了减少过拟合，我们采用dropout。说起dropout，这又是一门玄学了，dropout是指在网络的训练过程中，对于神经网络单元，按照一定的概率将其暂时从网络中丢弃，即随机让一些节点参数不工作。注意是暂时，对于随机梯度下降来说，由于是随机丢弃，故而每一个mini-batch都在训练不同的网络。实验证明这种方法能有效的减少过拟合。</p>
 <p>我们用一个placeholder来代表神经元的输出在dropout中保持不变的概率，这样我们可以在训练过程中启用dropout，在测试过程中关闭dropout。</p>
-<pre class="line-numbers language-python"><code class="language-python">keep_prob <span class="token operator">=</span> tf<span class="token punctuation">.</span>placeholder<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>float32<span class="token punctuation">)</span>
-h_fc1_drop <span class="token operator">=</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>dropout<span class="token punctuation">(</span>h_fc1<span class="token punctuation">,</span> keep_prob<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">keep_prob = tf.placeholder(tf.float32)</div><div class="line">h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h1><p>最后，我们添加一个softmax层，就像前面的单层softmax regression一样。 </p>
-<pre class="line-numbers language-python"><code class="language-python">W_fc2 <span class="token operator">=</span> weight_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1024</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-b_fc2 <span class="token operator">=</span> bias_variable<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-y_conv <span class="token operator">=</span> tf<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>h_fc1_drop<span class="token punctuation">,</span> W_fc2<span class="token punctuation">)</span> <span class="token operator">+</span> b_fc2
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">W_fc2 = weight_variable([<span class="number">1024</span>, <span class="number">10</span>])</div><div class="line">b_fc2 = bias_variable([<span class="number">10</span>])</div><div class="line">y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2</div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="训练和评估"><a href="#训练和评估" class="headerlink" title="训练和评估"></a>训练和评估</h1><p>为了进行训练和评估，我们使用与之前简单的单层SoftMax神经网络模型几乎相同的一套代码，只是我们会用更加复杂的ADAM优化器来做梯度最速下降，在feed_dict中加入额外的参数keep_prob来控制dropout比例。然后每100次迭代输出一次日志。 一共进行了20000次迭代，batch_size是50。实现代码如下：</p>
-<pre class="line-numbers language-python"><code class="language-python">cross_entropy <span class="token operator">=</span> tf<span class="token punctuation">.</span>reduce_mean<span class="token punctuation">(</span>
-    tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>softmax_cross_entropy_with_logits<span class="token punctuation">(</span>labels<span class="token operator">=</span>y_<span class="token punctuation">,</span> logits<span class="token operator">=</span>y_conv<span class="token punctuation">)</span><span class="token punctuation">)</span>
-train_step <span class="token operator">=</span> tf<span class="token punctuation">.</span>train<span class="token punctuation">.</span>AdamOptimizer<span class="token punctuation">(</span><span class="token number">1e</span><span class="token operator">-</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span>minimize<span class="token punctuation">(</span>cross_entropy<span class="token punctuation">)</span>
-correct_prediction <span class="token operator">=</span> tf<span class="token punctuation">.</span>equal<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>y_conv<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tf<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>y_<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-accuracy <span class="token operator">=</span> tf<span class="token punctuation">.</span>reduce_mean<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>cast<span class="token punctuation">(</span>correct_prediction<span class="token punctuation">,</span> tf<span class="token punctuation">.</span>float32<span class="token punctuation">)</span><span class="token punctuation">)</span>
-sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>global_variables_initializer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">20000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-  batch <span class="token operator">=</span> mnist<span class="token punctuation">.</span>train<span class="token punctuation">.</span>next_batch<span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span>
-  <span class="token keyword">if</span> i<span class="token operator">%</span><span class="token number">100</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
-    train_accuracy <span class="token operator">=</span> accuracy<span class="token punctuation">.</span>eval<span class="token punctuation">(</span>feed_dict<span class="token operator">=</span><span class="token punctuation">{</span>
-        x<span class="token punctuation">:</span>batch<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> y_<span class="token punctuation">:</span> batch<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> keep_prob<span class="token punctuation">:</span> <span class="token number">1.0</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"step %d, training accuracy %g"</span><span class="token operator">%</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> train_accuracy<span class="token punctuation">)</span><span class="token punctuation">)</span>
-  train_step<span class="token punctuation">.</span>run<span class="token punctuation">(</span>feed_dict<span class="token operator">=</span><span class="token punctuation">{</span>x<span class="token punctuation">:</span> batch<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> y_<span class="token punctuation">:</span> batch<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> keep_prob<span class="token punctuation">:</span> <span class="token number">0.5</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"test accuracy %g"</span><span class="token operator">%</span>accuracy<span class="token punctuation">.</span>eval<span class="token punctuation">(</span>feed_dict<span class="token operator">=</span><span class="token punctuation">{</span>
-    x<span class="token punctuation">:</span> mnist<span class="token punctuation">.</span>test<span class="token punctuation">.</span>images<span class="token punctuation">,</span> y_<span class="token punctuation">:</span> mnist<span class="token punctuation">.</span>test<span class="token punctuation">.</span>labels<span class="token punctuation">,</span> keep_prob<span class="token punctuation">:</span> <span class="token number">1.0</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">cross_entropy = tf.reduce_mean(</div><div class="line">    tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))</div><div class="line">train_step = tf.train.AdamOptimizer(<span class="number">1e-4</span>).minimize(cross_entropy)</div><div class="line">correct_prediction = tf.equal(tf.argmax(y_conv,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">sess.run(tf.global_variables_initializer())</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20000</span>):</div><div class="line">  batch = mnist.train.next_batch(<span class="number">50</span>)</div><div class="line">  <span class="keyword">if</span> i%<span class="number">100</span> == <span class="number">0</span>:</div><div class="line">    train_accuracy = accuracy.eval(feed_dict=&#123;</div><div class="line">        x:batch[<span class="number">0</span>], y_: batch[<span class="number">1</span>], keep_prob: <span class="number">1.0</span>&#125;)</div><div class="line">    print(<span class="string">"step %d, training accuracy %g"</span>%(i, train_accuracy))</div><div class="line">  train_step.run(feed_dict=&#123;x: batch[<span class="number">0</span>], y_: batch[<span class="number">1</span>], keep_prob: <span class="number">0.5</span>&#125;)</div><div class="line"></div><div class="line">print(<span class="string">"test accuracy %g"</span>%accuracy.eval(feed_dict=&#123;</div><div class="line">    x: mnist.test.images, y_: mnist.test.labels, keep_prob: <span class="number">1.0</span>&#125;))</div></pre></td></tr></table></figure>
 <p>我用的jupyter notebook交互式环境。官网给出的训练时间大概是一个半小时，但我只用了16分钟左右就训练完了，可能官网给的是用CPU训练的参考时间。最后我们得到的准确率是99.2%，和官方文档得到的是一样的。这个网络模型是两层卷积两层池化两层全连接，最后一层全连接是softmax层。</p>
 <p>至此我们就用TensorFlow从头到尾实现了一个卷积神经网络，中间涉及了很多矩阵运算，且都是4维向量之间的运算。期间用到了部分最优化里的东西，比如最速下降法，但并不深入。</p>
 <p><br></p>
@@ -1299,26 +927,11 @@ sess<span class="token punctuation">.</span>run<span class="token punctuation">(
 <p>TensorFlow的运算可以用有向图表示，其中<strong>节点</strong>(operation,简称op)代表数学运算，<strong>边</strong>表示节点之间的某种联系，负责传输多维数据(Tensors)。节点可以被分配到多个计算设备上，可以异步和并行的地执行操作。因为是有向图，所以只有等到之前的入度节点们的计算状态完成后，当前节点才能执行操作。</p>
 <p>图在定义的过程中不会被执行，必须在会话(Session)中被启动，会话把op分发到GPU或CPU设备上，同时提供执行方法。因此TensorFlow的程序通常被组织成<strong>构建阶段</strong>和<strong>执行阶段</strong>，在构建阶段，我们把所有op描述成一个图；在执行阶段，我们通过会话执行之前构建好的图。</p>
 <p>如下例子是实现一个简单计数器:</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> tensorflow <span class="token keyword">as</span> tf
-one <span class="token operator">=</span> tf<span class="token punctuation">.</span>constant<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-state <span class="token operator">=</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-new_value <span class="token operator">=</span> tf<span class="token punctuation">.</span>add<span class="token punctuation">(</span>state<span class="token punctuation">,</span> one<span class="token punctuation">)</span>
-update <span class="token operator">=</span> tf<span class="token punctuation">.</span>assign<span class="token punctuation">(</span>state<span class="token punctuation">,</span> new_value<span class="token punctuation">)</span>
-sess <span class="token operator">=</span> tf<span class="token punctuation">.</span>Session<span class="token punctuation">(</span><span class="token punctuation">)</span>
-tf<span class="token punctuation">.</span>global_variables_initializer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>update<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">one = tf.constant(<span class="number">1</span>)</div><div class="line">state = tf.Variable(<span class="number">0</span>)</div><div class="line">new_value = tf.add(state, one)</div><div class="line">update = tf.assign(state, new_value)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">    print(sess.run(state))</div><div class="line">    sess.run(update)</div></pre></td></tr></table></figure>
 <p>以下是输出：</p>
-<pre><code>0
-1
-2
-3
-4
-</code></pre><p>最后记得关闭会话：</p>
-<pre class="line-numbers language-python"><code class="language-python">sess<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">0</div><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td></tr></table></figure>
+<p>最后记得关闭会话：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sess.close()</div></pre></td></tr></table></figure>
 <p>节点(op)的常用定义：</p>
 <p>1、<strong>常量(constant)</strong>，一般用作源节点，输出给其他节点做运算。</p>
 <p>2、<strong>变量(variable)</strong>，一般用来存储需要更新的参数，需要初始化。</p>
@@ -1333,17 +946,14 @@ tf<span class="token punctuation">.</span>global_variables_initializer<span clas
 
 <p>上例中，在<strong>构建阶段</strong>，我们定义一个常量one令它为1；定义了一个变量state令初始值为0；定义了一个加法操作<code>tf.add()</code>，它等同于+；定义了一个赋值操作<code>tf.assign()</code>，把更新后的值new_value赋给state。在该阶段所有操作都不会被执行。</p>
 <p>在<strong>执行阶段</strong>，我们需要启动一个会话来执行图。我们定义一个会话<code>sess = tf.Session()</code>，通过<code>sess.run()</code>执行操作。如果括号内为常量、变量等，则会取出相应的值，我们称该操作为<strong>Fetch</strong>；如果括号内为某个运算操作，则会执行该操作同时返回结果tensor。在执行阶段的最初我们首先需要初始化所有变量：</p>
-<pre class="line-numbers language-python"><code class="language-python">tf<span class="token punctuation">.</span>global_variables_initializer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.global_variables_initializer().run()</div></pre></td></tr></table></figure>
 <p>在该例中我们通过循环反复执行update节点，并打印出state变量中的值，实现一个简单计数器的操作。</p>
 <p>执行阶段结束后需要通过命令<code>sess.close()</code>结束会话，释放空间。也可以使用<code>with tf.Session() as sess:</code>代替<code>sess = tf.Session()</code>来建立会话，这样不需要手动释放空间。</p>
 <p>需要注意的是，在执行会话的<code>sess.run()</code>操作之前，任何对op的定义都不会被执行。</p>
 <p><br></p>
 <h1 id="MNIST机器学习入门"><a href="#MNIST机器学习入门" class="headerlink" title="MNIST机器学习入门"></a>MNIST机器学习入门</h1><p>本章介绍了MNIST数据集和Softmax回归，前者是个入门级的计算机视觉数据集，包含各种手写数字图片，官方文档把MNIST称为机器学习届的“Hello World”。Softmax Regression是一个非常基础的数学模型，在多分类问题中被广泛使用，在斯坦福大学的公开课CS231n中，Softmax回归也被放在最前面来讲，可见其重要性。本章学习用Softmax回归训练一个机器学习模型用于预测MNIST数据集中的数字。</p>
 <p>首先下载MNIST数据集，我们只需要用如下两行代码自动下载并且引用：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>examples<span class="token punctuation">.</span>tutorials<span class="token punctuation">.</span>mnist <span class="token keyword">import</span> input_data
-mnist <span class="token operator">=</span> input_data<span class="token punctuation">.</span>read_data_sets<span class="token punctuation">(</span><span class="token string">"MNIST_data/"</span><span class="token punctuation">,</span> one_hot<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p> 每张图片包含28*28个像素点，我们可以用一个数字矩阵来表示它。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230309_tE1HOU_11.jpeg?imageView2/2/w/800" alt=""></center>
 
@@ -1355,20 +965,7 @@ mnist <span class="token operator">=</span> input_data<span class="token punctua
 
 <p>简写为：</p>
 <p>$$<br>y = \text{softmax}(Wx + b)<br>$$<br>在我们的模型中，训练数据共60000张图片，但由于我们采用随机梯度下降来优化，因此我们x的尺寸为[batch_size,784]，W的尺寸为[784,10]，b的尺寸为[1,10]，最终输出的<code>y</code>尺寸和标签<code>y_</code>尺寸均为[batch_size,10]。具体实现我用的jupyter notebook，过程如下：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> tensorflow <span class="token keyword">as</span> tf
-x <span class="token operator">=</span> tf<span class="token punctuation">.</span>placeholder<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>float32<span class="token punctuation">,</span> <span class="token punctuation">[</span>None<span class="token punctuation">,</span> <span class="token number">784</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-W <span class="token operator">=</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">784</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-b <span class="token operator">=</span> tf<span class="token punctuation">.</span>Variable<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-y <span class="token operator">=</span> tf<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>softmax<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>x<span class="token punctuation">,</span> W<span class="token punctuation">)</span> <span class="token operator">+</span> b<span class="token punctuation">)</span>
-y_ <span class="token operator">=</span> tf<span class="token punctuation">.</span>placeholder<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>float32<span class="token punctuation">,</span> <span class="token punctuation">[</span>None<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-cross_entropy <span class="token operator">=</span> tf<span class="token punctuation">.</span>reduce_mean<span class="token punctuation">(</span><span class="token operator">-</span>tf<span class="token punctuation">.</span>reduce_sum<span class="token punctuation">(</span>y_ <span class="token operator">*</span> tf<span class="token punctuation">.</span>log<span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">,</span> reduction_indices<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-train_step <span class="token operator">=</span> tf<span class="token punctuation">.</span>train<span class="token punctuation">.</span>GradientDescentOptimizer<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">.</span>minimize<span class="token punctuation">(</span>cross_entropy<span class="token punctuation">)</span>
-sess <span class="token operator">=</span> tf<span class="token punctuation">.</span>Session<span class="token punctuation">(</span><span class="token punctuation">)</span>
-tf<span class="token punctuation">.</span>global_variables_initializer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    batch_xs<span class="token punctuation">,</span> batch_ys <span class="token operator">=</span> mnist<span class="token punctuation">.</span>train<span class="token punctuation">.</span>next_batch<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
-    sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>train_step<span class="token punctuation">,</span> feed_dict<span class="token operator">=</span><span class="token punctuation">{</span>x<span class="token punctuation">:</span> batch_xs<span class="token punctuation">,</span> y_<span class="token punctuation">:</span> batch_ys<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</div><div class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</div><div class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.5</span>).minimize(cross_entropy)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</div></pre></td></tr></table></figure>
 <p>我们首先定义了变量W和b，用来存储模型参数，在一遍遍迭代中不断的对其进行更新，初始化为全零矩阵。然后定义占位符x，先在图中分配好节点，类型为float型，None表示此张量的第一个维度可以是任何长度的，在执行时可以利用feed操作输入任何数量的图片。接着定义了矩阵乘法操作<code>tf.matmul()</code>和加操作+，以及定义了节点y进行softmax计算。</p>
 <p>我把数据流图简单画了下：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg?imageView2/2/w/800" alt=""></center>
@@ -1379,10 +976,7 @@ tf<span class="token punctuation">.</span>global_variables_initializer<span clas
 <p>因此需要定义一个新的占位符<code>y_</code>来表示标签数据，来计算交叉熵，我们采用的batch_size为100，这里计算的是100张图片的交叉熵总和。在这里，我们定义一个最优化操作train_step，要求TensorFlow用梯度下降算法(gradient descent algorithm)以0.01的学习速率最小化交叉熵。</p>
 <p>到这里，我们程序的构建阶段就完成了，接下来是执行阶段。我们启动一个会话<code>sess = tf.Session()</code>，首先初始化所有变量，然后开始启动训练，这里让模型循环训练迭代1000次，每次随机抓取训练数据中100个数据点，然后用它们替换之前定义的占位符<code>x</code>和<code>y_</code>中的参数(feed操作)。这种随机抓取数据训练的方法称为<strong>随机梯度下降</strong>，可以很好的节省训练开销，同时最大化的学习数据集的总体性能。</p>
 <p>训练用的时间比较短，用CUDA只要几秒钟，训练结束后我们需要验证模型的性能，MNIST数据集有10000张测试图片用于评估模型的泛化性能。下面是测试阶段代码：</p>
-<pre class="line-numbers language-python"><code class="language-python">correct_prediction <span class="token operator">=</span> tf<span class="token punctuation">.</span>equal<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>y<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tf<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>y_<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-accuracy <span class="token operator">=</span> tf<span class="token punctuation">.</span>reduce_mean<span class="token punctuation">(</span>tf<span class="token punctuation">.</span>cast<span class="token punctuation">(</span>correct_prediction<span class="token punctuation">,</span> tf<span class="token punctuation">.</span>float32<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>sess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>accuracy<span class="token punctuation">,</span> feed_dict<span class="token operator">=</span><span class="token punctuation">{</span>x<span class="token punctuation">:</span> mnist<span class="token punctuation">.</span>test<span class="token punctuation">.</span>images<span class="token punctuation">,</span> y_<span class="token punctuation">:</span> mnist<span class="token punctuation">.</span>test<span class="token punctuation">.</span>labels<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">correct_prediction = tf.equal(tf.argmax(y,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">print(sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels&#125;))</div></pre></td></tr></table></figure>
 <p>先介绍下用到的几个主要函数：</p>
 <p><code>tf.argmax()</code>函数能给出tensor对象在某一维上的最大值所在的索引值。</p>
 <p><code>tf.equal()</code>函数来对比两个tensor是否相同，返回一组布尔值。</p>
@@ -1416,7 +1010,7 @@ accuracy <span class="token operator">=</span> tf<span class="token punctuation"
     <link href="http://zangbo.me/2017/06/01/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
     <id>http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/</id>
     <published>2017-06-01T10:44:56.000Z</published>
-    <updated>2017-06-22T05:35:11.000Z</updated>
+    <updated>2017-06-22T17:41:44.000Z</updated>
     
     <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。</excerpt></p>
 <a id="more"></a>
@@ -1461,20 +1055,16 @@ accuracy <span class="token operator">=</span> tf<span class="token punctuation"
 <p><br></p>
 <h1 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h1><p>Git是一款免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。具体的细节可以看廖雪峰老师的教程：<a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">Git教程 - 廖雪峰的官方网站</a>，打开Git的官方网站下载Git安装包：<a href="https://git-scm.com/downloads" target="_blank" rel="external">Git - Downloads</a>，由于我们是Mac OS系统，这里选择相关的下载包，下载后根据提示安装。</p>
 <p>安装结束后，打开终端输入git测试是否安装成功，安装成功后，需要把Git和GitHub账号绑定，首先设置user.name和user.email信息，在终端中输入：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">git config --global user.name "你的GitHub用户名"
-git config --global user.email "你的GitHub注册邮箱"
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"你的GitHub用户名"</span></div><div class="line">git config --global user.email <span class="string">"你的GitHub注册邮箱"</span></div></pre></td></tr></table></figure>
 <p>生成ssh密钥文件：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">ssh-keygen -t rsa -C "你的GitHub注册邮箱"
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa -C <span class="string">"你的GitHub注册邮箱"</span></div></pre></td></tr></table></figure>
 <p>然后连续按三个回车即可，这里默认不需要设置密码。我们根据终端中提示的地址找到生成的 .ssh 文件夹，该文件夹为隐藏文件夹，可以在终端中用 cd 指令进入，我们需要的Key就存放在该文件夹下面的 id_rsa.pub 文件中，我们可以用指令<code>cat id_rsa.pub</code>打印出该文件中的内容，然后复制全部内容（以ssh-rsa开头）。</p>
 <p>打开<a href="https://github.com/settings/keys" target="_blank" rel="external">GitHub_Settings_keys</a>页面，点击 new SSH Key 按钮：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_ujfyFj_3.jpeg" alt=""></center>
 
 <p>其中Title可以随意填，因为我们可能会用不同的电脑连接GitHub，比如家里的电脑，公司的电脑等等，所以后面可能会添加多个Key，可以把Title取为Home或者School等方便区分。把刚复制的内容粘贴进去，点击Add SSH key。</p>
 <p>在终端中检测GitHub公钥是否设置成功，输入：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">ssh git@github.com
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh git@github.com</div></pre></td></tr></table></figure>
 <p>显示以下内容说明成功：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_0OonVo_4.jpeg?imageView2/2/w/800" alt=""></center>
 
@@ -1484,35 +1074,24 @@ git config --global user.email "你的GitHub注册邮箱"
 <p><br></p>
 <h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><p>hexo基于Node.js，我们需要首先安装Node.js，下载地址<a href="https://nodejs.org/en/download/" target="_blank" rel="external">Download | Node.js</a>，注意安装Node.js会包含环境变量及npm的安装。</p>
 <p>检测Node.js是否安装成功，在命令行中输入：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">node -v
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node -v</div></pre></td></tr></table></figure>
 <p>检查npm是否安装成功，在命令行输入：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">npm -v
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm -v</div></pre></td></tr></table></figure>
 <p>若显示版本号， 则表明安装成功。</p>
 <p>对于Mac用户，要想安装hexo需要首先安装Xcode，我们可以从AppStore安装Xcode，安装结束后，我们需要安装Command Line Tools，Command LineTools是在Xcode中的一款工具，可以在命令行中运行C程序。打开终端输入：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">xcode-select --install
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xcode-select --install</div></pre></td></tr></table></figure>
 <p>安装结束后，再次在终端输入：                                                                                              </p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">xcode-select --install
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xcode-select --install</div></pre></td></tr></table></figure>
 <p>若显示command line tools are already installed，则表明安装成功。</p>
 <p>到此，Hexo所需要的环境已经全部搭建完成。</p>
 <p> <br></p>
 <h1 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h1><p>我们可以用npm命令安装Hexo，打开终端输入：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">npm install -g hexo-cli
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure>
 <p>安装结束后，输入以下命令来初始化一个Hexo博客：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">hexo init <folder> 
-cd <folder>
-npm install
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init &lt;folder&gt; </div><div class="line"><span class="built_in">cd</span> &lt;folder&gt;</div><div class="line">npm install</div></pre></td></tr></table></figure>
 <p>该命令会在当前文件夹下新建一个名叫folder的文件夹来初始化一个博客，如果命令中没有folder，则在当前文件夹初始化博客。比如我要初始化一个名字叫blog的博客，则需要输入<code>hexo init blog</code>，这样我们就在该目录下新建了一个名为blog的文件夹，接着我们利用命令<code>cd blog</code>进入该文件夹，输入<code>npm install</code>来安装必备的库。</p>
 <p>到这里我们的网站就初始化完毕了，下面我们尝试添加一篇新的文章并且在本地服务器上查看。不出意外当前终端定位是在我们刚建立的文件夹下，即刚刚的blog文件夹下，此时在终端输入以下命令：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">hexo new [layout] <title>  #等价于 hexo n [layout] <title>
-hexo generate  #等价于 hexo g
-hexo server  #等价于 hexo s
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo new [layout] &lt;title&gt;  <span class="comment">#等价于 hexo n [layout] &lt;title&gt;</span></div><div class="line">hexo generate  <span class="comment">#等价于 hexo g</span></div><div class="line">hexo server  <span class="comment">#等价于 hexo s</span></div></pre></td></tr></table></figure>
 <p>我新建了一篇名为“<em>The first article</em>”的文章。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204124_1ieo4u_5.jpeg?imageView2/2/w/800" alt=""></center>
 
@@ -1525,30 +1104,17 @@ hexo server  #等价于 hexo s
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_k0kChT_7.jpeg?imageView2/2/w/800" alt=""></center>
 
 <p>接下来我们来介绍常用的Hexo命令（详细用法可查看Hexo官方文档<a href="https://hexo.io/docs/commands.html" target="_blank" rel="external">Commands | Hexo</a>）：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">hexo init #初始化博客
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init <span class="comment">#初始化博客</span></div></pre></td></tr></table></figure>
 <p>命令简写：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">hexo n "我的博客" #  == hexo new "我的博客" ：新建文章
-hexo g # == hexo generate ：生成
-hexo s # == hexo server ：启动服务预览
-hexo d # == hexo deploy ：部署
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-Bash"><code class="language-Bash">hexo server #Hexo会监视文件变动并自动更新，无须重启服务器
-hexo server -s #静态模式
-hexo server -p 5000 #更改端口
-hexo server -i 192.168.1.1 #自定义 IP
-hexo clean #清除缓存，若是网页正常情况下可以忽略这条命令
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo n <span class="string">"我的博客"</span> <span class="comment">#  == hexo new "我的博客" ：新建文章</span></div><div class="line">hexo g <span class="comment"># == hexo generate ：生成</span></div><div class="line">hexo s <span class="comment"># == hexo server ：启动服务预览</span></div><div class="line">hexo d <span class="comment"># == hexo deploy ：部署</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo server <span class="comment">#Hexo会监视文件变动并自动更新，无须重启服务器</span></div><div class="line">hexo server -s <span class="comment">#静态模式</span></div><div class="line">hexo server -p 5000 <span class="comment">#更改端口</span></div><div class="line">hexo server -i 192.168.1.1 <span class="comment">#自定义 IP</span></div><div class="line">hexo clean <span class="comment">#清除缓存，若是网页正常情况下可以忽略这条命令</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <h1 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a>推送网站</h1><p>推送网站需要关联Github和Hexo，官方文档下的关联步骤，输入第一行代码后，需要打开blog根目录下的 <em>_config.yml</em> 文件，按照下面所示要求进行配置。在 Hexo中有两份主要的配置文件，其名称都是 <em>_config.yml</em>。其中，一份位于站点根目录下，主要包含Hexo本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为站点配置文件，后者称为主题配置文件。我们在这一步只需要修改站点配置文件。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/个人博客/20170621204125_CCOYpH_8.jpeg" alt=""></center>
 
 <p>其实就是给<code>hexo d</code>这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。</p>
 <p>接下来，我们输入三条命令：</p>
-<pre class="line-numbers language-Bash"><code class="language-Bash">hexo clean
-hexo g
-hexo d
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo g</div><div class="line">hexo d</div></pre></td></tr></table></figure>
 <p>完成后打开浏览器，在地址栏输入 <strong>用户名</strong>.github.io ，这里的<strong>用户名</strong>为你的GitHub用户名，比如我的就是 <a href="zangbo.github.io">zangbo.github.io</a>，然后你就会发现你的博客已经可以在网络上被访问了。</p>
 <p><br></p>
 <h1 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h1><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的：<strong>xxx.github.io</strong> 而我们想使用我们自己刚买的个性化域名，这就需要绑定，这里以阿里云为例。登陆到阿里云：<a href="https://www.aliyun.com" target="_blank" rel="external">阿里云-为了无法计算的价值</a>，点击 <strong>控制台</strong> 进入管理控制台的域名列表，找到你的个性化域名，进入解析：</p>
@@ -1569,8 +1135,8 @@ hexo d
 <p><a href="http://litten.me" target="_blank" rel="external">yilia</a></p>
 <p><a href="http://moxfive.xyz" target="_blank" rel="external">yelee</a></p>
 <p>更换主题之需要打开根目录下的站点配置文件 _config.yml，修改其中的theme的值，例如改为next主题：</p>
-<pre><code>theme: next
-</code></pre><p>具体的主题配置需要修改各自主题下的主题配置文件 _config.yml，大家可以去各主题的GitHub上查看教程，还是比较详细的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: next</div></pre></td></tr></table></figure>
+<p>具体的主题配置需要修改各自主题下的主题配置文件 _config.yml，大家可以去各主题的GitHub上查看教程，还是比较详细的。</p>
 <p><br></p>
 <h1 id="更新文章"><a href="#更新文章" class="headerlink" title="更新文章"></a>更新文章</h1><p>更新文章可以打开终端进入博客根目录，输入指令<code>hexo n &quot;文章名&quot;</code>来实现，然后打开根目录下的source/_posts文件夹，可以发现我们新建的 <strong>文章名.md</strong> 文件，然后就可以打开它用Markdown语法来写文章了，具体的Markdown语法教程可以参看这篇：<a href="http://www.appinn.com/markdown/#code" target="_blank" rel="external">Markdown语法说明(简体中文版) </a>。另外补充几点上面没有的：</p>
 <ol>
@@ -1580,71 +1146,31 @@ hexo d
 </ol>
 <p>大部分常用用法在上面教程都可以找到。这里注意，在本地修改网站或者更新文章时，可以用指令<code>hexo s</code>在本地服务器看修改效果，打开浏览器输入<code>localhost:4000</code>，每次修改后网站会实时的发生变动。但是修改后要用指令<code>hexo g</code>和<code>hexo d</code>部署到GitHub上，此时的CNAME文件和README.md文件往往会消失，需要重新创建。为了方便起见可以打开网站根目录的source文件夹，把CNAME文件和README.md文件存放在里面。注意CNAME文件没有扩展名。</p>
 <p>此时还有个问题，如果把README.md文件放在source文件夹中，执行<code>hexo g</code>指令时会被渲染，解决办法是只要在博客根目录下的配置文件_config.yml中配置一下”skip_render”选项，将不需要渲染的文件名称加入的其选项下就行了。</p>
-<pre><code>skip_render: README.md
-</code></pre><p><br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">skip_render: README.md</div></pre></td></tr></table></figure>
+<p><br></p>
 <h1 id="寻找图床"><a href="#寻找图床" class="headerlink" title="寻找图床"></a>寻找图床</h1><p>当文章中有图片时，若是少量图片，可以直接把图片存放在source文件夹中，但图片会占据大量的存储的空间，加载的时候相对缓慢 ，这时考虑把博文里的图片上传到某一网站，然后获得外部链接，使用Markdown语法： <strong>![图片信息](外部链接)</strong> 完成图片的插入，这种网站就被成为图床。这里推荐<a href="https://www.qiniu.com" target="_blank" rel="external">七牛云</a>，新人有10G的免费流量，对于个人博客来说是足够了，超出后的的费用也不贵，也是学生党可以负担得起的。</p>
 <p><br></p>
 <h1 id="功能扩展"><a href="#功能扩展" class="headerlink" title="功能扩展"></a>功能扩展</h1><h2 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h2><p>打开文件：</p>
 <p><code>根目录/node_modules/hexo-generator-index/lib/generator.js</code></p>
 <p>替换为以下代码并保存：</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token string">'use strict'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">var</span> pagination <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'hexo-pagination'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>locals<span class="token punctuation">)</span><span class="token punctuation">{</span>
-  <span class="token keyword">var</span> config <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>config<span class="token punctuation">;</span>
-  <span class="token keyword">var</span> posts <span class="token operator">=</span> locals<span class="token punctuation">.</span>posts<span class="token punctuation">;</span>
-
-    posts<span class="token punctuation">.</span>data <span class="token operator">=</span> posts<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 两篇文章top都有定义</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">==</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>date <span class="token operator">-</span> a<span class="token punctuation">.</span>date<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 若top值一样则按照文章日期降序排</span>
-            <span class="token keyword">else</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>top <span class="token operator">-</span> a<span class="token punctuation">.</span>top<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 否则按照top值降序排</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）</span>
-            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">else</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>date <span class="token operator">-</span> a<span class="token punctuation">.</span>date<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 都没定义按照文章日期降序排</span>
-
-    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">var</span> paginationDir <span class="token operator">=</span> config<span class="token punctuation">.</span>pagination_dir <span class="token operator">||</span> <span class="token string">'page'</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">return</span> <span class="token function">pagination</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> posts<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-    perPage<span class="token punctuation">:</span> config<span class="token punctuation">.</span>index_generator<span class="token punctuation">.</span>per_page<span class="token punctuation">,</span>
-    layout<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'index'</span><span class="token punctuation">,</span> <span class="token string">'archive'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    format<span class="token punctuation">:</span> paginationDir <span class="token operator">+</span> <span class="token string">'/%d/'</span><span class="token punctuation">,</span>
-    data<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      __index<span class="token punctuation">:</span> <span class="token boolean">true</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> pagination = <span class="built_in">require</span>(<span class="string">'hexo-pagination'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">locals</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> config = <span class="keyword">this</span>.config;</div><div class="line">  <span class="keyword">var</span> posts = locals.posts;</div><div class="line"></div><div class="line">    posts.data = posts.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span>(a.top &amp;&amp; b.top) &#123; <span class="comment">// 两篇文章top都有定义</span></div><div class="line">            <span class="keyword">if</span>(a.top == b.top) <span class="keyword">return</span> b.date - a.date; <span class="comment">// 若top值一样则按照文章日期降序排</span></div><div class="line">            <span class="keyword">else</span> <span class="keyword">return</span> b.top - a.top; <span class="comment">// 否则按照top值降序排</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a.top &amp;&amp; !b.top) &#123; <span class="comment">// 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）</span></div><div class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!a.top &amp;&amp; b.top) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">return</span> b.date - a.date; <span class="comment">// 都没定义按照文章日期降序排</span></div><div class="line"></div><div class="line">    &#125;);</div><div class="line"></div><div class="line">  <span class="keyword">var</span> paginationDir = config.pagination_dir || <span class="string">'page'</span>;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> pagination(<span class="string">''</span>, posts, &#123;</div><div class="line">    <span class="attr">perPage</span>: config.index_generator.per_page,</div><div class="line">    <span class="attr">layout</span>: [<span class="string">'index'</span>, <span class="string">'archive'</span>],</div><div class="line">    <span class="attr">format</span>: paginationDir + <span class="string">'/%d/'</span>,</div><div class="line">    <span class="attr">data</span>: &#123;</div><div class="line">      <span class="attr">__index</span>: <span class="literal">true</span></div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>在写文章时，只需要设置top参数为true即可。</p>
 <p><br></p>
 <h2 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h2><p>Hexo允许使用MathJax来渲染LaTeX数学公式，首先安装自动部署MathJax的插件：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> hexo-math --save
-hexo math <span class="token function">install</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math --save</div><div class="line">hexo math install</div></pre></td></tr></table></figure>
 <p>接着把主题配置文件下的mathjax选项设置为true：</p>
-<pre><code>mathjax: true
-</code></pre><p>如果直接在新建的博文中使用LaTeX格式的公式会出现一些问题，原因是hexo先用marked.<a href="http://lib.csdn.net/base/javascript" target="_blank" rel="external">js</a>渲染，然后再交给MathJax渲染。在marked.js渲染的时候下划线<code>_</code>是被escape掉并且换成了<code>&lt;em&gt;</code>标签，即斜体字，另外LaTeX中的<code>\\</code>也会被转义成一个<code>\</code>，这样会导致MathJax渲染时不认为它是一个换行符了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mathjax: true</div></pre></td></tr></table></figure>
+<p>如果直接在新建的博文中使用LaTeX格式的公式会出现一些问题，原因是hexo先用marked.<a href="http://lib.csdn.net/base/javascript" target="_blank" rel="external">js</a>渲染，然后再交给MathJax渲染。在marked.js渲染的时候下划线<code>_</code>是被escape掉并且换成了<code>&lt;em&gt;</code>标签，即斜体字，另外LaTeX中的<code>\\</code>也会被转义成一个<code>\</code>，这样会导致MathJax渲染时不认为它是一个换行符了。</p>
 <p>我们只要不让marked.js去转义<code>\\</code>,<code>\{</code>,<code>\}</code>在MathJax中有特殊用途的字符就行了。<br>具体修改方式，用编辑器打开marked.js（在<code>./node_modules/marked/lib/</code>中）</p>
 <p><strong>Step 1:</strong></p>
-<pre class="line-numbers language-javascript"><code class="language-javascript">escape<span class="token punctuation">:</span> <span class="token regex">/^\\([\\`*{}\[\]()# +\-.!_>])/</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">escape</span>: <span class="regexp">/^\\([\\`*&#123;&#125;\[\]()# +\-.!_&gt;])/</span>,</div></pre></td></tr></table></figure>
 <p>替换成</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript">escape<span class="token punctuation">:</span> <span class="token regex">/^\\([`*\[\]()# +\-.!_>])/</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">escape</span>: <span class="regexp">/^\\([`*\[\]()# +\-.!_&gt;])/</span>,</div></pre></td></tr></table></figure>
 <p>这一步是在原基础上取消了对<code>\\</code>,<code>\{</code>,<code>\}</code>的转义(escape)</p>
 <p><strong>Step 2:</strong></p>
-<pre class="line-numbers language-javascript"><code class="language-javascript">em<span class="token punctuation">:</span> <span class="token regex">/^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">em: <span class="regexp">/^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span>,</div></pre></td></tr></table></figure>
 <p>替换成</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript">em<span class="token punctuation">:</span><span class="token regex">/^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">em:<span class="regexp">/^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span>,</div></pre></td></tr></table></figure>
 <p>这样一来MathJax就能与marked.js共存了。</p>
 <p>在Markdown中输入数学公式：</p>
 <ul>
