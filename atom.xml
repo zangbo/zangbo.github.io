@@ -590,21 +590,19 @@
     <link href="http://zangbo.me/2017/06/12/%E9%80%81%E5%A5%B3%E5%8F%8B%E7%9A%84%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9/"/>
     <id>http://zangbo.me/2017/06/12/送女友的生日礼物/</id>
     <published>2017-06-12T13:36:59.000Z</published>
-    <updated>2017-06-23T07:40:01.000Z</updated>
+    <updated>2017-06-23T12:05:23.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
-
-
 
 <p>女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<div id="aplayer1" class="aplayer" style="margin-bottom: 20px;"></div>
+<div id="aplayer0" class="aplayer" style="margin-bottom: 20px;"></div>
 		<script>
 			new APlayer({
-				element: document.getElementById("aplayer1"),
+				element: document.getElementById("aplayer0"),
 				narrow: false,
 				autoplay: false,
 				showlrc: 0,
@@ -627,7 +625,7 @@
 <h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><ul>
 <li><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
 <p>作者主页：<a href="http://chengdazhi.com" target="_blank" rel="external">程大治</a></p>
-<p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的网站模版进行的二次加工，于是我便直接拿来修改，应该没有侵犯版权，如果有的话请给我发邮件。</p>
+<p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的模版，很容易就搜到了：<a href="http://www.cssmoban.com/cssthemes/6077.shtml" target="_blank" rel="external">简洁瀑布流布局动物世界博客模板</a>，于是直接进行二次加工。</p>
 </li>
 </ul>
 <ul>
@@ -644,8 +642,6 @@
     <summary type="html">
     
       &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
-
-
 
 &lt;p&gt;女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。&lt;/p&gt;
     
@@ -927,17 +923,15 @@
     <link href="http://zangbo.me/2017/06/02/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://zangbo.me/2017/06/02/Tensorflow-官方文档学习笔记（一）/</id>
     <published>2017-06-02T05:22:10.000Z</published>
-    <updated>2017-06-21T17:00:21.000Z</updated>
+    <updated>2017-06-23T14:50:32.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇主要关于Tensorflow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近开始学习TensorFlow，后面也会继续学习Keras。Keras是用Python编写的深度学习库，基于TensorFlow或Theano，本身高度模块化，并且已经实现了绝大多数神经网络，如今已经被Google添加进TensorFLow核心模块成为了其默认API，一些简单的网络可以选择用Keras实现。不过正是因为它高度模块化，用起来很容易忽略底层原理，不利于后期调试和扩展。对于一些复杂的神经网络，还是应该选择Tensorflow来实现。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近开始学习TensorFlow，关于TensorFlow网上有很多学习笔记，但基本上都来源于官方文档，目前已经有翻译好的中文版，因此决定直接从官方文档学起。代码部分我用的是Python3.5版本。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230301_Z8l9h5_unnamed.jpeg" alt=""></center>
 
-<p>关于TensorFlow网上有很多学习笔记，但基本上都来源于官方文档，目前已经有翻译好的中文版，因此决定直接从官方文档学起。代码部分我用的是Python3.5版本。</p>
-<p><br></p>
 <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p>TensorFlow支持Python、C和C++三种语言，但Python的库是最全的，也是使用最广泛的。</p>
 <p>TensorFlow用<strong>张量(Tensor)</strong>表示数据，数据一般是多维数组，在Python中为numpy的ndarray对象。<strong>Flow(流)</strong>意味着基于数据流图(Data Flow Graphs)进行数值计算。TensorFlow即为张量从图的一端流动到另一端。</p>
 <p>TensorFlow的运算可以用有向图表示，其中<strong>节点</strong>(operation,简称op)代表数学运算，<strong>边</strong>表示节点之间的某种联系，负责传输多维数据(Tensors)。节点可以被分配到多个计算设备上，可以异步和并行的地执行操作。因为是有向图，所以只有等到之前的入度节点们的计算状态完成后，当前节点才能执行操作。</p>
@@ -981,7 +975,7 @@
 
 <p>简写为：</p>
 <p>$$<br>y = \text{softmax}(Wx + b)<br>$$<br>在我们的模型中，训练数据共60000张图片，但由于我们采用随机梯度下降来优化，因此我们x的尺寸为[batch_size,784]，W的尺寸为[784,10]，b的尺寸为[1,10]，最终输出的<code>y</code>尺寸和标签<code>y_</code>尺寸均为[batch_size,10]。具体实现我用的jupyter notebook，过程如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</div><div class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</div><div class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.5</span>).minimize(cross_entropy)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</div><div class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</div><div class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.05</span>).minimize(cross_entropy)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</div></pre></td></tr></table></figure>
 <p>我们首先定义了变量W和b，用来存储模型参数，在一遍遍迭代中不断的对其进行更新，初始化为全零矩阵。然后定义占位符x，先在图中分配好节点，类型为float型，None表示此张量的第一个维度可以是任何长度的，在执行时可以利用feed操作输入任何数量的图片。接着定义了矩阵乘法操作<code>tf.matmul()</code>和加操作+，以及定义了节点y进行softmax计算。</p>
 <p>我把数据流图简单画了下：</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg?imageView2/2/w/800" alt=""></center>
@@ -989,7 +983,7 @@
 <p>我们已经定义了一个指标来说明一个模型是好的，但在机器学习，我们通常定义指标来表示一个模型是坏的，这个指标称为成本(cost)或损失(loss)，然后尽量最小化这个指标，这两种方式是相同的。</p>
 <p>这里我们用到的成本函数是“交叉熵”(cross-entropy) ，它的定义如下：</p>
 <p>$$<br>H_{y’}(y) = -\sum_i y’_i \log(y_i)<br>$$<br>y 是我们预测的概率分布, y’ 是实际的分布 </p>
-<p>因此需要定义一个新的占位符<code>y_</code>来表示标签数据，来计算交叉熵，我们采用的batch_size为100，这里计算的是100张图片的交叉熵总和。在这里，我们定义一个最优化操作train_step，要求TensorFlow用梯度下降算法(gradient descent algorithm)以0.01的学习速率最小化交叉熵。</p>
+<p>因此需要定义一个新的占位符<code>y_</code>来表示标签数据，来计算交叉熵，我们采用的batch_size为100，这里计算的是100张图片的交叉熵总和。在这里，我们定义一个最优化操作train_step，要求TensorFlow用梯度下降算法(gradient descent algorithm)以0.05的学习速率最小化交叉熵。</p>
 <p>到这里，我们程序的构建阶段就完成了，接下来是执行阶段。我们启动一个会话<code>sess = tf.Session()</code>，首先初始化所有变量，然后开始启动训练，这里让模型循环训练迭代1000次，每次随机抓取训练数据中100个数据点，然后用它们替换之前定义的占位符<code>x</code>和<code>y_</code>中的参数(feed操作)。这种随机抓取数据训练的方法称为<strong>随机梯度下降</strong>，可以很好的节省训练开销，同时最大化的学习数据集的总体性能。</p>
 <p>训练用的时间比较短，用CUDA只要几秒钟，训练结束后我们需要验证模型的性能，MNIST数据集有10000张测试图片用于评估模型的泛化性能。下面是测试阶段代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">correct_prediction = tf.equal(tf.argmax(y,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">print(sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels&#125;))</div></pre></td></tr></table></figure>
@@ -1005,6 +999,8 @@
 <p>因为Python进行复杂运算的效率较低，所以我们通常会使用各种函数库，比如NumPy，会把类似矩阵乘法这样的复杂运算使用其他外部语言实现。但是从外部计算切回Python又是很大的开销，因此TensorFlow使用的方案是先一次性定义好所有需要的操作，然后全部一起放在Python外运行，这也是TensorFlow的程序分为构建阶段和执行阶段的原因。</p>
 <p>因为节点可以被分配到多个计算设备上，可以异步和并行的地执行操作，所以我们就可以通过分布式运算极大的提高运行速度，这算是TensorFlow的优点之一吧。</p>
 <p>本文部分图片和代码引用自TensorFlow官方文档，手绘数据流图为原创.</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.tensorflow.org/get_started/mnist/beginners" target="_blank" rel="external">MNIST For ML Beginners  |  TensorFlow</a> （需翻墙）</p>
 <p><br></p>
 </the>]]></content>
     
