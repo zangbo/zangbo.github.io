@@ -22,7 +22,7 @@
     <published>2017-06-22T11:28:01.000Z</published>
     <updated>2017-06-22T13:02:02.000Z</updated>
     
-    <content type="html"><![CDATA[<excerpt in="" index="" |="" 首页摘要=""> 
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。</p>
 <p>中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。</p>
@@ -150,7 +150,7 @@
     <published>2017-06-15T13:48:57.000Z</published>
     <updated>2017-06-23T02:17:12.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -304,7 +304,7 @@
     <published>2017-06-14T02:47:57.000Z</published>
     <updated>2017-06-21T16:54:59.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Requests库以及一些基础用法，基于python3.5版本<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Requests库以及一些基础用法，基于python3.5版本<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -411,7 +411,7 @@
     <published>2017-06-13T04:43:52.000Z</published>
     <updated>2017-06-21T16:53:05.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本系列记录了爬虫学习的历程，本文整理了学习爬虫需要掌握的基础背景知识，包括HTML、URL在内的基础概念以及爬虫的工作原理。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列记录了爬虫学习的历程，本文整理了学习爬虫需要掌握的基础背景知识，包括HTML、URL在内的基础概念以及爬虫的工作原理。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -472,7 +472,7 @@
     <published>2017-06-13T03:40:30.000Z</published>
     <updated>2017-06-22T13:17:53.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -536,7 +536,7 @@
     <published>2017-06-12T14:10:55.000Z</published>
     <updated>2017-06-22T14:53:19.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -592,7 +592,7 @@
     <published>2017-06-12T13:36:59.000Z</published>
     <updated>2017-06-22T05:36:38.000Z</updated>
     
-    <content type="html"><![CDATA[<excerpt in="" index="" |="" 首页摘要=""> 
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 
 
@@ -649,7 +649,7 @@
     <published>2017-06-06T09:08:43.000Z</published>
     <updated>2017-06-21T16:52:33.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -733,7 +733,7 @@
     <published>2017-06-05T08:23:12.000Z</published>
     <updated>2017-06-21T16:52:01.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -788,7 +788,7 @@
     <published>2017-06-04T07:32:01.000Z</published>
     <updated>2017-06-11T08:18:17.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <hr>
@@ -830,7 +830,7 @@
     <published>2017-06-03T07:28:10.000Z</published>
     <updated>2017-06-23T02:18:03.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇介绍了利用Tensorflow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇介绍了利用Tensorflow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -913,7 +913,7 @@
     <published>2017-06-02T05:22:10.000Z</published>
     <updated>2017-06-21T17:00:21.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇主要关于Tensorflow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。<a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇主要关于Tensorflow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -1012,7 +1012,7 @@
     <published>2017-06-01T10:44:56.000Z</published>
     <updated>2017-06-22T17:41:44.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。</excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -1212,7 +1212,7 @@
     <published>2017-05-19T16:00:46.000Z</published>
     <updated>2017-06-22T10:05:19.000Z</updated>
     
-    <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><img src="/background/bg-2.jpg" width="520" alt="Welcome"></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br><img src="/background/bg-2.jpg" width="520" alt="Welcome"></excerpt></p>
 <hr>
 <p>本站域名 <code>http://zangbo.me</code>。</p>
 <p>一只机器学习菜鸟研究生，平时会分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的笔记，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。</p>
@@ -1221,9 +1221,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/background/bg-2.jpg&quot; width=&quot;520&quot; alt=&quot;Welcome&quot;&gt;&lt;/excerpt&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;本站域名 &lt;code&gt;http
+      &lt;script src=&quot;/assets/js/APlayer.min.js&quot;&gt; &lt;/script&gt;&lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/background/bg-2.jpg&quot; width=&quot;520&quot; al
     
     </summary>
     
