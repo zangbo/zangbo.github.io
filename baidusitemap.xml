@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/02/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
-    <lastmod>2017-06-24T17:31:36.000Z</lastmod>
+    <loc>http://zangbo.me/2017/06/24/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</loc>
+    <lastmod>2017-06-24T17:34:37.000Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow 笔记（一）</title>
-        <pubTime>2017-06-02T05:22:10.000Z</pubTime>
+        <title>TensorFlow 笔记（三）</title>
+        <pubTime>2017-06-24T08:09:34.000Z</pubTime>
         
         <tag>TensorFlow</tag>
          
@@ -25,7 +25,7 @@
     
   <url>
     <loc>http://zangbo.me/2017/06/03/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
-    <lastmod>2017-06-24T17:31:29.000Z</lastmod>
+    <lastmod>2017-06-24T17:34:26.000Z</lastmod>
     <data>
         <display>
         <title>TensorFlow 笔记（二）</title>
@@ -44,12 +44,12 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/24/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</loc>
-    <lastmod>2017-06-24T17:30:50.000Z</lastmod>
+    <loc>http://zangbo.me/2017/06/02/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
+    <lastmod>2017-06-24T17:34:14.000Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow 笔记（三）</title>
-        <pubTime>2017-06-24T08:09:34.000Z</pubTime>
+        <title>TensorFlow 笔记（一）</title>
+        <pubTime>2017-06-02T05:22:10.000Z</pubTime>
         
         <tag>TensorFlow</tag>
          
