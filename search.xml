@@ -4,7 +4,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（三）]]></title>
-      <url>/2017/06/24/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</url>
+      <url>/2017/06/24/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文学习了Tensorflow中的四个基本函数以及<strong>变量共享(Sharing Variables)</strong>机制：</p>
@@ -129,7 +129,7 @@
         
         <tags>
             
-            <tag> TensorFlow </tag>
+            <tag> Tensorflow </tag>
             
         </tags>
         
@@ -923,7 +923,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（二）]]></title>
-      <url>/2017/06/03/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+      <url>/2017/06/03/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对TensorFlow官方文档进行学习的总结，本篇介绍了利用TensorFlow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -999,7 +999,7 @@
         
         <tags>
             
-            <tag> TensorFlow </tag>
+            <tag> Tensorflow </tag>
             
         </tags>
         
@@ -1007,7 +1007,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（一）]]></title>
-      <url>/2017/06/02/Tensorflow-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+      <url>/2017/06/02/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对TensorFlow官方文档进行学习的总结，本篇主要关于TensorFlow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -1097,7 +1097,7 @@
         
         <tags>
             
-            <tag> TensorFlow </tag>
+            <tag> Tensorflow </tag>
             
         </tags>
         
