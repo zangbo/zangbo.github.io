@@ -15,17 +15,17 @@
 
 
 
-<meta name="description" content="本系列是对Tensorflow官方文档进行学习的总结，本篇介绍了利用Tensorflow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。">
-<meta name="keywords" content="Tensorflow">
+<meta name="description" content="本系列是对TensorFlow官方文档进行学习的总结，本篇介绍了利用TensorFlow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。">
+<meta name="keywords" content="TensorFlow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TensorFlow 官方文档学习笔记（二）">
+<meta property="og:title" content="TensorFlow 笔记（二）">
 <meta property="og:url" content="http://zangbo.me/2017/06/03/Tensorflow-官方文档学习笔记（二）/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本系列是对Tensorflow官方文档进行学习的总结，本篇介绍了利用Tensorflow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。">
-<meta property="og:updated_time" content="2017-06-23T02:18:03.000Z">
+<meta property="og:description" content="本系列是对TensorFlow官方文档进行学习的总结，本篇介绍了利用TensorFlow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。">
+<meta property="og:updated_time" content="2017-06-24T17:31:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TensorFlow 官方文档学习笔记（二）">
-<meta name="twitter:description" content="本系列是对Tensorflow官方文档进行学习的总结，本篇介绍了利用Tensorflow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。">
+<meta name="twitter:title" content="TensorFlow 笔记（二）">
+<meta name="twitter:description" content="本系列是对TensorFlow官方文档进行学习的总结，本篇介绍了利用TensorFlow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -54,7 +54,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>TensorFlow 官方文档学习笔记（二） | ZangBo&#39;s Home</title>
+<title>TensorFlow 笔记（二） | ZangBo&#39;s Home</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -194,7 +194,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
                     </div>
                 </section>
                 
@@ -274,7 +274,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      TensorFlow 官方文档学习笔记（二）
+      TensorFlow 笔记（二）
     </h1>
   
 
@@ -289,7 +289,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/">Tensorflow</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -299,7 +299,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对Tensorflow官方文档进行学习的总结，本篇介绍了利用Tensorflow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。<a id="more"></a></excerpt></p>
+        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对TensorFlow官方文档进行学习的总结，本篇介绍了利用TensorFlow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
@@ -360,6 +360,8 @@
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>深度学习到底还是个偏工程应用的学科，对于理论知识涉及面极广但并非很深入，而且很多地方还是玄学。比如dropout、迭代次数、学习率、batch size、正则项系数等等，这些参数全都要靠自己凭借经验调试，能出什么结果全凭运气。</p>
 <p>好啦，我们关于卷积神经网络实现MNIST的内容就学习完啦，终于自己实现了一个网络hin开心，下面有时间会继续学习TensorFlow的其他部分。</p>
 <p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.tensorflow.org/get_started/mnist/pros" target="_blank" rel="external">Deep MNIST for Experts  |  TensorFlow</a>（需翻墙）</p>
+<p><br></p>
 </the>
       
     </div>
@@ -368,12 +370,12 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 官方文档学习笔记（二）</a></p>
+        <p><span>本文标题:</span><a href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 笔记（二）</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-03, 15:28:10</p>
-        <p><span>最后更新:</span>2017-06-23, 10:18:03</p>
+        <p><span>最后更新:</span>2017-06-25, 01:31:29</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/" title="TensorFlow 官方文档学习笔记（二）">http://zangbo.me/2017/06/03/Tensorflow-官方文档学习笔记（二）/</a>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/" title="TensorFlow 笔记（二）">http://zangbo.me/2017/06/03/Tensorflow-官方文档学习笔记（二）/</a>
             <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/03/Tensorflow-官方文档学习笔记（二）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -395,7 +397,7 @@
         
             <div id="article-nav-older" class="article-nav-title">
                 <a href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">
-                    TensorFlow 官方文档学习笔记（一）
+                    TensorFlow 笔记（一）
                 </a>
             </div>
         
@@ -437,7 +439,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化阶段"><span class="toc-number">2.</span> <span class="toc-text">初始化阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第一层卷积和池化"><span class="toc-number">3.</span> <span class="toc-text">第一层卷积和池化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二层卷积和池化"><span class="toc-number">4.</span> <span class="toc-text">第二层卷积和池化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#全连接层fc1"><span class="toc-number">5.</span> <span class="toc-text">全连接层fc1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dropout"><span class="toc-number">6.</span> <span class="toc-text">Dropout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#输出层"><span class="toc-number">7.</span> <span class="toc-text">输出层</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#训练和评估"><span class="toc-number">8.</span> <span class="toc-text">训练和评估</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">9.</span> <span class="toc-text">后记</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化阶段"><span class="toc-number">2.</span> <span class="toc-text">初始化阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第一层卷积和池化"><span class="toc-number">3.</span> <span class="toc-text">第一层卷积和池化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二层卷积和池化"><span class="toc-number">4.</span> <span class="toc-text">第二层卷积和池化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#全连接层fc1"><span class="toc-number">5.</span> <span class="toc-text">全连接层fc1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dropout"><span class="toc-number">6.</span> <span class="toc-text">Dropout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#输出层"><span class="toc-number">7.</span> <span class="toc-text">输出层</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#训练和评估"><span class="toc-number">8.</span> <span class="toc-text">训练和评估</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">9.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">10.</span> <span class="toc-text">参考</span></a></li></ol>
         
     </div>
     <style>
@@ -473,7 +475,7 @@
         </div>
         <script>
             window._bd_share_config={
-                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 官方文档学习笔记（二）　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 笔记（二）　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -536,13 +538,13 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/" title="下一篇: TensorFlow 官方文档学习笔记（一）">
+            <a href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/" title="下一篇: TensorFlow 笔记（一）">
                 <i class="fa fa-angle-right"></i>
             </a>
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/22/爬虫学习笔记（四）/">爬虫笔记（四）：获取某地历史天气数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/爬虫学习笔记（三）/">爬虫笔记（三）：BeautifulSoup基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/爬虫学习笔记（二）/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/爬虫学习笔记（一）/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/编码相关知识/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/配置GithubPage二级域名/">配置GithubPage二级域名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/送女友的生日礼物/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec之skip-gram模型/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/关于随机梯度下降/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 官方文档学习笔记（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">TensorFlow 官方文档学习笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/自我介绍/">欢迎来到我的小站</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/24/Tensorflow-官方文档学习笔记（三）/">TensorFlow 笔记（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/22/爬虫学习笔记（四）/">爬虫笔记（四）：获取某地历史天气数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/爬虫学习笔记（三）/">爬虫笔记（三）：BeautifulSoup基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/爬虫学习笔记（二）/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/爬虫学习笔记（一）/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/编码相关知识/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/配置GithubPage二级域名/">配置GithubPage二级域名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/送女友的生日礼物/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec之skip-gram模型/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/关于随机梯度下降/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/Tensorflow-官方文档学习笔记（二）/">TensorFlow 笔记（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow-官方文档学习笔记（一）/">TensorFlow 笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/自我介绍/">欢迎来到我的小站</a></li></ul>
 
 
 
