@@ -7,7 +7,7 @@
       <url>/2017/06/24/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
-<p>本文学习了Tensorflow中的四个基本函数以及<strong>变量共享(Sharing Variables)</strong>机制：</p>
+<p>本文学习了TensorFlow中的四个基本函数以及<strong>变量共享(Sharing Variables)</strong>机制：</p>
 <ul>
 <li><code>tf.Variable()</code></li>
 <li><code>tf.get_variable()</code></li>
@@ -129,7 +129,7 @@
         
         <tags>
             
-            <tag> Tensorflow </tag>
+            <tag> TensorFlow </tag>
             
         </tags>
         
@@ -999,7 +999,7 @@
         
         <tags>
             
-            <tag> Tensorflow </tag>
+            <tag> TensorFlow </tag>
             
         </tags>
         
@@ -1097,7 +1097,7 @@
         
         <tags>
             
-            <tag> Tensorflow </tag>
+            <tag> TensorFlow </tag>
             
         </tags>
         
