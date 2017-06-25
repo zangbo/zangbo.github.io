@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-06-25T04:52:09.000Z</updated>
+  <updated>2017-06-25T03:32:44.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -14,43 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>TensorFlow 笔记（四）</title>
-    <link href="http://zangbo.me/2017/06/25/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
-    <id>http://zangbo.me/2017/06/25/TensorFlow 笔记（四）/</id>
-    <published>2017-06-25T04:32:56.000Z</published>
-    <updated>2017-06-25T04:52:09.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
-
-<p>本文对TensorFlow的重要可视化工具TensorBoard进行学习。</p>
-<p>当我们训练庞大且复杂的神经网络时，为了便于我们理解和调试TensorFlow程序，可视化工具显得尤为重要。TensorFlow有一个很方便的可视化工具名为TensorBoard，我们可以利用它来可视化我们的graph以及它的运行过程。</p>
-<a id="more"></a>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p>TensorBoard的界面如下图所示：</p>
-<center><img src="https://www.tensorflow.org/images/mnist_tensorboard.png" alt="MNIST TensorBoard"></center>
-
-<h1 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h1><h2 id="Summary-Ops-How-TensorBoard-gets-data-from-TensorFlow"><a href="#Summary-Ops-How-TensorBoard-gets-data-from-TensorFlow" class="headerlink" title="Summary Ops: How TensorBoard gets data from TensorFlow"></a>Summary Ops: How TensorBoard gets data from TensorFlow</h2></the></excerpt>]]></content>
-    
-    <summary type="html">
-    
-      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
-
-&lt;p&gt;本文对TensorFlow的重要可视化工具TensorBoard进行学习。&lt;/p&gt;
-&lt;p&gt;当我们训练庞大且复杂的神经网络时，为了便于我们理解和调试TensorFlow程序，可视化工具显得尤为重要。TensorFlow有一个很方便的可视化工具名为TensorBoard，我们可以利用它来可视化我们的graph以及它的运行过程。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    
-      <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
-    
-  </entry>
   
   <entry>
     <title>TensorFlow 笔记（三）</title>
