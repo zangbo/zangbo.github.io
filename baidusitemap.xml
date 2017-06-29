@@ -4,35 +4,15 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/25/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/</loc>
-    <lastmod>2017-06-28T11:28:12.000Z</lastmod>
+    <loc>http://zangbo.me/2017/06/27/%20TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/</loc>
+    <lastmod>2017-06-29T15:22:11.000Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow 笔记（四）</title>
-        <pubTime>2017-06-25T04:32:56.000Z</pubTime>
+        <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
+        <pubTime>2017-06-27T13:50:54.000Z</pubTime>
         
-        <tag>TensorFlow</tag>
-         
         <tag>可视化</tag>
          
-         
-           
-             
-              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/24/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</loc>
-    <lastmod>2017-06-25T03:32:44.000Z</lastmod>
-    <data>
-        <display>
-        <title>TensorFlow 笔记（三）</title>
-        <pubTime>2017-06-24T08:09:34.000Z</pubTime>
-        
         <tag>TensorFlow</tag>
          
          
@@ -47,10 +27,10 @@
     
   <url>
     <loc>http://zangbo.me/2017/06/03/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
-    <lastmod>2017-06-25T03:32:36.000Z</lastmod>
+    <lastmod>2017-06-29T14:17:00.000Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow 笔记（二）</title>
+        <title>TensorFlow 笔记（二）：MNIST进阶</title>
         <pubTime>2017-06-03T07:28:10.000Z</pubTime>
         
         <tag>TensorFlow</tag>
@@ -67,11 +47,31 @@
     
   <url>
     <loc>http://zangbo.me/2017/06/02/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
-    <lastmod>2017-06-25T03:32:27.000Z</lastmod>
+    <lastmod>2017-06-29T14:16:49.000Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow 笔记（一）</title>
+        <title>TensorFlow 笔记（一）：MNIST入门</title>
         <pubTime>2017-06-02T05:22:10.000Z</pubTime>
+        
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://zangbo.me/2017/06/24/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</loc>
+    <lastmod>2017-06-29T14:14:59.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow 笔记（三）：Name_Scope和变量共享</title>
+        <pubTime>2017-06-24T08:09:34.000Z</pubTime>
         
         <tag>TensorFlow</tag>
          
