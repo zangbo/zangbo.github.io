@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-07-01T05:48:04.000Z</updated>
+  <updated>2017-07-01T08:23:00.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -14,6 +14,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TensorFlow 笔记（七）：Exponential_decay</title>
+    <link href="http://zangbo.me/2017/07/01/TensorFlow-%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/"/>
+    <id>http://zangbo.me/2017/07/01/TensorFlow-笔记（七）/</id>
+    <published>2017-07-01T07:17:57.000Z</published>
+    <updated>2017-07-01T08:23:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>在神经网络的训练过程中，<strong>学习率(learning rate)</strong>控制着参数的更新速度，<code>tf.train</code>类下面的五种不同的学习速率的衰减方法。</p>
+<ul>
+<li><code>tf.train.exponential_decay</code></li>
+<li><code>tf.train.inverse_time_decay</code></li>
+<li><code>tf.train.natural_exp_decay</code></li>
+<li><code>tf.train.piecewise_constant</code></li>
+<li><code>tf.train.polynomial_decay</code></li>
+</ul>
+<p>本文只对<code>exponential_decay</code>做整理。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="exponential-decay"><a href="#exponential-decay" class="headerlink" title="exponential_decay"></a>exponential_decay</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">tf.train.exponential_decay(</div><div class="line">    learning_rate,</div><div class="line">    global_step,</div><div class="line">    decay_steps,</div><div class="line">    decay_rate,</div><div class="line">    staircase=<span class="keyword">False</span>,</div><div class="line">    name=<span class="keyword">None</span></div><div class="line">)</div></pre></td></tr></table></figure>
+<ul>
+<li><code>learning_rate</code>：初始学习率</li>
+<li><code>global_step</code>：当前迭代次数</li>
+<li><code>decay_steps</code>：衰减迭代次数（在迭代到该次数时学习率衰减为<code>earning_rate * decay_rate</code>）</li>
+<li><code>decay_rate</code>：学习率衰减率，通常介于0-1之间。</li>
+</ul>
+<p>学习率会按照以下公式变化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">decayed_learning_rate = learning_rate * decay_rate ^ (global_step / decay_steps)</div></pre></td></tr></table></figure>
+<p>直观解释：假设给定初始学习率<code>learning_rate</code>为0.1，学习率衰减率为0.1，<code>decay_steps</code>为10000，则随着迭代次数从1到10000，当前的学习率<code>decayed_learning_rate</code>慢慢的从0.1降低为<code>0.1*0.1=0.01</code>，当迭代次数到20000，当前的学习率慢慢的从0.01降低为<code>0.1*0.1^2=0.001</code>，以此类推。也就是说每10000次迭代，学习率衰减为前10000次的十分之一，该衰减是连续的，这是在<code>staircase</code>为<code>False</code>的情况下。</p>
+<p>如果<code>staircase</code>为<code>True</code>，则<code>global_step / decay_steps</code>始终取整数，也就是说衰减是突变的，每<code>decay_steps</code>次变化一次，变化曲线是阶梯状。</p>
+<p>例子：每100000次迭代衰减一次，学习率衰减率为0.96。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">### ...</span></div><div class="line">global_step = tf.Variable(<span class="number">0</span>, trainable=<span class="keyword">False</span>)</div><div class="line">starter_learning_rate = <span class="number">0.1</span></div><div class="line">learning_rate = tf.train.exponential_decay(starter_learning_rate, global_step, <span class="number">100000</span>, <span class="number">0.96</span>, staircase=<span class="keyword">True</span>)</div><div class="line"><span class="comment"># Passing global_step to minimize() will increment it at each step.</span></div><div class="line">learning_step = (</div><div class="line">    tf.train.GradientDescentOptimizer(learning_rate)</div><div class="line">    .minimize(...my loss..., global_step=global_step)</div><div class="line">)</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong>这里的<code>global_step</code>变量的<code>trainable</code>要设置为<code>False</code>，它代表着当前的迭代次数，我们不能对它进行训练，系统会自动更新它的值，初始化为0，从1开始。</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/exponential_decay" target="_blank" rel="external">tf.train.exponential_decay  |  TensorFlow</a></li>
+</ul>
+<p><br></p>
+</the></excerpt>]]></content>
+    
+    <summary type="html">
+    
+      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
+
+&lt;p&gt;在神经网络的训练过程中，&lt;strong&gt;学习率(learning rate)&lt;/strong&gt;控制着参数的更新速度，&lt;code&gt;tf.train&lt;/code&gt;类下面的五种不同的学习速率的衰减方法。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;tf.train.exponential_decay&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tf.train.inverse_time_decay&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tf.train.natural_exp_decay&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tf.train.piecewise_constant&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tf.train.polynomial_decay&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本文只对&lt;code&gt;exponential_decay&lt;/code&gt;做整理。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
+    
+  </entry>
   
   <entry>
     <title>TensorFlow 笔记（六）：Moving Average</title>
