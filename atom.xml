@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-07-01T04:52:53.000Z</updated>
+  <updated>2017-07-01T05:48:04.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage</title>
+    <title>TensorFlow 笔记（六）：Moving Average</title>
     <link href="http://zangbo.me/2017/07/01/TensorFlow%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/"/>
     <id>http://zangbo.me/2017/07/01/TensorFlow笔记（六）/</id>
     <published>2017-07-01T03:08:19.000Z</published>
-    <updated>2017-07-01T04:52:53.000Z</updated>
+    <updated>2017-07-01T05:48:04.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
