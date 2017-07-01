@@ -15,22 +15,20 @@
 
 
 
-<meta name="description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="keywords" content="Word2Vec">
+<meta name="description" content="本文记录了TensorFlow训练模型过程中对参数的滑动平均(moving average)的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为tf.train.ExponentialMovingAverage。">
+<meta name="keywords" content="TensorFlow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Word2Vec笔记：Negative Sample">
-<meta property="og:url" content="http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/index.html">
+<meta property="og:title" content="TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage">
+<meta property="og:url" content="http://zangbo.me/2017/07/01/TensorFlow笔记（六）/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg">
-<meta property="og:updated_time" content="2017-06-21T16:52:33.000Z">
+<meta property="og:description" content="本文记录了TensorFlow训练模型过程中对参数的滑动平均(moving average)的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为tf.train.ExponentialMovingAverage。">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_TyB8hT_MovingAverage1.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_UWRLDA_MovingAverage2.jpeg">
+<meta property="og:updated_time" content="2017-07-01T04:52:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Word2Vec笔记：Negative Sample">
-<meta name="twitter:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
+<meta name="twitter:title" content="TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage">
+<meta name="twitter:description" content="本文记录了TensorFlow训练模型过程中对参数的滑动平均(moving average)的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为tf.train.ExponentialMovingAverage。">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_TyB8hT_MovingAverage1.jpeg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +57,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Word2Vec笔记：Negative Sample | ZangBo&#39;s Home</title>
+<title>TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage | ZangBo&#39;s Home</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -260,11 +258,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Word2Vec之Negative-Sample" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-TensorFlow笔记（六）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/06/06/Word2Vec之Negative-Sample/" class="article-date">
-      <time datetime="2017-06-06T09:08:43.000Z" itemprop="datePublished">2017-06-06</time>
+      <a href="/2017/07/01/TensorFlow笔记（六）/" class="article-date">
+      <time datetime="2017-07-01T03:08:19.000Z" itemprop="datePublished">2017-07-01</time>
 </a>
 
 
@@ -279,7 +277,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Word2Vec笔记：Negative Sample
+      TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage
     </h1>
   
 
@@ -288,13 +286,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -304,69 +302,88 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文记录了TensorFlow训练模型过程中对参数的<strong>滑动平均(moving average)</strong>的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为<code>tf.train.ExponentialMovingAverage</code>。</p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在skip-gram模型中，我们发现这是个十分庞大的神经网络，如果我们把词向量设置成300，那么在一个具有10000个单词的字典中，隐层和输出层分别具有3百万个参数。执行梯度下降算法时将会十分缓慢，更糟糕的是，我们需要事先在一个数量庞大的数据集上训练，以便于fine-tune参数和避免过拟合。因此对模型的训练将十分困难。</p>
-<p>为了解决这个问题，作者提出了三个修改方案：</p>
-<ol>
-<li>把常见的短语或单词对当成一个单词来对待</li>
-<li>降采样高频单词来见少训练样本数量</li>
-<li>用一种他们称之为“负采样”的方式来修改优化目标，这将使得每个训练样本只更新一小部分的模型参数。</li>
-</ol>
-<p>它们均可以使得训练变的可行同时也改善了结果词向量的质量。</p>
-<p><br></p>
-<h1 id="单词对和短语"><a href="#单词对和短语" class="headerlink" title="单词对和短语"></a>单词对和短语</h1><p>作者指出一个单词对像“Boston Globe”(一个报纸名)，它的含义和“Boston”以及“Globe”都有着很大的区别，因此把“Boston Globe”当作一个单词来对待是很有意义的，它将会得到一个词向量来表示。在Google News数据集上，这个改变可以把模型字典尺寸从一千亿降低为三百万。Google开源了它们训练好得到的词向量，长度是300，共计三百万个。至于如何从单词中区分短语并且缩短字典尺寸，一个方法是可以参考维基百科的词条目录。</p>
-<p><br></p>
-<h1 id="降采样高频单词"><a href="#降采样高频单词" class="headerlink" title="降采样高频单词"></a>降采样高频单词</h1><p>在之前的例子中，针对一些通用单词例如“the”存在一些问题：</p>
-<ol>
-<li>当我们看一些单词对的时候，(“fox”，“the”)没有告诉我们过多的关于“fox”的含义的信息，“the”出现在几乎每个单词的前面。</li>
-<li>我们拥有太多的关于(“the”，…)的采样，而我们学习一个好的关于“the”的向量不需要这么多的采样。</li>
-</ol>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
-
-<p>Word2Vec采用了一个叫做“降采样”的框架来解决这个问题。对于每个出现在我们训练文件中的单词，它们将会有一定的概率被删除相关的训练数据，概率的高低取决于它们出现的频率。</p>
-<p>如果我们有一个尺寸为10的窗口，那么我们将移除一个特定的关于“the”的训练样本：</p>
-<ol>
-<li>当我们训练其他单词，“the”将不会在任何窗口中出现。</li>
-<li>当我们训练“the”作为输入时，窗口尺寸会小于10。</li>
-</ol>
-<p><br></p>
-<h1 id="采样频率"><a href="#采样频率" class="headerlink" title="采样频率"></a>采样频率</h1><p>关于如何计算字典中一个单词被保留下来的概率，有一套C语言的代码实现的公式。</p>
-<p>Wi代表单词，z(wi)表示单词在语料库中出现的频率，例如“peanut”在一个拥有10亿单词语料库中出现了1000次，那么z(‘peanut’)=1E-6。</p>
-<p>代码中还有一个参数称之为’sample’，它将控制采样发生的力度，默认是0.001，该数值越小则单词越不可能被保存。</p>
-<p>P(wi)为保留单词的概率：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg" alt=""></center>
-
-<p>我们可以画出该公式的图：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg" alt=""></center>
-
-<p>如果我们使用默认采样值为0.001，那么有以下有趣的点：</p>
+<h1 id="MovingAverage"><a href="#MovingAverage" class="headerlink" title="MovingAverage"></a>MovingAverage</h1><p>常规的滑动平均的计算方法十分简单，对于一个给定的数列，首先设定一个固定的值k，然后分别计算第1项到第k项，第2项到第k+1项，第3项到第k+2项的平均值，依次类推。</p>
+<p>以<code>1、2、3、4、5</code>共5个数为例，window为3，计算过程为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(1+2+3)/3=2</div><div class="line">(2+3+4)/3=3</div><div class="line">(3+4+5)/3=4</div></pre></td></tr></table></figure>
+<p>下图很好的反映了原始数据和滑动平均之间的关系，其中绿线为原始数据，红线为MovingAverage：</p>
 <ul>
-<li>P=1，当z&lt;=0.0026时，这意味着当单词数量小于0.26%时将会被全部保留下来。</li>
-<li>P=0.5，当z=0.00746时，这意味着有50%的概率被保留下来</li>
-<li>P=0.033，当z=1时，这意味着如果语料库中全部是同一个单词时，只有3.3%的概率会被保存下来，这种情况当然很荒谬。</li>
+<li>当window为3:</li>
 </ul>
-<p>论文中定义的公式和C语言代码中有所区别，我觉得C语言代码的实现更加权威。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_TyB8hT_MovingAverage1.jpeg" alt="window=3" width="700"></p>
+<ul>
+<li>当window为10:</li>
+</ul>
+<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_UWRLDA_MovingAverage2.jpeg" alt="window=10" width="700"></p>
+<p>可以发现当我们使用滑动平均时，会十分有效的提升模型在测试数据上的<strong>健壮性(robustness)</strong>。</p>
 <p><br></p>
-<h1 id="负采样-Negative-Sampling"><a href="#负采样-Negative-Sampling" class="headerlink" title="负采样(Negative Sampling)"></a>负采样(Negative Sampling)</h1><p>训练一个神经网络意味着每个样本都要更新所有参数，使用skip-gram模型将会每次都要更新数量庞大的模型，负采样采用的策略是更新每个样本时之更新很小比例的参数，而不是更新所有参数。</p>
-<p>我们训练一个单词对时，例如(“fox”，“quick”)，当输入是“fox”时标签是“quick”的one-hot向量，那么也就是说输出标签神经元中只有一个是1，其他的成千上万个都是0。</p>
-<p>因此当我们使用负采样时，我们将随机选择很小数量的“负”单词(例如选择5个)来更新权值，在我们的语料库中，一个“负”单词指的是我们希望让输出的标签的神经元为0，我们依然会更新“正”单词的神经元参数(也就是标签中为1的神经元)，论文中提到对于一个小规模的数据集，可以选择5-20个单词，如果是庞大的数据集，可以选择2-5个。</p>
-<p>之前我们的输出层是300<em>10000的参数矩阵，但如今我们更新权值时只需要更新(“quick”)所代表的神经元的参数(输出为1)，以及再加上5个随机的输出为0的神经元，总共只需要更新6个神经元的参数，也就是300</em>6=1800个参数，这仅仅是原来输出层参数的0.06%！</p>
-<p>注意在隐藏层中，不管是否使用负采样策略，都只有输入单词的权值被更新。</p>
+<h1 id="ExponentialMovingAverage"><a href="#ExponentialMovingAverage" class="headerlink" title="ExponentialMovingAverage"></a>ExponentialMovingAverage</h1><p>在TensorFlow中，我们计算的是<strong>指数滑动平均(ExponentialMovingAverage)</strong>，我们通过使用一个<strong>指数衰减(exponential decay)</strong>来维持着变量的滑动平均。</p>
+<p>当我们训练一个模型时，计算训练参数的滑动平均经常是十分有利的，当我们用这些平均后的参数来评估模型时有时会得到比使用常规的训练参数好很多的结果。</p>
+<p>我们用一个<code>apply()</code>函数返回一个<code>ops</code>来添加变量的一个副本同时得到原变量的滑动平均，它在我们训练模型的时候使用。该<code>ops</code>得到原变量的滑动平均始终是在每一次训练迭代结束后。</p>
+<p><code>average()</code>和<code>average_name()</code>函数返回影子变量和它们的名字，它们在我们对测试数据进行模型评估时使用，它们用参数的滑动平均值来代替最终的训练值来对模型进行评估。它们也可以在我们从一个<code>checkpoint file</code>继续开始训练模型时使用。</p>
+<p>滑动平均值用一个指数衰减来计算，当我们创建<code>ExponentialMovingAverage</code>对象时会把该<code>decay</code>值输入进去。影子变量的初始化值和原始变量初始化值相同。每个影子变量计算滑动平均值的公式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">shadow_variable = decay * shadow_variable + (1 - decay) * variable</div></pre></td></tr></table></figure>
+<p>通常我们定义<code>decay</code>时会让它尽可能接近于1.0，一般来说我们会让它为0.999、0.9999等。</p>
+<p>如下是我们训练一个模型时的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create variables.</span></div><div class="line">var0 = tf.Variable(...)</div><div class="line">var1 = tf.Variable(...)</div><div class="line"><span class="comment"># ... use the variables to build a training model...</span></div><div class="line">...</div><div class="line"><span class="comment"># Create an op that applies the optimizer.  This is what we usually</span></div><div class="line"><span class="comment"># would use as a training op.</span></div><div class="line">opt_op = opt.minimize(my_loss, [var0, var1])</div><div class="line"></div><div class="line"><span class="comment"># Create an ExponentialMovingAverage object</span></div><div class="line">ema = tf.train.ExponentialMovingAverage(decay=<span class="number">0.9999</span>)</div><div class="line"></div><div class="line"><span class="comment"># Create the shadow variables, and add ops to maintain moving averages</span></div><div class="line"><span class="comment"># of var0 and var1.</span></div><div class="line">maintain_averages_op = ema.apply([var0, var1])</div><div class="line"></div><div class="line"><span class="comment"># Create an op that will update the moving averages after each training</span></div><div class="line"><span class="comment"># step.  This is what we will use in place of the usual training op.</span></div><div class="line"><span class="keyword">with</span> tf.control_dependencies([opt_op]):</div><div class="line">    training_op = tf.group(maintain_averages_op)</div><div class="line"></div><div class="line"><span class="comment"># ...train the model by running training_op...</span></div></pre></td></tr></table></figure>
+<p>当我们使用滑动平均来预测时，有两种用法：</p>
+<ol>
+<li>用影子变量代替原始变量，使用<code>average()</code>函数来返回给定变量的影子变量。</li>
+<li>通过使用影子变量的<code>name</code>来载入<code>checkpoint files</code>，我们在这里使用<code>average_name()</code>函数。对于这种用法有如下例子：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create a Saver that loads variables from their saved shadow values.</span></div><div class="line">shadow_var0_name = ema.average_name(var0)</div><div class="line">shadow_var1_name = ema.average_name(var1)</div><div class="line">saver = tf.train.Saver(&#123;shadow_var0_name: var0, shadow_var1_name: var1&#125;)</div><div class="line">saver.restore(...checkpoint filename...)</div><div class="line"><span class="comment"># var0 and var1 now hold the moving average values</span></div></pre></td></tr></table></figure>
+<p>详情可以查看<code>tf.train.Saver</code>，下面介绍<code>ExponentialMovingAverage</code>的相关函数。</p>
 <p><br></p>
-<h1 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h1><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg" alt=""></center>
-
-<p>这种在C语言中实现的方式很有趣。他们有一个100M大小的元素数组（他们称之为unigram表），他们用词表中每个单词的索引多次填充这个表。然后，要实际选择一个负样本，只需生成0到100M之间的随机整数，并选择表中该索引处的单词。由于较高概率单词在表中出现次数较多，因此更有可能选择这些单词。</p>
+<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><ul>
+<li><code>__init__</code></li>
+<li><code>apply</code></li>
+<li><code>average</code></li>
+<li><code>average_name</code></li>
+<li><code>variables_to_restore</code></li>
+</ul>
 <p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这里有一些关于Word2Vec的学习资源：</p>
-<p><a href="http://mccormickml.com/2016/04/27/word2vec-resources/" target="_blank" rel="external">Word2Vec Resources · Chris McCormick</a></p>
+<h2 id="init"><a href="#init" class="headerlink" title="__init__"></a>__init__</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">__init__(</div><div class="line">    decay,</div><div class="line">    num_updates=<span class="keyword">None</span>,</div><div class="line">    zero_debias=<span class="keyword">False</span>,</div><div class="line">    name=<span class="string">'ExponentialMovingAverage'</span></div><div class="line">)</div></pre></td></tr></table></figure>
+<p>创建一个<code>ExponentialMovingAverage</code>对象。</p>
+<ol>
+<li><p><code>decay</code>一般取值接近于1.0。</p>
+</li>
+<li><p><code>num_updates</code>允许<code>dacay</code>值动态的变化，在训练开端<code>dacay</code>速率较低，这使得滑动均值更快，如果有值的话，实际<code>decay</code>速率为以下公式：</p>
+<p><code>min(decay, (1 + num_updates) / (10 + num_updates))</code></p>
+</li>
+<li><p><code>name</code>将会给<code>apply()</code>中的<code>ops</code>添加一个额外的前置名字。</p>
+</li>
+</ol>
 <p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="external">Word2Vec Tutorial Part 2 - Negative Sampling · Chris McCormick</a></p>
+<h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply(var_list=<span class="keyword">None</span>)</div></pre></td></tr></table></figure>
+<p>该函数维护变量的滑动平均，返回一个<code>op</code>来更新所有影子变量。<code>var_list</code>必须是一个变量或者<code>Tensor</code>对象的列表，这个函数创造<code>var_list</code>中所有变量的副本，对于变量副本，初始化值和原变量初始化值相同。变量类型必须是<code>float</code>相关的类型。</p>
+<p><code>apply()</code>函数对于不同的<code>var_list</code>可以被调用多次。</p>
 <p><br></p>
-</the>
+<h2 id="average"><a href="#average" class="headerlink" title="average"></a>average</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">average(var)</div></pre></td></tr></table></figure>
+<p>返回<code>var</code>的滑动平均影子变量，返回类型为<code>Variable</code>。前提是该<code>var</code>使用了<code>apply()</code>函数来维护。</p>
+<p><br></p>
+<h2 id="average-name"><a href="#average-name" class="headerlink" title="average_name"></a>average_name</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">average_name(var)</div></pre></td></tr></table></figure>
+<p>返回<code>var</code>变量的滑动平均影子变量的<code>name</code>。该函数一个典型的应用是在训练过程中计算原始变量的滑动平均，并且在测试时根据影子变量的<code>name</code>恢复出原始变量。</p>
+<p>为了恢复原始变量，我们必须知道影子变量的<code>name</code>，影子变量的<code>name</code>和原始变量可以在训练阶段利用<code>Saver()</code>对象来保存，操作为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.train.Saver(&#123;ema.average_name(var): var&#125;)</div></pre></td></tr></table></figure>
+<p><code>average_name()</code>函数在<code>apply()</code>函数调用之前或之后都可以使用。</p>
+<p><br></p>
+<h2 id="variables-to-restore"><a href="#variables-to-restore" class="headerlink" title="variables_to_restore"></a>variables_to_restore</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">variables_to_restore(moving_avg_variables=<span class="keyword">None</span>)</div></pre></td></tr></table></figure>
+<p>返回一个从<code>restore_name</code>到<code>Variables</code>的映射，如果一个变量有滑动平均值，那么就用该滑动平均影子变量的<code>name</code>来作为<code>restore name</code>，否则，就用原始变量的<code>name</code>。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">variables_to_restore = ema.variables_to_restore()</div><div class="line">saver = tf.train.Saver(variables_to_restore)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage" target="_blank" rel="external">tf.train.ExponentialMovingAverage  |  TensorFlow</a></li>
+<li><a href="http://blog.csdn.net/u014365862/article/details/54380313" target="_blank" rel="external">MovingAverage-滑动平均 - 小鹏的专栏 - 博客频道 - CSDN.NET</a></li>
+</ul>
+<p><br></p>
+</the></excerpt>
       
     </div>
     
@@ -374,13 +391,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a></p>
+        <p><span>本文标题:</span><a href="/2017/07/01/TensorFlow笔记（六）/">TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
-        <p><span>发布时间:</span>2017-06-06, 17:08:43</p>
-        <p><span>最后更新:</span>2017-06-22, 00:52:33</p>
+        <p><span>发布时间:</span>2017-07-01, 11:08:19</p>
+        <p><span>最后更新:</span>2017-07-01, 12:52:53</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/06/06/Word2Vec之Negative-Sample/" title="Word2Vec笔记：Negative Sample">http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/01/TensorFlow笔记（六）/" title="TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage">http://zangbo.me/2017/07/01/TensorFlow笔记（六）/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/07/01/TensorFlow笔记（六）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -392,16 +409,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/06/12/送女友的生日礼物/">
-                    送给女友的生日礼物
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/06/05/Word2Vec之skip-gram模型/">
-                    Word2Vec笔记：Skip-Gram模型
+                <a href="/2017/06/30/TensorFlow笔记（五）/">
+                    TensorFlow 笔记（五）：常用函数和模型的保存与恢复
                 </a>
             </div>
         
@@ -443,7 +454,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#单词对和短语"><span class="toc-number">2.</span> <span class="toc-text">单词对和短语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#降采样高频单词"><span class="toc-number">3.</span> <span class="toc-text">降采样高频单词</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#采样频率"><span class="toc-number">4.</span> <span class="toc-text">采样频率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#负采样-Negative-Sampling"><span class="toc-number">5.</span> <span class="toc-text">负采样(Negative Sampling)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#选择负采样"><span class="toc-number">6.</span> <span class="toc-text">选择负采样</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">7.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MovingAverage"><span class="toc-number">1.</span> <span class="toc-text">MovingAverage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ExponentialMovingAverage"><span class="toc-number">2.</span> <span class="toc-text">ExponentialMovingAverage</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Methods"><span class="toc-number">2.1.</span> <span class="toc-text">Methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#init"><span class="toc-number">2.2.</span> <span class="toc-text">__init__</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#apply"><span class="toc-number">2.3.</span> <span class="toc-text">apply</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#average"><span class="toc-number">2.4.</span> <span class="toc-text">average</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#average-name"><span class="toc-number">2.5.</span> <span class="toc-text">average_name</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#variables-to-restore"><span class="toc-number">2.6.</span> <span class="toc-text">variables_to_restore</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
         
     </div>
     <style>
@@ -479,7 +490,7 @@
         </div>
         <script>
             window._bd_share_config={
-                 "common":{"bdSnsKey":{},"bdText":"Word2Vec笔记：Negative Sample　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -534,15 +545,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/06/12/送女友的生日礼物/" title="上一篇: 送给女友的生日礼物">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/05/Word2Vec之skip-gram模型/" title="下一篇: Word2Vec笔记：Skip-Gram模型">
+            <a href="/2017/06/30/TensorFlow笔记（五）/" title="下一篇: TensorFlow 笔记（五）：常用函数和模型的保存与恢复">
                 <i class="fa fa-angle-right"></i>
             </a>
         

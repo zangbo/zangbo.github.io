@@ -15,22 +15,17 @@
 
 
 
-<meta name="description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="keywords" content="Word2Vec">
+<meta name="description" content="本文学习了TensorFlow的一些常用的基础函数，主要为以下几种：  tf.group tf.Graph.control_dependencies tf.train.Saver  同时介绍了训练过程中的模型保存和恢复方法，主要用到tf.train.Saver类。">
+<meta name="keywords" content="TensorFlow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Word2Vec笔记：Negative Sample">
-<meta property="og:url" content="http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/index.html">
+<meta property="og:title" content="TensorFlow 笔记（五）：常用函数和模型的保存与恢复">
+<meta property="og:url" content="http://zangbo.me/2017/06/30/TensorFlow笔记（五）/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg">
-<meta property="og:updated_time" content="2017-06-21T16:52:33.000Z">
+<meta property="og:description" content="本文学习了TensorFlow的一些常用的基础函数，主要为以下几种：  tf.group tf.Graph.control_dependencies tf.train.Saver  同时介绍了训练过程中的模型保存和恢复方法，主要用到tf.train.Saver类。">
+<meta property="og:updated_time" content="2017-07-01T05:45:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Word2Vec笔记：Negative Sample">
-<meta name="twitter:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
+<meta name="twitter:title" content="TensorFlow 笔记（五）：常用函数和模型的保存与恢复">
+<meta name="twitter:description" content="本文学习了TensorFlow的一些常用的基础函数，主要为以下几种：  tf.group tf.Graph.control_dependencies tf.train.Saver  同时介绍了训练过程中的模型保存和恢复方法，主要用到tf.train.Saver类。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +54,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Word2Vec笔记：Negative Sample | ZangBo&#39;s Home</title>
+<title>TensorFlow 笔记（五）：常用函数和模型的保存与恢复 | ZangBo&#39;s Home</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -260,11 +255,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Word2Vec之Negative-Sample" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-TensorFlow笔记（五）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/06/06/Word2Vec之Negative-Sample/" class="article-date">
-      <time datetime="2017-06-06T09:08:43.000Z" itemprop="datePublished">2017-06-06</time>
+      <a href="/2017/06/30/TensorFlow笔记（五）/" class="article-date">
+      <time datetime="2017-06-30T12:58:59.000Z" itemprop="datePublished">2017-06-30</time>
 </a>
 
 
@@ -279,7 +274,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Word2Vec笔记：Negative Sample
+      TensorFlow 笔记（五）：常用函数和模型的保存与恢复
     </h1>
   
 
@@ -288,13 +283,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -304,69 +299,60 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文学习了TensorFlow的一些常用的基础函数，主要为以下几种：</p>
+<ul>
+<li>tf.group</li>
+<li>tf.Graph.control_dependencies</li>
+<li>tf.train.Saver</li>
+</ul>
+<p>同时介绍了训练过程中的模型保存和恢复方法，主要用到<code>tf.train.Saver</code>类。</p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在skip-gram模型中，我们发现这是个十分庞大的神经网络，如果我们把词向量设置成300，那么在一个具有10000个单词的字典中，隐层和输出层分别具有3百万个参数。执行梯度下降算法时将会十分缓慢，更糟糕的是，我们需要事先在一个数量庞大的数据集上训练，以便于fine-tune参数和避免过拟合。因此对模型的训练将十分困难。</p>
-<p>为了解决这个问题，作者提出了三个修改方案：</p>
-<ol>
-<li>把常见的短语或单词对当成一个单词来对待</li>
-<li>降采样高频单词来见少训练样本数量</li>
-<li>用一种他们称之为“负采样”的方式来修改优化目标，这将使得每个训练样本只更新一小部分的模型参数。</li>
-</ol>
-<p>它们均可以使得训练变的可行同时也改善了结果词向量的质量。</p>
+<h1 id="tf-group"><a href="#tf-group" class="headerlink" title="tf.group"></a>tf.group</h1><p><code>tf.group(inputs)</code>创建一个<code>op</code>把多个<code>ops</code>给组合起来，该<code>op</code>无输出。当该<code>op</code>结束操作，其中的所有<code>ops</code>都会结束。</p>
+<p>其中<code>inputs</code>为空或者很多<code>tensors</code>。</p>
 <p><br></p>
-<h1 id="单词对和短语"><a href="#单词对和短语" class="headerlink" title="单词对和短语"></a>单词对和短语</h1><p>作者指出一个单词对像“Boston Globe”(一个报纸名)，它的含义和“Boston”以及“Globe”都有着很大的区别，因此把“Boston Globe”当作一个单词来对待是很有意义的，它将会得到一个词向量来表示。在Google News数据集上，这个改变可以把模型字典尺寸从一千亿降低为三百万。Google开源了它们训练好得到的词向量，长度是300，共计三百万个。至于如何从单词中区分短语并且缩短字典尺寸，一个方法是可以参考维基百科的词条目录。</p>
+<h1 id="tf-Graph-control-dependencies"><a href="#tf-Graph-control-dependencies" class="headerlink" title="tf.Graph.control_dependencies"></a>tf.Graph.control_dependencies</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">control_dependencies(control_inputs)</div></pre></td></tr></table></figure>
+<p>参数<code>control_inputs</code>是一个包含<code>op</code>或者<code>tensor</code>的列表，该列表内的对象必须在控制区域内的<code>ops</code>之前执行。可以为<code>None</code>来清空控制依赖。</p>
+<p>通常用<code>with</code>操作来定义一个区域，在该区域下所有的<code>ops</code>都要在<code>control_inputs</code>执行结束后才能执行。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> g.control_dependencies([a, b, c]):</div><div class="line">  <span class="comment"># `d` and `e` will only run after `a`, `b`, and `c` have executed.</span></div><div class="line">  d = ...</div><div class="line">  e = ...</div></pre></td></tr></table></figure>
+<p>多次用<code>with</code>调用该函数会得到叠加的依赖，区域内的<code>ops</code>将会在以上所有层次的<code>control_inputs</code>运行结束后才能得到运行。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> g.control_dependencies([a, b]):</div><div class="line">  <span class="comment"># Ops constructed here run after `a` and `b`.</span></div><div class="line">  <span class="keyword">with</span> g.control_dependencies([c, d]):</div><div class="line">    <span class="comment"># Ops constructed here run after `a`, `b`, `c`, and `d`.</span></div></pre></td></tr></table></figure>
+<p>我们可以用<code>None</code>来清空控制所有依赖。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> g.control_dependencies([a, b]):</div><div class="line">  <span class="comment"># Ops constructed here run after `a` and `b`.</span></div><div class="line">  <span class="keyword">with</span> g.control_dependencies(<span class="keyword">None</span>):</div><div class="line">    <span class="comment"># Ops constructed here run normally, not waiting for either `a` or `b`.</span></div><div class="line">    <span class="keyword">with</span> g.control_dependencies([c, d]):</div><div class="line">      <span class="comment"># Ops constructed here run after `c` and `d`, also not waiting</span></div><div class="line">      <span class="comment"># for either `a` or `b`.</span></div></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<p>控制依赖起作用的区域内只有<code>ops</code>会被执行，仅仅把一个节点放在该区域是不起作用的。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># WRONG</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_func</span><span class="params">(pred, tensor)</span>:</span></div><div class="line">  t = tf.matmul(tensor, tensor)</div><div class="line">  <span class="keyword">with</span> tf.control_dependencies([pred]):</div><div class="line">    <span class="comment"># The matmul op is created outside the context, so no control</span></div><div class="line">    <span class="comment"># dependency will be added.</span></div><div class="line">    <span class="keyword">return</span> t</div><div class="line"></div><div class="line"><span class="comment"># RIGHT</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_func</span><span class="params">(pred, tensor)</span>:</span></div><div class="line">  <span class="keyword">with</span> tf.control_dependencies([pred]):</div><div class="line">    <span class="comment"># The matmul op is created in the context, so a control dependency</span></div><div class="line">    <span class="comment"># will be added.</span></div><div class="line">    <span class="keyword">return</span> tf.matmul(tensor, tensor)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h1 id="降采样高频单词"><a href="#降采样高频单词" class="headerlink" title="降采样高频单词"></a>降采样高频单词</h1><p>在之前的例子中，针对一些通用单词例如“the”存在一些问题：</p>
+<h1 id="tf-train-Saver"><a href="#tf-train-Saver" class="headerlink" title="tf.train.Saver"></a>tf.train.Saver</h1><p>在训练过程中我们可能会想到每隔一段训练保存一次模型，一方面为了防止过拟合，另一方面如果训练过程被意外打断还可以从某个保存点继续开始训练。之前已经学习过<code>Variable</code>的概念，今天来学习下如何用<code>tf.train.Saver</code>来保存和恢复一个模型。关于<code>tf.train.Saver</code>更详细的内容请参考官方文档。</p>
+<p><code>Saver</code>类添加<code>ops</code>来保存变量到<em>checkpoints</em>或者从<em>checkpoints</em>中恢复变量，它同时提供了一些函数方法来运行这些<code>ops</code>。<em>checkpoints</em>是一种二进制文件，它把<code>variable name</code>和<code>tensor</code>值联系起来，默认的为<code>tf.Variable.name</code>。使用<em>checkpoints</em>最好的方法就是用<code>Saver</code>来载入它。</p>
+<p><code>Saver</code>可以自动的给<em>checkpoints</em>文件命名，这使得我们在不同的训练阶段可以保存不同的<em>checkpoints</em>。例如我们可以用训练迭代次数来给<em>checkpoints</em>命名，为了防止训练阶段磁盘空间占用量过多，我们还可以选择只保存最近N个文件，或者每N个小时保存一次文件。</p>
+<h2 id="保存变量"><a href="#保存变量" class="headerlink" title="保存变量"></a>保存变量</h2><p>用<code>tf.train.Saver()</code>创建一个<code>Saver</code>对象来控制模型中所有的变量。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create some variables.</span></div><div class="line">v1 = tf.Variable(..., name=<span class="string">"v1"</span>)</div><div class="line">v2 = tf.Variable(..., name=<span class="string">"v2"</span>)</div><div class="line"><span class="comment"># ...</span></div><div class="line"><span class="comment"># Add an op to initialize the variables.</span></div><div class="line">init_op = tf.global_variables_initializer()</div><div class="line"></div><div class="line"><span class="comment"># Add ops to save and restore all the variables.</span></div><div class="line">saver = tf.train.Saver()</div><div class="line"></div><div class="line"><span class="comment"># Later, launch the model, initialize the variables, do some work, save the</span></div><div class="line"><span class="comment"># variables to disk.</span></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">  sess.run(init_op)</div><div class="line">  <span class="comment"># Do some work with the model.</span></div><div class="line">  <span class="comment"># ..</span></div><div class="line">  <span class="comment"># Save the variables to disk.</span></div><div class="line">  save_path = saver.save(sess, <span class="string">"/tmp/model.ckpt"</span>)</div><div class="line">  print(<span class="string">"Model saved in file: %s"</span> % save_path)</div></pre></td></tr></table></figure>
+<p>为了自动给<em>checkpoints</em>文件命名我们可以传入一个<code>global_step</code>值给<code>save()</code>函数。例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">saver.save(sess, 'my-model', global_step=0) ==&gt; filename: 'my-model-0'</div><div class="line">...</div><div class="line">saver.save(sess, 'my-model', global_step=1000) ==&gt; filename: 'my-model-1000'</div></pre></td></tr></table></figure>
+<h2 id="恢复变量"><a href="#恢复变量" class="headerlink" title="恢复变量"></a>恢复变量</h2><p>我们用同一个<code>Saver</code>对象来恢复变量，注意当我们从一个文件恢复变量时我们没必要提前对变量初始化。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create some variables.</span></div><div class="line">v1 = tf.Variable(..., name=<span class="string">"v1"</span>)</div><div class="line">v2 = tf.Variable(..., name=<span class="string">"v2"</span>)</div><div class="line"><span class="comment"># ...</span></div><div class="line"><span class="comment"># Add ops to save and restore all the variables.</span></div><div class="line">saver = tf.train.Saver()</div><div class="line"></div><div class="line"><span class="comment"># Later, launch the model, use the saver to restore variables from disk, and</span></div><div class="line"><span class="comment"># do some work with the model.</span></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">  <span class="comment"># Restore variables from disk.</span></div><div class="line">  saver.restore(sess, <span class="string">"/tmp/model.ckpt"</span>)</div><div class="line">  print(<span class="string">"Model restored."</span>)</div><div class="line">  <span class="comment"># Do some work with the model</span></div><div class="line">  <span class="comment"># ...</span></div></pre></td></tr></table></figure>
+<h2 id="保存和恢复部分变量"><a href="#保存和恢复部分变量" class="headerlink" title="保存和恢复部分变量"></a>保存和恢复部分变量</h2><p>如果我们没有给<code>tf.train.Saver()</code>任何参数，它默认保存所有变量，每个变量都和它们的<code>name</code>联系起来。</p>
+<p>有时候我们想要在<em>checkpoint</em>文件中给某个变量定义一个具体的<code>name</code>，例如我们想把一个变量取名为<code>&quot;weights&quot;</code>，我们想恢复它的值到一个新的名字叫<code>&quot;param&quot;</code>的变量中。</p>
+<p>有时候我们想保存和恢复模型的某一组变量，例如我们训练了一个5层的神经网络，但我们想训练一个新的6层的神经网络，并且从5层的神经网络中恢复参数到新的6层模型的前5层中。</p>
+<p>我们可以传入一个变量列表到<code>tf.train.Saver()</code>中，变量在<code>checkpoint</code>文件中的<code>name</code>就是<code>op</code>的<code>name</code>。我们也可以很简单的把<code>names</code>和变量组织成一个Python字典传入<code>tf.train.Saver()</code>中来保存下来，<code>keys</code>是我们使用的<code>names</code>，<code>values</code>是我们的变量。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">v1 = tf.Variable(..., name=<span class="string">'v1'</span>)</div><div class="line">v2 = tf.Variable(..., name=<span class="string">'v2'</span>)</div><div class="line"></div><div class="line"><span class="comment"># Pass the variables as a dict:</span></div><div class="line">saver = tf.train.Saver(&#123;<span class="string">'v1'</span>: v1, <span class="string">'v2'</span>: v2&#125;)</div><div class="line"></div><div class="line"><span class="comment"># Or pass them as a list.</span></div><div class="line">saver = tf.train.Saver([v1, v2])</div><div class="line"><span class="comment"># Passing a list is equivalent to passing a dict with the variable op names</span></div><div class="line"><span class="comment"># as keys:</span></div><div class="line">saver = tf.train.Saver(&#123;v.op.name: v <span class="keyword">for</span> v <span class="keyword">in</span> [v1, v2]&#125;)</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
 <ol>
-<li>当我们看一些单词对的时候，(“fox”，“the”)没有告诉我们过多的关于“fox”的含义的信息，“the”出现在几乎每个单词的前面。</li>
-<li>我们拥有太多的关于(“the”，…)的采样，而我们学习一个好的关于“the”的向量不需要这么多的采样。</li>
-</ol>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
-
-<p>Word2Vec采用了一个叫做“降采样”的框架来解决这个问题。对于每个出现在我们训练文件中的单词，它们将会有一定的概率被删除相关的训练数据，概率的高低取决于它们出现的频率。</p>
-<p>如果我们有一个尺寸为10的窗口，那么我们将移除一个特定的关于“the”的训练样本：</p>
-<ol>
-<li>当我们训练其他单词，“the”将不会在任何窗口中出现。</li>
-<li>当我们训练“the”作为输入时，窗口尺寸会小于10。</li>
+<li>如果我们想保存不同模型的几组变量，我们可以创建很多个<code>saver</code>对象。而且相同的变量可以存储在不同的<code>saver</code>对象中，它们的值只有在<code>restore()</code>函数执行后才改变。</li>
+<li>如果我们想恢复一组变量到模型中，我们必须事先初始化其他变量。</li>
 </ol>
 <p><br></p>
-<h1 id="采样频率"><a href="#采样频率" class="headerlink" title="采样频率"></a>采样频率</h1><p>关于如何计算字典中一个单词被保留下来的概率，有一套C语言的代码实现的公式。</p>
-<p>Wi代表单词，z(wi)表示单词在语料库中出现的频率，例如“peanut”在一个拥有10亿单词语料库中出现了1000次，那么z(‘peanut’)=1E-6。</p>
-<p>代码中还有一个参数称之为’sample’，它将控制采样发生的力度，默认是0.001，该数值越小则单词越不可能被保存。</p>
-<p>P(wi)为保留单词的概率：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg" alt=""></center>
-
-<p>我们可以画出该公式的图：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg" alt=""></center>
-
-<p>如果我们使用默认采样值为0.001，那么有以下有趣的点：</p>
-<ul>
-<li>P=1，当z&lt;=0.0026时，这意味着当单词数量小于0.26%时将会被全部保留下来。</li>
-<li>P=0.5，当z=0.00746时，这意味着有50%的概率被保留下来</li>
-<li>P=0.033，当z=1时，这意味着如果语料库中全部是同一个单词时，只有3.3%的概率会被保存下来，这种情况当然很荒谬。</li>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/Saver" target="_blank" rel="external">tf.train.Saver  |  TensorFlow</a></li>
+<li><a href="https://www.tensorflow.org/programmers_guide/variables" target="_blank" rel="external">Variables: Creation, Initialization, Saving, and Loading  |  TensorFlow</a></li>
 </ul>
-<p>论文中定义的公式和C语言代码中有所区别，我觉得C语言代码的实现更加权威。</p>
 <p><br></p>
-<h1 id="负采样-Negative-Sampling"><a href="#负采样-Negative-Sampling" class="headerlink" title="负采样(Negative Sampling)"></a>负采样(Negative Sampling)</h1><p>训练一个神经网络意味着每个样本都要更新所有参数，使用skip-gram模型将会每次都要更新数量庞大的模型，负采样采用的策略是更新每个样本时之更新很小比例的参数，而不是更新所有参数。</p>
-<p>我们训练一个单词对时，例如(“fox”，“quick”)，当输入是“fox”时标签是“quick”的one-hot向量，那么也就是说输出标签神经元中只有一个是1，其他的成千上万个都是0。</p>
-<p>因此当我们使用负采样时，我们将随机选择很小数量的“负”单词(例如选择5个)来更新权值，在我们的语料库中，一个“负”单词指的是我们希望让输出的标签的神经元为0，我们依然会更新“正”单词的神经元参数(也就是标签中为1的神经元)，论文中提到对于一个小规模的数据集，可以选择5-20个单词，如果是庞大的数据集，可以选择2-5个。</p>
-<p>之前我们的输出层是300<em>10000的参数矩阵，但如今我们更新权值时只需要更新(“quick”)所代表的神经元的参数(输出为1)，以及再加上5个随机的输出为0的神经元，总共只需要更新6个神经元的参数，也就是300</em>6=1800个参数，这仅仅是原来输出层参数的0.06%！</p>
-<p>注意在隐藏层中，不管是否使用负采样策略，都只有输入单词的权值被更新。</p>
-<p><br></p>
-<h1 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h1><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg" alt=""></center>
-
-<p>这种在C语言中实现的方式很有趣。他们有一个100M大小的元素数组（他们称之为unigram表），他们用词表中每个单词的索引多次填充这个表。然后，要实际选择一个负样本，只需生成0到100M之间的随机整数，并选择表中该索引处的单词。由于较高概率单词在表中出现次数较多，因此更有可能选择这些单词。</p>
-<p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这里有一些关于Word2Vec的学习资源：</p>
-<p><a href="http://mccormickml.com/2016/04/27/word2vec-resources/" target="_blank" rel="external">Word2Vec Resources · Chris McCormick</a></p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="external">Word2Vec Tutorial Part 2 - Negative Sampling · Chris McCormick</a></p>
-<p><br></p>
-</the>
+</the></excerpt>
       
     </div>
     
@@ -374,13 +360,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a></p>
+        <p><span>本文标题:</span><a href="/2017/06/30/TensorFlow笔记（五）/">TensorFlow 笔记（五）：常用函数和模型的保存与恢复</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
-        <p><span>发布时间:</span>2017-06-06, 17:08:43</p>
-        <p><span>最后更新:</span>2017-06-22, 00:52:33</p>
+        <p><span>发布时间:</span>2017-06-30, 20:58:59</p>
+        <p><span>最后更新:</span>2017-07-01, 13:45:13</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/06/06/Word2Vec之Negative-Sample/" title="Word2Vec笔记：Negative Sample">http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/30/TensorFlow笔记（五）/" title="TensorFlow 笔记（五）：常用函数和模型的保存与恢复">http://zangbo.me/2017/06/30/TensorFlow笔记（五）/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/30/TensorFlow笔记（五）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -393,15 +379,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/06/12/送女友的生日礼物/">
-                    送给女友的生日礼物
+                <a href="/2017/07/01/TensorFlow笔记（六）/">
+                    TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/06/05/Word2Vec之skip-gram模型/">
-                    Word2Vec笔记：Skip-Gram模型
+                <a href="/2017/06/27/ TensorFlow 笔记（四）/">
+                    TensorFlow 笔记（四）：TensorBoard可视化
                 </a>
             </div>
         
@@ -443,7 +429,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#单词对和短语"><span class="toc-number">2.</span> <span class="toc-text">单词对和短语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#降采样高频单词"><span class="toc-number">3.</span> <span class="toc-text">降采样高频单词</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#采样频率"><span class="toc-number">4.</span> <span class="toc-text">采样频率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#负采样-Negative-Sampling"><span class="toc-number">5.</span> <span class="toc-text">负采样(Negative Sampling)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#选择负采样"><span class="toc-number">6.</span> <span class="toc-text">选择负采样</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">7.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#tf-group"><span class="toc-number">1.</span> <span class="toc-text">tf.group</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tf-Graph-control-dependencies"><span class="toc-number">2.</span> <span class="toc-text">tf.Graph.control_dependencies</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tf-train-Saver"><span class="toc-number">3.</span> <span class="toc-text">tf.train.Saver</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#保存变量"><span class="toc-number">3.1.</span> <span class="toc-text">保存变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#恢复变量"><span class="toc-number">3.2.</span> <span class="toc-text">恢复变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#保存和恢复部分变量"><span class="toc-number">3.3.</span> <span class="toc-text">保存和恢复部分变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
         
     </div>
     <style>
@@ -479,7 +465,7 @@
         </div>
         <script>
             window._bd_share_config={
-                 "common":{"bdSnsKey":{},"bdText":"Word2Vec笔记：Negative Sample　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 笔记（五）：常用函数和模型的保存与恢复　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -534,7 +520,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/06/12/送女友的生日礼物/" title="上一篇: 送给女友的生日礼物">
+            <a href="/2017/07/01/TensorFlow笔记（六）/" title="上一篇: TensorFlow 笔记（六）：tf.train.ExponentialMovingAverage">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -542,7 +528,7 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/05/Word2Vec之skip-gram模型/" title="下一篇: Word2Vec笔记：Skip-Gram模型">
+            <a href="/2017/06/27/ TensorFlow 笔记（四）/" title="下一篇: TensorFlow 笔记（四）：TensorBoard可视化">
                 <i class="fa fa-angle-right"></i>
             </a>
         
