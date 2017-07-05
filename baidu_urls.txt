@@ -1,3 +1,10 @@
+http://zangbo.me/2017/07/05/TensorFlow 笔记（九）/
+http://zangbo.me/2017/07/03/TensorFlow 笔记（八）/
+http://zangbo.me/2017/07/01/TensorFlow 笔记（七）/
+http://zangbo.me/2017/07/01/TensorFlow 笔记（六）/
+http://zangbo.me/2017/06/30/TensorFlow 笔记（五）/
+http://zangbo.me/2017/06/27/ TensorFlow 笔记（四）/
+http://zangbo.me/2017/06/24/Tensorflow 笔记（三）/
 http://zangbo.me/2017/06/22/爬虫学习笔记（四）/
 http://zangbo.me/2017/06/15/爬虫学习笔记（三）/
 http://zangbo.me/2017/06/14/爬虫学习笔记（二）/
@@ -11,4 +18,3 @@ http://zangbo.me/2017/06/04/关于随机梯度下降/
 http://zangbo.me/2017/06/03/Tensorflow 笔记（二）/
 http://zangbo.me/2017/06/02/Tensorflow 笔记（一）/
 http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/
-http://zangbo.me/2017/05/20/自我介绍/

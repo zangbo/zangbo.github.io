@@ -201,7 +201,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFLow/">TensorFLow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
                     </div>
                 </section>
                 
@@ -311,6 +311,530 @@
       
 
       
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TensorFlow 笔记（九）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/05/TensorFlow 笔记（九）/" class="article-date">
+      <time datetime="2017-07-05T02:04:11.000Z" itemprop="datePublished">2017-07-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/05/TensorFlow 笔记（九）/">TensorFlow 笔记（九）：数据读取</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文整理了TensorFlow中的数据读取方法，在TensorFlow中主要有三种方法读取数据：</p>
+<ol>
+<li>Feeding：由Python提供数据。</li>
+<li>Preloaded data：预加载数据。</li>
+<li>Reading from files：从文件读取。</li>
+</ol>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/05/TensorFlow 笔记（九）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TensorFlow 笔记（八）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/03/TensorFlow 笔记（八）/" class="article-date">
+      <time datetime="2017-07-03T02:11:56.000Z" itemprop="datePublished">2017-07-03</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/03/TensorFlow 笔记（八）/">TensorFlow 笔记（八）：线程和队列</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文介绍了TensorFlow的线程和队列。在使用TensorFlow进行异步计算时，队列是一种强大的机制。正如TensorFlow中的其他组件一样，队列就是TensorFlow图中的节点。这是一种有状态的节点，就像变量一样：其他节点可以修改它的内容。具体来说，其他节点可以把新元素插入到队列后端(rear)，也可以把队列前端(front)的元素删除。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFLow/">TensorFLow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/03/TensorFlow 笔记（八）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TensorFlow 笔记（七）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/01/TensorFlow 笔记（七）/" class="article-date">
+      <time datetime="2017-07-01T07:17:57.000Z" itemprop="datePublished">2017-07-01</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/01/TensorFlow 笔记（七）/">TensorFlow 笔记（七）：Exponential_decay</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>在神经网络的训练过程中，<strong>学习率(learning rate)</strong>控制着参数的更新速度，<code>tf.train</code>类下面的五种不同的学习速率的衰减方法。</p>
+<ul>
+<li><code>tf.train.exponential_decay</code></li>
+<li><code>tf.train.inverse_time_decay</code></li>
+<li><code>tf.train.natural_exp_decay</code></li>
+<li><code>tf.train.piecewise_constant</code></li>
+<li><code>tf.train.polynomial_decay</code></li>
+</ul>
+<p>本文只对<code>exponential_decay</code>做整理。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/01/TensorFlow 笔记（七）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TensorFlow 笔记（六）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/01/TensorFlow 笔记（六）/" class="article-date">
+      <time datetime="2017-07-01T03:08:19.000Z" itemprop="datePublished">2017-07-01</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/01/TensorFlow 笔记（六）/">TensorFlow 笔记（六）：Moving Average</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文记录了TensorFlow训练模型过程中对参数的<strong>滑动平均(moving average)</strong>的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为<code>tf.train.ExponentialMovingAverage</code>。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/01/TensorFlow 笔记（六）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TensorFlow 笔记（五）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/30/TensorFlow 笔记（五）/" class="article-date">
+      <time datetime="2017-06-30T12:58:59.000Z" itemprop="datePublished">2017-06-30</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/30/TensorFlow 笔记（五）/">TensorFlow 笔记（五）：常用函数和模型的保存与恢复</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文学习了TensorFlow的一些常用的基础函数，主要为以下几种：</p>
+<ul>
+<li>tf.group</li>
+<li>tf.Graph.control_dependencies</li>
+<li>tf.train.Saver</li>
+</ul>
+<p>同时介绍了训练过程中的模型保存和恢复方法，主要用到<code>tf.train.Saver</code>类。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/06/30/TensorFlow 笔记（五）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post- TensorFlow 笔记（四）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/27/ TensorFlow 笔记（四）/" class="article-date">
+      <time datetime="2017-06-27T13:50:54.000Z" itemprop="datePublished">2017-06-27</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/27/ TensorFlow 笔记（四）/">TensorFlow 笔记（四）：TensorBoard可视化</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文对TensorFlow的重要可视化工具TensorBoard进行学习。</p>
+<p>当我们训练庞大且复杂的神经网络时，为了便于我们理解和调试TensorFlow程序，可视化工具显得尤为重要。而TensorFlow有一个很方便的可视化工具名为TensorBoard，我们可以利用它来可视化我们的<code>graph</code>以及训练的细节。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/可视化/">可视化</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/06/27/ TensorFlow 笔记（四）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Tensorflow 笔记（三）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/24/Tensorflow 笔记（三）/" class="article-date">
+      <time datetime="2017-06-24T08:09:34.000Z" itemprop="datePublished">2017-06-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/24/Tensorflow 笔记（三）/">TensorFlow 笔记（三）：Name_Scope和变量共享</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文学习了TensorFlow中的四个基本函数以及<strong>变量共享(Sharing Variables)</strong>机制：</p>
+<ul>
+<li><code>tf.Variable()</code></li>
+<li><code>tf.get_variable()</code></li>
+<li><code>tf.name_scope()</code></li>
+<li><code>tf.variable_scope()</code></li>
+</ul>
+<p>其中<code>tf.get_variable()</code>和<code>tf.variable_scope()</code>共同构成了Tensorflow的<strong>变量共享</strong>机制。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/06/24/Tensorflow 笔记（三）/#more">阅读全文 >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -471,486 +995,9 @@
 
 
   
-    <article id="post-爬虫学习笔记（二）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/14/爬虫学习笔记（二）/" class="article-date">
-      <time datetime="2017-06-14T02:47:57.000Z" itemprop="datePublished">2017-06-14</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/14/爬虫学习笔记（二）/">爬虫笔记（二）：Requests基础</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Requests库以及一些基础用法，基于python3.5版本
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/数据挖掘/">数据挖掘</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/14/爬虫学习笔记（二）/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-爬虫学习笔记（一）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/13/爬虫学习笔记（一）/" class="article-date">
-      <time datetime="2017-06-13T04:43:52.000Z" itemprop="datePublished">2017-06-13</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/13/爬虫学习笔记（一）/">爬虫笔记（一）：爬虫基础知识</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><excerpt in="" index="" |="" 首页摘要=""><br>本系列记录了爬虫学习的历程，本文整理了学习爬虫需要掌握的基础背景知识，包括HTML、URL在内的基础概念以及爬虫的工作原理。
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/数据挖掘/">数据挖掘</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/13/爬虫学习笔记（一）/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-编码相关知识" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/13/编码相关知识/" class="article-date">
-      <time datetime="2017-06-13T03:40:30.000Z" itemprop="datePublished">2017-06-13</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/13/编码相关知识/">编码相关知识</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/计算机基础/">计算机基础</a>
-    </div>
-
-
-      
-      
-        <p class="article-more-link">
-          <a href="/2017/06/13/编码相关知识/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-配置GithubPage二级域名" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/12/配置GithubPage二级域名/" class="article-date">
-      <time datetime="2017-06-12T14:10:55.000Z" itemprop="datePublished">2017-06-12</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/12/配置GithubPage二级域名/">配置GithubPage二级域名</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/教程/">教程</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人网站/">个人网站</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/12/配置GithubPage二级域名/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-送女友的生日礼物" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/12/送女友的生日礼物/" class="article-date">
-      <time datetime="2017-06-12T13:36:59.000Z" itemprop="datePublished">2017-06-12</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/12/送女友的生日礼物/">送给女友的生日礼物</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <excerpt in="" index="" |="" 首页摘要=""> 
-
-<p>女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/12/送女友的生日礼物/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Word2Vec之Negative-Sample" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/06/Word2Vec之Negative-Sample/" class="article-date">
-      <time datetime="2017-06-06T09:08:43.000Z" itemprop="datePublished">2017-06-06</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/06/Word2Vec之Negative-Sample/">Word2Vec笔记：Negative Sample</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/06/Word2Vec之Negative-Sample/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Word2Vec之skip-gram模型" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/05/Word2Vec之skip-gram模型/" class="article-date">
-      <time datetime="2017-06-05T08:23:12.000Z" itemprop="datePublished">2017-06-05</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/05/Word2Vec之skip-gram模型/">Word2Vec笔记：Skip-Gram模型</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/05/Word2Vec之skip-gram模型/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>
