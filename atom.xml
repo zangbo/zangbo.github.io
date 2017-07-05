@@ -514,144 +514,6 @@
   </entry>
   
   <entry>
-    <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
-    <link href="http://zangbo.me/2017/06/27/%20TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
-    <id>http://zangbo.me/2017/06/27/ TensorFlow 笔记（四）/</id>
-    <published>2017-06-27T13:50:54.000Z</published>
-    <updated>2017-06-30T04:45:29.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
-
-<p>本文对TensorFlow的重要可视化工具TensorBoard进行学习。</p>
-<p>当我们训练庞大且复杂的神经网络时，为了便于我们理解和调试TensorFlow程序，可视化工具显得尤为重要。而TensorFlow有一个很方便的可视化工具名为TensorBoard，我们可以利用它来可视化我们的<code>graph</code>以及训练的细节。</p>
-<a id="more"></a>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<hr>
-<p>TensorBoard的界面如下图所示：</p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170627153131_zidI6p_tensorboard.jpeg" alt="MNIST TensorBoard" width="700"></p>
-<p>界面主要提供以下几种不同的数据可视化类型：</p>
-<ul>
-<li>SCALARS</li>
-<li>IMAGES</li>
-<li>AUDIO</li>
-<li>GRAPHS</li>
-<li>DISTRIBUTIONS</li>
-<li>HISTOGRAMS</li>
-<li>EMBEDDINGS</li>
-<li>TEXT</li>
-</ul>
-<p><br></p>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在TensorFlow运行过程中，我们可以通过<code>summary operations</code>操作来保存它的运行日志，TensorBoard通过读取这些运行日志来实现可视化功能。下面是使用TensorBoard的生命周期：</p>
-<ol>
-<li><p>创建一个<code>TensorFlow graph</code>，用<code>summary operations</code>来保存我们需要了解的节点的信息。</p>
-</li>
-<li><p>我们需要整合所有节点的信息，如果一个一个提取太耗费精力和时间，我们可以选择<code>tf.summary.merge_all()</code>函数来把所有的<code>op</code>节点整合成一个单一节点，然后通过运行该节点来提取出所有<code>summary op</code>的信息。</p>
-</li>
-<li><p>用<code>tf.summary.FileWriter()</code>函数把提取出的所有的<code>summary op</code>信息存入磁盘中。我们同时可以用该函数把<code>graph</code>的信息存入磁盘，用来可视化神经网络的结构。</p>
-</li>
-<li><p>在训练过程中用<code>add_summary</code>命令把训练信息存入磁盘，训练结束后记得把<code>FileWriter</code>对象<code>close</code>。</p>
-</li>
-<li><p>打开终端，键入以下命令运行TensorBoard：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tensorboard --logdir=path/to/logs</div></pre></td></tr></table></figure>
-<p>得到提示信息<code>“Starting TensorBoard...”</code>则运行成功，我们可以打开浏览器，在地址栏输入<code>localhost:6006</code>进入TensorBoard的操作面板。</p>
-<p><br></p>
-</li>
-</ol>
-<h1 id="Summary-Operations"><a href="#Summary-Operations" class="headerlink" title="Summary Operations"></a>Summary Operations</h1><p>我们利用该操作来从TensorFlow运行过程中获得信息，然后在TensorBoard上展示出来，<code>summary ops</code>同样是<code>ops</code>的一种，它们和<code>tf.matmul</code>或者<code>tf.nn.relu</code>等操作一样。这意味着它们和其他<code>ops</code>相同，包含在一个<code>graph</code>中，读入一个<code>tensors</code>并且输出一个<code>tensors</code>。但是它们也有不同的地方，<code>summary ops</code>输出的向量还包含着连续的<code>protobufs</code>信息，它们可以被保存到磁盘上并且被TensorBoard读取进行可视化。</p>
-<p>常见的<code>summary ops</code>如下：</p>
-<ul>
-<li>tf.summary.scalar</li>
-<li>tf.summary.image</li>
-<li>tf.summary.audio</li>
-<li>tf.summary.text</li>
-<li>tf.summary.histogram</li>
-</ul>
-<p><br></p>
-<p>我们在这里主要介绍三种：</p>
-<h2 id="Scalar"><a href="#Scalar" class="headerlink" title="Scalar"></a>Scalar</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.summary.scalar(<span class="string">"accuracy"</span>, accuracy)</div></pre></td></tr></table></figure>
-<p><code>Scalar</code>存储一些非向量的单一数值，通常会随着迭代次数变化，例如<code>accuracy</code>或者<code>cross_entropy</code>。我们可以在TensorBoard的<code>SCALARS</code>面板看到该类数据的详细信息。</p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170627180058_XxfLyL_scalar.jpeg" alt="SCALARS" width="700"></p>
-<h2 id="Image"><a href="#Image" class="headerlink" title="Image"></a>Image</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.summary.image(<span class="string">'input'</span>, x_image, <span class="number">3</span>)</div></pre></td></tr></table></figure>
-<p>我们可以输出包含图像的<code>summary protobufs</code>，图像信息保存在<code>tensor</code>中，并且必须是4-D的形式<code>[batch_size, height, width, channels]</code>，其中，<code>channels</code>可以是以下形式：</p>
-<ul>
-<li>1: <code>tensor</code> is interpreted as Grayscale.</li>
-<li>3: <code>tensor</code> is interpreted as RGB.</li>
-<li>4: <code>tensor</code> is interpreted as RGBA.</li>
-</ul>
-<p>我们可以在TensorBoard的<code>IMAGES</code>面板看到图片信息。</p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170627180058_YAlrJU_images.jpeg" alt="IMAGES" width="700"></p>
-<h2 id="Histogram"><a href="#Histogram" class="headerlink" title="Histogram"></a>Histogram</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.summary.histogram(<span class="string">"weights"</span>, w)</div></pre></td></tr></table></figure>
-<p>很多时候我们想要知道某些向量的分布，比如参数<code>weight</code>、<code>bias</code>或者某一层的输出向量，以及它们随着时间的变化规律，这时可以采用Histogram。</p>
-<p>在TensorBoard中有两种显示向量分布的方式，分别是面板中的<code>DISTRIBUTIONS</code>和<code>HISTOGRAMS</code>，如下两图所示。</p>
-<p><strong>DISTRIBUTIONS：</strong></p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170627180058_w23F61_distribution.jpeg" alt="DISTRIBUTIONS" width="700"></p>
-<p><strong>HISTOGRAMS：</strong></p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170627180058_uvshkp_histogram.jpeg" alt="HISTOGRAMS" width="700"></p>
-<h2 id="Merge-all"><a href="#Merge-all" class="headerlink" title="Merge_all"></a>Merge_all</h2><p>当我们定义好所有ops，我们可以用以下函数来把所有的<code>op</code>节点整合成一个单一节点，然后通过运行该节点来提取出所有<code>summary op</code>的信息。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sum = tf.summary.merge_all()</div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h1><p>当我们训练无比庞大且复杂的神经网络时，我们一般会希望对整个网络的结构进行可视化，本文开头的图片展示的便是对MNIST数据集一个简单的五层神经网络的可视化。在提取了所有<code>summary_op</code>信息后，我们可以用以下函数把它们写进给定的磁盘目录下，在此同时可以把<code>graph</code>的信息一起写进去，这样我们便可以在TensorBoard的<code>GRAPHS</code>下对整个神经网络的结构进行可视化。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">file_writer = tf.summary.FileWriter(&apos;/path/to/logs&apos;, sess.graph)</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="Name-scoping-and-nodes"><a href="#Name-scoping-and-nodes" class="headerlink" title="Name scoping and nodes"></a>Name scoping and nodes</h2><p>然而直接保存得到的结构往往无比晦涩难懂，这时我们就可以考虑用前一个笔记中学到的<code>name_scope</code>对变量和<code>ops</code>进行分层。例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'layer2'</span>):</div><div class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'weight'</span>):</div><div class="line">        W_conv2 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>])</div><div class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'bias'</span>):</div><div class="line">        b_conv2 = bias_variable([<span class="number">64</span>])</div><div class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'conv'</span>):</div><div class="line">        h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)</div><div class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'pool'</span>):</div><div class="line">        h_pool2 = max_pool_2x2(h_conv2)</div></pre></td></tr></table></figure>
-<p>这样我们就可以得到本文开端处的图片中展示的结构图，通常默认只显示最高层，双击每一个模块或者单机模块右上方的<code>+</code>，可以进一步展开，我们可以得到进一步详细的结构信息。</p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170627180059_C4hmAd_graph.jpeg" alt="GRAPHS" width="700"></p>
-<p>TensorBoard的<code>graph</code>有两种依赖，<strong>数据依赖</strong>和<strong>控制依赖</strong>。数据依赖展示了<code>tensors</code>在两个<code>ops</code>之间的流动以及流动方向；控制依赖运用了虚线来表示。TensorBoard显示<code>graph</code>有两个区域，<strong>主区域</strong>和<strong>辅助区域</strong>，为了便于观察我们可以把一些高层次的依赖项多的节点从主区域移出到辅助区域，只需要在节点右键点击<code>Remove from main graph</code>即可，如上图所示我们把<code>train</code>移到辅助区域。</p>
-<p><br></p>
-<h2 id="Runtime-statistics"><a href="#Runtime-statistics" class="headerlink" title="Runtime statistics"></a>Runtime statistics</h2><p>通常来说搜集运行时间的统计数据对我们是很有帮助的，例如总的内存使用，总的计算时间，以及节点的<code>tensor</code>形状。我们可以在<code>GRAPHS</code>的侧边栏处通过选择<code>Compute time</code>和<code>Memory</code>来看每个节点处响应的信息，颜色越深表明相应的值越大。</p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170629223648_L7I2IB_Run metadata graph.jpeg" alt="Run metadata graph" width="700"></p>
-<p>如下是一段代码示例，我们在第99、199、299……1999处保存<code>Runtime</code>统计数据：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2000</span>):</div><div class="line">    <span class="comment">#...</span></div><div class="line">    <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">99</span>:  <span class="comment"># Record execution statistics</span></div><div class="line">        run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)</div><div class="line">        run_metadata = tf.RunMetadata()</div><div class="line">        summary, _ = sess.run([merged, train_step],</div><div class="line">                              feed_dict=&#123;x: batch[<span class="number">0</span>], y: batch[<span class="number">1</span>]&#125;,</div><div class="line">                              options=run_options,</div><div class="line">                              run_metadata=run_metadata)</div><div class="line">        train_writer.add_run_metadata(run_metadata, <span class="string">'step%d'</span> % i)</div><div class="line">        train_writer.add_summary(summary, i)</div><div class="line">        print(<span class="string">'Adding run metadata for'</span>, i)</div><div class="line">    <span class="comment">#...</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="运行-TensorBoard"><a href="#运行-TensorBoard" class="headerlink" title="运行 TensorBoard"></a>运行 TensorBoard</h1><p>打开终端，键入以下命令运行TensorBoard：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tensorboard --logdir=path/to/logs</div></pre></td></tr></table></figure>
-<p>这里的路径是我们用<code>tf.summary.FileWriter()</code>写入的路径。这里注意我们用<code>FileWriter</code>写入时可能会分为<code>train</code>和<code>test</code>两个路径，这时的TensorBoard路径应该为它们两个的上层路径，例如：</p>
-<p><strong>.py文件:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">train_writer = tf.summary.FileWriter(<span class="string">'/tmp/tensorflow/mnist/my_example/train'</span>, sess.graph)</div><div class="line">test_writer = tf.summary.FileWriter(<span class="string">'/tmp/tensorflow/mnist/my_example/test'</span>)</div></pre></td></tr></table></figure>
-<p><strong>终端命令：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tensorboard --logdir=<span class="string">'/tmp/tensorflow/mnist/my_example/'</span></div></pre></td></tr></table></figure>
-<p>如果我们想比较不同的网络模型的运行情况，例如我们想改超参数，想知道哪个值能获得更高的准确率，TensorBoard允许我们打开不同的模型保存的<code>log</code>，当TensorBoard打开一个路径时，它会遍历此路径下包括子目录下的所有的事件文件，每次它进入一个子目录，它都会载入它作为一个新的<code>run</code>，前段界面也会通过这个路径来组织数据。例如如下有一个已经组织好的TensorBoard <code>log</code>目录，有两个<code>runs</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/some/path/mnist_experiments/run1/events.out.tfevents.1456525581.name</div><div class="line">/some/path/mnist_experiments/run2/events.out.tfevents.1456525385.name</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tensorboard --logdir=/some/path/mnist_experiments</div></pre></td></tr></table></figure>
-<p>然后打开浏览器，在地址栏输入<code>localhost:6006</code>进入TensorBoard的操作面板即可看到可视化结果。</p>
-<p>如下是一个不同模型结构训练结果可视化的例子（代码在下面）：</p>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630113432_HnboU8_more model.jpeg" alt="Different models" width="700"></p>
-<p><br></p>
-<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><p>我在MNIST上进行了简单的实现，为了更好的调试超参数，我实验了不同的卷积层、全连接层和是否开启<code>dropout</code>，完整代码可以在我的<a href="https://github.com/zangbo/MachineLearning/tree/master/TensorFlow/TensorBoard" target="_blank" rel="external">GitHub</a>上下载，代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Copyright 2017 Zangbo. All Rights Reserved.</span></div><div class="line"><span class="comment"># A simple MNIST classifier which displays summaries in TensorBoard.</span></div><div class="line"><span class="comment"># This is an unimpressive MNIST model, but it is a good example of using</span></div><div class="line"><span class="comment"># tf.name_scope to make a graph legible in the TensorBoard graph explorer, and of</span></div><div class="line"><span class="comment"># naming summary tags so that they are grouped meaningfully in TensorBoard.</span></div><div class="line"><span class="comment"># ==============================================================================</span></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line"><span class="comment">### MNIST datasets ###</span></div><div class="line">LOGDIR = <span class="string">'/tmp/mnist_tutorial/'</span></div><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(train_dir=LOGDIR + <span class="string">'data'</span>, one_hot=<span class="keyword">True</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv_layer</span><span class="params">(input, size_in, size_out, name=<span class="string">"conv"</span>)</span>:</span></div><div class="line">  <span class="keyword">with</span> tf.name_scope(name):</div><div class="line">    w = tf.Variable(tf.truncated_normal([<span class="number">5</span>, <span class="number">5</span>, size_in, size_out], stddev=<span class="number">0.1</span>), name=<span class="string">"W"</span>)</div><div class="line">    b = tf.Variable(tf.constant(<span class="number">0.1</span>, shape=[size_out]), name=<span class="string">"B"</span>)</div><div class="line">    conv = tf.nn.conv2d(input, w, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</div><div class="line">    act = tf.nn.relu(conv + b)</div><div class="line">    tf.summary.histogram(<span class="string">"weights"</span>, w)</div><div class="line">    tf.summary.histogram(<span class="string">"biases"</span>, b)</div><div class="line">    tf.summary.histogram(<span class="string">"activations"</span>, act)</div><div class="line">    <span class="keyword">return</span> tf.nn.max_pool(act, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fc_layer</span><span class="params">(input, size_in, size_out, name=<span class="string">"fc"</span>)</span>:</span></div><div class="line">  <span class="keyword">with</span> tf.name_scope(name):</div><div class="line">    w = tf.Variable(tf.truncated_normal([size_in, size_out], stddev=<span class="number">0.1</span>), name=<span class="string">"W"</span>)</div><div class="line">    b = tf.Variable(tf.constant(<span class="number">0.1</span>, shape=[size_out]), name=<span class="string">"B"</span>)</div><div class="line">    act = tf.nn.relu(tf.matmul(input, w) + b)</div><div class="line">    tf.summary.histogram(<span class="string">"weights"</span>, w)</div><div class="line">    tf.summary.histogram(<span class="string">"biases"</span>, b)</div><div class="line">    tf.summary.histogram(<span class="string">"activations"</span>, act)</div><div class="line">    <span class="keyword">return</span> act</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">mnist_model</span><span class="params">(learning_rate, use_two_conv, use_two_fc, use_dropout, hparam)</span>:</span></div><div class="line">  tf.reset_default_graph()</div><div class="line">  sess = tf.Session()</div><div class="line"></div><div class="line">  <span class="comment"># Setup placeholders, and reshape the data</span></div><div class="line">  x = tf.placeholder(tf.float32, shape=[<span class="keyword">None</span>, <span class="number">784</span>], name=<span class="string">"x"</span>)</div><div class="line">  x_image = tf.reshape(x, [<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])</div><div class="line">  tf.summary.image(<span class="string">'input'</span>, x_image, <span class="number">3</span>)</div><div class="line">  y = tf.placeholder(tf.float32, shape=[<span class="keyword">None</span>, <span class="number">10</span>], name=<span class="string">"labels"</span>)</div><div class="line"></div><div class="line">  <span class="keyword">if</span> use_two_conv:</div><div class="line">    conv1 = conv_layer(x_image, <span class="number">1</span>, <span class="number">32</span>, <span class="string">"conv1"</span>)</div><div class="line">    conv_out = conv_layer(conv1, <span class="number">32</span>, <span class="number">64</span>, <span class="string">"conv2"</span>)</div><div class="line">  <span class="keyword">else</span>:</div><div class="line">    conv1 = conv_layer(x_image, <span class="number">1</span>, <span class="number">64</span>, <span class="string">"conv"</span>)</div><div class="line">    conv_out = tf.nn.max_pool(conv1, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</div><div class="line"></div><div class="line">  flattened = tf.reshape(conv_out, [<span class="number">-1</span>, <span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>])</div><div class="line"></div><div class="line"></div><div class="line">  <span class="keyword">if</span> use_two_fc:</div><div class="line">    fc1 = fc_layer(flattened, <span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>, <span class="number">1024</span>, <span class="string">"fc1"</span>)</div><div class="line">    <span class="keyword">if</span> use_dropout:</div><div class="line">      <span class="keyword">with</span> tf.name_scope(<span class="string">'dropout'</span>):</div><div class="line">        keep_prob = tf.constant(<span class="number">0.5</span>, name=<span class="string">'keep_prob'</span>)</div><div class="line">        fc1_dropout = tf.nn.dropout(fc1, keep_prob)</div><div class="line">        logits = fc_layer(fc1_dropout, <span class="number">1024</span>, <span class="number">10</span>, <span class="string">"fc2"</span>)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">      logits = fc_layer(fc1, <span class="number">1024</span>, <span class="number">10</span>, <span class="string">"fc2"</span>)</div><div class="line">  <span class="keyword">else</span>:</div><div class="line">    logits = fc_layer(flattened, <span class="number">7</span>*<span class="number">7</span>*<span class="number">64</span>, <span class="number">10</span>, <span class="string">"fc"</span>)</div><div class="line"></div><div class="line">  <span class="keyword">with</span> tf.name_scope(<span class="string">"xent"</span>):</div><div class="line">    xent = tf.reduce_mean(</div><div class="line">        tf.nn.softmax_cross_entropy_with_logits(</div><div class="line">            logits=logits, labels=y), name=<span class="string">"xent"</span>)</div><div class="line">    tf.summary.scalar(<span class="string">"xent"</span>, xent)</div><div class="line"></div><div class="line">  <span class="keyword">with</span> tf.name_scope(<span class="string">"train"</span>):</div><div class="line">    train_step = tf.train.AdamOptimizer(learning_rate).minimize(xent)</div><div class="line"></div><div class="line">  <span class="keyword">with</span> tf.name_scope(<span class="string">"accuracy"</span>):</div><div class="line">    correct_prediction = tf.equal(tf.argmax(logits, <span class="number">1</span>), tf.argmax(y, <span class="number">1</span>))</div><div class="line">    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div><div class="line">    tf.summary.scalar(<span class="string">"accuracy"</span>, accuracy)</div><div class="line"></div><div class="line">  summ = tf.summary.merge_all()</div><div class="line"></div><div class="line">  sess.run(tf.global_variables_initializer())</div><div class="line">  writer = tf.summary.FileWriter(LOGDIR + hparam)</div><div class="line">  writer.add_graph(sess.graph)</div><div class="line"></div><div class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2001</span>):</div><div class="line">    batch = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    <span class="keyword">if</span> i % <span class="number">5</span> == <span class="number">0</span>:</div><div class="line">      [train_accuracy, s] = sess.run([accuracy, summ], feed_dict=&#123;x: batch[<span class="number">0</span>], y: batch[<span class="number">1</span>]&#125;)</div><div class="line">      writer.add_summary(s, i)</div><div class="line">    <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">99</span>:  <span class="comment"># Record execution statistics</span></div><div class="line">      run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)</div><div class="line">      run_metadata = tf.RunMetadata()</div><div class="line">      _, s = sess.run([train_step, summ],</div><div class="line">                      feed_dict=&#123;x: batch[<span class="number">0</span>], y: batch[<span class="number">1</span>]&#125;,</div><div class="line">                      options=run_options,</div><div class="line">                      run_metadata=run_metadata)</div><div class="line">      writer.add_run_metadata(run_metadata, <span class="string">'step%03d'</span> % i) <span class="comment">#add_run_metadata(run_metadata, tag, global_step=None)</span></div><div class="line">      writer.add_summary(s, i)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">      sess.run(train_step, feed_dict=&#123;x: batch[<span class="number">0</span>], y: batch[<span class="number">1</span>]&#125;)</div><div class="line">  writer.close()</div><div class="line">  sess.close()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_hparam_string</span><span class="params">(learning_rate, use_two_fc, use_two_conv, use_dropout)</span>:</span></div><div class="line">  conv_param = <span class="string">"conv=2"</span> <span class="keyword">if</span> use_two_conv <span class="keyword">else</span> <span class="string">"conv=1"</span></div><div class="line">  fc_param = <span class="string">"fc=2"</span> <span class="keyword">if</span> use_two_fc <span class="keyword">else</span> <span class="string">"fc=1"</span></div><div class="line">  dropout_param = <span class="string">"dropout"</span> <span class="keyword">if</span> use_dropout <span class="keyword">else</span> <span class="string">"no_dropout"</span></div><div class="line">  <span class="keyword">return</span> <span class="string">"lr_%.0E,%s,%s,%s"</span> % (learning_rate, conv_param, fc_param,dropout_param)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">  <span class="keyword">if</span> tf.gfile.Exists(LOGDIR):</div><div class="line">    tf.gfile.DeleteRecursively(LOGDIR)</div><div class="line">  tf.gfile.MakeDirs(LOGDIR)</div><div class="line">  <span class="comment">#Add other param to try different learning rate</span></div><div class="line">  <span class="keyword">for</span> learning_rate <span class="keyword">in</span> [<span class="number">1E-4</span>]:</div><div class="line">    <span class="comment"># Try different model architectures</span></div><div class="line">    <span class="keyword">for</span> use_two_fc <span class="keyword">in</span> [<span class="keyword">True</span>, <span class="keyword">False</span>]:</div><div class="line">      <span class="keyword">for</span> use_two_conv <span class="keyword">in</span> [<span class="keyword">True</span>, <span class="keyword">False</span>]:</div><div class="line">        <span class="keyword">for</span> use_dropout <span class="keyword">in</span> [<span class="keyword">True</span>, <span class="keyword">False</span>]:</div><div class="line">          <span class="comment"># Construct a hyperparameter string for each one (example: "lr_1E-4,fc=2,conv=2,dropout)</span></div><div class="line">          hparam = make_hparam_string(learning_rate, use_two_fc, use_two_conv, use_dropout)</div><div class="line">          print(<span class="string">'Starting run for %s'</span> % hparam)</div><div class="line"></div><div class="line">          <span class="comment"># Actually run with the new settings</span></div><div class="line">          mnist_model(learning_rate, use_two_fc, use_two_conv, use_dropout, hparam)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">  main()</div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>以下链接均来自于Tensorflow官方网站，且均需要翻墙。</p>
-<ul>
-<li><a href="https://github.com/tensorflow/tensorflow/blob/r1.2/tensorflow/tensorboard/README.md" target="_blank" rel="external">tensorflow/README.md at r1.2 · tensorflow/tensorflow</a></li>
-<li><a href="https://www.tensorflow.org/api_docs/python/tf/summary" target="_blank" rel="external">Module: tf.summary  |  TensorFlow</a></li>
-<li><a href="https://www.tensorflow.org/get_started/summaries_and_tensorboard" target="_blank" rel="external">TensorBoard: Visualizing Learning  |  TensorFlow</a></li>
-<li><a href="https://www.tensorflow.org/get_started/graph_viz" target="_blank" rel="external">TensorBoard: Graph Visualization  |  TensorFlow</a></li>
-<li><a href="https://www.youtube.com/watch?v=eBbEDRsCmv4" target="_blank" rel="external">TensorBoard实践介绍（2017年TensorFlow开发大会） - YouTube</a></li>
-</ul>
-<p><br></p>
-</the></excerpt>]]></content>
-    
-    <summary type="html">
-    
-      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
-
-&lt;p&gt;本文对TensorFlow的重要可视化工具TensorBoard进行学习。&lt;/p&gt;
-&lt;p&gt;当我们训练庞大且复杂的神经网络时，为了便于我们理解和调试TensorFlow程序，可视化工具显得尤为重要。而TensorFlow有一个很方便的可视化工具名为TensorBoard，我们可以利用它来可视化我们的&lt;code&gt;graph&lt;/code&gt;以及训练的细节。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    
-      <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
-    
-  </entry>
-  
-  <entry>
     <title>TensorFlow 笔记（三）：Name_Scope和变量共享</title>
     <link href="http://zangbo.me/2017/06/24/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/"/>
     <id>http://zangbo.me/2017/06/24/Tensorflow 笔记（三）/</id>
@@ -1998,6 +1860,29 @@
     
     
       <category term="个人网站" scheme="http://zangbo.me/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>欢迎来到我的小站</title>
+    <link href="http://zangbo.me/2017/05/20/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/"/>
+    <id>http://zangbo.me/2017/05/20/自我介绍/</id>
+    <published>2017-05-19T16:00:46.000Z</published>
+    <updated>2017-06-22T10:05:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br><img src="/background/bg-2.jpg" width="520" alt="Welcome"></excerpt></p>
+<hr>
+<p>本站域名 <code>http://zangbo.me</code>。</p>
+<p>一只机器学习菜鸟研究生，平时会分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的笔记，也有一些教程以及个人随笔。本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。</p>
+<p>本站全部文章均为个人原创，如需转载请注明出处和作者。</p>
+<the rest="" of="" contents="" |="" 余下全文=""></the>]]></content>
+    
+    <summary type="html">
+    
+      &lt;script src=&quot;/assets/js/APlayer.min.js&quot;&gt; &lt;/script&gt;&lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/background/bg-2.jpg&quot; width=&quot;520&quot; al
+    
+    </summary>
+    
     
   </entry>
   
