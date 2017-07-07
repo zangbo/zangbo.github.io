@@ -1,5 +1,5 @@
 http://zangbo.me/2017/07/07/TensorFlow 笔记（十二）/
-http://zangbo.me/2017/07/05/TensorFlow 笔记（十一）/
+http://zangbo.me/2017/07/06/TensorFlow 笔记（十一）/
 http://zangbo.me/2017/07/05/TensorFlow 笔记（十）/
 http://zangbo.me/2017/07/05/TensorFlow 笔记（九）/
 http://zangbo.me/2017/07/03/TensorFlow 笔记（八）/
