@@ -329,6 +329,287 @@
 
 
   
+    <article id="post-TensorFlow 笔记（十二）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/07/TensorFlow 笔记（十二）/" class="article-date">
+      <time datetime="2017-07-07T07:48:47.000Z" itemprop="datePublished">2017-07-07</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/07/TensorFlow 笔记（十二）/">TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文接上文，继续学习TensorFlow在CIFAR-10上的教程，该代码主要由以下五部分组成：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_input.py" target="_blank" rel="external"><code>cifar10_input.py</code></a></td>
+<td>读取原始的 CIFAR-10 二进制格式文件</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py" target="_blank" rel="external"><code>cifar10.py</code></a></td>
+<td>建立 CIFAR-10 网络模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_train.py" target="_blank" rel="external"><code>cifar10_train.py</code></a></td>
+<td>在单块CPU或者GPU上训练 CIFAR-10 模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_multi_gpu_train.py" target="_blank" rel="external"><code>cifar10_multi_gpu_train.py</code></a></td>
+<td>在多块GPU上训练 CIFAR-10 模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_eval.py" target="_blank" rel="external"><code>cifar10_eval.py</code></a></td>
+<td>在测试集上评估 CIFAR-10 模型的表现</td>
+</tr>
+</tbody>
+</table>
+<p>本次主要学习<code>cifar10_train.py</code>和<code>cifar10.eval.py</code>两个文件，内容分别为训练模型和评估模型，并最终给出实验过程。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/07/TensorFlow 笔记（十二）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TensorFlow 笔记（十一）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/05/TensorFlow 笔记（十一）/" class="article-date">
+      <time datetime="2017-07-05T12:28:12.000Z" itemprop="datePublished">2017-07-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/05/TensorFlow 笔记（十一）/">TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>TensorFlow官方网站关于卷积神经网络的教程有具体实例，该实例在CIFAR-10数据集上实现，我对这部分代码进行了学习，该代码主要由以下五部分组成：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_input.py" target="_blank" rel="external"><code>cifar10_input.py</code></a></td>
+<td>读取原始的 CIFAR-10 二进制格式文件</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py" target="_blank" rel="external"><code>cifar10.py</code></a></td>
+<td>建立 CIFAR-10 网络模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_train.py" target="_blank" rel="external"><code>cifar10_train.py</code></a></td>
+<td>在单块CPU或者GPU上训练 CIFAR-10 模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_multi_gpu_train.py" target="_blank" rel="external"><code>cifar10_multi_gpu_train.py</code></a></td>
+<td>在多块GPU上训练 CIFAR-10 模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_eval.py" target="_blank" rel="external"><code>cifar10_eval.py</code></a></td>
+<td>在测试集上评估 CIFAR-10 模型的表现</td>
+</tr>
+</tbody>
+</table>
+<p>本次只对单GPU情况进行学习，对多GPU不做学习。本次学习分上下两部分，本文首先介绍<code>cifar10_input.py</code>、<code>cifar10.py</code>两个函数，内容分别为数据的获取和模型的建立，同时我们还介绍了本次教程的重点和CIFAR-10数据集。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/05/TensorFlow 笔记（十一）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TensorFlow 笔记（十）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/05/TensorFlow 笔记（十）/" class="article-date">
+      <time datetime="2017-07-05T09:00:56.000Z" itemprop="datePublished">2017-07-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/05/TensorFlow 笔记（十）/">TensorFlow 笔记（十）：张量的阶、形状和数据类型</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文整理了TensorFlow中<strong>张量(Tensor)</strong>相关的一些概念：</p>
+<ul>
+<li>阶(Rank)</li>
+<li>形状(Shape)</li>
+<li>数据类型(Type)</li>
+</ul>
+<p>TensorFlow用张量这种数据结构来表示所有的数据，我们可以把一个张量想象成一个n维的数组或列表。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/05/TensorFlow 笔记（十）/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-TensorFlow 笔记（九）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -756,226 +1037,6 @@
       
         <p class="article-more-link">
           <a href="/2017/06/27/TensorFlow 笔记（四）/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Tensorflow 笔记（三）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/24/Tensorflow 笔记（三）/" class="article-date">
-      <time datetime="2017-06-24T08:09:34.000Z" itemprop="datePublished">2017-06-24</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/24/Tensorflow 笔记（三）/">TensorFlow 笔记（三）：Name_Scope和变量共享</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <excerpt in="" index="" |="" 首页摘要=""> 
-
-<p>本文学习了TensorFlow中的四个基本函数以及<strong>变量共享(Sharing Variables)</strong>机制：</p>
-<ul>
-<li><code>tf.Variable()</code></li>
-<li><code>tf.get_variable()</code></li>
-<li><code>tf.name_scope()</code></li>
-<li><code>tf.variable_scope()</code></li>
-</ul>
-<p>其中<code>tf.get_variable()</code>和<code>tf.variable_scope()</code>共同构成了Tensorflow的<strong>变量共享</strong>机制。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/24/Tensorflow 笔记（三）/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-爬虫学习笔记（四）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/22/爬虫学习笔记（四）/" class="article-date">
-      <time datetime="2017-06-22T11:28:01.000Z" itemprop="datePublished">2017-06-22</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/22/爬虫学习笔记（四）/">爬虫笔记（四）：获取某地历史天气数据</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <excerpt in="" index="" |="" 首页摘要=""> 
-
-<p>本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。</p>
-<p>中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。</p>
-<p>所有代码基于python3.5版本。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/数据挖掘/">数据挖掘</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/22/爬虫学习笔记（四）/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-爬虫学习笔记（三）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/15/爬虫学习笔记（三）/" class="article-date">
-      <time datetime="2017-06-15T13:48:57.000Z" itemprop="datePublished">2017-06-15</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/15/爬虫学习笔记（三）/">爬虫笔记（三）：BeautifulSoup基础</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/数据挖掘/">数据挖掘</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/06/15/爬虫学习笔记（三）/#more">阅读全文 >></a>
         </p>
       
       <div class="clearfix"></div>

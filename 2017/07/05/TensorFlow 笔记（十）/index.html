@@ -15,20 +15,17 @@
 
 
 
-<meta name="description" content="本文记录了TensorFlow训练模型过程中对参数的滑动平均(moving average)的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为tf.train.ExponentialMovingAverage。">
+<meta name="description" content="本文整理了TensorFlow中张量(Tensor)相关的一些概念：  阶(Rank) 形状(Shape) 数据类型(Type)  TensorFlow用张量这种数据结构来表示所有的数据，我们可以把一个张量想象成一个n维的数组或列表。">
 <meta name="keywords" content="TensorFlow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TensorFlow 笔记（六）：Moving Average">
-<meta property="og:url" content="http://zangbo.me/2017/07/01/TensorFlow 笔记（六）/index.html">
+<meta property="og:title" content="TensorFlow 笔记（十）：张量的阶、形状和数据类型">
+<meta property="og:url" content="http://zangbo.me/2017/07/05/TensorFlow 笔记（十）/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本文记录了TensorFlow训练模型过程中对参数的滑动平均(moving average)的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为tf.train.ExponentialMovingAverage。">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_TyB8hT_MovingAverage1.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_UWRLDA_MovingAverage2.jpeg">
-<meta property="og:updated_time" content="2017-07-01T05:48:04.000Z">
+<meta property="og:description" content="本文整理了TensorFlow中张量(Tensor)相关的一些概念：  阶(Rank) 形状(Shape) 数据类型(Type)  TensorFlow用张量这种数据结构来表示所有的数据，我们可以把一个张量想象成一个n维的数组或列表。">
+<meta property="og:updated_time" content="2017-07-05T09:23:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TensorFlow 笔记（六）：Moving Average">
-<meta name="twitter:description" content="本文记录了TensorFlow训练模型过程中对参数的滑动平均(moving average)的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为tf.train.ExponentialMovingAverage。">
-<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_TyB8hT_MovingAverage1.jpeg">
+<meta name="twitter:title" content="TensorFlow 笔记（十）：张量的阶、形状和数据类型">
+<meta name="twitter:description" content="本文整理了TensorFlow中张量(Tensor)相关的一些概念：  阶(Rank) 形状(Shape) 数据类型(Type)  TensorFlow用张量这种数据结构来表示所有的数据，我们可以把一个张量想象成一个n维的数组或列表。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -57,7 +54,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>TensorFlow 笔记（六）：Moving Average | ZangBo&#39;s Home</title>
+<title>TensorFlow 笔记（十）：张量的阶、形状和数据类型 | ZangBo&#39;s Home</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -258,11 +255,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-TensorFlow 笔记（六）" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-TensorFlow 笔记（十）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/07/01/TensorFlow 笔记（六）/" class="article-date">
-      <time datetime="2017-07-01T03:08:19.000Z" itemprop="datePublished">2017-07-01</time>
+      <a href="/2017/07/05/TensorFlow 笔记（十）/" class="article-date">
+      <time datetime="2017-07-05T09:00:56.000Z" itemprop="datePublished">2017-07-05</time>
 </a>
 
 
@@ -277,7 +274,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      TensorFlow 笔记（六）：Moving Average
+      TensorFlow 笔记（十）：张量的阶、形状和数据类型
     </h1>
   
 
@@ -304,83 +301,183 @@
           
         <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
-<p>本文记录了TensorFlow训练模型过程中对参数的<strong>滑动平均(moving average)</strong>的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为<code>tf.train.ExponentialMovingAverage</code>。</p>
+<p>本文整理了TensorFlow中<strong>张量(Tensor)</strong>相关的一些概念：</p>
+<ul>
+<li>阶(Rank)</li>
+<li>形状(Shape)</li>
+<li>数据类型(Type)</li>
+</ul>
+<p>TensorFlow用张量这种数据结构来表示所有的数据，我们可以把一个张量想象成一个n维的数组或列表。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="MovingAverage"><a href="#MovingAverage" class="headerlink" title="MovingAverage"></a>MovingAverage</h1><p>常规的滑动平均的计算方法十分简单，对于一个给定的数列，首先设定一个固定的值k，然后分别计算第1项到第k项，第2项到第k+1项，第3项到第k+2项的平均值，依次类推。</p>
-<p>以<code>1、2、3、4、5</code>共5个数为例，window为3，计算过程为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(1+2+3)/3=2</div><div class="line">(2+3+4)/3=3</div><div class="line">(3+4+5)/3=4</div></pre></td></tr></table></figure>
-<p>下图很好的反映了原始数据和滑动平均之间的关系，其中绿线为原始数据，红线为MovingAverage：</p>
-<ul>
-<li>当window为3:</li>
-</ul>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_TyB8hT_MovingAverage1.jpeg" alt="window=3" width="700"></p>
-<ul>
-<li>当window为10:</li>
-</ul>
-<p><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170630211204_UWRLDA_MovingAverage2.jpeg" alt="window=10" width="700"></p>
-<p>可以发现当我们使用滑动平均时，会十分有效的提升模型在测试数据上的<strong>健壮性(robustness)</strong>。</p>
+<h1 id="阶-Rank"><a href="#阶-Rank" class="headerlink" title="阶(Rank)"></a>阶(Rank)</h1><p>在TensorFlow系统中，张量的维数来被描述为阶(Rank)。张量的阶和矩阵的阶并不是同一个概念，张量的阶是张量维数的一个数量描述。比如下面的张量（使用Python中list定义的）就是2阶。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">t = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</div></pre></td></tr></table></figure>
+<p>可以认为一个二阶张量就是我们平常所说的矩阵，一阶张量可以认为是一个向量。对于一个二阶张量我们可以用语句<code>t[i, j]</code>来访问其中的任何元素。而对于三阶张量你可以用<code>t[i, j, k]</code>来访问其中的任何元素。</p>
+<p>维数越靠后，位置越靠里。比如上面的二阶张量，<code>t[1, 3] = 3</code>。维数越靠前，位置越靠外，比如第一维度的数据，是最外层中括号的数据。</p>
+<table>
+<thead>
+<tr>
+<th>阶</th>
+<th>数学实例</th>
+<th>Python 例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>纯量 (只有大小)</td>
+<td><code>s = 483</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td>向量(大小和方向)</td>
+<td><code>v = [1.1, 2.2, 3.3]</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>矩阵(数据表)</td>
+<td><code>m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>3阶张量 (数据立体)</td>
+<td><code>t = [[[2], [4], [6]], [[8], [10], [12]], [[14], [16], [18]]]</code></td>
+</tr>
+<tr>
+<td>n</td>
+<td>n阶 (自己想想看)</td>
+<td><code>....</code></td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
-<h1 id="ExponentialMovingAverage"><a href="#ExponentialMovingAverage" class="headerlink" title="ExponentialMovingAverage"></a>ExponentialMovingAverage</h1><p>在TensorFlow中，我们计算的是<strong>指数滑动平均(ExponentialMovingAverage)</strong>，我们通过使用一个<strong>指数衰减(exponential decay)</strong>来维持着变量的滑动平均。</p>
-<p>当我们训练一个模型时，计算训练参数的滑动平均经常是十分有利的，当我们用这些平均后的参数来评估模型时有时会得到比使用常规的训练参数好很多的结果。</p>
-<p>我们用一个<code>apply()</code>函数返回一个<code>ops</code>来添加变量的一个副本同时得到原变量的滑动平均，它在我们训练模型的时候使用。该<code>ops</code>得到原变量的滑动平均始终是在每一次训练迭代结束后。</p>
-<p><code>average()</code>和<code>average_name()</code>函数返回影子变量和它们的名字，它们在我们对测试数据进行模型评估时使用，它们用参数的滑动平均值来代替最终的训练值来对模型进行评估。它们也可以在我们从一个<code>checkpoint file</code>继续开始训练模型时使用。</p>
-<p>滑动平均值用一个指数衰减来计算，当我们创建<code>ExponentialMovingAverage</code>对象时会把该<code>decay</code>值输入进去。影子变量的初始化值和原始变量初始化值相同。每个影子变量计算滑动平均值的公式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">shadow_variable = decay * shadow_variable + (1 - decay) * variable</div></pre></td></tr></table></figure>
-<p>通常我们定义<code>decay</code>时会让它尽可能接近于1.0，一般来说我们会让它为0.999、0.9999等。</p>
-<p>如下是我们训练一个模型时的例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create variables.</span></div><div class="line">var0 = tf.Variable(...)</div><div class="line">var1 = tf.Variable(...)</div><div class="line"><span class="comment"># ... use the variables to build a training model...</span></div><div class="line">...</div><div class="line"><span class="comment"># Create an op that applies the optimizer.  This is what we usually</span></div><div class="line"><span class="comment"># would use as a training op.</span></div><div class="line">opt_op = opt.minimize(my_loss, [var0, var1])</div><div class="line"></div><div class="line"><span class="comment"># Create an ExponentialMovingAverage object</span></div><div class="line">ema = tf.train.ExponentialMovingAverage(decay=<span class="number">0.9999</span>)</div><div class="line"></div><div class="line"><span class="comment"># Create the shadow variables, and add ops to maintain moving averages</span></div><div class="line"><span class="comment"># of var0 and var1.</span></div><div class="line">maintain_averages_op = ema.apply([var0, var1])</div><div class="line"></div><div class="line"><span class="comment"># Create an op that will update the moving averages after each training</span></div><div class="line"><span class="comment"># step.  This is what we will use in place of the usual training op.</span></div><div class="line"><span class="keyword">with</span> tf.control_dependencies([opt_op]):</div><div class="line">    training_op = tf.group(maintain_averages_op)</div><div class="line"></div><div class="line"><span class="comment"># ...train the model by running training_op...</span></div></pre></td></tr></table></figure>
-<p>当我们使用滑动平均来预测时，有两种用法：</p>
-<ol>
-<li>用影子变量代替原始变量，使用<code>average()</code>函数来返回给定变量的影子变量。</li>
-<li>通过使用影子变量的<code>name</code>来载入<code>checkpoint files</code>，我们在这里使用<code>average_name()</code>函数。对于这种用法有如下例子：</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create a Saver that loads variables from their saved shadow values.</span></div><div class="line">shadow_var0_name = ema.average_name(var0)</div><div class="line">shadow_var1_name = ema.average_name(var1)</div><div class="line">saver = tf.train.Saver(&#123;shadow_var0_name: var0, shadow_var1_name: var1&#125;)</div><div class="line">saver.restore(...checkpoint filename...)</div><div class="line"><span class="comment"># var0 and var1 now hold the moving average values</span></div></pre></td></tr></table></figure>
-<p>详情可以查看<code>tf.train.Saver</code>，下面介绍<code>ExponentialMovingAverage</code>的相关函数。</p>
+<h1 id="形状-Shape"><a href="#形状-Shape" class="headerlink" title="形状(Shape)"></a>形状(Shape)</h1><p>TensorFlow中使用了三种记号来方便地描述张量的维度：阶，形状以及维数。下表展示了它们之间的关系：</p>
+<table>
+<thead>
+<tr>
+<th>阶</th>
+<th>形状</th>
+<th>维数</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>[ ]</td>
+<td>0-D</td>
+<td>一个0维张量，一个纯量。</td>
+</tr>
+<tr>
+<td>1</td>
+<td>[D0]</td>
+<td>1-D</td>
+<td>一个1维张量的形式[5]</td>
+</tr>
+<tr>
+<td>2</td>
+<td>[D0, D1]</td>
+<td>2-D</td>
+<td>一个2维张量的形式[3, 4]</td>
+</tr>
+<tr>
+<td>3</td>
+<td>[D0, D1, D2]</td>
+<td>3-D</td>
+<td>一个3维张量的形式 [1, 4, 3]</td>
+</tr>
+<tr>
+<td>n</td>
+<td>[D0, D1, … Dn]</td>
+<td>n-D</td>
+<td>一个n维张量的形式 [D0, D1, … Dn]</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
-<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><ul>
-<li><code>__init__</code></li>
-<li><code>apply</code></li>
-<li><code>average</code></li>
-<li><code>average_name</code></li>
-<li><code>variables_to_restore</code></li>
-</ul>
-<p><br></p>
-<h2 id="init"><a href="#init" class="headerlink" title="__init__"></a>__init__</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">__init__(</div><div class="line">    decay,</div><div class="line">    num_updates=<span class="keyword">None</span>,</div><div class="line">    zero_debias=<span class="keyword">False</span>,</div><div class="line">    name=<span class="string">'ExponentialMovingAverage'</span></div><div class="line">)</div></pre></td></tr></table></figure>
-<p>创建一个<code>ExponentialMovingAverage</code>对象。</p>
-<ol>
-<li><p><code>decay</code>一般取值接近于1.0。</p>
-</li>
-<li><p><code>num_updates</code>允许<code>dacay</code>值动态的变化，在训练开端<code>dacay</code>速率较低，这使得滑动均值更快，如果有值的话，实际<code>decay</code>速率为以下公式：</p>
-<p><code>min(decay, (1 + num_updates) / (10 + num_updates))</code></p>
-</li>
-<li><p><code>name</code>将会给<code>apply()</code>中的<code>ops</code>添加一个额外的前置名字。</p>
-</li>
-</ol>
-<p><br></p>
-<h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply(var_list=<span class="keyword">None</span>)</div></pre></td></tr></table></figure>
-<p>该函数维护变量的滑动平均，返回一个<code>op</code>来更新所有影子变量。<code>var_list</code>必须是一个变量或者<code>Tensor</code>对象的列表，这个函数创造<code>var_list</code>中所有变量的副本，对于变量副本，初始化值和原变量初始化值相同。变量类型必须是<code>float</code>相关的类型。</p>
-<p><code>apply()</code>函数对于不同的<code>var_list</code>可以被调用多次。</p>
-<p><br></p>
-<h2 id="average"><a href="#average" class="headerlink" title="average"></a>average</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">average(var)</div></pre></td></tr></table></figure>
-<p>返回<code>var</code>的滑动平均影子变量，返回类型为<code>Variable</code>。前提是该<code>var</code>使用了<code>apply()</code>函数来维护。</p>
-<p><br></p>
-<h2 id="average-name"><a href="#average-name" class="headerlink" title="average_name"></a>average_name</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">average_name(var)</div></pre></td></tr></table></figure>
-<p>返回<code>var</code>变量的滑动平均影子变量的<code>name</code>。该函数一个典型的应用是在训练过程中计算原始变量的滑动平均，并且在测试时根据影子变量的<code>name</code>恢复出原始变量。</p>
-<p>为了恢复原始变量，我们必须知道影子变量的<code>name</code>，影子变量的<code>name</code>和原始变量可以在训练阶段利用<code>Saver()</code>对象来保存，操作为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.train.Saver(&#123;ema.average_name(var): var&#125;)</div></pre></td></tr></table></figure>
-<p><code>average_name()</code>函数在<code>apply()</code>函数调用之前或之后都可以使用。</p>
-<p><br></p>
-<h2 id="variables-to-restore"><a href="#variables-to-restore" class="headerlink" title="variables_to_restore"></a>variables_to_restore</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">variables_to_restore(moving_avg_variables=<span class="keyword">None</span>)</div></pre></td></tr></table></figure>
-<p>返回一个从<code>restore_name</code>到<code>Variables</code>的映射，如果一个变量有滑动平均值，那么就用该滑动平均影子变量的<code>name</code>来作为<code>restore name</code>，否则，就用原始变量的<code>name</code>。</p>
-<p>例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">variables_to_restore = ema.variables_to_restore()</div><div class="line">saver = tf.train.Saver(variables_to_restore)</div></pre></td></tr></table></figure>
+<h1 id="数据类型-Type"><a href="#数据类型-Type" class="headerlink" title="数据类型(Type)"></a>数据类型(Type)</h1><p>除了维度，Tensors有一个数据类型属性.你可以为一个张量指定下列数据类型中的任意一个类型：</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>Python 类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DT_FLOAT</code></td>
+<td><code>tf.float32</code></td>
+<td>32 位浮点数.</td>
+</tr>
+<tr>
+<td><code>DT_DOUBLE</code></td>
+<td><code>tf.float64</code></td>
+<td>64 位浮点数.</td>
+</tr>
+<tr>
+<td><code>DT_INT64</code></td>
+<td><code>tf.int64</code></td>
+<td>64 位有符号整型.</td>
+</tr>
+<tr>
+<td><code>DT_INT32</code></td>
+<td><code>tf.int32</code></td>
+<td>32 位有符号整型.</td>
+</tr>
+<tr>
+<td><code>DT_INT16</code></td>
+<td><code>tf.int16</code></td>
+<td>16 位有符号整型.</td>
+</tr>
+<tr>
+<td><code>DT_INT8</code></td>
+<td><code>tf.int8</code></td>
+<td>8 位有符号整型.</td>
+</tr>
+<tr>
+<td><code>DT_UINT8</code></td>
+<td><code>tf.uint8</code></td>
+<td>8 位无符号整型.</td>
+</tr>
+<tr>
+<td><code>DT_STRING</code></td>
+<td><code>tf.string</code></td>
+<td>可变长度的字节数组，每一个张量元素都是一个字节数组。</td>
+</tr>
+<tr>
+<td><code>DT_BOOL</code></td>
+<td><code>tf.bool</code></td>
+<td>布尔型</td>
+</tr>
+<tr>
+<td><code>DT_COMPLEX64</code></td>
+<td><code>tf.complex64</code></td>
+<td>由两个32位浮点数组成的复数：实数和虚数。</td>
+</tr>
+<tr>
+<td><code>DT_QINT32</code></td>
+<td><code>tf.qint32</code></td>
+<td>用于量化Ops的32位有符号整型</td>
+</tr>
+<tr>
+<td><code>DT_QINT8</code></td>
+<td><code>tf.qint8</code></td>
+<td>用于量化Ops的8位有符号整型</td>
+</tr>
+<tr>
+<td><code>DT_QUINT8</code></td>
+<td><code>tf.quint8</code></td>
+<td>用于量化Ops的8位无符号整型</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage" target="_blank" rel="external">tf.train.ExponentialMovingAverage  |  TensorFlow</a></li>
-<li><a href="http://blog.csdn.net/u014365862/article/details/54380313" target="_blank" rel="external">MovingAverage-滑动平均 - 小鹏的专栏 - 博客频道 - CSDN.NET</a></li>
+<li><a href="https://www.tensorflow.org/programmers_guide/dims_types" target="_blank" rel="external">Tensor Ranks, Shapes, and Types  |  TensorFlow</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/tensorflow-zh/resources/dims_types.html" target="_blank" rel="external">张量的阶、形状、数据类型 - TensorFlow 官方文档中文版 - 极客学院Wiki</a></li>
 </ul>
 <p><br></p>
 </the></excerpt>
@@ -391,13 +488,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/07/01/TensorFlow 笔记（六）/">TensorFlow 笔记（六）：Moving Average</a></p>
+        <p><span>本文标题:</span><a href="/2017/07/05/TensorFlow 笔记（十）/">TensorFlow 笔记（十）：张量的阶、形状和数据类型</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
-        <p><span>发布时间:</span>2017-07-01, 11:08:19</p>
-        <p><span>最后更新:</span>2017-07-01, 13:48:04</p>
+        <p><span>发布时间:</span>2017-07-05, 17:00:56</p>
+        <p><span>最后更新:</span>2017-07-05, 17:23:17</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/07/01/TensorFlow 笔记（六）/" title="TensorFlow 笔记（六）：Moving Average">http://zangbo.me/2017/07/01/TensorFlow 笔记（六）/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/07/01/TensorFlow 笔记（六）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/05/TensorFlow 笔记（十）/" title="TensorFlow 笔记（十）：张量的阶、形状和数据类型">http://zangbo.me/2017/07/05/TensorFlow 笔记（十）/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/07/05/TensorFlow 笔记（十）/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -410,15 +507,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/07/01/TensorFlow 笔记（七）/">
-                    TensorFlow 笔记（七）：Exponential_decay
+                <a href="/2017/07/05/TensorFlow 笔记（十一）/">
+                    TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/06/30/TensorFlow 笔记（五）/">
-                    TensorFlow 笔记（五）：常用函数和模型的保存与恢复
+                <a href="/2017/07/05/TensorFlow 笔记（九）/">
+                    TensorFlow 笔记（九）：数据读取
                 </a>
             </div>
         
@@ -460,7 +557,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MovingAverage"><span class="toc-number">1.</span> <span class="toc-text">MovingAverage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ExponentialMovingAverage"><span class="toc-number">2.</span> <span class="toc-text">ExponentialMovingAverage</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Methods"><span class="toc-number">2.1.</span> <span class="toc-text">Methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#init"><span class="toc-number">2.2.</span> <span class="toc-text">__init__</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#apply"><span class="toc-number">2.3.</span> <span class="toc-text">apply</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#average"><span class="toc-number">2.4.</span> <span class="toc-text">average</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#average-name"><span class="toc-number">2.5.</span> <span class="toc-text">average_name</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#variables-to-restore"><span class="toc-number">2.6.</span> <span class="toc-text">variables_to_restore</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#阶-Rank"><span class="toc-number">1.</span> <span class="toc-text">阶(Rank)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#形状-Shape"><span class="toc-number">2.</span> <span class="toc-text">形状(Shape)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据类型-Type"><span class="toc-number">3.</span> <span class="toc-text">数据类型(Type)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
         
     </div>
     <style>
@@ -496,7 +593,7 @@
         </div>
         <script>
             window._bd_share_config={
-                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 笔记（六）：Moving Average　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 笔记（十）：张量的阶、形状和数据类型　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -551,7 +648,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/07/01/TensorFlow 笔记（七）/" title="上一篇: TensorFlow 笔记（七）：Exponential_decay">
+            <a href="/2017/07/05/TensorFlow 笔记（十一）/" title="上一篇: TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -559,7 +656,7 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/30/TensorFlow 笔记（五）/" title="下一篇: TensorFlow 笔记（五）：常用函数和模型的保存与恢复">
+            <a href="/2017/07/05/TensorFlow 笔记（九）/" title="下一篇: TensorFlow 笔记（九）：数据读取">
                 <i class="fa fa-angle-right"></i>
             </a>
         
