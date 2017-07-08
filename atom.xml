@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-07-07T12:41:56.000Z</updated>
+  <updated>2017-07-08T06:29:28.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zangbo.me/2017/07/07/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/"/>
     <id>http://zangbo.me/2017/07/07/TensorFlow 笔记（十二）/</id>
     <published>2017-07-07T07:48:47.000Z</published>
-    <updated>2017-07-07T12:41:56.000Z</updated>
+    <updated>2017-07-08T06:29:28.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -55,7 +55,7 @@
 </tr>
 </tbody>
 </table>
-<p>本次主要学习<code>cifar10_train.py</code>和<code>cifar10.eval.py</code>两个文件，内容分别为训练模型和评估模型，并最终给出实验过程。</p>
+<p>本次主要学习<code>cifar10_train.py</code>和<code>cifar10_eval.py</code>两个文件，内容分别为训练模型和评估模型，并最终给出实验过程。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -162,7 +162,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;本次主要学习&lt;code&gt;cifar10_train.py&lt;/code&gt;和&lt;code&gt;cifar10.eval.py&lt;/code&gt;两个文件，内容分别为训练模型和评估模型，并最终给出实验过程。&lt;/p&gt;
+&lt;p&gt;本次主要学习&lt;code&gt;cifar10_train.py&lt;/code&gt;和&lt;code&gt;cifar10_eval.py&lt;/code&gt;两个文件，内容分别为训练模型和评估模型，并最终给出实验过程。&lt;/p&gt;
     
     </summary>
     
@@ -1211,9 +1211,9 @@
       <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    
       <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
+    
+      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
     
   </entry>
   
