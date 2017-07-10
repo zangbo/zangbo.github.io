@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://zangbo.me/photos/index.html</loc>
+    
+    <lastmod>2017-07-10T12:47:01.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://zangbo.me/photos/picture.json</loc>
+    
+    <lastmod>2017-07-10T10:10:18.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://zangbo.me/2017/07/09/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/</loc>
     
     <lastmod>2017-07-09T09:13:30.000Z</lastmod>
@@ -187,6 +201,13 @@
     <loc>http://zangbo.me/tags/index.html</loc>
     
     <lastmod>2017-06-09T08:53:07.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://zangbo.me/photos/ins.json</loc>
+    
+    <lastmod>2016-12-30T22:16:28.000Z</lastmod>
     
   </url>
   
