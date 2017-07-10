@@ -104,7 +104,7 @@
         iframe : {
 
             // Iframe template
-            tpl : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen allowtransparency="true" src=""></iframe>',
+            tpl : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
 
             // Preload iframe before displaying it
             // This allows to calculate iframe content width and height
@@ -166,19 +166,19 @@
                 '<div class="fancybox-bg"></div>' +
                 '<div class="fancybox-inner">' +
                     '<div class="fancybox-infobar">' +
-                        '<button data-fancybox-prev="" title="" class="fancybox-button fancybox-button--left"></button>' +
+                        '<button data-fancybox-prev title="{{PREV}}" class="fancybox-button fancybox-button--left"></button>' +
                         '<div class="fancybox-infobar__body">' +
-                            '<span data-fancybox-index=""></span>&nbsp;/&nbsp;<span data-fancybox-count=""></span>' +
+                            '<span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span>' +
                         '</div>' +
-                        '<button data-fancybox-next="" title="" class="fancybox-button fancybox-button--right"></button>' +
+                        '<button data-fancybox-next title="{{NEXT}}" class="fancybox-button fancybox-button--right"></button>' +
                     '</div>' +
                     '<div class="fancybox-toolbar">' +
-                        '' +
+                        '{{BUTTONS}}' +
                     '</div>' +
                     '<div class="fancybox-navigation">' +
-                        '<button data-fancybox-prev="" title="" class="fancybox-arrow fancybox-arrow--left">' +
-                        '</button><button data-fancybox-next="" title="" class="fancybox-arrow fancybox-arrow--right">' +
-                    '</button></div>' +
+                        '<button data-fancybox-prev title="{{PREV}}" class="fancybox-arrow fancybox-arrow--left" />' +
+                        '<button data-fancybox-next title="{{NEXT}}" class="fancybox-arrow fancybox-arrow--right" />' +
+                    '</div>' +
                     '<div class="fancybox-stage"></div>' +
                     '<div class="fancybox-caption-wrap">' +
                         '<div class="fancybox-caption"></div>' +
@@ -190,17 +190,17 @@
         spinnerTpl : '<div class="fancybox-loading"></div>',
 
         // Error message template
-        errorTpl : '<div class="fancybox-error"><p></p><p></p></div>',
+        errorTpl : '<div class="fancybox-error"><p>{{ERROR}}<p></div>',
 
         btnTpl : {
-            slideShow  : '<button data-fancybox-play="" class="fancybox-button fancybox-button--play" title=""></button>',
-            fullScreen : '<button data-fancybox-fullscreen="" class="fancybox-button fancybox-button--fullscreen" title=""></button>',
-            thumbs     : '<button data-fancybox-thumbs="" class="fancybox-button fancybox-button--thumbs" title=""></button>',
-            close      : '<button data-fancybox-close="" class="fancybox-button fancybox-button--close" title=""></button>',
+            slideShow  : '<button data-fancybox-play class="fancybox-button fancybox-button--play" title="{{PLAY_START}}"></button>',
+            fullScreen : '<button data-fancybox-fullscreen class="fancybox-button fancybox-button--fullscreen" title="{{FULL_SCREEN}}"></button>',
+            thumbs     : '<button data-fancybox-thumbs class="fancybox-button fancybox-button--thumbs" title="{{THUMBS}}"></button>',
+            close      : '<button data-fancybox-close class="fancybox-button fancybox-button--close" title="{{CLOSE}}"></button>',
 
             // This small close button will be appended to your html/inline/ajax content by default,
             // if "smallBtn" option is not set to false
-            smallBtn   : '<button data-fancybox-close="" class="fancybox-close-small" title=""></button>'
+            smallBtn   : '<button data-fancybox-close class="fancybox-close-small" title="{{CLOSE}}"></button>'
         },
 
         // Container is injected into this element
@@ -345,7 +345,7 @@
                 CLOSE       : 'Close',
                 NEXT        : 'Next',
                 PREV        : 'Previous',
-                ERROR       : 'The requested content cannot be loaded. <br> Please try again later.',
+                ERROR       : 'The requested content cannot be loaded. <br/> Please try again later.',
                 PLAY_START  : 'Start slideshow',
                 PLAY_STOP   : 'Pause slideshow',
                 FULL_SCREEN : 'Full screen',
@@ -355,7 +355,7 @@
                 CLOSE       : 'Schliessen',
                 NEXT        : 'Weiter',
                 PREV        : 'Zurück',
-                ERROR       : 'Die angeforderten Daten konnten nicht geladen werden. <br> Bitte versuchen Sie es später nochmal.',
+                ERROR       : 'Die angeforderten Daten konnten nicht geladen werden. <br/> Bitte versuchen Sie es später nochmal.',
                 PLAY_START  : 'Diaschau starten',
                 PLAY_STOP   : 'Diaschau beenden',
                 FULL_SCREEN : 'Vollbild',
@@ -1678,7 +1678,7 @@
                 slide.width  = slide.opts.width;
                 slide.height = slide.opts.height;
 
-                slide.$ghost = $('<img>')
+                slide.$ghost = $('<img />')
                     .one('error', function() {
 
                         $(this).remove();
@@ -1713,7 +1713,7 @@
 
         setBigImage : function ( slide ) {
             var self = this;
-            var $img = $('<img>');
+            var $img = $('<img />');
 
             slide.$image = $img
                 .one('error', function() {
@@ -2249,7 +2249,95 @@
 
             // Remove unnecessary slides
             $.each( self.slides, function( key, slide ) {
-                if ( slide.pos >= self.currPos - 1 && slide.pos <= 1="" 2="" self.currpos="" +="" )="" {="" slides[="" slide.pos="" ]="slide;" }="" else="" if="" (="" slide="" $.fancybox.stop(="" slide.$slide="" );="" slide.$slide.unbind().remove();="" });="" self.slides="slides;" self.updatecursor();="" self.trigger(="" 'aftershow'="" try="" to="" focus="" on="" the="" first="" focusable="" element="" $(="" document.activeelement="" ).is(="" '[disabled]'="" ||="" current.opts.autofocus="" &&="" !(="" current.type="=" 'image'="" 'iframe'="" self.focus();="" },="" preload="" next="" and="" previous="" slides="" =="==============================" :="" function()="" var="" self="this;" next,="" prev;="" self.group.length="" <="" return;="" ];="" prev="self.slides[" -="" next.type="==" self.loadslide(="" prev.type="==" find="" current="this.current;" $el;="" this.isclosing="" skip="" for="" images="" iframes="" $el="current" current.iscomplete="" ?="" current.$slide.find('button,:input,[tabindex],a').filter(':not([disabled]):visible:first')="" null;="" $el.length="" this.$refs.container;="" $el.focus();="" activates="" instance="" brings="" container="" front="" enables="" keyboard,="" notifies="" other="" instances="" about="" deactivating="" activate="" function="" ()="" deactivate="" all="" '.fancybox-container'="" ).each(function="" 'fancybox'="" closing="" (instance="" instance.uid="" !="=" self.uid="" !instance.isclosing)="" instance.trigger(="" 'ondeactivate'="" self.current="" self.$refs.container.index()=""> 0 ) {
+                if ( slide.pos >= self.currPos - 1 && slide.pos <= self.currPos + 1 ) {
+                    slides[ slide.pos ] = slide;
+
+                } else if ( slide ) {
+
+                    $.fancybox.stop( slide.$slide );
+
+                    slide.$slide.unbind().remove();
+                }
+            });
+
+            self.slides = slides;
+
+            self.updateCursor();
+
+            self.trigger( 'afterShow' );
+
+            // Try to focus on the first focusable element
+            if ( $( document.activeElement ).is( '[disabled]' ) || ( current.opts.autoFocus && !( current.type == 'image' || current.type === 'iframe' ) ) ) {
+                self.focus();
+            }
+
+        },
+
+
+        // Preload next and previous slides
+        // ================================
+
+        preload : function() {
+            var self = this;
+            var next, prev;
+
+            if ( self.group.length < 2 ) {
+                return;
+            }
+
+            next  = self.slides[ self.currPos + 1 ];
+            prev  = self.slides[ self.currPos - 1 ];
+
+            if ( next && next.type === 'image' ) {
+                self.loadSlide( next );
+            }
+
+            if ( prev && prev.type === 'image' ) {
+                self.loadSlide( prev );
+            }
+
+        },
+
+
+        // Try to find and focus on the first focusable element
+        // ====================================================
+
+        focus : function() {
+            var current = this.current;
+            var $el;
+
+            if ( this.isClosing ) {
+                return;
+            }
+
+            // Skip for images and iframes
+            $el = current && current.isComplete ? current.$slide.find('button,:input,[tabindex],a').filter(':not([disabled]):visible:first') : null;
+            $el = $el && $el.length ? $el : this.$refs.container;
+
+            $el.focus();
+        },
+
+
+        // Activates current instance - brings container to the front and enables keyboard,
+        // notifies other instances about deactivating
+        // =================================================================================
+
+        activate : function () {
+            var self = this;
+
+            // Deactivate all instances
+            $( '.fancybox-container' ).each(function () {
+                var instance = $(this).data( 'FancyBox' );
+
+                // Skip self and closing instances
+                if (instance && instance.uid !== self.uid && !instance.isClosing) {
+                    instance.trigger( 'onDeactivate' );
+                }
+
+            });
+
+            if ( self.current ) {
+                if ( self.$refs.container.index() > 0 ) {
                     self.$refs.container.prependTo( document.body );
                 }
 
@@ -2480,7 +2568,8 @@
             $('[data-fancybox-count]').html( self.group.length );
             $('[data-fancybox-index]').html( index + 1 );
 
-            $('[data-fancybox-prev]').prop('disabled', ( !opts.loop && index <= 0="" )="" );="" $('[data-fancybox-next]').prop('disabled',="" (="" !opts.loop="" &&="" index="">= self.group.length - 1 ) );
+            $('[data-fancybox-prev]').prop('disabled', ( !opts.loop && index <= 0 ) );
+            $('[data-fancybox-next]').prop('disabled', ( !opts.loop && index >= self.group.length - 1 ) );
 
         },
 
@@ -3558,7 +3647,14 @@
 				newOffsetX = minTranslateX - 1 + Math.pow( -minTranslateX + currentOffsetX + distanceX, 0.8 ) || 0;
 			}
 
-			//    <- 0="" 1="" if="" (="" distancex="" <="" &&="" newoffsetx="" maxtranslatex="" )="" {="" +="" -="" math.pow(="" currentoffsetx="" distancex,="" 0.8="" ||="" 0;="" }="" newheight=""> canvasHeight ) {
+			//    <-
+			if ( distanceX  < 0 && newOffsetX < maxTranslateX ) {
+				newOffsetX = maxTranslateX + 1 - Math.pow( maxTranslateX - currentOffsetX - distanceX, 0.8 ) || 0;
+			}
+
+		}
+
+		if ( newHeight > canvasHeight ) {
 
 			//   \/
 			if ( distanceY > 0 && newOffsetY > minTranslateY ) {
@@ -4429,7 +4525,7 @@
 				}
 
 				if ( src && src.length ) {
-					list += '<li data-index="' + i + '" tabindex="0" class="fancybox-thumbs-loading"><img data-src="' + src + '"></li>';
+					list += '<li data-index="' + i + '"  tabindex="0" class="fancybox-thumbs-loading"><img data-src="' + src + '" /></li>';
 				}
 
 			});
@@ -4818,4 +4914,3 @@
 
 
 }(document, window, window.jQuery));
-</-></=></=></div></div></div>

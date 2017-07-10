@@ -5,7 +5,7 @@
  * @update 增加非可视区域延时加载
  * @example $(".container").lazy(options);
  *          遍历$(".container")节点内的img节点，都应用lazyload；若此节点为img节点，只应用此节点
- *          options.srcSign {String} 可为空.img节点约定的src标志，默认为lazy-src；响应img节点为：<img lazy-src="img/hello.jpg">
+ *          options.srcSign {String} 可为空.img节点约定的src标志，默认为lazy-src；响应img节点为：<img lazy-src="img/hello.jpg" />
  *          options.errCallBack {Function} 可为空.提供img加载失败回调，供业务额外去处理加载失败逻辑
  *          options.container {Dom} 提供容器节点内可视区域的加载能力，默认为window
  */
@@ -141,4 +141,27 @@
                     if (o) {
                         post = o.offset().top - contop, post + o.height();
 
-                        if ((post >= 0 && post < contHeight) || (posb > 0 && posb 
+                        if ((post >= 0 && post < contHeight) || (posb > 0 && posb <= contHeight)) {
+                            if (url) {
+                                //在浏览器窗口内
+                                if (tag === "img") {
+                                    //改变src
+                                    setSrc(o, srcSign, errCallBack);
+                                }
+                            }
+                            data.obj = null;
+                        }
+                    }
+                });
+            }
+
+            //加载完毕即执行
+            scrollHandle();
+            //滚动执行
+            container.bind("scroll", scrollHandle);
+            container.bind("resize", scrollHandle);
+
+        });
+    };
+
+}));
