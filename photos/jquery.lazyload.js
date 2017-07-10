@@ -1,4 +1,4 @@
-<script src="/assets/js/APlayer.min.js"> </script>/**
+/**
  * @author littenli
  * @date 2014-03-10 version 0.2
  * @description 图片延时加载，裂图替换，图片错误上报处理

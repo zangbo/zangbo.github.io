@@ -1,4 +1,4 @@
-<script src="/assets/js/APlayer.min.js"> </script>// ==================================================
+// ==================================================
 // fancyBox v3.1.20
 //
 // Licensed GPLv3 for open source use
