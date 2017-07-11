@@ -1361,9 +1361,9 @@
         
         <tags>
             
-            <tag> 可视化 </tag>
-            
             <tag> TensorFlow </tag>
+            
+            <tag> 可视化 </tag>
             
         </tags>
         
@@ -2047,6 +2047,67 @@
         <tags>
             
             <tag> 个人网站 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[送给女友的生日礼物]]></title>
+      <url>/2017/06/12/%E9%80%81%E5%A5%B3%E5%8F%8B%E7%9A%84%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9/</url>
+      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<div id="aplayer0" class="aplayer" style="margin-bottom: 20px;"></div>
+		<script>
+			new APlayer({
+				element: document.getElementById("aplayer0"),
+				narrow: false,
+				autoplay: false,
+				showlrc: 0,
+				music: {
+					title: "童话镇",
+					author: "陈一发儿",
+					url: "http://mp3.haoduoge.com/s/2016-12-24/1482568978.mp3",
+					pic: "http://p4.music.126.net/tfa811GLreJI_S0h9epqRA==/3394192426154346.jpg?param=130y130",
+				}
+			});
+		</script>
+<p><br></p>
+<h1 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h1><p>以下是我的两个网站：</p>
+<ul>
+<li>博莎小站：<a href="http://lisa.zangbo.me" target="_blank" rel="external">http://lisa.zangbo.me</a></li>
+<li>送给Lisa的一封信：<a href="http://mylove.zangbo.me" target="_blank" rel="external">http://mylove.zangbo.me</a></li>
+</ul>
+<p>注：手机端打开会出现排版问题，建议电脑浏览器浏览。</p>
+<p><br></p>
+<h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><ul>
+<li><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
+<p>作者主页：<a href="http://chengdazhi.com" target="_blank" rel="external">程大治</a></p>
+<p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的模版，很容易就搜到了：<a href="http://www.cssmoban.com/cssthemes/6077.shtml" target="_blank" rel="external">简洁瀑布流布局动物世界博客模板</a>，于是直接进行二次加工。</p>
+</li>
+</ul>
+<ul>
+<li><p>第二个网站参考：<a href="http://hackerzhou.me/ex_love/" target="_blank" rel="external">Our Love Story</a></p>
+<p>作者GitHub：<a href="https://github.com/hackerzhou" target="_blank" rel="external">hackerzhou</a></p>
+<p>这个网站在圈子里可以说是很有名了，作者开发于2011年，当年送的人如今已经变成了前女友，不免一阵唏嘘。作者把代码放在GitHub上允许大家自由的进行二次开发，我便拿来进行修改，因为女朋友并非程序员，所以原本的网页中代码生成部分改为了一封信。</p>
+</li>
+</ul>
+<p><br></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>因为妹子是文科生，送之前我也不知道妹子会不会喜欢这种理工男的浪漫，所以这两个网页只能算是礼物的一部分，自然还是要准备其他实质性的东西的。</p>
+<p><br></p>
+</the></excerpt>]]></content>
+      
+        
+        <tags>
+            
+            <tag> 个人网站 </tag>
+            
+            <tag> 前端 </tag>
             
         </tags>
         

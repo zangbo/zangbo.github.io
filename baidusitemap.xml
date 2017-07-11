@@ -192,9 +192,9 @@
         <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
         <pubTime>2017-06-27T13:50:54.000Z</pubTime>
         
-        <tag>可视化</tag>
-         
         <tag>TensorFlow</tag>
+         
+        <tag>可视化</tag>
          
          
            
@@ -261,6 +261,25 @@
              
               <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://zangbo.me/2017/06/12/%E9%80%81%E5%A5%B3%E5%8F%8B%E7%9A%84%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9/</loc>
+    <lastmod>2017-06-23T12:05:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>送给女友的生日礼物</title>
+        <pubTime>2017-06-12T13:36:59.000Z</pubTime>
+        
+        <tag>个人网站</tag>
+         
+        <tag>前端</tag>
+         
+         
+           
         </display>
     </data>
     </url>

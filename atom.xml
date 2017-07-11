@@ -1511,9 +1511,9 @@
       <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    
       <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
+    
+      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
     
   </entry>
   
@@ -2232,6 +2232,75 @@
   </entry>
   
   <entry>
+    <title>送给女友的生日礼物</title>
+    <link href="http://zangbo.me/2017/06/12/%E9%80%81%E5%A5%B3%E5%8F%8B%E7%9A%84%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9/"/>
+    <id>http://zangbo.me/2017/06/12/送女友的生日礼物/</id>
+    <published>2017-06-12T13:36:59.000Z</published>
+    <updated>2017-06-23T12:05:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<div id="aplayer0" class="aplayer" style="margin-bottom: 20px;"></div>
+		<script>
+			new APlayer({
+				element: document.getElementById("aplayer0"),
+				narrow: false,
+				autoplay: false,
+				showlrc: 0,
+				music: {
+					title: "童话镇",
+					author: "陈一发儿",
+					url: "http://mp3.haoduoge.com/s/2016-12-24/1482568978.mp3",
+					pic: "http://p4.music.126.net/tfa811GLreJI_S0h9epqRA==/3394192426154346.jpg?param=130y130",
+				}
+			});
+		</script>
+<p><br></p>
+<h1 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h1><p>以下是我的两个网站：</p>
+<ul>
+<li>博莎小站：<a href="http://lisa.zangbo.me" target="_blank" rel="external">http://lisa.zangbo.me</a></li>
+<li>送给Lisa的一封信：<a href="http://mylove.zangbo.me" target="_blank" rel="external">http://mylove.zangbo.me</a></li>
+</ul>
+<p>注：手机端打开会出现排版问题，建议电脑浏览器浏览。</p>
+<p><br></p>
+<h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><ul>
+<li><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
+<p>作者主页：<a href="http://chengdazhi.com" target="_blank" rel="external">程大治</a></p>
+<p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的模版，很容易就搜到了：<a href="http://www.cssmoban.com/cssthemes/6077.shtml" target="_blank" rel="external">简洁瀑布流布局动物世界博客模板</a>，于是直接进行二次加工。</p>
+</li>
+</ul>
+<ul>
+<li><p>第二个网站参考：<a href="http://hackerzhou.me/ex_love/" target="_blank" rel="external">Our Love Story</a></p>
+<p>作者GitHub：<a href="https://github.com/hackerzhou" target="_blank" rel="external">hackerzhou</a></p>
+<p>这个网站在圈子里可以说是很有名了，作者开发于2011年，当年送的人如今已经变成了前女友，不免一阵唏嘘。作者把代码放在GitHub上允许大家自由的进行二次开发，我便拿来进行修改，因为女朋友并非程序员，所以原本的网页中代码生成部分改为了一封信。</p>
+</li>
+</ul>
+<p><br></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>因为妹子是文科生，送之前我也不知道妹子会不会喜欢这种理工男的浪漫，所以这两个网页只能算是礼物的一部分，自然还是要准备其他实质性的东西的。</p>
+<p><br></p>
+</the></excerpt>]]></content>
+    
+    <summary type="html">
+    
+      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
+
+&lt;p&gt;女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="个人网站" scheme="http://zangbo.me/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"/>
+    
+      <category term="前端" scheme="http://zangbo.me/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Word2Vec笔记：Negative Sample</title>
     <link href="http://zangbo.me/2017/06/06/Word2Vec%E4%B9%8BNegative-Sample/"/>
     <id>http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/</id>
@@ -2367,48 +2436,6 @@
     
     
       <category term="Word2Vec" scheme="http://zangbo.me/tags/Word2Vec/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深度学习中几种不同的梯度下降算法</title>
-    <link href="http://zangbo.me/2017/06/04/%E5%85%B3%E4%BA%8E%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/"/>
-    <id>http://zangbo.me/2017/06/04/关于随机梯度下降/</id>
-    <published>2017-06-04T07:32:01.000Z</published>
-    <updated>2017-06-11T08:18:17.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。<a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<hr>
-<p>之前关于Tensorflow的笔记有一个地方提到了随机梯度下降，官方文档提到说“这种随机抓取一小部分数据训练的方法称为随机梯度下降(SGD)”，但后来我又查了资料，这种方法准确来说应该称为Mini-batch梯度下降，因为标准的SGD是每次只随机取一个样本进行训练的，关于梯度下降算法几个容易混淆的概念我整理了下，它们都属于最速下降法：</p>
-<p><br></p>
-<ol>
-<li><p><strong>批量梯度下降(Batch Gradient Descent，BGD)</strong></p>
-<p>每次迭代的梯度方向计算由所有训练样本共同投票决定，即每次的参数更新需要把所有的训练样本都迭代一遍，可以采用线性搜索来确定最优步长，但缺点是参数更新速度太慢，而且如果训练样本数量特别庞大，对显存要求会很高。“Batch”的含义是训练集中所有样本参与每一轮迭代。</p>
-</li>
-<li><p><strong>随机梯度下降(Stochastic Gradient Descent，SGD)</strong></p>
-<p>和BGD是两个极端，SGD每次迭代只选择一个训练样本，计算梯度然后进行参数的更新，直到收敛，这种方法也可用作online learning。这种方法的优点是参数更新速度很快，不需要占用较大显存。但缺点也很明显，因为不同训练样本的差距和噪声的影响，每次参数更新方向未必是正确的优化方向，但实践证明总体趋势一般是朝着最优点方向的。</p>
-</li>
-<li><p><strong>Mini-batch Gradient Descent</strong></p>
-<p>这种方法在前两种方法里取一个折中，每次在训练集中取一部分数据进行迭代，然后更新参数。这是实践中使用最多的一种方法，具体选取的batch大小取决于数据集和显卡的质量，实验证明太大和太小都不好，应该选择一个适中的尺寸来达到训练效果最优。具体怎么选那就是一门玄学了，不过普通研究生平时科研的情况下选择自己显存能承受的最大值就可以了吧。</p>
-</li>
-</ol>
-<p><br></p>
-<p>平时也有些地方把SGD和Mini-batch GD统称为SGD，前者是后者的一个特例，TensorFlow的官方文档大概就是这样。这两者虽然也叫最速下降法，但步长一般不采用线搜索来获得，因为参数更新频率太快，线搜索计算比较复杂会消耗大量时间，所以平时都是凭经验指定步长(即学习率)。因为只要下降方向正确，步长在一个可以接受的范围内依然可以迭代到最优值，但学习率如果选的太大则无法下降，选的太小又使得训练过程漫长很难达到最优值，因此关于学习率的选择又是一门玄学。</p>
-<p><br></p>
-</the>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。
-    
-    </summary>
-    
-      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="梯度下降算法" scheme="http://zangbo.me/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
