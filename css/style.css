@@ -2446,13 +2446,15 @@ pre .javascript .function {
   position: relative;
   min-height: 500px;
 }
+.instagram img {
+  width: 100%;
+}
+.instagram .year {
+  font-size: 16px;
+}
 .instagram .open-ins {
-  display: block;
   padding: 10px 0;
-  position: absolute;
-  right: 28px;
-  top: -75px;
-  color: #333;
+  color: #cdcdcd;
 }
 .instagram .open-ins:hover {
   color: #657b83;
@@ -2460,33 +2462,70 @@ pre .javascript .function {
 .instagram .year {
   display: inline;
 }
+.instagram .thumb {
+  width: 25%;
+  height: 0;
+  padding-bottom: 16%;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  background: #ededed;
+  outline: 1px solid #ddd;
+}
+.instagram .thumb a {
+  position: relative;
+}
 .instagram .album h1 em {
   font-style: normal;
   font-size: 14px;
   margin-left: 10px;
 }
 .instagram .album ul {
-  min-height: 149px;
-  padding-top: 17px;
-  border-bottom: 1px solid #ddd;
-  list-style: none;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  clear: both;
+  width: 100%;
+  text-align: left;
 }
 .instagram .album li {
-  position: relative;
+  list-style: none;
   display: inline-block;
-  min-width: 157px;
-  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 5px;
+  margin-bottom: -10px;
+  height: 0;
+  width: 25%;
+  position: relative;
+  padding-bottom: 25%;
 }
 .instagram .album li:before {
   display: none;
 }
 .instagram .album div.img-box {
-  position: relative;
-  margin: 0 20px 10px;
+  position: absolute;
+  width: 98%;
+  height: 93%;
   -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 1px rgba(255,255,255,0.1);
   -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 1px rgba(255,255,255,0.1);
   -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 1px rgba(255,255,255,0.1);
   box-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 1px rgba(255,255,255,0.1);
+}
+.instagram .album div.img-box img {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
 }
 .instagram .album div.img-box .img-bg {
   position: absolute;
@@ -2496,7 +2535,6 @@ pre .javascript .function {
   width: 100%;
   margin: -5px;
   padding: 5px;
-  background: rgba(204,204,204,0.8);
   -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 1px 5px rgba(0,0,0,0.1);
   -moz-box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 1px 5px rgba(0,0,0,0.1);
   -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 1px 5px rgba(0,0,0,0.1);
@@ -2511,26 +2549,166 @@ pre .javascript .function {
   opacity: 0.2;
   cursor: pointer;
   display: block;
+  z-index: 3;
+}
+.instagram .album div.img-box .icon {
+  font-size: 14px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -7px;
+  margin-top: -7px;
+  color: #999;
+  z-index: 1;
 }
 .instagram .album div.img-box .img-bg:hover {
   opacity: 0;
 }
-.instagram .album div.img-box img {
-  width: 100%;
-  height: auto;
+.photos-btn-wrap {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+}
+.photos-btn {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: -4px;
+  padding: 5px 8px 3px;
+}
+.photos-btn.active {
+  color: #08c;
+  border: 1px solid #e5e5e5;
+  border-bottom: 5px solid #fff;
+}
+.myalbums {
+  position: relative;
+  min-height: 300px;
+}
+.myalbums {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+.album-font {
+  cursor: pointer;
+  font-size: 20px;
+  color: #696969;
+}
+.albums {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.myalbums-box {
+  position: absolute;
+  top: 8px;
+  width: 85%;
+  height: 75%;
+}
+.myalbums .thumb {
+  text-align: center;
+  list-style: none;
+  float: left;
+  width: 150px;
+  height: 120px;
+  margin: 10px;
+  padding: 8px;
+  background: #f4f4f4;
+  position: relative;
+  cursor: pointer;
+  -webkit-box-align: end;
+  -moz-box-align: end;
+  -ms-flex-align: end;
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.myalbums figure {
   display: block;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 40px;
+  -webkit-margin-end: 40px;
+}
+.thumb figcaption {
+  width: 100%;
+  line-height: 15px;
+  max-height: 20px;
+  overflow: hidden;
+  font-size: 14;
+  word-wrap: break-word;
+}
+.myalbums .thumb:before {
+  width: 88%;
+  height: 20%;
+  content: ' ';
+  -webkit-box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  position: absolute;
+  bottom: 7px;
+  z-index: -1;
+}
+.myalbums .thumb:before {
+  -webkit-transform: skew(-15deg) rotate(-5deg);
+  -webkit-transform: skew(-15deg) rotate(-5deg);
+  -moz-transform: skew(-15deg) rotate(-5deg);
+  -ms-transform: skew(-15deg) rotate(-5deg);
+  transform: skew(-15deg) rotate(-5deg);
+  left: 15px;
 }
 @media screen and (max-width: 600px) {
-  .instagram .album ul {
-    margin-left: 0;
-    padding: 0;
-    text-align: center;
+  .instagram .thumb {
+    width: 50%;
+    padding-bottom: 30%;
   }
   .instagram .album li {
-    max-width: 300px;
+    width: 50%;
+    position: relative;
+    padding-bottom: 50%;
+    text-align: center;
   }
   .instagram .album div.img-box {
     margin: 0;
+    width: 96%;
+    height: 92%;
+  }
+  .album-font {
+    font-size: 14px;
   }
 }
 .switch-btn {
