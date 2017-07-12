@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="ZangBo" />
+
+
+
+<meta name="description" content="本文介绍了Requests库以及一些基础用法，基于python3.5版本">
+<meta name="keywords" content="爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫笔记（二）：Requests基础">
+<meta property="og:url" content="http://zangbo.me/2017/06/14/Crawler_2/index.html">
+<meta property="og:site_name" content="ZangBo&#39;s Home">
+<meta property="og:description" content="本文介绍了Requests库以及一些基础用法，基于python3.5版本">
+<meta property="og:updated_time" content="2017-06-21T16:54:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爬虫笔记（二）：Requests基础">
+<meta name="twitter:description" content="本文介绍了Requests库以及一些基础用法，基于python3.5版本">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ZangBo&#39;s Home" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>爬虫笔记（二）：Requests基础 | ZangBo&#39;s Home</title>
+
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.12.1/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2697f2f0e109a018f0f89683fab342e6";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">ZangBo</a></h1>
+        </hgroup>
+
+        
+        
+        <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+        
+
+        
+            <br />
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">文章</a></li>
+                        
+                        <br />
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">SJTU在读研究生，机器学习相关，摄影爱好者，喜欢写一些随笔。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">ZangBo</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">ZangBo</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">文章</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Crawler_2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/14/Crawler_2/" class="article-date">
+      <time datetime="2017-06-14T02:47:57.000Z" itemprop="datePublished">2017-06-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      爬虫笔记（二）：Requests基础
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/数据挖掘/">数据挖掘</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Requests库以及一些基础用法，基于python3.5版本<a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="Requests介绍"><a href="#Requests介绍" class="headerlink" title="Requests介绍"></a>Requests介绍</h1><p>Requests是一个基于urllib3的HTTP库，简单优美，支持python2.6–3.5的各版本，具有无比强大的功能，完全满足今日web的需求。在爬虫学习过程中，我们用它向服务器发送请求，以获取我们需要的信息。</p>
+<p><br></p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>只需要在终端中运行以下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install requests</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>我们先来看一个具体的实例来感受下Request：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"></div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>, auth=(<span class="string">'user'</span>, <span class="string">'pass'</span>))</div><div class="line">r.status_code</div><div class="line">r.headers[<span class="string">'content-type'</span>]</div><div class="line">r.encoding</div><div class="line">r.text</div></pre></td></tr></table></figure>
+<p>以下是输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">200</span></div><div class="line"><span class="string">'text/html; charset=utf-8'</span></div><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'&lt;!DOCTYPE html&gt;'</span></div></pre></td></tr></table></figure>
+<p>以上代码我们请求了本站的地址，然后依次打印出状态码，请求头，编码方式和相应内容。</p>
+<p>是不是功能强大，下面，我们正式开始学习Requests。</p>
+<p><br></p>
+<h1 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h1><p>首先导入Requests模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div></pre></td></tr></table></figure>
+<p>Requests包含各种不同的请求方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>)</div><div class="line">r = requests.put(<span class="string">"http://httpbin.org/put"</span>)</div><div class="line">r = requests.delete(<span class="string">"http://httpbin.org/delete"</span>)</div><div class="line">r = requests.head(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.options(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>我们用的最多的是get请求，用来获取某个网页：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
+<p>现在，我们有一个名叫r的Response对象，它包含了所有关于该页面的信息，我们可以从中提取出我们想要的信息。</p>
+<p><br></p>
+<h2 id="带参数的get请求"><a href="#带参数的get请求" class="headerlink" title="带参数的get请求"></a>带参数的get请求</h2><p>如果你是手工构建 URL，那么数据会以键/值对的形式置于 URL 中，跟在一个问号的后面，我们可以用字典的形式传递URL参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>, params=payload)</div><div class="line">print(r.url)</div></pre></td></tr></table></figure>
+<p>可以得到输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://httpbin.org/get?key2=value2&amp;key1=value1</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>如果我们想要发送一些编码为表单形式的数据——非常像一个 HTML 表单。只需简单地传递一个字典给 data 参数，该字典在发出请求时会自动编码为表单形式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>, data=payload)</div><div class="line">print(r.text)</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  <span class="string">"form"</span>: &#123;</div><div class="line">    <span class="string">"key2"</span>: <span class="string">"value2"</span>,</div><div class="line">    <span class="string">"key1"</span>: <span class="string">"value1"</span></div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="获取响应内容"><a href="#获取响应内容" class="headerlink" title="获取响应内容"></a>获取响应内容</h1><h2 id="响应状态码"><a href="#响应状态码" class="headerlink" title="响应状态码"></a>响应状态码</h2><p>我们可以检测发送请求是否成功获得想要的数据，通过检测响应状态码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://www.baidu.com'</span>)</div><div class="line">r.status_code</div></pre></td></tr></table></figure>
+<p>若输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">200</div></pre></td></tr></table></figure>
+<p>表明获取成功。</p>
+<p><br></p>
+<h2 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h2><p>以百度首页为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">r.text</div></pre></td></tr></table></figure>
+<p>Requests会基于HTTP的头部对响应的编码进行推测，让我们访问<code>r.text</code>时，Requests会使用其推测的文本编码，我们可以用<code>r.encoding</code>改变解码方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r.encoding</div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span></div><div class="line">r.encoding</div></pre></td></tr></table></figure>
+<p>以上代码输出为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'ISO-8859-1'</span></div></pre></td></tr></table></figure>
+<p>如果你改变了编码，每当你访问 <code>r.text</code> ，Request 都将会使用 <code>r.encoding</code> 的新值。当不确定时，可以使用 <code>r.content</code> 来找到编码，然后设置 <code>r.encoding</code> 为相应的编码。这样就能使用正确的编码解析 <code>r.text</code> 了。关于<code>r.content</code>下面会介绍。</p>
+<p><br></p>
+<h2 id="二进制内容"><a href="#二进制内容" class="headerlink" title="二进制内容"></a>二进制内容</h2><p>对于非文本请求，例如图片等多媒体内容，可以以字节的方式访问：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r.content</div></pre></td></tr></table></figure>
+<p>这里注意两者的区别：</p>
+<ul>
+<li>r.text返回的是Unicode型的数据。如果是读取文本，可以通过r.text。</li>
+<li>r.content返回的是bytes型也就是二进制的数据。如果读取图片，文件，可以通过r.content来实现。</li>
+</ul>
+<p>例如我们下载并保存一张图片：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">jpg_url = <span class="string">'http://mm.howkuai.com/wp-content/uploads/2017a/04/13/01.jpg'</span><span class="comment">#一张美女图</span></div><div class="line">content = requests.get(jpg_url).content</div><div class="line"><span class="keyword">with</span> open(<span class="string">'image.jpg'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f: <span class="comment">#写入多媒体文件必须要 b 这个参数！</span></div><div class="line">    f.write(content)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</div><div class="line">r.json()</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h2><p>通过命令可以查看服务器响应头，以一个Python字典形式展示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>)</div><div class="line">r.headers</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	<span class="string">'Server'</span>: <span class="string">'GitHub.com'</span>, </div><div class="line">	<span class="string">'Date'</span>: <span class="string">'Thu, 15 Jun 2017 04:04:47 GMT'</span>, </div><div class="line">	<span class="string">'Content-Type'</span>: <span class="string">'text/html; charset=utf-8'</span>, </div><div class="line">	<span class="string">'Transfer-Encoding'</span>: <span class="string">'chunked'</span>, </div><div class="line">	<span class="string">'Last-Modified'</span>: <span class="string">'Wed, 14 Jun 2017 15:41:23 GMT'</span>, </div><div class="line">	<span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'*'</span>, </div><div class="line">	<span class="string">'Expires'</span>: <span class="string">'Thu, 15 Jun 2017 04:14:47 GMT'</span>, </div><div class="line">	<span class="string">'Cache-Control'</span>: <span class="string">'max-age=600'</span>, </div><div class="line">	<span class="string">'Content-Encoding'</span>: <span class="string">'gzip'</span>, </div><div class="line">	<span class="string">'X-GitHub-Request-Id'</span>: <span class="string">'E1D6:0B0F:15941BE:1E637E3:5942075F'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">r.status_code<span class="comment">#获取状态码</span></div><div class="line">r.text<span class="comment">#文本内容</span></div><div class="line">r.encoding<span class="comment">#查看编码</span></div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span><span class="comment">#改变编码</span></div><div class="line">r.content<span class="comment">#二进制内容</span></div><div class="line">r.json()<span class="comment">#JSON内容</span></div><div class="line">r.raw<span class="comment">#原始内容</span></div><div class="line">r.headers<span class="comment">#响应头</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="定制请求头"><a href="#定制请求头" class="headerlink" title="定制请求头"></a>定制请求头</h1><p>有些网站具有反爬虫机制，我们有时候需要把爬虫伪装成浏览器来访问网页，因此我们需要为请求添加HTTP头部，只需要简单地传递一个<code>dict</code>给<code>headers</code>参数即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">url = <span class="string">"https://www.baidu.com"</span></div><div class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'</span>&#125;</div><div class="line">r = requests.get(url,headers=headers)</div></pre></td></tr></table></figure>
+<p>注：如何查看自己浏览器的userAgent</p>
+<p>打开浏览器的控制台，输入：javascript:alert(navigator.userAgent)</p>
+<p><br></p>
+<h1 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h1><p>我们可以告诉 requests 在经过以 <code>timeout</code> 参数设定的秒数时间之后停止等待响应：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">requests.get(<span class="string">'http://github.com'</span>, timeout=<span class="number">0.001</span>)</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<p><code>timeout</code> 仅对连接过程有效，与响应体的下载无关。 <code>timeout</code> 并不是整个下载响应的时间限制，而是如果服务器在 <code>timeout</code> 秒内没有应答，将会引发一个异常（更精确地说，是在 <code>timeout</code> 秒内没有从基础套接字上接收到任何字节的数据时）</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>本文基于Requests官方文档：</p>
+<ul>
+<li>英文版：<a href="http://docs.python-requests.org/en/master/" target="_blank" rel="external">Requests: HTTP for Humans</a></li>
+<li>中文版：<a href="http://docs.python-requests.org/zh_CN/latest/" target="_blank" rel="external">Requests: 让HTTP服务人类</a></li>
+</ul>
+<p>本文仅介绍基础用法，更高阶以及更详细的内容（Cookie、重定向与请求历史、错误与异常等）请参考官方文档。</p>
+<p><br></p>
+</the>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/06/14/Crawler_2/">爬虫笔记（二）：Requests基础</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
+        <p><span>发布时间:</span>2017-06-14, 10:47:57</p>
+        <p><span>最后更新:</span>2017-06-22, 00:54:59</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/14/Crawler_2/" title="爬虫笔记（二）：Requests基础">http://zangbo.me/2017/06/14/Crawler_2/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/14/Crawler_2/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/06/15/Crawler_3/">
+                    爬虫笔记（三）：BeautifulSoup基础
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/06/13/Crawler_1/">
+                    爬虫笔记（一）：爬虫基础知识
+                </a>
+            </div>
+        
+    </nav>
+
+  
+  
+  
+    <div style="padding: 0; margin: 20px auto; width: 90%; text-align: center;">
+      <br>
+      <div>您的支持将鼓励我继续创作！</div>
+      <br>
+      <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+        <div class="btn btn-pay">打赏支持</div>
+      </button>
+      <br>
+      <br>
+      <div id="QR" style="display: none;">
+        
+          <div id="wechat" style="display: inline-block;">
+            <img id="wechat_qr" src="/img/wechat-reward-qr.jpg" alt="ZangBo WeChat Pay"/>
+            <p>微信打赏</p>
+          </div>
+        
+        
+          <div id="alipay" style="display: inline-block">
+            <img id="alipay_qr" src="/img/alipay-reward-qr.jpg" alt="ZangBo Alipay"/>
+            <p>支付宝打赏</p>
+          </div>
+        
+        <br>
+        <br>
+      </div>
+    </div>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Requests介绍"><span class="toc-number">1.</span> <span class="toc-text">Requests介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引入"><span class="toc-number">3.</span> <span class="toc-text">引入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#发送请求"><span class="toc-number">4.</span> <span class="toc-text">发送请求</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#get请求"><span class="toc-number">4.1.</span> <span class="toc-text">get请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#带参数的get请求"><span class="toc-number">4.2.</span> <span class="toc-text">带参数的get请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#POST请求"><span class="toc-number">4.3.</span> <span class="toc-text">POST请求</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#获取响应内容"><span class="toc-number">5.</span> <span class="toc-text">获取响应内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#响应状态码"><span class="toc-number">5.1.</span> <span class="toc-text">响应状态码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文本内容"><span class="toc-number">5.2.</span> <span class="toc-text">文本内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制内容"><span class="toc-number">5.3.</span> <span class="toc-text">二进制内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON内容"><span class="toc-number">5.4.</span> <span class="toc-text">JSON内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#响应头"><span class="toc-number">5.5.</span> <span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取响应内容总结"><span class="toc-number">5.6.</span> <span class="toc-text">获取响应内容总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定制请求头"><span class="toc-number">6.</span> <span class="toc-text">定制请求头</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#超时"><span class="toc-number">7.</span> <span class="toc-text">超时</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                 "common":{"bdSnsKey":{},"bdText":"爬虫笔记（二）：Requests基础　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2136080';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/06/15/Crawler_3/" title="上一篇: 爬虫笔记（三）：BeautifulSoup基础">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/06/13/Crawler_1/" title="下一篇: 爬虫笔记（一）：爬虫基础知识">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/09/TensorFlow_13/">TensorFlow 笔记（十三）：tf.contrib.learn入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/TensorFlow_12/">TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/TensorFlow_11/">TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_10/">TensorFlow 笔记（十）：张量的阶、形状和数据类型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_9/">TensorFlow 笔记（九）：数据读取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/TensorFlow_8/">TensorFlow 笔记（八）：线程和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_7/">TensorFlow 笔记（七）：Exponential_decay</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_6/">TensorFlow 笔记（六）：Moving Average</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/30/TensorFlow_5/">TensorFlow 笔记（五）：常用函数和模型的保存与恢复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/TensorFlow_4/">TensorFlow 笔记（四）：TensorBoard可视化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/24/TensorFlow_3/">TensorFlow 笔记（三）：Name_Scope和变量共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/22/Crawler_4/">爬虫笔记（四）：获取某地历史天气数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/Crawler_3/">爬虫笔记（三）：BeautifulSoup基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/Crawler_2/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/Crawler_1/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/EncodingKnowledge/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GithubPageDomainName/">配置GithubPage二级域名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GiftForGirlfriend/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec_Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec_skip-gram/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/RandomGradientDecreases/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/TensorFlow_2/">TensorFlow 笔记（二）：MNIST进阶</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow_1/">TensorFlow 笔记（一）：MNIST入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/MacGitHubHexoBlog/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/Introduction/">欢迎来到我的小站</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 ZangBo
+            </div>
+            <div class="footer-right">
+                Welcome to ZangBo's Blog
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.3.3/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-100951797-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="ZangBo" />
+
+
+
+<meta name="description" content="本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。 中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。 所有代码基于python3.5版本。">
+<meta name="keywords" content="爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫笔记（四）：获取某地历史天气数据">
+<meta property="og:url" content="http://zangbo.me/2017/06/22/Crawler_4/index.html">
+<meta property="og:site_name" content="ZangBo&#39;s Home">
+<meta property="og:description" content="本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。 中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。 所有代码基于python3.5版本。">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_p0q980_2.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XtWKBE_3.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XNW30r_4.jpeg">
+<meta property="og:updated_time" content="2017-06-22T13:02:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爬虫笔记（四）：获取某地历史天气数据">
+<meta name="twitter:description" content="本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。 中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。 所有代码基于python3.5版本。">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_p0q980_2.jpeg">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ZangBo&#39;s Home" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>爬虫笔记（四）：获取某地历史天气数据 | ZangBo&#39;s Home</title>
+
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.12.1/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2697f2f0e109a018f0f89683fab342e6";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">ZangBo</a></h1>
+        </hgroup>
+
+        
+        
+        <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+        
+
+        
+            <br />
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">文章</a></li>
+                        
+                        <br />
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">SJTU在读研究生，机器学习相关，摄影爱好者，喜欢写一些随笔。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">ZangBo</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">ZangBo</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">文章</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Crawler_4" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/22/Crawler_4/" class="article-date">
+      <time datetime="2017-06-22T11:28:01.000Z" itemprop="datePublished">2017-06-22</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      爬虫笔记（四）：获取某地历史天气数据
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/数据挖掘/">数据挖掘</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。</p>
+<p>中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。</p>
+<p>所有代码基于python3.5版本。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近参加了天池的一个大数据竞赛，因为需要用到江苏省扬中市的历史天气信息，所以就写了个简单的爬虫程序来爬取。有很多网站都提供了历史天气，这里我们选择的网站是：<a href="http://lishi.tianqi.com/yangzhong/index.html" target="_blank" rel="external">扬中市历史天气-历史天气网</a>。</p>
+<p><br></p>
+<h1 id="分析网站"><a href="#分析网站" class="headerlink" title="分析网站"></a>分析网站</h1><ol>
+<li><p>打开上述网站，往下滑动，可以看到有一栏记录了该地每个月的天气信息，右键打开审查元素，查看该信息所在的标签，发现每个月的天气信息都在标签<code>&lt;div class=&#39;tqtongji1&#39;&gt;</code>下面的<code>&lt;a&gt;</code>标签中。</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_p0q980_2.jpeg" alt="历史月份信息"></center>
+
+<p><br></p>
+</li>
+<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji1&#39;).find_all(&#39;a&#39;)</code>命令得到所有月份的信息，提取出其中的链接，这里只提取最近30个月的信息。</p>
+<p><br></p>
+</li>
+<li><p>打开其中一个月份链接，右键审查元素，发现该月份每天的天气信息都在标签<code>&lt;div class=&#39;tqtongji2&#39;&gt;</code>下面的<code>&lt;li&gt;</code>标签中。</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XtWKBE_3.jpeg" alt="部分天气信息"></center>
+
+<p><br></p>
+</li>
+<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;li&#39;)</code>命令得到该月份每天的部分天气信息并保存在<code>list</code>中，同时用<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;a&#39;)</code>命令提取出其中的链接。</p>
+<p><br></p>
+</li>
+<li><p>打开其中一天的链接，右键审查元素，发现该天的其他天气信息都在标签<code>&lt;div class=&#39;history_sh&#39;&gt;</code>下面的<code>&lt;span&gt;</code>标签中。</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XNW30r_4.jpeg" alt="其他天气信息"></center>
+
+<p><br></p>
+</li>
+<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;history_sh&#39;).find_all(&#39;span&#39;)</code>命令提取出该天的其他天气信息并保存在<code>list</code>中。</p>
+<p><br></p>
+</li>
+<li><p>利用numpy数组和pandas的DataFrame结构对提取出的数据进行整合，最后输出为CSV文件。</p>
+</li>
+</ol>
+<p><br></p>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">	</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">History_weather</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">begin_url</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_index = self.get_all_weather_index(url)</div><div class="line">        all_weather_index = all_weather_index[:<span class="number">30</span>]</div><div class="line">        print(<span class="string">"Get all weather index!"</span>)</div><div class="line">        result_weather = self.get_all_weather(all_weather_index)</div><div class="line">        result_weather.to_csv(<span class="string">'all_weather.csv'</span>, index=<span class="keyword">False</span>)</div><div class="line">        print(<span class="string">'Save all weather success!'</span>)</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_soup</span><span class="params">(self, url)</span>:</span></div><div class="line">        headers = &#123;</div><div class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 \</span></div><div class="line">            (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'&#125;</div><div class="line">        html = requests.get(url, headers)</div><div class="line">        soup = BeautifulSoup(html.text, <span class="string">'lxml'</span>)</div><div class="line">        <span class="keyword">return</span> soup</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather_index</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_soup = self.get_soup(url)</div><div class="line">        all_weather_index = all_weather_soup.find(</div><div class="line">            <span class="string">'div'</span>, class_=<span class="string">'tqtongji1'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">        <span class="keyword">return</span> all_weather_index</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather</span><span class="params">(self, all_weather_index)</span>:</span></div><div class="line">        all_month_weather = list()</div><div class="line">        day_weather = list()</div><div class="line">        	</div><div class="line">        <span class="keyword">for</span> weather <span class="keyword">in</span> all_weather_index:</div><div class="line">            month_url = weather[<span class="string">'href'</span>]</div><div class="line">            month_name = weather.get_text()</div><div class="line">            month_weather_soup = self.get_soup(month_url)</div><div class="line">            month_weather = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'li'</span>)</div><div class="line">            day_weather_url = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">            <span class="keyword">for</span> day <span class="keyword">in</span> day_weather_url:</div><div class="line">                day_url = day[<span class="string">'href'</span>]</div><div class="line">                day_soup = self.get_soup(day_url)</div><div class="line">                day_text = day_soup.find(</div><div class="line">                    <span class="string">'div'</span>, class_=<span class="string">'history_sh'</span>).find_all(<span class="string">'span'</span>)</div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> day_text:</div><div class="line">                    day_weather.append(i.get_text())</div><div class="line">            weather_list = list()</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> month_weather:</div><div class="line">                weather_list.append(i.get_text())</div><div class="line">            weather_list = weather_list[<span class="number">6</span>:]</div><div class="line">            all_month_weather = all_month_weather + weather_list</div><div class="line">            print(<span class="string">"Get weather :"</span> + month_name)</div><div class="line">            	</div><div class="line">        day_weather = np.array(day_weather).reshape(<span class="number">-1</span>, <span class="number">8</span>)</div><div class="line">        day_weather = DataFrame(day_weather, columns=[</div><div class="line">            <span class="string">'Ultraviolet'</span>, <span class="string">'Dress'</span>, <span class="string">'Travel'</span>, <span class="string">'Comfort_level'</span>,</div><div class="line">            <span class="string">'Morning_exercise'</span>, <span class="string">'Car_wash'</span>, <span class="string">'Drying_index'</span>, <span class="string">'Breath_allergy'</span>])</div><div class="line">        all_month_weather = np.array(all_month_weather).reshape(<span class="number">-1</span>, <span class="number">6</span>)</div><div class="line">        all_month_weather = DataFrame(all_month_weather, columns=[</div><div class="line">            <span class="string">'Date'</span>, <span class="string">'Max_temp'</span>, <span class="string">'Min_temp'</span>, </div><div class="line">            <span class="string">'Whether'</span>, <span class="string">'Wind_direction'</span>, <span class="string">'Wind_power'</span>])</div><div class="line">        print(all_month_weather.shape)</div><div class="line">        print(day_weather.shape)</div><div class="line">        result_weather = pd.merge(</div><div class="line">            all_month_weather, day_weather, left_index=<span class="keyword">True</span>, right_index=<span class="keyword">True</span>)</div><div class="line">        <span class="keyword">return</span> result_weather</div><div class="line">	</div><div class="line">history_weather = History_weather()</div><div class="line">begin_url = <span class="string">'http://lishi.tianqi.com/yangzhong/index.html'</span></div><div class="line">history_weather.begin_url(begin_url)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>打开<code>all_weather.csv</code>文件：</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Max_temp</th>
+<th>Min_temp</th>
+<th>Whether</th>
+<th>…</th>
+<th>Breath_allergy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-04-01</td>
+<td>18</td>
+<td>8</td>
+<td>晴</td>
+<td>…</td>
+<td>极易</td>
+</tr>
+<tr>
+<td>2017-04-02</td>
+<td>22</td>
+<td>10</td>
+<td>晴</td>
+<td>…</td>
+<td>极易</td>
+</tr>
+<tr>
+<td>2017-04-03</td>
+<td>24</td>
+<td>12</td>
+<td>多云</td>
+<td>…</td>
+<td>极易</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>2014-11-30</td>
+<td>10</td>
+<td>2</td>
+<td>多云转晴</td>
+<td>…</td>
+<td>极不易发</td>
+</tr>
+</tbody>
+</table>
+<p>共得到910天、14项天气特征数据。</p>
+<p><br></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>以上只是简单的调用Requests和Beautiful Soup来进行爬取，是一个非常简单的爬虫实现，后面我们会学习更加高阶的爬虫方法。</p>
+<p>爬虫源代码可以在我的<a href="https://github.com/zangbo/MachineLearning/tree/master/Web%20Crawler/history%20weather" target="_blank" rel="external">Github</a>上下载。</p>
+<p><br></p>
+</the></excerpt>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/06/22/Crawler_4/">爬虫笔记（四）：获取某地历史天气数据</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
+        <p><span>发布时间:</span>2017-06-22, 19:28:01</p>
+        <p><span>最后更新:</span>2017-06-22, 21:02:02</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/22/Crawler_4/" title="爬虫笔记（四）：获取某地历史天气数据">http://zangbo.me/2017/06/22/Crawler_4/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/06/22/Crawler_4/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/06/24/TensorFlow_3/">
+                    TensorFlow 笔记（三）：Name_Scope和变量共享
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/06/15/Crawler_3/">
+                    爬虫笔记（三）：BeautifulSoup基础
+                </a>
+            </div>
+        
+    </nav>
+
+  
+  
+  
+    <div style="padding: 0; margin: 20px auto; width: 90%; text-align: center;">
+      <br>
+      <div>您的支持将鼓励我继续创作！</div>
+      <br>
+      <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+        <div class="btn btn-pay">打赏支持</div>
+      </button>
+      <br>
+      <br>
+      <div id="QR" style="display: none;">
+        
+          <div id="wechat" style="display: inline-block;">
+            <img id="wechat_qr" src="/img/wechat-reward-qr.jpg" alt="ZangBo WeChat Pay"/>
+            <p>微信打赏</p>
+          </div>
+        
+        
+          <div id="alipay" style="display: inline-block">
+            <img id="alipay_qr" src="/img/alipay-reward-qr.jpg" alt="ZangBo Alipay"/>
+            <p>支付宝打赏</p>
+          </div>
+        
+        <br>
+        <br>
+      </div>
+    </div>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分析网站"><span class="toc-number">2.</span> <span class="toc-text">分析网站</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#完整代码"><span class="toc-number">3.</span> <span class="toc-text">完整代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#结果"><span class="toc-number">4.</span> <span class="toc-text">结果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">5.</span> <span class="toc-text">后记</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                 "common":{"bdSnsKey":{},"bdText":"爬虫笔记（四）：获取某地历史天气数据　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2136080';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/06/24/TensorFlow_3/" title="上一篇: TensorFlow 笔记（三）：Name_Scope和变量共享">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/06/15/Crawler_3/" title="下一篇: 爬虫笔记（三）：BeautifulSoup基础">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/09/TensorFlow_13/">TensorFlow 笔记（十三）：tf.contrib.learn入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/TensorFlow_12/">TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/TensorFlow_11/">TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_10/">TensorFlow 笔记（十）：张量的阶、形状和数据类型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_9/">TensorFlow 笔记（九）：数据读取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/TensorFlow_8/">TensorFlow 笔记（八）：线程和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_7/">TensorFlow 笔记（七）：Exponential_decay</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_6/">TensorFlow 笔记（六）：Moving Average</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/30/TensorFlow_5/">TensorFlow 笔记（五）：常用函数和模型的保存与恢复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/TensorFlow_4/">TensorFlow 笔记（四）：TensorBoard可视化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/24/TensorFlow_3/">TensorFlow 笔记（三）：Name_Scope和变量共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/22/Crawler_4/">爬虫笔记（四）：获取某地历史天气数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/Crawler_3/">爬虫笔记（三）：BeautifulSoup基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/Crawler_2/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/Crawler_1/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/EncodingKnowledge/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GithubPageDomainName/">配置GithubPage二级域名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GiftForGirlfriend/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec_Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec_skip-gram/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/RandomGradientDecreases/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/TensorFlow_2/">TensorFlow 笔记（二）：MNIST进阶</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow_1/">TensorFlow 笔记（一）：MNIST入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/MacGitHubHexoBlog/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/Introduction/">欢迎来到我的小站</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 ZangBo
+            </div>
+            <div class="footer-right">
+                Welcome to ZangBo's Blog
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.3.3/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-100951797-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

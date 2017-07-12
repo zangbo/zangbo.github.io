@@ -1,25 +1,25 @@
-http://zangbo.me/2017/07/09/TensorFlow 笔记（十三）/
-http://zangbo.me/2017/07/07/TensorFlow 笔记（十二）/
-http://zangbo.me/2017/07/06/TensorFlow 笔记（十一）/
-http://zangbo.me/2017/07/05/TensorFlow 笔记（十）/
-http://zangbo.me/2017/07/05/TensorFlow 笔记（九）/
-http://zangbo.me/2017/07/03/TensorFlow 笔记（八）/
-http://zangbo.me/2017/07/01/TensorFlow 笔记（七）/
-http://zangbo.me/2017/07/01/TensorFlow 笔记（六）/
-http://zangbo.me/2017/06/30/TensorFlow 笔记（五）/
-http://zangbo.me/2017/06/27/TensorFlow 笔记（四）/
-http://zangbo.me/2017/06/24/Tensorflow 笔记（三）/
-http://zangbo.me/2017/06/22/爬虫学习笔记（四）/
-http://zangbo.me/2017/06/15/爬虫学习笔记（三）/
-http://zangbo.me/2017/06/14/爬虫学习笔记（二）/
-http://zangbo.me/2017/06/13/爬虫学习笔记（一）/
-http://zangbo.me/2017/06/13/编码相关知识/
-http://zangbo.me/2017/06/12/配置GithubPage二级域名/
-http://zangbo.me/2017/06/12/送女友的生日礼物/
-http://zangbo.me/2017/06/06/Word2Vec之Negative-Sample/
-http://zangbo.me/2017/06/05/Word2Vec之skip-gram模型/
-http://zangbo.me/2017/06/04/关于随机梯度下降/
-http://zangbo.me/2017/06/03/Tensorflow 笔记（二）/
-http://zangbo.me/2017/06/02/Tensorflow 笔记（一）/
-http://zangbo.me/2017/06/01/Mac环境利用GitHub和Hexo搭建个人博客/
-http://zangbo.me/2017/05/20/自我介绍/
+http://zangbo.me/2017/07/09/TensorFlow_13/
+http://zangbo.me/2017/07/07/TensorFlow_12/
+http://zangbo.me/2017/07/06/TensorFlow_11/
+http://zangbo.me/2017/07/05/TensorFlow_10/
+http://zangbo.me/2017/07/05/TensorFlow_9/
+http://zangbo.me/2017/07/03/TensorFlow_8/
+http://zangbo.me/2017/07/01/TensorFlow_7/
+http://zangbo.me/2017/07/01/TensorFlow_6/
+http://zangbo.me/2017/06/30/TensorFlow_5/
+http://zangbo.me/2017/06/27/TensorFlow_4/
+http://zangbo.me/2017/06/24/TensorFlow_3/
+http://zangbo.me/2017/06/22/Crawler_4/
+http://zangbo.me/2017/06/15/Crawler_3/
+http://zangbo.me/2017/06/14/Crawler_2/
+http://zangbo.me/2017/06/13/Crawler_1/
+http://zangbo.me/2017/06/13/EncodingKnowledge/
+http://zangbo.me/2017/06/12/GithubPageDomainName/
+http://zangbo.me/2017/06/12/GiftForGirlfriend/
+http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/
+http://zangbo.me/2017/06/05/Word2Vec_skip-gram/
+http://zangbo.me/2017/06/04/RandomGradientDecreases/
+http://zangbo.me/2017/06/03/TensorFlow_2/
+http://zangbo.me/2017/06/02/Tensorflow_1/
+http://zangbo.me/2017/06/01/MacGitHubHexoBlog/
+http://zangbo.me/2017/05/20/Introduction/

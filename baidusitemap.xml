@@ -3,14 +3,35 @@
 
 
     
-    
   <url>
-    <loc>http://zangbo.me/2017/07/09/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/</loc>
-    <lastmod>2017-07-09T09:13:30.000Z</lastmod>
+    <loc>http://zangbo.me/2017/06/27/TensorFlow_4/</loc>
+    <lastmod>2017-07-12T09:22:26.000Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow 笔记（十三）：tf.contrib.learn入门</title>
-        <pubTime>2017-07-09T05:32:36.000Z</pubTime>
+        <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
+        <pubTime>2017-06-27T13:50:54.000Z</pubTime>
+        
+        <tag>可视化</tag>
+         
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://zangbo.me/2017/06/24/TensorFlow_3/</loc>
+    <lastmod>2017-07-12T09:22:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow 笔记（三）：Name_Scope和变量共享</title>
+        <pubTime>2017-06-24T08:09:34.000Z</pubTime>
         
         <tag>TensorFlow</tag>
          
@@ -25,8 +46,48 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/06/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/</loc>
-    <lastmod>2017-07-08T06:39:25.000Z</lastmod>
+    <loc>http://zangbo.me/2017/06/03/TensorFlow_2/</loc>
+    <lastmod>2017-07-12T09:22:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow 笔记（二）：MNIST进阶</title>
+        <pubTime>2017-06-03T07:28:10.000Z</pubTime>
+        
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://zangbo.me/2017/06/02/Tensorflow_1/</loc>
+    <lastmod>2017-07-12T09:21:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow 笔记（一）：MNIST入门</title>
+        <pubTime>2017-06-02T05:22:10.000Z</pubTime>
+        
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://zangbo.me/2017/07/06/TensorFlow_11/</loc>
+    <lastmod>2017-07-12T09:21:41.000Z</lastmod>
     <data>
         <display>
         <title>TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</title>
@@ -45,7 +106,43 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/07/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/07/09/TensorFlow_13/</loc>
+    <lastmod>2017-07-12T09:20:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow 笔记（十三）：tf.contrib.learn入门</title>
+        <pubTime>2017-07-09T05:32:36.000Z</pubTime>
+        
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://zangbo.me/2017/05/20/Introduction/</loc>
+    <lastmod>2017-07-11T13:18:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>欢迎来到我的小站</title>
+        <pubTime>2017-05-19T16:00:46.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://zangbo.me/2017/07/07/TensorFlow_12/</loc>
     <lastmod>2017-07-08T06:29:28.000Z</lastmod>
     <data>
         <display>
@@ -65,7 +162,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/05/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/07/05/TensorFlow_9/</loc>
     <lastmod>2017-07-06T08:06:24.000Z</lastmod>
     <data>
         <display>
@@ -85,7 +182,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/05/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/07/05/TensorFlow_10/</loc>
     <lastmod>2017-07-05T09:23:17.000Z</lastmod>
     <data>
         <display>
@@ -105,7 +202,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/03/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/07/03/TensorFlow_8/</loc>
     <lastmod>2017-07-05T04:25:39.000Z</lastmod>
     <data>
         <display>
@@ -125,7 +222,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/01/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/07/01/TensorFlow_7/</loc>
     <lastmod>2017-07-01T08:23:00.000Z</lastmod>
     <data>
         <display>
@@ -145,7 +242,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/30/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/06/30/TensorFlow_5/</loc>
     <lastmod>2017-07-01T05:53:17.000Z</lastmod>
     <data>
         <display>
@@ -165,7 +262,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/01/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/07/01/TensorFlow_6/</loc>
     <lastmod>2017-07-01T05:48:04.000Z</lastmod>
     <data>
         <display>
@@ -185,89 +282,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/27/TensorFlow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/</loc>
-    <lastmod>2017-06-30T04:45:29.000Z</lastmod>
-    <data>
-        <display>
-        <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
-        <pubTime>2017-06-27T13:50:54.000Z</pubTime>
-        
-        <tag>TensorFlow</tag>
-         
-        <tag>可视化</tag>
-         
-         
-           
-             
-              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/03/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
-    <lastmod>2017-06-29T14:17:00.000Z</lastmod>
-    <data>
-        <display>
-        <title>TensorFlow 笔记（二）：MNIST进阶</title>
-        <pubTime>2017-06-03T07:28:10.000Z</pubTime>
-        
-        <tag>TensorFlow</tag>
-         
-         
-           
-             
-              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/02/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
-    <lastmod>2017-06-29T14:16:49.000Z</lastmod>
-    <data>
-        <display>
-        <title>TensorFlow 笔记（一）：MNIST入门</title>
-        <pubTime>2017-06-02T05:22:10.000Z</pubTime>
-        
-        <tag>TensorFlow</tag>
-         
-         
-           
-             
-              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/24/Tensorflow%20%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</loc>
-    <lastmod>2017-06-29T14:14:59.000Z</lastmod>
-    <data>
-        <display>
-        <title>TensorFlow 笔记（三）：Name_Scope和变量共享</title>
-        <pubTime>2017-06-24T08:09:34.000Z</pubTime>
-        
-        <tag>TensorFlow</tag>
-         
-         
-           
-             
-              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/12/%E9%80%81%E5%A5%B3%E5%8F%8B%E7%9A%84%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9/</loc>
+    <loc>http://zangbo.me/2017/06/12/GiftForGirlfriend/</loc>
     <lastmod>2017-06-23T12:05:23.000Z</lastmod>
     <data>
         <display>
@@ -286,7 +301,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/15/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/06/15/Crawler_3/</loc>
     <lastmod>2017-06-23T02:17:12.000Z</lastmod>
     <data>
         <display>
@@ -306,7 +321,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/01/Mac%E7%8E%AF%E5%A2%83%E5%88%A9%E7%94%A8GitHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
+    <loc>http://zangbo.me/2017/06/01/MacGitHubHexoBlog/</loc>
     <lastmod>2017-06-22T17:41:44.000Z</lastmod>
     <data>
         <display>
@@ -326,7 +341,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/12/%E9%85%8D%E7%BD%AEGithubPage%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/</loc>
+    <loc>http://zangbo.me/2017/06/12/GithubPageDomainName/</loc>
     <lastmod>2017-06-22T14:53:19.000Z</lastmod>
     <data>
         <display>
@@ -346,7 +361,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/13/%E7%BC%96%E7%A0%81%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</loc>
+    <loc>http://zangbo.me/2017/06/13/EncodingKnowledge/</loc>
     <lastmod>2017-06-22T13:17:53.000Z</lastmod>
     <data>
         <display>
@@ -364,7 +379,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/22/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/06/22/Crawler_4/</loc>
     <lastmod>2017-06-22T13:02:02.000Z</lastmod>
     <data>
         <display>
@@ -384,22 +399,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/05/20/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/</loc>
-    <lastmod>2017-06-22T10:05:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>欢迎来到我的小站</title>
-        <pubTime>2017-05-19T16:00:46.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/14/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/06/14/Crawler_2/</loc>
     <lastmod>2017-06-21T16:54:59.000Z</lastmod>
     <data>
         <display>
@@ -419,7 +419,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/13/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
+    <loc>http://zangbo.me/2017/06/13/Crawler_1/</loc>
     <lastmod>2017-06-21T16:53:05.000Z</lastmod>
     <data>
         <display>
@@ -439,7 +439,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/06/Word2Vec%E4%B9%8BNegative-Sample/</loc>
+    <loc>http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/</loc>
     <lastmod>2017-06-21T16:52:33.000Z</lastmod>
     <data>
         <display>
@@ -459,7 +459,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/05/Word2Vec%E4%B9%8Bskip-gram%E6%A8%A1%E5%9E%8B/</loc>
+    <loc>http://zangbo.me/2017/06/05/Word2Vec_skip-gram/</loc>
     <lastmod>2017-06-21T16:52:01.000Z</lastmod>
     <data>
         <display>
@@ -479,7 +479,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/06/04/%E5%85%B3%E4%BA%8E%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/</loc>
+    <loc>http://zangbo.me/2017/06/04/RandomGradientDecreases/</loc>
     <lastmod>2017-06-11T08:18:17.000Z</lastmod>
     <data>
         <display>

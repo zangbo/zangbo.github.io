@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="ZangBo" />
+
+
+
+<meta name="description" content="本文整理了TensorFlow中的数据读取方法，在TensorFlow中主要有三种方法读取数据：  Feeding：由Python提供数据。 Preloaded data：预加载数据。 Reading from files：从文件读取。">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow 笔记（九）：数据读取">
+<meta property="og:url" content="http://zangbo.me/2017/07/05/TensorFlow_9/index.html">
+<meta property="og:site_name" content="ZangBo&#39;s Home">
+<meta property="og:description" content="本文整理了TensorFlow中的数据读取方法，在TensorFlow中主要有三种方法读取数据：  Feeding：由Python提供数据。 Preloaded data：预加载数据。 Reading from files：从文件读取。">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170704205652_Agg5Zf_AnimatedFileQueues.gif">
+<meta property="og:updated_time" content="2017-07-06T08:06:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow 笔记（九）：数据读取">
+<meta name="twitter:description" content="本文整理了TensorFlow中的数据读取方法，在TensorFlow中主要有三种方法读取数据：  Feeding：由Python提供数据。 Preloaded data：预加载数据。 Reading from files：从文件读取。">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170704205652_Agg5Zf_AnimatedFileQueues.gif">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ZangBo&#39;s Home" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>TensorFlow 笔记（九）：数据读取 | ZangBo&#39;s Home</title>
+
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.12.1/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2697f2f0e109a018f0f89683fab342e6";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">ZangBo</a></h1>
+        </hgroup>
+
+        
+        
+        <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+        
+
+        
+            <br />
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">文章</a></li>
+                        
+                        <br />
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">SJTU在读研究生，机器学习相关，摄影爱好者，喜欢写一些随笔。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">ZangBo</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">ZangBo</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">文章</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-TensorFlow_9" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/05/TensorFlow_9/" class="article-date">
+      <time datetime="2017-07-05T02:04:11.000Z" itemprop="datePublished">2017-07-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TensorFlow 笔记（九）：数据读取
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文整理了TensorFlow中的数据读取方法，在TensorFlow中主要有三种方法读取数据：</p>
+<ol>
+<li>Feeding：由Python提供数据。</li>
+<li>Preloaded data：预加载数据。</li>
+<li>Reading from files：从文件读取。</li>
+</ol>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="Feeding"><a href="#Feeding" class="headerlink" title="Feeding"></a>Feeding</h1><p>我们一般用<code>tf.placeholder</code>节点来<code>feed</code>数据，该节点不需要初始化也不包含任何数据，我们在执行<code>run()</code>或者<code>eval()</code>指令时通过<code>feed_dict</code>参数把数据传入<code>graph</code>中来计算。如果在运行过程中没有对<code>tf.placeholder</code>节点传入数据，程序会报错。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="comment"># 设计Graph</span></div><div class="line">x1 = tf.placeholder(tf.int16)</div><div class="line">x2 = tf.placeholder(tf.int16)</div><div class="line">y = tf.add(x1, x2)</div><div class="line"><span class="comment"># 用Python产生数据</span></div><div class="line">li1 = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</div><div class="line">li2 = [<span class="number">4</span>, <span class="number">0</span>, <span class="number">1</span>]</div><div class="line"><span class="comment"># 打开一个session --&gt; 喂数据 --&gt; 计算y</span></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    <span class="keyword">print</span> sess.run(y, feed_dict=&#123;x1: li1, x2: li2&#125;)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="Preloaded-data"><a href="#Preloaded-data" class="headerlink" title="Preloaded data"></a>Preloaded data</h1><p>预加载数据方法仅限于用在可以完全加载到内存中的小数据集上，主要有两种方法：</p>
+<ol>
+<li>把数据存在常量（constant）中。</li>
+<li>把数据存在变量（variable）中，我们初始化并且永不改变它的值。</li>
+</ol>
+<p>用常量更简单些，但会占用更多的内存，因为常量存储在<code>graph</code>数据结构内部。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">training_data = ...</div><div class="line">training_labels = ...</div><div class="line"><span class="keyword">with</span> tf.Session():</div><div class="line">  input_data = tf.constant(training_data)</div><div class="line">  input_labels = tf.constant(training_labels)</div><div class="line">  ...</div></pre></td></tr></table></figure>
+<p>如果用变量的话，我们需要在<code>graph</code>构建好之后初始化该变量。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">training_data = ...</div><div class="line">training_labels = ...</div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">  data_initializer = tf.placeholder(dtype=training_data.dtype,</div><div class="line">                                    shape=training_data.shape)</div><div class="line">  label_initializer = tf.placeholder(dtype=training_labels.dtype,</div><div class="line">                                     shape=training_labels.shape)</div><div class="line">  input_data = tf.Variable(data_initializer, trainable=<span class="keyword">False</span>, collections=[])</div><div class="line">  input_labels = tf.Variable(label_initializer, trainable=<span class="keyword">False</span>, collections=[])</div><div class="line">  ...</div><div class="line">  sess.run(input_data.initializer,</div><div class="line">           feed_dict=&#123;data_initializer: training_data&#125;)</div><div class="line">  sess.run(input_labels.initializer,</div><div class="line">           feed_dict=&#123;label_initializer: training_labels&#125;)</div></pre></td></tr></table></figure>
+<p>设定<code>trainable=False</code> 可以防止该变量被数据流图的 <code>GraphKeys.TRAINABLE_VARIABLES</code> 收集, 这样我们就不会在训练的时候尝试更新它的值； 设定 <code>collections=[]</code> 可以防止<code>GraphKeys.VARIABLES</code> 把它收集后做为保存和恢复的中断点。</p>
+<p>无论哪种方式，我们可以用<code>tf.train.slice_input_producer</code>函数每次产生一个切片。这样就会让样本在整个迭代中被打乱，所以在使用批处理的时候不需要再次打乱样本。所以我们不使用<code>shuffle_batch</code>函数，取而代之的是纯<code>tf.train.batch</code> 函数。 如果要使用多个线程进行预处理，需要将<code>num_threads</code>参数设置为大于1的数字。</p>
+<p><br></p>
+<h1 id="Reading-from-files"><a href="#Reading-from-files" class="headerlink" title="Reading from files"></a>Reading from files</h1><p>从文件中读取数据一般包含以下步骤：</p>
+<ol>
+<li>文件名列表</li>
+<li>文件名随机排序（可选的）</li>
+<li>迭代控制（可选的）</li>
+<li>文件名队列</li>
+<li>针对输入文件格式的阅读器</li>
+<li>记录解析器</li>
+<li>预处理器（可选的）</li>
+<li>样本队列</li>
+</ol>
+<p><br></p>
+<h2 id="文件名、随机排序和迭代控制"><a href="#文件名、随机排序和迭代控制" class="headerlink" title="文件名、随机排序和迭代控制"></a>文件名、随机排序和迭代控制</h2><p>我们首先要有个文件名列表，为了产生文件名列表，我们可以手动用Python输入字符串，例如：</p>
+<ul>
+<li><code>[&quot;file0&quot;, &quot;file1&quot;]</code></li>
+<li><code>[(&quot;file%d&quot; % i) for i in range(2)]</code></li>
+<li><code>[(&quot;file%d&quot; % i) for i in range(2)]</code></li>
+</ul>
+<p>我们也可以用<code>tf.train.match_filenames_once</code>函数来生成文件名列表。</p>
+<p>有了文件名列表后，我们需要把它送入<code>tf.train.string_input_producer</code>函数中生成一个先入先出的文件名队列，文件阅读器需要从该队列中读取文件名。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">string_input_producer(</div><div class="line">    string_tensor,</div><div class="line">    num_epochs=<span class="keyword">None</span>,</div><div class="line">    shuffle=<span class="keyword">True</span>,</div><div class="line">    seed=<span class="keyword">None</span>,</div><div class="line">    capacity=<span class="number">32</span>,</div><div class="line">    shared_name=<span class="keyword">None</span>,</div><div class="line">    name=<span class="keyword">None</span>,</div><div class="line">    cancel_op=<span class="keyword">None</span></div><div class="line">)</div></pre></td></tr></table></figure>
+<p>一个<code>QueueRunner</code>每次会把每批次的所有文件名送入队列中，可以通过设置<code>string_input_producer</code>函数的<code>shuffle</code>参数来对文件名随机排序，或者通过设置<code>num_epochs</code>来决定对<code>string_tensor</code>里的文件使用多少次，类型为整型，如果想要迭代控制则需要设置了<code>num_epochs</code>参数，同时需要添加<code>tf.local_variables_initializer()</code>进行初始化，如果不初始化会报错。</p>
+<p>这个<code>QueueRunner</code>的工作线程独立于文件阅读器的线程， 因此随机排序和将文件名送入到文件名队列这些过程不会阻碍文件阅读器的运行。</p>
+<p><br></p>
+<h2 id="文件格式"><a href="#文件格式" class="headerlink" title="文件格式"></a>文件格式</h2><p>根据不同的文件格式， 应该选择对应的文件阅读器， 然后将文件名队列提供给阅读器的<code>read</code>方法。阅读器每次从队列中读取一个文件，它的<code>read</code>方法会输出一个<code>key</code>来表征读入的文件和其中的纪录(对于调试非常有用)，同时得到一个字符串标量， 这个字符串标量可以被一个或多个解析器，或者转换操作将其解码为张量并且构造成为样本。</p>
+<p>根据不同的文件类型，有三种不同的文件阅读器：</p>
+<ul>
+<li><code>tf.TextLineReader</code></li>
+<li><code>tf.FixedLengthRecordReader</code></li>
+<li><code>tf.TFRecordReader</code></li>
+</ul>
+<p>它们分别用于单行读取(如CSV文件)、固定长度读取(如CIFAR-10的.bin二进制文件)、TensorFlow标准格式读取。</p>
+<p>根据不同的文件阅读器，有三种不同的解析器，它们分别对应上面三种阅读器：</p>
+<ul>
+<li><code>tf.decode_csv</code></li>
+<li><code>tf.decode_raw</code></li>
+<li><code>tf.parse_single_example</code>和<code>tf.parse_example</code></li>
+</ul>
+<p><br></p>
+<h3 id="CSV文件"><a href="#CSV文件" class="headerlink" title="CSV文件"></a>CSV文件</h3><p>当我们读入CSV格式的文件时，我们可以使用<code>tf.TextLineReader</code>阅读器和<code>tf.decode_csv</code>解析器。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">filename_queue = tf.train.string_input_producer([<span class="string">"file0.csv"</span>, <span class="string">"file1.csv"</span>]) </div><div class="line"><span class="comment"># 创建一个Filename Queue</span></div><div class="line"><span class="comment"># 该例csv文件中共有5列数据，前四列为features，最后一列为label</span></div><div class="line"></div><div class="line">reader = tf.TextLineReader() <span class="comment"># 文件阅读器</span></div><div class="line">key, value = reader.read(filename_queue) <span class="comment"># 每次执行阅读器都从文件读一行内容</span></div><div class="line"></div><div class="line"><span class="comment"># Default values, in case of empty columns. Also specifies the type of the decoded result.</span></div><div class="line">record_defaults = [[<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>]] <span class="comment"># 文件数据皆为整数</span></div><div class="line">col1, col2, col3, col4, col5 = tf.decode_csv(value, record_defaults=record_defaults)</div><div class="line">features = tf.stack([col1, col2, col3, col4])</div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">  <span class="comment"># Start populating the filename queue.</span></div><div class="line">  coord = tf.train.Coordinator() <span class="comment">#创建一个协调器，管理线程</span></div><div class="line">  threads = tf.train.start_queue_runners(coord=coord) <span class="comment">#启动QueueRunner, 此时文件名队列已经进队。</span></div><div class="line"></div><div class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1200</span>):</div><div class="line">    <span class="comment"># Retrieve a single instance:</span></div><div class="line">    example, label = sess.run([features, col5])</div><div class="line"></div><div class="line">  coord.request_stop()</div><div class="line">  coord.join(threads)</div></pre></td></tr></table></figure>
+<p>每次<code>read</code>的执行都会从文件中读取一行内容， <code>decode_csv</code> 操作会解析这一行内容并将其转为张量列表。在调用<code>run</code>或者<code>eval</code>去执行<code>read</code>之前， 必须先调用<code>tf.train.start_queue_runners</code>来将文件名填充到队列。否则<code>read</code>操作会被阻塞到文件名队列中有值为止。</p>
+<p><code>record_defaults = [[1], [1], [1], [1], [1]]</code>代表了解析的摸版，默认用<code>,</code>隔开，是用于指定矩阵格式以及数据类型的，CSV文件中的矩阵是NXM的，则此处为1XM，例如上例中M=5。[1]表示解析为整型，如果矩阵中有小数，则应为float型，[1]应该变为[1.0]，[‘null’]解析为string类型。</p>
+<p><code>col1, col2, col3, col4, col5 = tf.decode_csv(value, record_defaults = record_defaults)</code>， 矩阵中有几列，这里就要写几个参数，比如5列，就要写到col5,不管你到底用多少。否则报错。</p>
+<p><br></p>
+<h3 id="固定长度记录"><a href="#固定长度记录" class="headerlink" title="固定长度记录"></a>固定长度记录</h3><p>我们也可以从<strong>二进制文件(.bin)</strong>中读取固定长度的数据，使用的是<code>tf.FixedLengthRecordReader</code>阅读器和<code>tf.decode_raw</code>解析器。<code>decode_raw</code>节点会把<code>string</code>转化为<code>uint8</code>类型的张量。</p>
+<p>例如CIFAR-10数据集就采用的固定长度的数据，1字节的标签，后面跟着3072字节的图像数据。使用<code>uint8</code>类型张量的标准操作可以把每个图像的片段截取下来并且按照需要重组。下面有一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">reader = tf.FixedLengthRecordReader(record_bytes = record_bytes)</div><div class="line">key, value = reader.read(filename_queue)</div><div class="line">record_bytes = tf.decode_raw(value, tf.uint8)</div><div class="line">label = tf.cast(tf.slice(record_bytes, [<span class="number">0</span>], [label_bytes]), tf.int32)</div><div class="line">image_raw = tf.slice(record_bytes, [label_bytes], [image_bytes])</div><div class="line">image_raw = tf.reshape(image_raw, [depth, height, width])</div><div class="line">image = tf.transpose(image_raw, (<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>)) <span class="comment"># 图像形状为[height, width, channels]     </span></div><div class="line">image = tf.cast(image, tf.float32)</div></pre></td></tr></table></figure>
+<p>这里介绍上述代码中出现的函数：<code>tf.slice()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">slice(</div><div class="line">    input_,</div><div class="line">    begin,</div><div class="line">    size,</div><div class="line">    name=<span class="keyword">None</span></div><div class="line">)</div></pre></td></tr></table></figure>
+<p>从一个张量<code>input</code>中提取出长度为<code>size</code>的一部分，提取的起点由<code>begin</code>定义。<code>size</code>是一个向量，它代表着在每个维度提取出的<code>tensor</code>的大小。<code>begin</code>表示提取的位置，它表示的是<code>input</code>的起点偏离值，也就是从每个维度第几个值开始提取。</p>
+<p><code>begin</code>从0开始，<code>size</code>从1开始，如果<code>size[i]</code>的值为-1，则第i个维度从<code>begin</code>处到余下的所有值都被提取出来。</p>
+<p>例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 'input' is [[[1, 1, 1], [2, 2, 2]],</div><div class="line">#             [[3, 3, 3], [4, 4, 4]],</div><div class="line">#             [[5, 5, 5], [6, 6, 6]]]</div><div class="line">tf.slice(input, [1, 0, 0], [1, 1, 3]) ==&gt; [[[3, 3, 3]]]</div><div class="line">tf.slice(input, [1, 0, 0], [1, 2, 3]) ==&gt; [[[3, 3, 3],</div><div class="line">                                            [4, 4, 4]]]</div><div class="line">tf.slice(input, [1, 0, 0], [2, 1, 3]) ==&gt; [[[3, 3, 3]],</div><div class="line">                                           [[5, 5, 5]]]</div></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="标准TensorFlow格式"><a href="#标准TensorFlow格式" class="headerlink" title="标准TensorFlow格式"></a>标准TensorFlow格式</h3><p>我们也可以把任意的数据转换为TensorFlow所支持的格式， 这种方法使TensorFlow的数据集更容易与网络应用架构相匹配。这种方法就是使用TFRecords文件，TFRecords文件包含了<code>tf.train.Example</code>的<em>protocol buffer</em>（里面包含了名为 <code>Features</code>的字段）。你可以写一段代码获取你的数据， 将数据填入到<code>Example</code>的<em>protocol buffer</em>，将<em>protocol buffer</em>序列化为一个字符串， 并且通过<code>tf.python_io.TFRecordWriter</code>类写入到TFRecords文件。</p>
+<p>从TFRecords文件中读取数据， 可以使用<code>tf.TFRecordReader</code>阅读器以及<code>tf.parse_single_example</code>解析器。<code>parse_single_example</code>操作可以将<code>Example</code><em>protocol buffer</em>解析为张量。 具体可以参考如下例子，把MNIST数据集转化为TFRecords格式：</p>
+<ul>
+<li><a href="https://www.github.com/tensorflow/tensorflow/blob/r1.2/tensorflow/examples/how_tos/reading_data/convert_to_records.py" target="_blank" rel="external"><code>tensorflow/examples/how_tos/reading_data/convert_to_records.py</code></a> .</li>
+</ul>
+<p>SparseTensors这种稀疏输入数据类型使用队列来处理不是太好。如果要使用SparseTensors你就必须在批处理<strong>之后</strong>使用<code>tf.parse_example</code>去解析字符串记录 (而不是在批处理<strong>之前</strong>使用<code>tf.parse_single_example</code>) 。</p>
+<p><br></p>
+<h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><p>我们可以对输入的样本数据进行任意的预处理， 这些预处理不依赖于训练参数， 比如数据归一化， 提取随机数据片，增加噪声或失真等等。具体可以参考如下对CIFAR-10处理的例子：</p>
+<ul>
+<li><a href="https://tensorflow.googlesource.com/tensorflow/+/master/tensorflow/models/image/cifar10/cifar10.py" target="_blank" rel="external"><code>tensorflow/models/image/cifar10/cifar10.py</code></a></li>
+</ul>
+<p><br></p>
+<h2 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h2><p>经过了之前的步骤，在数据读取流程的最后， 我们需要有另一个队列来批量执行输入样本的训练，评估或者推断。根据要不要打乱顺序，我们常用的有两个函数：</p>
+<ul>
+<li><code>tf.train.batch()</code></li>
+<li><code>tf.train.shuffle_batch()</code></li>
+</ul>
+<p>下面来分别介绍：</p>
+<h3 id="tf-train-batch"><a href="#tf-train-batch" class="headerlink" title="tf.train.batch()"></a>tf.train.batch()</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">tf.train.batch(</div><div class="line">    tensors,</div><div class="line">    batch_size,</div><div class="line">    num_threads=<span class="number">1</span>,</div><div class="line">    capacity=<span class="number">32</span>,</div><div class="line">    enqueue_many=<span class="keyword">False</span>,</div><div class="line">    shapes=<span class="keyword">None</span>,</div><div class="line">    dynamic_pad=<span class="keyword">False</span>,</div><div class="line">    allow_smaller_final_batch=<span class="keyword">False</span>,</div><div class="line">    shared_name=<span class="keyword">None</span>,</div><div class="line">    name=<span class="keyword">None</span></div><div class="line">)</div></pre></td></tr></table></figure>
+<p>该函数将会使用一个队列，函数读取一定数量的<code>tensors</code>送入队列，然后每次从中选取<code>batch_size</code>个<code>tensors</code>组成一个新的<code>tensors</code>返回出来。</p>
+<p><code>capacity</code>参数决定了队列的长度。</p>
+<p><code>num_threads</code>决定了有多少个线程进行入队操作，如果设置的超过一个线程，它们将从不同文件不同位置同时读取，可以更加充分的混合训练样本。</p>
+<p>如果<code>enqueue_many</code>参数为<code>False</code>，则输入参数<code>tensors</code>为一个形状为<code>[x, y, z]</code>的张量，输出为一个形状为<code>[batch_size, x, y, z]</code>的张量。如果<code>enqueue_many</code>参数为<code>True</code>，则输入参数<code>tensors</code>为一个形状为<code>[*, x, y, z]</code>的张量，其中所有<code>*</code>的数值相同，输出为一个形状为<code>[batch_size, x, y, z]</code>的张量。</p>
+<p>当<code>allow_smaller_final_batch</code>为<code>True</code>时，如果队列中的张量数量不足<code>batch_size</code>，将会返回小于<code>batch_size</code>长度的张量，如果为<code>False</code>，剩下的张量会被丢弃。</p>
+<h3 id="tf-train-shuffle-batch"><a href="#tf-train-shuffle-batch" class="headerlink" title="tf.train.shuffle_batch()"></a>tf.train.shuffle_batch()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">tf.train.shuffle_batch(</div><div class="line">    tensors,</div><div class="line">    batch_size,</div><div class="line">    capacity,</div><div class="line">    min_after_dequeue,</div><div class="line">    num_threads=1,</div><div class="line">    seed=None,</div><div class="line">    enqueue_many=False,</div><div class="line">    shapes=None,</div><div class="line">    allow_smaller_final_batch=False,</div><div class="line">    shared_name=None,</div><div class="line">    name=None</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>该函数类似于上面的<code>tf.train.batch()</code>，同样创建一个队列，主要区别是会首先把队列中的张量进行乱序处理，然后再选取其中的<code>batch_size</code>个张量组成一个新的张量返回。但是新增加了几个参数。</p>
+<p><code>capacity</code>参数依然为队列的长度，建议<code>capacity</code>的取值如下：</p>
+<p><code>min_after_dequeue + (num_threads + a small safety margin) * batch_size</code></p>
+<p><code>min_after_dequeue</code>这个参数的意思是队列中，做dequeue（取数据）的操作后，线程要保证队列中至少剩下<code>min_after_dequeue</code>个数据。如果<code>min_after_dequeue</code>设置的过少，则即使<code>shuffle</code>为<code>True</code>，也达不到好的混合效果。</p>
+<blockquote>
+<p>假设你有一个队列，现在里面有m个数据，你想要每次随机从队列中取n个数据，则代表先混合了m个数据，再从中取走n个。 </p>
+<p>当第一次取走n个后，队列就变为m-n个数据；当你下次再想要取n个时，假设队列在此期间入队进来了k个数据，则现在的队列中有(m-n+k)个数据，则此时会从混合的(m-n+k)个数据中随机取走n个。</p>
+<p>如果队列填充的速度比较慢，k就比较小，那你取出来的n个数据只是与周围很小的一部分(m-n+k)个数据进行了混合。</p>
+<p>因为我们的目的肯定是想尽最大可能的混合数据，因此设置<code>min_after_dequeue</code>，可以保证每次dequeue后都有足够量的数据填充尽队列，保证下次dequeue时可以很充分的混合数据。</p>
+<p>但是<code>min_after_dequeue</code>也不能设置的太大，这样会导致队列填充的时间变长，尤其是在最初的装载阶段，会花费比较长的时间。</p>
+</blockquote>
+<p>其他参数和<code>tf.train.batch()</code>相同。</p>
+<p><br></p>
+<p>这里我们使用<code>tf.train.shuffle_batch</code>函数来对队列中的样本进行乱序处理。如下的模版：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_my_file_format</span><span class="params">(filename_queue)</span>:</span></div><div class="line">  reader = tf.SomeReader()</div><div class="line">  key, record_string = reader.read(filename_queue)</div><div class="line">  example, label = tf.some_decoder(record_string)</div><div class="line">  processed_example = some_processing(example)</div><div class="line">  <span class="keyword">return</span> processed_example, label</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">input_pipeline</span><span class="params">(filenames, batch_size, num_epochs=None)</span>:</span></div><div class="line">  filename_queue = tf.train.string_input_producer(</div><div class="line">      filenames, num_epochs=num_epochs, shuffle=<span class="keyword">True</span>)</div><div class="line">  example, label = read_my_file_format(filename_queue)</div><div class="line">  <span class="comment"># min_after_dequeue 越大意味着随机效果越好但是也会占用更多的时间和内存</span></div><div class="line">  <span class="comment"># capacity 必须比 min_after_dequeue 大</span></div><div class="line">  <span class="comment"># 建议capacity的取值如下：</span></div><div class="line">  <span class="comment"># min_after_dequeue + (num_threads + a small safety margin) * batch_size</span></div><div class="line">  min_after_dequeue = <span class="number">10000</span></div><div class="line">  capacity = min_after_dequeue + <span class="number">3</span> * batch_size</div><div class="line">  example_batch, label_batch = tf.train.shuffle_batch(</div><div class="line">      [example, label], batch_size=batch_size, capacity=capacity,</div><div class="line">      min_after_dequeue=min_after_dequeue)</div><div class="line">  <span class="keyword">return</span> example_batch, label_batch</div></pre></td></tr></table></figure>
+<p>一个具体的例子如下，该例采用了CIFAR-10数据集，采用了固定长度读取的<code>tf.FixedLengthRecordReader</code>阅读器和<code>tf.decode_raw</code>解析器，同时进行了数据预处理操作中的标准化操作，最后使用<code>tf.train.shuffle_batch</code>函数批量执行数据的乱序处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">cifar10_data</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filename_queue)</span>:</span></div><div class="line">        self.height = <span class="number">32</span></div><div class="line">        self.width = <span class="number">32</span></div><div class="line">        self.depth = <span class="number">3</span></div><div class="line">        self.label_bytes = <span class="number">1</span></div><div class="line">        self.image_bytes = self.height * self.width * self.depth</div><div class="line">        self.record_bytes = self.label_bytes + self.image_bytes</div><div class="line">        self.label, self.image = self.read_cifar10(filename_queue)</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read_cifar10</span><span class="params">(self, filename_queue)</span>:</span></div><div class="line">        reader = tf.FixedLengthRecordReader(record_bytes = self.record_bytes)</div><div class="line">        key, value = reader.read(filename_queue)</div><div class="line">        record_bytes = tf.decode_raw(value, tf.uint8)</div><div class="line">        label = tf.cast(tf.slice(record_bytes, [<span class="number">0</span>], [self.label_bytes]), tf.int32)</div><div class="line">        image_raw = tf.slice(record_bytes, [self.label_bytes], [self.image_bytes])</div><div class="line">        image_raw = tf.reshape(image_raw, [self.depth, self.height, self.width])</div><div class="line">        image = tf.transpose(image_raw, (<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>))        </div><div class="line">        image = tf.cast(image, tf.float32)</div><div class="line">        <span class="keyword">return</span> label, image</div><div class="line">    </div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">inputs</span><span class="params">(data_dir, batch_size, train = True, name = <span class="string">'input'</span>)</span>:</span></div><div class="line"></div><div class="line">    <span class="keyword">with</span> tf.name_scope(name):</div><div class="line">        <span class="keyword">if</span> train:    </div><div class="line">            filenames = [os.path.join(data_dir,<span class="string">'data_batch_%d.bin'</span> % ii) </div><div class="line">                        <span class="keyword">for</span> ii <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">6</span>)]</div><div class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> filenames:</div><div class="line">                <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(f):</div><div class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'Failed to find file: '</span> + f)</div><div class="line">                    </div><div class="line">            filename_queue = tf.train.string_input_producer(filenames)</div><div class="line">            read_input = cifar10_data(filename_queue)</div><div class="line">            images = read_input.image</div><div class="line">            images = tf.image.per_image_standardization(images)</div><div class="line">            labels = read_input.label</div><div class="line">            image, label = tf.train.shuffle_batch(</div><div class="line">                                    [images,labels], batch_size = batch_size, </div><div class="line">                                    min_after_dequeue = <span class="number">20000</span>, capacity = <span class="number">20192</span>)</div><div class="line">        </div><div class="line">            <span class="keyword">return</span> image, tf.reshape(label, [batch_size])</div><div class="line">            </div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            filenames = [os.path.join(data_dir,<span class="string">'test_batch.bin'</span>)]</div><div class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> filenames:</div><div class="line">                <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(f):</div><div class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'Failed to find file: '</span> + f)</div><div class="line">                    </div><div class="line">            filename_queue = tf.train.string_input_producer(filenames)</div><div class="line">            read_input = cifar10_data(filename_queue)</div><div class="line">            images = read_input.image</div><div class="line">            images = tf.image.per_image_standardization(images)</div><div class="line">            labels = read_input.label</div><div class="line">            image, label = tf.train.shuffle_batch(</div><div class="line">                                    [images,labels], batch_size = batch_size, </div><div class="line">                                    min_after_dequeue = <span class="number">20000</span>, capacity = <span class="number">20192</span>)</div><div class="line">        </div><div class="line">            <span class="keyword">return</span> image, tf.reshape(label, [batch_size])</div></pre></td></tr></table></figure>
+<p>这里介绍下函数<code>tf.image.per_image_standardization(image)</code>，该函数对图像进行线性变换使它具有零均值和单位方差，即规范化。其中参数<code>image</code>是一个3-D的张量，形状为<code>[height, width, channels]</code>。</p>
+<p><br></p>
+<h2 id="多个样本和多个阅读器"><a href="#多个样本和多个阅读器" class="headerlink" title="多个样本和多个阅读器"></a>多个样本和多个阅读器</h2><p>下面讲分别展示三个不同Reader数目和不同样本数的代码示例：</p>
+<h3 id="文件准备"><a href="#文件准备" class="headerlink" title="文件准备"></a>文件准备</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> -e <span class="string">"Alpha1,A1\nAlpha2,A2\nAlpha3,A3"</span> &gt; A.csv</div><div class="line">$ <span class="built_in">echo</span> -e <span class="string">"Bee1,B1\nBee2,B2\nBee3,B3"</span> &gt; B.csv</div><div class="line">$ <span class="built_in">echo</span> -e <span class="string">"Sea1,C1\nSea2,C2\nSea3,C3"</span> &gt; C.csv</div><div class="line">$ cat A.csv</div><div class="line">Alpha1,A1</div><div class="line">Alpha2,A2</div><div class="line">Alpha3,A3</div></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="单个Reader，单个样本"><a href="#单个Reader，单个样本" class="headerlink" title="单个Reader，单个样本"></a>单个Reader，单个样本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="comment"># 生成一个先入先出队列和一个QueueRunner</span></div><div class="line">filenames = [<span class="string">'A.csv'</span>, <span class="string">'B.csv'</span>, <span class="string">'C.csv'</span>]</div><div class="line">filename_queue = tf.train.string_input_producer(filenames, shuffle=<span class="keyword">False</span>)</div><div class="line"><span class="comment"># 定义Reader</span></div><div class="line">reader = tf.TextLineReader()</div><div class="line">key, value = reader.read(filename_queue)</div><div class="line"><span class="comment"># 定义Decoder</span></div><div class="line">example, label = tf.decode_csv(value, record_defaults=[[<span class="string">'null'</span>], [<span class="string">'null'</span>]])</div><div class="line"><span class="comment"># 运行Graph</span></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    coord = tf.train.Coordinator()  <span class="comment">#创建一个协调器，管理线程</span></div><div class="line">    threads = tf.train.start_queue_runners(coord=coord)  <span class="comment">#启动QueueRunner, 此时文件名队列已经进队。</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">        <span class="keyword">print</span> example.eval()   <span class="comment">#取样本的时候，一个Reader先从文件名队列中取出文件名，读出数据，Decoder解析后进入样本队列。</span></div><div class="line">    coord.request_stop()</div><div class="line">    coord.join(threads)</div><div class="line"><span class="comment"># outpt</span></div><div class="line">Alpha1</div><div class="line">Alpha2</div><div class="line">Alpha3</div><div class="line">Bee1</div><div class="line">Bee2</div><div class="line">Bee3</div><div class="line">Sea1</div><div class="line">Sea2</div><div class="line">Sea3</div><div class="line">Alpha1</div></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="单个Reader，多个样本"><a href="#单个Reader，多个样本" class="headerlink" title="单个Reader，多个样本"></a>单个Reader，多个样本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">filenames = [<span class="string">'A.csv'</span>, <span class="string">'B.csv'</span>, <span class="string">'C.csv'</span>]</div><div class="line">filename_queue = tf.train.string_input_producer(filenames, shuffle=<span class="keyword">False</span>)</div><div class="line">reader = tf.TextLineReader()</div><div class="line">key, value = reader.read(filename_queue)</div><div class="line">example, label = tf.decode_csv(value, record_defaults=[[<span class="string">'null'</span>], [<span class="string">'null'</span>]])</div><div class="line"><span class="comment"># 使用tf.train.batch()会多加了一个样本队列和一个QueueRunner。Decoder解后数据会进入这个队列，再批量出队。</span></div><div class="line"><span class="comment"># 虽然这里只有一个Reader，但可以设置多线程，通过在tf.train.batch()中添加“num_threads="，相应增加线程数会提高读取速度，但并不是线程越多越好。</span></div><div class="line">example_batch, label_batch = tf.train.batch(</div><div class="line">      [example, label], batch_size=<span class="number">5</span>)</div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    coord = tf.train.Coordinator()</div><div class="line">    threads = tf.train.start_queue_runners(coord=coord)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">        <span class="keyword">print</span> example_batch.eval()</div><div class="line">    coord.request_stop()</div><div class="line">    coord.join(threads)</div><div class="line"><span class="comment"># output</span></div><div class="line"><span class="comment"># ['Alpha1' 'Alpha2' 'Alpha3' 'Bee1' 'Bee2']</span></div><div class="line"><span class="comment"># ['Bee3' 'Sea1' 'Sea2' 'Sea3' 'Alpha1']</span></div><div class="line"><span class="comment"># ['Alpha2' 'Alpha3' 'Bee1' 'Bee2' 'Bee3']</span></div><div class="line"><span class="comment"># ['Sea1' 'Sea2' 'Sea3' 'Alpha1' 'Alpha2']</span></div><div class="line"><span class="comment"># ['Alpha3' 'Bee1' 'Bee2' 'Bee3' 'Sea1']</span></div><div class="line"><span class="comment"># ['Sea2' 'Sea3' 'Alpha1' 'Alpha2' 'Alpha3']</span></div><div class="line"><span class="comment"># ['Bee1' 'Bee2' 'Bee3' 'Sea1' 'Sea2']</span></div><div class="line"><span class="comment"># ['Sea3' 'Alpha1' 'Alpha2' 'Alpha3' 'Bee1']</span></div><div class="line"><span class="comment"># ['Bee2' 'Bee3' 'Sea1' 'Sea2' 'Sea3']</span></div><div class="line"><span class="comment"># ['Alpha1' 'Alpha2' 'Alpha3' 'Bee1' 'Bee2']</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="多个Reader，多个样本"><a href="#多个Reader，多个样本" class="headerlink" title="多个Reader，多个样本"></a>多个Reader，多个样本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">filenames = [<span class="string">'A.csv'</span>, <span class="string">'B.csv'</span>, <span class="string">'C.csv'</span>]</div><div class="line">filename_queue = tf.train.string_input_producer(filenames, shuffle=<span class="keyword">False</span>)</div><div class="line">reader = tf.TextLineReader()</div><div class="line">key, value = reader.read(filename_queue)</div><div class="line">record_defaults = [[<span class="string">'null'</span>], [<span class="string">'null'</span>]]</div><div class="line">example_list = [tf.decode_csv(value, record_defaults=record_defaults)</div><div class="line">                  <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">2</span>)]  <span class="comment"># Reader设置为2</span></div><div class="line"><span class="comment"># 使用tf.train.batch_join()，可以使用多个reader，并行读取数据。每个Reader使用一个线程。</span></div><div class="line">example_batch, label_batch = tf.train.batch_join(</div><div class="line">      example_list, batch_size=<span class="number">5</span>)</div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    coord = tf.train.Coordinator()</div><div class="line">    threads = tf.train.start_queue_runners(coord=coord)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">        <span class="keyword">print</span> example_batch.eval()</div><div class="line">    coord.request_stop()</div><div class="line">    coord.join(threads)</div><div class="line">    </div><div class="line"><span class="comment"># output</span></div><div class="line"><span class="comment"># ['Alpha1' 'Alpha2' 'Alpha3' 'Bee1' 'Bee2']</span></div><div class="line"><span class="comment"># ['Bee3' 'Sea1' 'Sea2' 'Sea3' 'Alpha1']</span></div><div class="line"><span class="comment"># ['Alpha2' 'Alpha3' 'Bee1' 'Bee2' 'Bee3']</span></div><div class="line"><span class="comment"># ['Sea1' 'Sea2' 'Sea3' 'Alpha1' 'Alpha2']</span></div><div class="line"><span class="comment"># ['Alpha3' 'Bee1' 'Bee2' 'Bee3' 'Sea1']</span></div><div class="line"><span class="comment"># ['Sea2' 'Sea3' 'Alpha1' 'Alpha2' 'Alpha3']</span></div><div class="line"><span class="comment"># ['Bee1' 'Bee2' 'Bee3' 'Sea1' 'Sea2']</span></div><div class="line"><span class="comment"># ['Sea3' 'Alpha1' 'Alpha2' 'Alpha3' 'Bee1']</span></div><div class="line"><span class="comment"># ['Bee2' 'Bee3' 'Sea1' 'Sea2' 'Sea3']</span></div><div class="line"><span class="comment"># ['Alpha1' 'Alpha2' 'Alpha3' 'Bee1' 'Bee2']</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p><code>tf.train.batch</code>与<code>tf.train.shuffle_batch</code>函数是单个Reader读取，但是可以多线程，通过设置<code>num_threads</code>参数来设置多线程。<code>tf.train.batch_join</code>与<code>tf.train.shuffle_batch_join</code>可设置多Reader读取，每个Reader使用一个线程。至于两种方法的效率，单Reader时，2个线程就达到了速度的极限。多Reader时，2个Reader就达到了极限。所以并不是线程越多越快，甚至更多的线程反而会使效率下降。</p>
+<p>上述两种方法，前者相比于后者的好处是：</p>
+<ul>
+<li>避免了两个不同的线程从同一个文件中读取同一个样本。</li>
+<li>避免了过多的磁盘搜索操作。</li>
+</ul>
+<p>那么具体需要多少个读取线程呢？ 函数<code>tf.train.shuffle_batch*</code>为<code>graph</code>提供了获取文件名队列中的元素个数之和的方法。 如果你有足够多的读取线程， 文件名队列中的元素个数之和应该一直是一个略高于0的数。具体可以参考TensorBoard的教程。</p>
+<p><br></p>
+<h2 id="创建线程并使用QueueRunner对象来获取"><a href="#创建线程并使用QueueRunner对象来获取" class="headerlink" title="创建线程并使用QueueRunner对象来获取"></a>创建线程并使用QueueRunner对象来获取</h2><p>我们要添加<code>tf.train.QueueRunner</code>对象到数据流图中，在运行任何训练步骤之前，需要调用<code>tf.train.start_queue_runners</code>函数，否则数据流图将一直挂起，该函数将会启动输入管道的线程，填充样本到队列中，以便出队操作可以从队列中拿到样本。这种情况下最好配合使用一个<code>tf.train.Coordinator</code>，这样可以在发生错误的情况下正确地关闭这些线程。如果我们对训练迭代数做了限制，那么需要使用一个训练迭代数计数器，并且需要初始化它。推荐的代码模板如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create the graph, etc.</span></div><div class="line">init_op = tf.global_variables_initializer()</div><div class="line"></div><div class="line"><span class="comment"># Create a session for running operations in the Graph.</span></div><div class="line">sess = tf.Session()</div><div class="line"></div><div class="line"><span class="comment"># Initialize the variables (like the epoch counter).</span></div><div class="line">sess.run(init_op)</div><div class="line"></div><div class="line"><span class="comment"># Start input enqueue threads.</span></div><div class="line">coord = tf.train.Coordinator()</div><div class="line">threads = tf.train.start_queue_runners(sess=sess, coord=coord)</div><div class="line"></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    <span class="keyword">while</span> <span class="keyword">not</span> coord.should_stop():</div><div class="line">        <span class="comment"># Run training steps or whatever</span></div><div class="line">        sess.run(train_op)</div><div class="line"></div><div class="line"><span class="keyword">except</span> tf.errors.OutOfRangeError:</div><div class="line">    print(<span class="string">'Done training -- epoch limit reached'</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    <span class="comment"># When done, ask the threads to stop.</span></div><div class="line">    coord.request_stop()</div><div class="line"></div><div class="line"><span class="comment"># Wait for threads to finish.</span></div><div class="line">coord.join(threads)</div><div class="line">sess.close()</div></pre></td></tr></table></figure>
+<p><br></p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170704205652_Agg5Zf_AnimatedFileQueues.gif" alt="Animated File Queues" width="900"></center>
+
+<p>如上图所示，每个<code>QueueRunner</code>负责一个阶段，处理那些需要在线程中运行的入队操作的列表。一旦数据流图构造成功，<code>tf.train.start_queue_runners</code>函数就会要求数据流图中每个<code>QueueRunner</code>去开始它的线程运行入队操作。</p>
+<p>如果一切顺利的话，我们可以执行训练步骤，同时队列也会被后台线程来填充。如果设置了最大训练迭代数，在某些时候，样本出队的操作可能会得到一个<code>tf.OutOfRangeError</code>的错误。这其实是TensorFlow的“文件结束”（EOF）——这就意味着已经达到了最大训练迭代数，已经没有更多可用的样本了。</p>
+<p>最后一个因素是<code>Coordinator</code>。这是负责在收到任何关闭信号的时候，让所有的线程都知道。最常见的情况是在发生异常时，比如说其中一个线程在运行某些操作时出现错误（或一个普通的Python异常）。</p>
+<p><br></p>
+<h3 id="疑问：在达到最大训练迭代数的时候如何关闭线程"><a href="#疑问：在达到最大训练迭代数的时候如何关闭线程" class="headerlink" title="疑问：在达到最大训练迭代数的时候如何关闭线程?"></a>疑问：在达到最大训练迭代数的时候如何关闭线程?</h3><p>想象一下，我们有一个模型并且设置了最大训练迭代数。这意味着，生成文件的那个线程只会在产生<code>OutOfRange</code>错误之前运行。<code>QueueRunner</code>会捕获该错误，并且关闭文件名的队列，最后退出线程。关闭队列做了两件事情：</p>
+<ul>
+<li>如果试着对文件名队列执行入队操作将发生错误。</li>
+<li>当前或将来的出队操作要么成功（如果队列中还有足够的元素）或立即失败（发生<code>OutOfRange</code>错误）。它们不会等待更多的元素被添加到队列中，因为上面的一点已经保证了这种情况不会发生。</li>
+</ul>
+<p>关键是，当在文件名队列被关闭时候，有可能还有许多文件名在该队列中，这样下一阶段的流水线（包括reader和其它预处理）还可以继续运行一段时间。 一旦文件名队列空了之后，如果后面的流水线还要尝试从文件名队列中取出一个文件名，这将会触发<code>OutOfRange</code>错误。在这种情况下，即使你可能有一个<code>QueueRunner</code>关联着多个线程，如果该出错线程不是<code>QueueRunner</code>中最后的那个线程，那么<code>OutOfRange</code>错误只会使得这一个线程退出。而其他那些正处理自己的最后一个文件的线程继续运行，直至他们完成为止。（但如果你使用的是<code>tf.train.Coordinator</code>来管理所有的线程，那么其他类型的错误将导致所有线程停止）。一旦所有的reader线程触发<code>OutOfRange</code>错误，样本队列才会被关闭。</p>
+<p>同样，样本队列中会有一些已经入队的元素，所以样本训练将一直持续直到样本队列中再没有样本为止。如果样本队列是一个<code>RandomShuffleQueue</code>，因为你使用了<code>shuffle_batch</code> 或者 <code>shuffle_batch_join</code>，所以通常不会出现以往那种队列中的元素会比<code>min_after_dequeue</code> 定义的更少的情况。 然而，一旦该队列被关闭，<code>min_after_dequeue</code>设置的限定值将失效，最终队列将为空。在这一点来说，当实际训练线程尝试从样本队列中取出数据时，将会触发<code>OutOfRange</code>错误，然后训练线程会退出。一旦所有的训练线程完成，<code>tf.train.Coordinator.join</code>会返回，你就可以正常退出了。</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://www.tensorflow.org/programmers_guide/reading_data" target="_blank" rel="external">Reading data  |  TensorFlow</a></li>
+<li><a href="https://www.tensorflow.org/extend/new_data_formats" target="_blank" rel="external">Custom Data Readers  |  TensorFlow</a></li>
+<li><a href="http://www.cnblogs.com/Charles-Wan/p/6197019.html" target="_blank" rel="external">TF Boys (TensorFlow Boys ) 养成记（二）： TensorFlow 数据读取 - Charles-Wan - 博客园</a></li>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/string_input_producer" target="_blank" rel="external">tf.train.string_input_producer  |  TensorFlow</a></li>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/batch" target="_blank" rel="external">tf.train.batch  |  TensorFlow</a></li>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/shuffle_batch" target="_blank" rel="external">tf.train.shuffle_batch  |  TensorFlow</a></li>
+<li><a href="http://honggang.io" target="_blank" rel="external">honggang.io</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/tensorflow-zh/how_tos/reading_data.html#AUTOGENERATED-reading-from-files" target="_blank" rel="external">数据读取 - TensorFlow 官方文档中文版 - 极客学院Wiki</a></li>
+<li><a href="http://blog.csdn.net/masa_fish/article/details/52624459" target="_blank" rel="external">TensorFlow官网教程Convolutional Neural Networks 难点详解 - 玛莎鱼的博客 - CSDN博客</a></li>
+</ul>
+<p><br></p>
+</the></excerpt>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/07/05/TensorFlow_9/">TensorFlow 笔记（九）：数据读取</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
+        <p><span>发布时间:</span>2017-07-05, 10:04:11</p>
+        <p><span>最后更新:</span>2017-07-06, 16:06:24</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/05/TensorFlow_9/" title="TensorFlow 笔记（九）：数据读取">http://zangbo.me/2017/07/05/TensorFlow_9/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/07/05/TensorFlow_9/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/07/05/TensorFlow_10/">
+                    TensorFlow 笔记（十）：张量的阶、形状和数据类型
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/07/03/TensorFlow_8/">
+                    TensorFlow 笔记（八）：线程和队列
+                </a>
+            </div>
+        
+    </nav>
+
+  
+  
+  
+    <div style="padding: 0; margin: 20px auto; width: 90%; text-align: center;">
+      <br>
+      <div>您的支持将鼓励我继续创作！</div>
+      <br>
+      <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+        <div class="btn btn-pay">打赏支持</div>
+      </button>
+      <br>
+      <br>
+      <div id="QR" style="display: none;">
+        
+          <div id="wechat" style="display: inline-block;">
+            <img id="wechat_qr" src="/img/wechat-reward-qr.jpg" alt="ZangBo WeChat Pay"/>
+            <p>微信打赏</p>
+          </div>
+        
+        
+          <div id="alipay" style="display: inline-block">
+            <img id="alipay_qr" src="/img/alipay-reward-qr.jpg" alt="ZangBo Alipay"/>
+            <p>支付宝打赏</p>
+          </div>
+        
+        <br>
+        <br>
+      </div>
+    </div>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Feeding"><span class="toc-number">1.</span> <span class="toc-text">Feeding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Preloaded-data"><span class="toc-number">2.</span> <span class="toc-text">Preloaded data</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reading-from-files"><span class="toc-number">3.</span> <span class="toc-text">Reading from files</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#文件名、随机排序和迭代控制"><span class="toc-number">3.1.</span> <span class="toc-text">文件名、随机排序和迭代控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件格式"><span class="toc-number">3.2.</span> <span class="toc-text">文件格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSV文件"><span class="toc-number">3.2.1.</span> <span class="toc-text">CSV文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#固定长度记录"><span class="toc-number">3.2.2.</span> <span class="toc-text">固定长度记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标准TensorFlow格式"><span class="toc-number">3.2.3.</span> <span class="toc-text">标准TensorFlow格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#预处理"><span class="toc-number">3.3.</span> <span class="toc-text">预处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#批处理"><span class="toc-number">3.4.</span> <span class="toc-text">批处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tf-train-batch"><span class="toc-number">3.4.1.</span> <span class="toc-text">tf.train.batch()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tf-train-shuffle-batch"><span class="toc-number">3.4.2.</span> <span class="toc-text">tf.train.shuffle_batch()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多个样本和多个阅读器"><span class="toc-number">3.5.</span> <span class="toc-text">多个样本和多个阅读器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件准备"><span class="toc-number">3.5.1.</span> <span class="toc-text">文件准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单个Reader，单个样本"><span class="toc-number">3.5.2.</span> <span class="toc-text">单个Reader，单个样本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单个Reader，多个样本"><span class="toc-number">3.5.3.</span> <span class="toc-text">单个Reader，多个样本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个Reader，多个样本"><span class="toc-number">3.5.4.</span> <span class="toc-text">多个Reader，多个样本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">3.5.5.</span> <span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建线程并使用QueueRunner对象来获取"><span class="toc-number">3.6.</span> <span class="toc-text">创建线程并使用QueueRunner对象来获取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#疑问：在达到最大训练迭代数的时候如何关闭线程"><span class="toc-number">3.6.1.</span> <span class="toc-text">疑问：在达到最大训练迭代数的时候如何关闭线程?</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 笔记（九）：数据读取　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2136080';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/07/05/TensorFlow_10/" title="上一篇: TensorFlow 笔记（十）：张量的阶、形状和数据类型">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/07/03/TensorFlow_8/" title="下一篇: TensorFlow 笔记（八）：线程和队列">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/09/TensorFlow_13/">TensorFlow 笔记（十三）：tf.contrib.learn入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/TensorFlow_12/">TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/TensorFlow_11/">TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_10/">TensorFlow 笔记（十）：张量的阶、形状和数据类型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_9/">TensorFlow 笔记（九）：数据读取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/TensorFlow_8/">TensorFlow 笔记（八）：线程和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_7/">TensorFlow 笔记（七）：Exponential_decay</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_6/">TensorFlow 笔记（六）：Moving Average</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/30/TensorFlow_5/">TensorFlow 笔记（五）：常用函数和模型的保存与恢复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/TensorFlow_4/">TensorFlow 笔记（四）：TensorBoard可视化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/24/TensorFlow_3/">TensorFlow 笔记（三）：Name_Scope和变量共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/22/Crawler_4/">爬虫笔记（四）：获取某地历史天气数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/Crawler_3/">爬虫笔记（三）：BeautifulSoup基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/Crawler_2/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/Crawler_1/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/EncodingKnowledge/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GithubPageDomainName/">配置GithubPage二级域名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GiftForGirlfriend/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec_Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec_skip-gram/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/RandomGradientDecreases/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/TensorFlow_2/">TensorFlow 笔记（二）：MNIST进阶</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow_1/">TensorFlow 笔记（一）：MNIST入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/MacGitHubHexoBlog/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/Introduction/">欢迎来到我的小站</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 ZangBo
+            </div>
+            <div class="footer-right">
+                Welcome to ZangBo's Blog
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.3.3/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-100951797-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

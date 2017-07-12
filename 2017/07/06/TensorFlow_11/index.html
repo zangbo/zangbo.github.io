@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="ZangBo" />
+
+
+
+<meta name="description" content="TensorFlow官方网站关于卷积神经网络的教程有具体实例，该实例在CIFAR-10数据集上实现，我对这部分代码进行了学习，该代码主要由以下五部分组成：    文件 作用     cifar10_input.py 读取原始的 CIFAR-10 二进制格式文件   cifar10.py 建立 CIFAR-10 网络模型   cifar10_train.py 在单块CPU或者GPU上训练 CI">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）">
+<meta property="og:url" content="http://zangbo.me/2017/07/06/TensorFlow_11/index.html">
+<meta property="og:site_name" content="ZangBo&#39;s Home">
+<meta property="og:description" content="TensorFlow官方网站关于卷积神经网络的教程有具体实例，该实例在CIFAR-10数据集上实现，我对这部分代码进行了学习，该代码主要由以下五部分组成：    文件 作用     cifar10_input.py 读取原始的 CIFAR-10 二进制格式文件   cifar10.py 建立 CIFAR-10 网络模型   cifar10_train.py 在单块CPU或者GPU上训练 CI">
+<meta property="og:updated_time" content="2017-07-12T09:21:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）">
+<meta name="twitter:description" content="TensorFlow官方网站关于卷积神经网络的教程有具体实例，该实例在CIFAR-10数据集上实现，我对这部分代码进行了学习，该代码主要由以下五部分组成：    文件 作用     cifar10_input.py 读取原始的 CIFAR-10 二进制格式文件   cifar10.py 建立 CIFAR-10 网络模型   cifar10_train.py 在单块CPU或者GPU上训练 CI">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ZangBo&#39;s Home" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上） | ZangBo&#39;s Home</title>
+
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.12.1/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2697f2f0e109a018f0f89683fab342e6";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div style="display: none"><img src="/img/sharing.jpg" /></div>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">ZangBo</a></h1>
+        </hgroup>
+
+        
+        
+        <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+        
+
+        
+            <br />
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">文章</a></li>
+                        
+                        <br />
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word2Vec/">Word2Vec</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人网站/">个人网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯度下降算法/">梯度下降算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">SJTU在读研究生，机器学习相关，摄影爱好者，喜欢写一些随笔。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">ZangBo</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">ZangBo</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">永远年轻 永远热泪盈眶</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">文章</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#122;&#97;&#110;&#103;&#98;&#111;&#64;&#115;&#106;&#116;&#117;&#46;&#101;&#100;&#117;&#46;&#99;&#110;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/zangbo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="http://zangbo.me/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-TensorFlow_11" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/TensorFlow_11/" class="article-date">
+      <time datetime="2017-07-06T07:28:12.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TensorFlow/">TensorFlow</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>TensorFlow官方网站关于卷积神经网络的教程有具体实例，该实例在CIFAR-10数据集上实现，我对这部分代码进行了学习，该代码主要由以下五部分组成：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_input.py" target="_blank" rel="external"><code>cifar10_input.py</code></a></td>
+<td>读取原始的 CIFAR-10 二进制格式文件</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py" target="_blank" rel="external"><code>cifar10.py</code></a></td>
+<td>建立 CIFAR-10 网络模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_train.py" target="_blank" rel="external"><code>cifar10_train.py</code></a></td>
+<td>在单块CPU或者GPU上训练 CIFAR-10 模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_multi_gpu_train.py" target="_blank" rel="external"><code>cifar10_multi_gpu_train.py</code></a></td>
+<td>在多块GPU上训练 CIFAR-10 模型</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_eval.py" target="_blank" rel="external"><code>cifar10_eval.py</code></a></td>
+<td>在测试集上评估 CIFAR-10 模型的表现</td>
+</tr>
+</tbody>
+</table>
+<p>本次只对单GPU情况进行学习，对多GPU不做学习。本次学习分上下两部分，本文首先介绍<code>cifar10_input.py</code>、<code>cifar10.py</code>两个函数，内容分别为数据的获取和模型的建立，同时我们还介绍了本次教程的重点和CIFAR-10数据集。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>教程地址：<a href="https://www.tensorflow.org/tutorials/deep_cnn" target="_blank" rel="external">https://www.tensorflow.org/tutorials/deep_cnn</a></p>
+<p>代码地址：<a href="https://github.com/tensorflow/models/tree/master/tutorials/image/cifar10" target="_blank" rel="external">https://github.com/tensorflow/models/tree/master/tutorials/image/cifar10</a></p>
+<p><br></p>
+<h1 id="教程重点"><a href="#教程重点" class="headerlink" title="教程重点"></a>教程重点</h1><p>该教程主要实现了以下几个用TensorFlow设计大型且复杂网络模型时的重要构造：</p>
+<ul>
+<li>核心的运算包括卷积(convolution)、relu激活(rectified linear activations)、最大池化(max poolnig)和局部响应归一化(LRN)。</li>
+<li>网络训练过程中的可视化操作</li>
+<li>对学习到的参数计算滑动平均值(moving average)，并且在评估模型表现时使用它们。</li>
+<li>实现学习率衰减策略来训练，采用指数衰减(exponential_decay)方式。</li>
+<li>使用队列(queues)操作获取输入数据。</li>
+</ul>
+<p><br></p>
+<h1 id="数据集介绍"><a href="#数据集介绍" class="headerlink" title="数据集介绍"></a>数据集介绍</h1><p>CIFAR-10 数据集分类是机器学习领域很经典的任务，该任务旨在把32x32的RGB图像分成十类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck.</div></pre></td></tr></table></figure>
+<p>我们这里用到的是二进制数据，该数据共有六个文件，其中五个训练数据文件，文件名为：<code>data_batch_1.bin</code>,…, <code>data_batch_5.bin</code>，一个测试数据文件，名为<code>test_batch.bin</code>。每个文件里包含10000个样本，共计50000个训练样本，10000个测试样本。</p>
+<p>文件中数据结构如下（文件中并没具体的划分行）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;1 x label&gt;&lt;3072 x pixel&gt;</div><div class="line">...</div><div class="line">&lt;1 x label&gt;&lt;3072 x pixel&gt;</div></pre></td></tr></table></figure>
+<p>第一个字节代表着标签，范围0-9分别代表十类。接下来的3072个字节代表着图像像素值，前1024个字节是red通道的值，接着1024个字节是green通道值，最后1024个字节是blue通道值。字节排列是以行为主的顺序，也就是说前32个字节代表red通道下第一行的图像数据。每个文件由10000个3073字节组成，理论上来说每个文件包含30730000字节长的数据。</p>
+<p><br></p>
+<h1 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h1><p>这部分的代码在<code>cifar10_input.py</code>文件中，该代码主要由四个函数组成：</p>
+<ul>
+<li><code>read_cifar10()</code>：从文件名队列读取二进制数据并提取出单张图片数据。</li>
+<li><code>_generate_image_and_label_batch()</code>：利用单张图片数据生成<code>batch</code>数据。</li>
+<li><code>distorted_inputs()</code>：构建训练数据并进行预处理。</li>
+<li><code>inputs()</code>：构建测试数据并进行预处理（也可以用在训练集上）。</li>
+</ul>
+<p>给外部调用的主要是后两个函数，分别生成训练数据和测试数据。</p>
+<p>具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 如果是python2的代码，会有不兼容，这里把python3的特性引入，使得python2也可以运行该代码。</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import <span class="comment"># 绝对引用</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division <span class="comment"># 精确除法</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function <span class="comment"># print函数</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="comment"># xrange返回一个生成器，range返回一个列表，xrange在生成大范围数据的时候更节省内存。</span></div><div class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> xrange</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line">IMAGE_SIZE = <span class="number">24</span> <span class="comment"># 图像尺寸</span></div><div class="line"></div><div class="line"><span class="comment"># 描述 CIFAR-10 数据的全局常量。</span></div><div class="line">NUM_CLASSES = <span class="number">10</span> <span class="comment"># 类别数目</span></div><div class="line">NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = <span class="number">50000</span> <span class="comment"># 训练样本数目</span></div><div class="line">NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = <span class="number">10000</span> <span class="comment"># 测试样本数目</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_cifar10</span><span class="params">(filename_queue)</span>:</span></div><div class="line">    </div><div class="line">  <span class="string">"""从文件名队列读取二进制数据并提取出单张图像数据</span></div><div class="line"></div><div class="line">  建议: </div><div class="line">    如果想N个线程同步读取, 调用这个函数N次即可。</div><div class="line">    这将会产生N个独立的Readers从不同文件不同位置读取数据，进而产生更好的样本混合效果。</div><div class="line">    </div><div class="line">  输入参数:</div><div class="line">    filename_queue: 一个包含文件名列表的字符串队列</div><div class="line"></div><div class="line">  返回一个类，包含了单张图像的各种数据。</div><div class="line">  """</div><div class="line"></div><div class="line">  <span class="class"><span class="keyword">class</span> <span class="title">CIFAR10Record</span><span class="params">(object)</span>:</span> <span class="comment"># 定义一个类</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line">  result = CIFAR10Record() <span class="comment"># 建立类的实体对象</span></div><div class="line"></div><div class="line">  </div><div class="line">  <span class="comment"># 输入数据格式</span></div><div class="line">  label_bytes = <span class="number">1</span>  </div><div class="line">  result.height = <span class="number">32</span></div><div class="line">  result.width = <span class="number">32</span></div><div class="line">  result.depth = <span class="number">3</span></div><div class="line">  image_bytes = result.height * result.width * result.depth</div><div class="line">  </div><div class="line">  record_bytes = label_bytes + image_bytes</div><div class="line"></div><div class="line">  <span class="comment"># 定义固定长度阅读器读取长度为record_bytes的数据，从文件名队列中获取文件并读出单张图像数据。</span></div><div class="line">  <span class="comment"># CIFAR-10格式数据没有头数据和尾数据，所以我们令 header_bytes 和 footer_bytes 保持默认值0。</span></div><div class="line">  reader = tf.FixedLengthRecordReader(record_bytes=record_bytes)</div><div class="line">  result.key, value = reader.read(filename_queue)</div><div class="line"></div><div class="line">  <span class="comment"># 使用解码器把字符串类型转化为uint8类型的数据</span></div><div class="line">  record_bytes = tf.decode_raw(value, tf.uint8)</div><div class="line"></div><div class="line">  <span class="comment"># 第一个字节代表着标签数据，所以我们把它的格式从uint8转化为int32。</span></div><div class="line">  <span class="comment"># tf.strided_slice(input_, begin, end, strides)</span></div><div class="line">  result.label = tf.cast(</div><div class="line">      tf.strided_slice(record_bytes, [<span class="number">0</span>], [label_bytes]), tf.int32)</div><div class="line"></div><div class="line">  <span class="comment"># 剩下的字节表示图像数据，我们首先根据CIFAR-10的数据排列[depth * height * width] </span></div><div class="line">  <span class="comment"># 把它转化为 [depth, height, width] 形状的张量。</span></div><div class="line">  depth_major = tf.reshape(</div><div class="line">      tf.strided_slice(record_bytes, [label_bytes],</div><div class="line">                       [label_bytes + image_bytes]),</div><div class="line">      [result.depth, result.height, result.width])</div><div class="line">  <span class="comment"># 把 [depth, height, width] 转化为 [height, width, depth] 形状的张量，这是TensorFlow处理图像的格式。</span></div><div class="line">  result.uint8image = tf.transpose(depth_major, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>])</div><div class="line"></div><div class="line">  <span class="keyword">return</span> result</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_generate_image_and_label_batch</span><span class="params">(image, label, min_queue_examples, batch_size, shuffle)</span>:</span></div><div class="line">  <span class="string">"""生成图像和标签的batch数据</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    image: 3-D Tensor of [height, width, 3] of type.float32.</div><div class="line">    label: 1-D Tensor of type.int32</div><div class="line">    min_queue_examples: int32, 每次出队后队伍中剩下的样本数量的最小值。</div><div class="line">    batch_size: 每个batch的图像数量。</div><div class="line">    shuffle: boolean值表明是否对图像队列随机排序。</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, height, width, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line">  """</div><div class="line">  <span class="comment"># 创造一个样本队列，根据需求决定是否对样本随机排序，每次从队列中出队batch_size个图像数据和标签数据</span></div><div class="line">  num_preprocess_threads = <span class="number">16</span> </div><div class="line">  <span class="comment">#16个Reader平行读取，每个Reader读不同的文件或者位置，可以充分的混合样本数据</span></div><div class="line">  <span class="keyword">if</span> shuffle: <span class="comment"># 对样本队列随机排序</span></div><div class="line">    images, label_batch = tf.train.shuffle_batch(</div><div class="line">        [image, label],</div><div class="line">        batch_size=batch_size,</div><div class="line">        num_threads=num_preprocess_threads,</div><div class="line">        capacity=min_queue_examples + <span class="number">3</span> * batch_size,</div><div class="line">        min_after_dequeue=min_queue_examples)</div><div class="line">  <span class="keyword">else</span>: <span class="comment"># 不对样本队列随机排序</span></div><div class="line">    images, label_batch = tf.train.batch(</div><div class="line">        [image, label],</div><div class="line">        batch_size=batch_size,</div><div class="line">        num_threads=num_preprocess_threads,</div><div class="line">        capacity=min_queue_examples + <span class="number">3</span> * batch_size)</div><div class="line"></div><div class="line">  <span class="comment"># 添加summary节点以便在TensorBoard中对图像信息进行可视化</span></div><div class="line">  tf.summary.image(<span class="string">'images'</span>, images)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> images, tf.reshape(label_batch, [batch_size])</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">distorted_inputs</span><span class="params">(data_dir, batch_size)</span>:</span></div><div class="line">  <span class="string">""" 构造训练数据并对其进行失真处理。</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    data_dir: CIFAR-10数据的存放路径.</div><div class="line">    batch_size: 每个batch中图像的数目.</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line">  """</div><div class="line">  filenames = [os.path.join(data_dir, <span class="string">'data_batch_%d.bin'</span> % i)</div><div class="line">               <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="number">6</span>)]</div><div class="line">  <span class="keyword">for</span> f <span class="keyword">in</span> filenames:</div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(f):</div><div class="line">      <span class="keyword">raise</span> ValueError(<span class="string">'Failed to find file: '</span> + f)</div><div class="line"></div><div class="line">  <span class="comment"># 创建一个文件名队列</span></div><div class="line">  filename_queue = tf.train.string_input_producer(filenames)</div><div class="line"></div><div class="line">  <span class="comment"># 调用read_cifar10函数从文件名队列中读取文件，并得到单张图像信息</span></div><div class="line">  read_input = read_cifar10(filename_queue)</div><div class="line">  reshaped_image = tf.cast(read_input.uint8image, tf.float32)</div><div class="line"></div><div class="line">  height = IMAGE_SIZE <span class="comment"># 24</span></div><div class="line">  width = IMAGE_SIZE <span class="comment"># 24</span></div><div class="line"></div><div class="line">  <span class="comment"># 对训练数据图像预处理，包括多个随机失真操作。</span></div><div class="line"></div><div class="line">  <span class="comment"># 把原始的32*32的图像随机裁剪为24*24</span></div><div class="line">  distorted_image = tf.random_crop(reshaped_image, [height, width, <span class="number">3</span>])</div><div class="line"></div><div class="line">  <span class="comment"># 随机左右翻转</span></div><div class="line">  distorted_image = tf.image.random_flip_left_right(distorted_image)</div><div class="line"></div><div class="line">  <span class="comment"># 随机改变图像亮度和对比度</span></div><div class="line">  distorted_image = tf.image.random_brightness(distorted_image,</div><div class="line">                                               max_delta=<span class="number">63</span>)</div><div class="line">  distorted_image = tf.image.random_contrast(distorted_image,</div><div class="line">                                             lower=<span class="number">0.2</span>, upper=<span class="number">1.8</span>)</div><div class="line"></div><div class="line">  <span class="comment"># 把图像进行归一化处理，变为0均值和1方差。</span></div><div class="line">  float_image = tf.image.per_image_standardization(distorted_image)</div><div class="line"></div><div class="line">  <span class="comment"># 有时候graph没法推断出tensors的形状，我们可以手动保存tensors的形状信息</span></div><div class="line">  float_image.set_shape([height, width, <span class="number">3</span>]) </div><div class="line">  read_input.label.set_shape([<span class="number">1</span>])</div><div class="line"></div><div class="line">  <span class="comment"># 当采用随机生成batch操作时设定min_after_dequeue的值为50000*0.4=20000，保证足够的随机性。</span></div><div class="line">  min_fraction_of_examples_in_queue = <span class="number">0.4</span></div><div class="line">  min_queue_examples = int(NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN *</div><div class="line">                           min_fraction_of_examples_in_queue)</div><div class="line">  <span class="keyword">print</span> (<span class="string">'Filling queue with %d CIFAR images before starting to train. '</span></div><div class="line">         <span class="string">'This will take a few minutes.'</span> % min_queue_examples)</div><div class="line"></div><div class="line">  <span class="comment"># 通过建立样本队列来生成batch图像数据和batch标签数据</span></div><div class="line">  <span class="keyword">return</span> _generate_image_and_label_batch(float_image, read_input.label, </div><div class="line">                                         min_queue_examples, batch_size, shuffle=<span class="keyword">True</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">inputs</span><span class="params">(eval_data, data_dir, batch_size)</span>:</span></div><div class="line">  <span class="string">"""构造测试数据.</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    eval_data: bool型，表明使用训练数据还是测试数据，True为测试集</div><div class="line">    data_dir: CIFAR-10数据集的存放路径</div><div class="line">    batch_size: 每个batch的图片数量</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line">  """</div><div class="line">  <span class="keyword">if</span> <span class="keyword">not</span> eval_data: <span class="comment"># 训练数据</span></div><div class="line">    filenames = [os.path.join(data_dir, <span class="string">'data_batch_%d.bin'</span> % i)</div><div class="line">                 <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="number">6</span>)]</div><div class="line">    num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN</div><div class="line">  <span class="keyword">else</span>: <span class="comment"># 测试数据</span></div><div class="line">    filenames = [os.path.join(data_dir, <span class="string">'test_batch.bin'</span>)]</div><div class="line">    num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_EVAL</div><div class="line"></div><div class="line">  <span class="keyword">for</span> f <span class="keyword">in</span> filenames: <span class="comment"># 检查文件是否存在</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(f):</div><div class="line">      <span class="keyword">raise</span> ValueError(<span class="string">'Failed to find file: '</span> + f)</div><div class="line"></div><div class="line">  <span class="comment"># 创建一个文件名队列</span></div><div class="line">  filename_queue = tf.train.string_input_producer(filenames)</div><div class="line"></div><div class="line">  <span class="comment"># 从文件名队列中的文件中读取单个样本</span></div><div class="line">  read_input = read_cifar10(filename_queue)</div><div class="line">  reshaped_image = tf.cast(read_input.uint8image, tf.float32)</div><div class="line"></div><div class="line">  height = IMAGE_SIZE</div><div class="line">  width = IMAGE_SIZE</div><div class="line"></div><div class="line">  <span class="comment"># 测试时的图像预处理</span></div><div class="line">  <span class="comment"># 沿中心裁剪28*28大小的图像</span></div><div class="line">  resized_image = tf.image.resize_image_with_crop_or_pad(reshaped_image, height, width)</div><div class="line"></div><div class="line">  <span class="comment"># 图像归一化处理</span></div><div class="line">  float_image = tf.image.per_image_standardization(resized_image)</div><div class="line"></div><div class="line">  <span class="comment"># 设置张量的形状</span></div><div class="line">  float_image.set_shape([height, width, <span class="number">3</span>])</div><div class="line">  read_input.label.set_shape([<span class="number">1</span>])</div><div class="line"></div><div class="line">  <span class="comment"># 设置min_after_dequeue参数为20000(训练数据)，4000(测试数据)，保证足够随机性。</span></div><div class="line">  min_fraction_of_examples_in_queue = <span class="number">0.4</span></div><div class="line">  min_queue_examples = int(num_examples_per_epoch * min_fraction_of_examples_in_queue)</div><div class="line"></div><div class="line">  <span class="comment"># 通过建立一个样本队列生成batch图像数据和batch标签数据</span></div><div class="line">  <span class="keyword">return</span> _generate_image_and_label_batch(float_image, read_input.label, </div><div class="line">                                         min_queue_examples, batch_size, shuffle=<span class="keyword">False</span>)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ol>
+<li><p><code>tf.strided_slice(input_, begin, end, strides)</code></p>
+<p>用法示例(注意和<code>tf.slice()</code>的区分)：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 'input' is [[[1, 1, 1], [2, 2, 2]],</div><div class="line">#             [[3, 3, 3], [4, 4, 4]],</div><div class="line">#             [[5, 5, 5], [6, 6, 6]]]</div><div class="line">tf.strided_slice(input, [1, 0, 0], [2, 1, 3], [1, 1, 1]) ==&gt; [[[3, 3, 3]]]</div><div class="line">tf.strided_slice(input, [1, 0, 0], [2, 2, 3], [1, 1, 1]) ==&gt; [[[3, 3, 3],</div><div class="line">                                                               [4, 4, 4]]]</div><div class="line">tf.strided_slice(input, [1, -1, 0], [2, -3, 3], [1, -1, 1]) ==&gt;[[[4, 4, 4],</div><div class="line">                                                              [3, 3, 3]]]</div></pre></td></tr></table></figure>
+</li>
+<li><p>TensorFlow提供两种类型的拼接：</p>
+<ul>
+<li><code>tf.concat(values, axis, name=&#39;concat&#39;)</code>：按照指定的<strong>已经存在</strong>的轴进行拼接</li>
+</ul>
+<ul>
+<li><code>tf.stack(values, axis=0, name=&#39;stack&#39;)</code>：按照指定的<strong>新建</strong>的轴进行拼接</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">t1 = [[1, 2, 3], [4, 5, 6]]</div><div class="line">t2 = [[7, 8, 9], [10, 11, 12]]</div><div class="line">tf.concat([t1, t2], 0) ==&gt; [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]</div><div class="line">tf.concat([t1, t2], 1) ==&gt; [[1, 2, 3, 7, 8, 9], [4, 5, 6, 10, 11, 12]]</div><div class="line">tf.stack([t1, t2], 0)  ==&gt; [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]]</div><div class="line">tf.stack([t1, t2], 1)  ==&gt; [[[1, 2, 3], [7, 8, 9]], [[4, 5, 6], [10, 11, 12]]]</div><div class="line">tf.stack([t1, t2], 2)  ==&gt; [[[1, 7], [2, 8], [3, 9]], [[4, 10], [5, 11], [6, 12]]]</div></pre></td></tr></table></figure>
+<p>上面的结果读起来不太直观，我们从shape角度看一下就很容易明白了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">t1 = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</div><div class="line">t2 = [[<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], [<span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>]]</div><div class="line">tf.concat([t1, t2], <span class="number">0</span>)  <span class="comment"># [2,3] + [2,3] ==&gt; [4, 3]</span></div><div class="line">tf.concat([t1, t2], <span class="number">1</span>)  <span class="comment"># [2,3] + [2,3] ==&gt; [2, 6]</span></div><div class="line">tf.stack([t1, t2], <span class="number">0</span>)   <span class="comment"># [2,3] + [2,3] ==&gt; [2*,2,3]</span></div><div class="line">tf.stack([t1, t2], <span class="number">1</span>)   <span class="comment"># [2,3] + [2,3] ==&gt; [2,2*,3]</span></div><div class="line">tf.stack([t1, t2], <span class="number">2</span>)   <span class="comment"># [2,3] + [2,3] ==&gt; [2,3,2*]</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><br></p>
+<h1 id="建立模型"><a href="#建立模型" class="headerlink" title="建立模型"></a>建立模型</h1><p>这部分代码在<code>cifar10.py</code>文件中，该代码主要由以下函数组成：</p>
+<ul>
+<li><code>_activation_summary()</code>：为激活函数创造可视化summary</li>
+<li><code>_variable_on_cpu()</code>：新建一个变量存储在CPU上</li>
+<li><code>_variable_with_weight_decay()</code>：新建一个已经初始化的变量并计算正则化损失</li>
+<li><code>distorted_inputs()</code>：获得训练数据</li>
+<li><code>inputs()</code>：获得测试数据</li>
+<li><code>inference()</code>：搭建神经网络模型，输出Logits</li>
+<li><code>loss()</code>：计算总体损失=交叉熵+正则化</li>
+<li><code>_add_loss_summaries()</code>：为损失添加可视化summary</li>
+<li><code>train()</code>：创建一个optimizer并给所有训练变量添加滑动平均</li>
+<li><code>maybe_download_and_extract()</code>：下载并解压训练数据</li>
+</ul>
+<p>具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div><div class="line">357</div><div class="line">358</div><div class="line">359</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""搭建 CIFAR-10 网络"""</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> tarfile <span class="comment"># 实现文件的压缩与解压缩</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> urllib</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line"><span class="keyword">import</span> cifar10_input</div><div class="line"></div><div class="line">FLAGS = tf.app.flags.FLAGS</div><div class="line"></div><div class="line"><span class="comment"># 基本的模型参数，默认batch_size128</span></div><div class="line">tf.app.flags.DEFINE_integer(<span class="string">'batch_size'</span>, <span class="number">128</span>,</div><div class="line">                            <span class="string">"""Number of images to process in a batch."""</span>)</div><div class="line">tf.app.flags.DEFINE_string(<span class="string">'data_dir'</span>, <span class="string">'/tmp/cifar10_data'</span>,</div><div class="line">                           <span class="string">"""Path to the CIFAR-10 data directory."""</span>)</div><div class="line">tf.app.flags.DEFINE_boolean(<span class="string">'use_fp16'</span>, <span class="keyword">False</span>,</div><div class="line">                            <span class="string">"""Train the model using fp16."""</span>)</div><div class="line"></div><div class="line"><span class="comment"># 设置描述CIFAR-10数据的全局常量</span></div><div class="line">IMAGE_SIZE = cifar10_input.IMAGE_SIZE <span class="comment"># 28</span></div><div class="line">NUM_CLASSES = cifar10_input.NUM_CLASSES <span class="comment"># 10</span></div><div class="line">NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = cifar10_input.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN <span class="comment"># 50000</span></div><div class="line">NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = cifar10_input.NUM_EXAMPLES_PER_EPOCH_FOR_EVAL <span class="comment"># 10000</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 训练过程中用到的常量</span></div><div class="line">MOVING_AVERAGE_DECAY = <span class="number">0.9999</span>     <span class="comment"># 计算滑动平均(moving average)时的衰减(decay)</span></div><div class="line">NUM_EPOCHS_PER_DECAY = <span class="number">350.0</span>      <span class="comment"># 学习率衰减的epochs</span></div><div class="line">LEARNING_RATE_DECAY_FACTOR = <span class="number">0.1</span>  <span class="comment"># 学习率衰减因子</span></div><div class="line">INITIAL_LEARNING_RATE = <span class="number">0.1</span>       <span class="comment"># 初始学习率</span></div><div class="line"></div><div class="line"><span class="comment"># 如果一个模型在多GPU上训练, 在Op名字上加上前缀tower_name来区分操作</span></div><div class="line"><span class="comment"># 注意当我们可视化一个模型的时候该前缀会被移去。</span></div><div class="line">TOWER_NAME = <span class="string">'tower'</span></div><div class="line"></div><div class="line">DATA_URL = <span class="string">'http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz'</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_activation_summary</span><span class="params">(x)</span>:</span></div><div class="line">  <span class="string">"""为激活函数创建summary</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    x: Tensor</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    nothing</div><div class="line">  """</div><div class="line">  <span class="comment"># 如果是一个多GPU训练，就把'tower_[0-9]/'移除，这将会帮助我们更清晰的在TensorBoard上展示。</span></div><div class="line">  tensor_name = re.sub(<span class="string">'%s_[0-9]*/'</span> % TOWER_NAME, <span class="string">''</span>, x.op.name)</div><div class="line">  tf.summary.histogram(tensor_name + <span class="string">'/activations'</span>, x)</div><div class="line">  tf.summary.scalar(tensor_name + <span class="string">'/sparsity'</span>,</div><div class="line">                                       tf.nn.zero_fraction(x)) <span class="comment"># 统计0的比例反映稀疏度</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_variable_on_cpu</span><span class="params">(name, shape, initializer)</span>:</span></div><div class="line">  <span class="string">"""帮助新建一个存储在CPU上的变量</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    name: 变量名</div><div class="line">    shape: 变量形状</div><div class="line">    initializer: 变量的初始化器</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    变量Tensor</div><div class="line">  """</div><div class="line">  <span class="keyword">with</span> tf.device(<span class="string">'/cpu:0'</span>):</div><div class="line">    dtype = tf.float16 <span class="keyword">if</span> FLAGS.use_fp16 <span class="keyword">else</span> tf.float32</div><div class="line">    var = tf.get_variable(name, shape, initializer=initializer, dtype=dtype)</div><div class="line">  <span class="keyword">return</span> var</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_variable_with_weight_decay</span><span class="params">(name, shape, stddev, wd)</span>:</span></div><div class="line">  <span class="string">"""帮助新建一个已经初始化的变量并且计算正则化损失</span></div><div class="line"></div><div class="line">  变量初始化采用的 truncated normal 分布</div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    name: 变量名</div><div class="line">    shape: 变量形状</div><div class="line">    stddev: truncated Gaussian 分布的标准差</div><div class="line">    wd: 正则化系数，添加正则化损失乘以该系数，如果是None则不添加。</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    Variable Tensor</div><div class="line">  """</div><div class="line">  dtype = tf.float16 <span class="keyword">if</span> FLAGS.use_fp16 <span class="keyword">else</span> tf.float32</div><div class="line">  var = _variable_on_cpu(</div><div class="line">      name,</div><div class="line">      shape,</div><div class="line">      tf.truncated_normal_initializer(stddev=stddev, dtype=dtype))</div><div class="line">  <span class="keyword">if</span> wd <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">    weight_decay = tf.multiply(tf.nn.l2_loss(var), wd, name=<span class="string">'weight_loss'</span>)</div><div class="line">    tf.add_to_collection(<span class="string">'losses'</span>, weight_decay) <span class="comment"># 把正则化损失存储为全局变量</span></div><div class="line">  <span class="keyword">return</span> var</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">distorted_inputs</span><span class="params">()</span>:</span></div><div class="line">  <span class="string">"""获得训练数据，对cifar10_input.py文件里distorted_inputs()进行封装</span></div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line"></div><div class="line">  引发:</div><div class="line">    ValueError: 如果没有data_dir</div><div class="line">  """</div><div class="line">  <span class="keyword">if</span> <span class="keyword">not</span> FLAGS.data_dir:</div><div class="line">    <span class="keyword">raise</span> ValueError(<span class="string">'Please supply a data_dir'</span>)</div><div class="line">  data_dir = os.path.join(FLAGS.data_dir, <span class="string">'cifar-10-batches-bin'</span>)</div><div class="line">  images, labels = cifar10_input.distorted_inputs(data_dir=data_dir,</div><div class="line">                                                  batch_size=FLAGS.batch_size)</div><div class="line">  <span class="keyword">if</span> FLAGS.use_fp16:</div><div class="line">    images = tf.cast(images, tf.float16)</div><div class="line">    labels = tf.cast(labels, tf.float16)</div><div class="line">  <span class="keyword">return</span> images, labels</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">inputs</span><span class="params">(eval_data)</span>:</span></div><div class="line">  <span class="string">"""获得测试数据，对cifar10_input.py文件里inputs()进行封装</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    eval_data: bool, 指出是否使用测试数据还是训练数据（一般是True）</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line"></div><div class="line">  引发:</div><div class="line">    ValueError: 如果没有data_dir</div><div class="line">  """</div><div class="line">  <span class="keyword">if</span> <span class="keyword">not</span> FLAGS.data_dir:</div><div class="line">    <span class="keyword">raise</span> ValueError(<span class="string">'Please supply a data_dir'</span>)</div><div class="line">  data_dir = os.path.join(FLAGS.data_dir, <span class="string">'cifar-10-batches-bin'</span>)</div><div class="line">  images, labels = cifar10_input.inputs(eval_data=eval_data,</div><div class="line">                                        data_dir=data_dir,</div><div class="line">                                        batch_size=FLAGS.batch_size)</div><div class="line">  <span class="keyword">if</span> FLAGS.use_fp16:</div><div class="line">    images = tf.cast(images, tf.float16)</div><div class="line">    labels = tf.cast(labels, tf.float16)</div><div class="line">  <span class="keyword">return</span> images, labels</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">inference</span><span class="params">(images)</span>:</span></div><div class="line">  <span class="string">"""搭建 CIFAR-10 模型.</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    images: 从 distorted_inputs() 或 inputs() 中返回的图像数据</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    Logits</div><div class="line">  """</div><div class="line">  <span class="comment"># 我们是用 tf.get_variable() 而不是 tf.Variable() 来新建变量以便在多GPU训练中共享变量</span></div><div class="line">  <span class="comment"># 如果我们只是在单块GPU上训练，可以简化 tf.get_variable() 变成tf.Variable()</span></div><div class="line"></div><div class="line">  <span class="comment"># conv1</span></div><div class="line">  <span class="keyword">with</span> tf.variable_scope(<span class="string">'conv1'</span>) <span class="keyword">as</span> scope:</div><div class="line">    kernel = _variable_with_weight_decay(<span class="string">'weights'</span>,</div><div class="line">                                         shape=[<span class="number">5</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">64</span>],</div><div class="line">                                         stddev=<span class="number">5e-2</span>,</div><div class="line">                                         wd=<span class="number">0.0</span>)</div><div class="line">    conv = tf.nn.conv2d(images, kernel, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</div><div class="line">    biases = _variable_on_cpu(<span class="string">'biases'</span>, [<span class="number">64</span>], tf.constant_initializer(<span class="number">0.0</span>))</div><div class="line">    pre_activation = tf.nn.bias_add(conv, biases) <span class="comment"># tf.add()的特例，该函数中biases只能是1-D维度的</span></div><div class="line">    conv1 = tf.nn.relu(pre_activation, name=scope.name)</div><div class="line">    _activation_summary(conv1)</div><div class="line"></div><div class="line">  <span class="comment"># pool1</span></div><div class="line">  pool1 = tf.nn.max_pool(conv1, ksize=[<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</div><div class="line">                         padding=<span class="string">'SAME'</span>, name=<span class="string">'pool1'</span>)</div><div class="line">  <span class="comment"># norm1</span></div><div class="line">  norm1 = tf.nn.lrn(pool1, <span class="number">4</span>, bias=<span class="number">1.0</span>, alpha=<span class="number">0.001</span> / <span class="number">9.0</span>, beta=<span class="number">0.75</span>,</div><div class="line">                    name=<span class="string">'norm1'</span>)</div><div class="line"></div><div class="line">  <span class="comment"># conv2</span></div><div class="line">  <span class="keyword">with</span> tf.variable_scope(<span class="string">'conv2'</span>) <span class="keyword">as</span> scope:</div><div class="line">    kernel = _variable_with_weight_decay(<span class="string">'weights'</span>,</div><div class="line">                                         shape=[<span class="number">5</span>, <span class="number">5</span>, <span class="number">64</span>, <span class="number">64</span>],</div><div class="line">                                         stddev=<span class="number">5e-2</span>,</div><div class="line">                                         wd=<span class="number">0.0</span>)</div><div class="line">    conv = tf.nn.conv2d(norm1, kernel, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</div><div class="line">    biases = _variable_on_cpu(<span class="string">'biases'</span>, [<span class="number">64</span>], tf.constant_initializer(<span class="number">0.1</span>))</div><div class="line">    pre_activation = tf.nn.bias_add(conv, biases)</div><div class="line">    conv2 = tf.nn.relu(pre_activation, name=scope.name)</div><div class="line">    _activation_summary(conv2)</div><div class="line"></div><div class="line">  <span class="comment"># norm2</span></div><div class="line">  norm2 = tf.nn.lrn(conv2, <span class="number">4</span>, bias=<span class="number">1.0</span>, alpha=<span class="number">0.001</span> / <span class="number">9.0</span>, beta=<span class="number">0.75</span>,</div><div class="line">                    name=<span class="string">'norm2'</span>)</div><div class="line">  <span class="comment"># pool2</span></div><div class="line">  pool2 = tf.nn.max_pool(norm2, ksize=[<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>],</div><div class="line">                         strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>, name=<span class="string">'pool2'</span>)</div><div class="line"></div><div class="line">  <span class="comment"># local3</span></div><div class="line">  <span class="keyword">with</span> tf.variable_scope(<span class="string">'local3'</span>) <span class="keyword">as</span> scope:</div><div class="line">    <span class="comment"># Move everything into depth so we can perform a single matrix multiply.</span></div><div class="line">    reshape = tf.reshape(pool2, [FLAGS.batch_size, <span class="number">-1</span>])</div><div class="line">    dim = reshape.get_shape()[<span class="number">1</span>].value</div><div class="line">    weights = _variable_with_weight_decay(<span class="string">'weights'</span>, shape=[dim, <span class="number">384</span>],</div><div class="line">                                          stddev=<span class="number">0.04</span>, wd=<span class="number">0.004</span>)</div><div class="line">    biases = _variable_on_cpu(<span class="string">'biases'</span>, [<span class="number">384</span>], tf.constant_initializer(<span class="number">0.1</span>))</div><div class="line">    local3 = tf.nn.relu(tf.matmul(reshape, weights) + biases, name=scope.name)</div><div class="line">    _activation_summary(local3)</div><div class="line"></div><div class="line">  <span class="comment"># local4</span></div><div class="line">  <span class="keyword">with</span> tf.variable_scope(<span class="string">'local4'</span>) <span class="keyword">as</span> scope:</div><div class="line">    weights = _variable_with_weight_decay(<span class="string">'weights'</span>, shape=[<span class="number">384</span>, <span class="number">192</span>],</div><div class="line">                                          stddev=<span class="number">0.04</span>, wd=<span class="number">0.004</span>)</div><div class="line">    biases = _variable_on_cpu(<span class="string">'biases'</span>, [<span class="number">192</span>], tf.constant_initializer(<span class="number">0.1</span>))</div><div class="line">    local4 = tf.nn.relu(tf.matmul(local3, weights) + biases, name=scope.name)</div><div class="line">    _activation_summary(local4)</div><div class="line"></div><div class="line">  <span class="comment"># 线性层(WX + b)</span></div><div class="line">  <span class="keyword">with</span> tf.variable_scope(<span class="string">'softmax_linear'</span>) <span class="keyword">as</span> scope:</div><div class="line">    weights = _variable_with_weight_decay(<span class="string">'weights'</span>, [<span class="number">192</span>, NUM_CLASSES],</div><div class="line">                                          stddev=<span class="number">1</span>/<span class="number">192.0</span>, wd=<span class="number">0.0</span>)</div><div class="line">    biases = _variable_on_cpu(<span class="string">'biases'</span>, [NUM_CLASSES],</div><div class="line">                              tf.constant_initializer(<span class="number">0.0</span>))</div><div class="line">    softmax_linear = tf.add(tf.matmul(local4, weights), biases, name=scope.name)</div><div class="line">    _activation_summary(softmax_linear)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> softmax_linear</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss</span><span class="params">(logits, labels)</span>:</span></div><div class="line">  <span class="string">"""添加L2正则化损失到所有的训练变量中</span></div><div class="line"></div><div class="line">  为 "Loss" 和 "Loss/avg" 添加可视化summary</div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    logits: 从 inference() 得到的logits</div><div class="line">    labels: 从 distorted_inputs() 或 inputs() 得到的标签数据. 1-D tensor 形状为 [batch_size]</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    float类型的损失tensor.</div><div class="line">  """</div><div class="line">  <span class="comment"># 计算batch的平均交叉熵损失</span></div><div class="line">  <span class="comment"># 如果是label是one-hot码则用tf.nn.softmax_cross_entropy_with_logits()</span></div><div class="line">  <span class="comment"># 这里label是从0-9的数字来表示，则用tf.nn.sparse_softmax_cross_entropy_with_logits()</span></div><div class="line">  labels = tf.cast(labels, tf.int64)</div><div class="line">  cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(</div><div class="line">      labels=labels, logits=logits, name=<span class="string">'cross_entropy_per_example'</span>)</div><div class="line">  cross_entropy_mean = tf.reduce_mean(cross_entropy, name=<span class="string">'cross_entropy'</span>)</div><div class="line">  tf.add_to_collection(<span class="string">'losses'</span>, cross_entropy_mean)</div><div class="line"></div><div class="line">  <span class="comment"># 总的损失是交叉熵损失加上所有变量的L2正则化损失</span></div><div class="line">  <span class="keyword">return</span> tf.add_n(tf.get_collection(<span class="string">'losses'</span>), name=<span class="string">'total_loss'</span>) </div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_add_loss_summaries</span><span class="params">(total_loss)</span>:</span></div><div class="line">  <span class="string">"""为损失添加可视化summary</span></div><div class="line"></div><div class="line">  为所有的损失生成滑动平均并且关联summaries来可视化网络表现。</div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    total_loss: 从loss()函数得到的总损失.</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    loss_averages_op: 生成损失滑动平均的op</div><div class="line">  """</div><div class="line">  <span class="comment"># 为所有的独立损失和总的损失计算滑动平均</span></div><div class="line">  loss_averages = tf.train.ExponentialMovingAverage(<span class="number">0.9</span>, name=<span class="string">'avg'</span>)</div><div class="line">  losses = tf.get_collection(<span class="string">'losses'</span>) <span class="comment"># 得到包含独立loss的列表</span></div><div class="line">  <span class="comment"># 把每个独立loss和总的loss合并成一个列表，并计算滑动平均</span></div><div class="line">  loss_averages_op = loss_averages.apply(losses + [total_loss])</div><div class="line"></div><div class="line">  <span class="comment"># 添加一个scalar summary给所有的独立损失和总体损失以及它们的滑动平均</span></div><div class="line">  <span class="keyword">for</span> l <span class="keyword">in</span> losses + [total_loss]:</div><div class="line">    <span class="comment"># 给每个损失命名'(raw)'同时给滑动平均损失原始的命名</span></div><div class="line">    tf.summary.scalar(l.op.name + <span class="string">' (raw)'</span>, l)</div><div class="line">    tf.summary.scalar(l.op.name, loss_averages.average(l))</div><div class="line"></div><div class="line">  <span class="keyword">return</span> loss_averages_op</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(total_loss, global_step)</span>:</span></div><div class="line">  <span class="string">"""训练 CIFAR-10 模型.</span></div><div class="line"></div><div class="line">  新建一个优化器并且应用到所有的训练变量上，给所有的训练变量添加滑动平均</div><div class="line">  用tf.control_dependencies控制着执行的先后顺序</div><div class="line">  执行顺序如下：</div><div class="line">  计算损失的滑动平均——&gt;计算学习率——&gt;计算梯度——&gt;更新参数——&gt;计算训练变量的滑动平均——&gt;train_op(返回的值)</div><div class="line">  通过执行train_op来依次执行之前的所有步骤</div><div class="line">  </div><div class="line">  输入参数:</div><div class="line">    total_loss: 从loss()得到的总损失.</div><div class="line">    global_step: 整型Variable来计算迭代次数</div><div class="line"></div><div class="line">  输出数据:</div><div class="line">    train_op: 训练的op.</div><div class="line">  """</div><div class="line">  <span class="comment"># 影响学习率的变量.</span></div><div class="line">  num_batches_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN / FLAGS.batch_size</div><div class="line">  decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)</div><div class="line"></div><div class="line">  <span class="comment"># 学习率随着迭代次数指数衰减</span></div><div class="line">  lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,</div><div class="line">                                  global_step,</div><div class="line">                                  decay_steps,</div><div class="line">                                  LEARNING_RATE_DECAY_FACTOR,</div><div class="line">                                  staircase=<span class="keyword">True</span>)</div><div class="line">  tf.summary.scalar(<span class="string">'learning_rate'</span>, lr)</div><div class="line"></div><div class="line">  <span class="comment"># 对所有损失生成滑动平均并且关联可视化summaries.</span></div><div class="line">  loss_averages_op = _add_loss_summaries(total_loss)</div><div class="line"></div><div class="line">  <span class="comment"># 计算梯度（先执行生成滑动损失的操作loss_averages_op，再计算梯度）。</span></div><div class="line">  <span class="keyword">with</span> tf.control_dependencies([loss_averages_op]):</div><div class="line">    opt = tf.train.GradientDescentOptimizer(lr)</div><div class="line">    grads = opt.compute_gradients(total_loss)</div><div class="line"></div><div class="line">  <span class="comment"># 应用梯度更新参数</span></div><div class="line">  apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)</div><div class="line"></div><div class="line">  <span class="comment"># 为所有训练变量添加可视化histograms</span></div><div class="line">  <span class="keyword">for</span> var <span class="keyword">in</span> tf.trainable_variables():</div><div class="line">    tf.summary.histogram(var.op.name, var)</div><div class="line"></div><div class="line">  <span class="comment"># 为所有梯度添加可视化histograms</span></div><div class="line">  <span class="keyword">for</span> grad, var <span class="keyword">in</span> grads:</div><div class="line">    <span class="keyword">if</span> grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">      tf.summary.histogram(var.op.name + <span class="string">'/gradients'</span>, grad)</div><div class="line"></div><div class="line">  <span class="comment"># 为所有训练变量添加滑动平均</span></div><div class="line">  variable_averages = tf.train.ExponentialMovingAverage(</div><div class="line">      MOVING_AVERAGE_DECAY, global_step)</div><div class="line">  variables_averages_op = variable_averages.apply(tf.trainable_variables())</div><div class="line"></div><div class="line">  <span class="keyword">with</span> tf.control_dependencies([apply_gradient_op, variables_averages_op]):</div><div class="line">    train_op = tf.no_op(name=<span class="string">'train'</span>) <span class="comment"># 什么也不做，只是为了确保上面两个op的执行</span></div><div class="line"></div><div class="line">  <span class="keyword">return</span> train_op</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">maybe_download_and_extract</span><span class="params">()</span>:</span></div><div class="line">  <span class="string">"""下载并解压缩数据"""</span></div><div class="line">  dest_directory = FLAGS.data_dir</div><div class="line">  <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dest_directory):</div><div class="line">    os.makedirs(dest_directory)</div><div class="line">  filename = DATA_URL.split(<span class="string">'/'</span>)[<span class="number">-1</span>]</div><div class="line">  filepath = os.path.join(dest_directory, filename)</div><div class="line">  <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(filepath):</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_progress</span><span class="params">(count, block_size, total_size)</span>:</span></div><div class="line">      sys.stdout.write(<span class="string">'\r&gt;&gt; Downloading %s %.1f%%'</span> % (filename,</div><div class="line">          float(count * block_size) / float(total_size) * <span class="number">100.0</span>))</div><div class="line">      sys.stdout.flush()</div><div class="line">    filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)</div><div class="line">    print()</div><div class="line">    statinfo = os.stat(filepath)</div><div class="line">    print(<span class="string">'Successfully downloaded'</span>, filename, statinfo.st_size, <span class="string">'bytes.'</span>)</div><div class="line">  extracted_dir_path = os.path.join(dest_directory, <span class="string">'cifar-10-batches-bin'</span>)</div><div class="line">  <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(extracted_dir_path):</div><div class="line">    tarfile.open(filepath, <span class="string">'r:gz'</span>).extractall(dest_directory)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>这里介绍下LRN层，也就是<code>local response normalization</code>，局部响应归一化。最早是由Krizhevsky和Hinton在论文《ImageNet Classification with Deep Convolutional Neural Networks》里面使用的一种数据标准化方法。这种方法是受到神经科学的启发，激活的神经元会抑制其邻近神经元的活动（侧抑制现象），至于为什么使用这种正则手段，以及它为什么有效，查阅了很多文献似乎也没有详细的解释。加上后来BN层太火，LRN用的就比较少了。</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://www.tensorflow.org/tutorials/deep_cnn" target="_blank" rel="external">Convolutional Neural Networks  |  TensorFlow</a></li>
+<li><a href="http://www.cs.toronto.edu/~kriz/cifar.html" target="_blank" rel="external">CIFAR-10 and CIFAR-100 datasets</a></li>
+<li><a href="https://www.tensorflow.org/api_guides/python/image" target="_blank" rel="external">Images  |  TensorFlow</a></li>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/strided_slice" target="_blank" rel="external">tf.strided_slice  |  TensorFlow</a></li>
+<li><a href="https://segmentfault.com/a/1190000008793389" target="_blank" rel="external">TensorFlow学习笔记（11）：数据操作指南 - 数据实验室 - SegmentFault</a></li>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/nn/local_response_normalization" target="_blank" rel="external">tf.nn.local_response_normalization  |  TensorFlow</a></li>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/train/MonitoredTrainingSession" target="_blank" rel="external">tf.train.MonitoredTrainingSession  |  TensorFlow</a></li>
+<li><a href="http://blog.csdn.net/masa_fish/article/details/52624459" target="_blank" rel="external">TensorFlow官网教程Convolutional Neural Networks 难点详解 - 玛莎鱼的博客 - CSDN博客</a></li>
+</ul>
+<p><br></p>
+</the></excerpt>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/07/06/TensorFlow_11/">TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ZangBo</a></p>
+        <p><span>发布时间:</span>2017-07-06, 15:28:12</p>
+        <p><span>最后更新:</span>2017-07-12, 17:21:41</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/06/TensorFlow_11/" title="TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）">http://zangbo.me/2017/07/06/TensorFlow_11/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://zangbo.me/2017/07/06/TensorFlow_11/　　作者: ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/07/07/TensorFlow_12/">
+                    TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/07/05/TensorFlow_10/">
+                    TensorFlow 笔记（十）：张量的阶、形状和数据类型
+                </a>
+            </div>
+        
+    </nav>
+
+  
+  
+  
+    <div style="padding: 0; margin: 20px auto; width: 90%; text-align: center;">
+      <br>
+      <div>您的支持将鼓励我继续创作！</div>
+      <br>
+      <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+        <div class="btn btn-pay">打赏支持</div>
+      </button>
+      <br>
+      <br>
+      <div id="QR" style="display: none;">
+        
+          <div id="wechat" style="display: inline-block;">
+            <img id="wechat_qr" src="/img/wechat-reward-qr.jpg" alt="ZangBo WeChat Pay"/>
+            <p>微信打赏</p>
+          </div>
+        
+        
+          <div id="alipay" style="display: inline-block">
+            <img id="alipay_qr" src="/img/alipay-reward-qr.jpg" alt="ZangBo Alipay"/>
+            <p>支付宝打赏</p>
+          </div>
+        
+        <br>
+        <br>
+      </div>
+    </div>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#教程重点"><span class="toc-number">1.</span> <span class="toc-text">教程重点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据集介绍"><span class="toc-number">2.</span> <span class="toc-text">数据集介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#读取数据"><span class="toc-number">3.</span> <span class="toc-text">读取数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">3.1.</span> <span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#建立模型"><span class="toc-number">4.</span> <span class="toc-text">建立模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">4.1.</span> <span class="toc-text">补充</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                 "common":{"bdSnsKey":{},"bdText":"TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）　| ZangBo's Home　","bdMini":"2","bdMiniList":false,"bdPic":"http://zangbo.me/img/sharing.jpg","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2136080';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/07/07/TensorFlow_12/" title="上一篇: TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/07/05/TensorFlow_10/" title="下一篇: TensorFlow 笔记（十）：张量的阶、形状和数据类型">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/09/TensorFlow_13/">TensorFlow 笔记（十三）：tf.contrib.learn入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/TensorFlow_12/">TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/TensorFlow_11/">TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_10/">TensorFlow 笔记（十）：张量的阶、形状和数据类型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/05/TensorFlow_9/">TensorFlow 笔记（九）：数据读取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/TensorFlow_8/">TensorFlow 笔记（八）：线程和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_7/">TensorFlow 笔记（七）：Exponential_decay</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/01/TensorFlow_6/">TensorFlow 笔记（六）：Moving Average</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/30/TensorFlow_5/">TensorFlow 笔记（五）：常用函数和模型的保存与恢复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/TensorFlow_4/">TensorFlow 笔记（四）：TensorBoard可视化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/24/TensorFlow_3/">TensorFlow 笔记（三）：Name_Scope和变量共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/22/Crawler_4/">爬虫笔记（四）：获取某地历史天气数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/Crawler_3/">爬虫笔记（三）：BeautifulSoup基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/Crawler_2/">爬虫笔记（二）：Requests基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/Crawler_1/">爬虫笔记（一）：爬虫基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/13/EncodingKnowledge/">编码相关知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GithubPageDomainName/">配置GithubPage二级域名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/12/GiftForGirlfriend/">送给女友的生日礼物</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/Word2Vec_Negative-Sample/">Word2Vec笔记：Negative Sample</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/Word2Vec_skip-gram/">Word2Vec笔记：Skip-Gram模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/04/RandomGradientDecreases/">深度学习中几种不同的梯度下降算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/TensorFlow_2/">TensorFlow 笔记（二）：MNIST进阶</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/02/Tensorflow_1/">TensorFlow 笔记（一）：MNIST入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/MacGitHubHexoBlog/">Mac环境利用GitHub和Hexo搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/20/Introduction/">欢迎来到我的小站</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 ZangBo
+            </div>
+            <div class="footer-right">
+                Welcome to ZangBo's Blog
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.3.3/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-100951797-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>
