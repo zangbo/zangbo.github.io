@@ -4,7 +4,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（十三）：tf.contrib.learn入门]]></title>
-      <url>/2017/07/09/TensorFlow_13/</url>
+      <url>/blog/2017/07/09/TensorFlow_13/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>TensorFlow有很多高级的机器学习API，<code>tf.contrib.learn</code>就是其中之一。<code>tf.contrib.learn</code>的出现让机器学习模型的建立、训练和评估变得十分的简单。本文介绍了用<code>tf.contrib.learn</code>搭建神经网络分类器并对Iris数据集进行分类，我们的代码分为以下五步：</p>
@@ -292,7 +292,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（十二）：CNN示例代码CIFAR-10分析（下）]]></title>
-      <url>/2017/07/07/TensorFlow_12/</url>
+      <url>/blog/2017/07/07/TensorFlow_12/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文接上文，继续学习TensorFlow在CIFAR-10上的教程，该代码主要由以下五部分组成：</p>
@@ -415,7 +415,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）]]></title>
-      <url>/2017/07/06/TensorFlow_11/</url>
+      <url>/blog/2017/07/06/TensorFlow_11/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>TensorFlow官方网站关于卷积神经网络的教程有具体实例，该实例在CIFAR-10数据集上实现，我对这部分代码进行了学习，该代码主要由以下五部分组成：</p>
@@ -549,7 +549,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（十）：张量的阶、形状和数据类型]]></title>
-      <url>/2017/07/05/TensorFlow_10/</url>
+      <url>/blog/2017/07/05/TensorFlow_10/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文整理了TensorFlow中<strong>张量(Tensor)</strong>相关的一些概念：</p>
@@ -750,7 +750,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（九）：数据读取]]></title>
-      <url>/2017/07/05/TensorFlow_9/</url>
+      <url>/blog/2017/07/05/TensorFlow_9/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文整理了TensorFlow中的数据读取方法，在TensorFlow中主要有三种方法读取数据：</p>
@@ -942,7 +942,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（八）：线程和队列]]></title>
-      <url>/2017/07/03/TensorFlow_8/</url>
+      <url>/blog/2017/07/03/TensorFlow_8/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文介绍了TensorFlow的线程和队列。在使用TensorFlow进行异步计算时，队列是一种强大的机制。正如TensorFlow中的其他组件一样，队列就是TensorFlow图中的节点。这是一种有状态的节点，就像变量一样：其他节点可以修改它的内容。具体来说，其他节点可以把新元素插入到队列后端(rear)，也可以把队列前端(front)的元素删除。</p>
@@ -1007,7 +1007,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（七）：Exponential_decay]]></title>
-      <url>/2017/07/01/TensorFlow_7/</url>
+      <url>/blog/2017/07/01/TensorFlow_7/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>在神经网络的训练过程中，<strong>学习率(learning rate)</strong>控制着参数的更新速度，<code>tf.train</code>类下面的五种不同的学习速率的衰减方法。</p>
@@ -1061,7 +1061,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（六）：Moving Average]]></title>
-      <url>/2017/07/01/TensorFlow_6/</url>
+      <url>/blog/2017/07/01/TensorFlow_6/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文记录了TensorFlow训练模型过程中对参数的<strong>滑动平均(moving average)</strong>的计算，在测试数据上评估模型性能时用这些平均值总会提升预测结果表现，用到的类主要为<code>tf.train.ExponentialMovingAverage</code>。</p>
@@ -1162,7 +1162,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（五）：常用函数和模型的保存与恢复]]></title>
-      <url>/2017/06/30/TensorFlow_5/</url>
+      <url>/blog/2017/06/30/TensorFlow_5/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文学习了TensorFlow的一些常用的基础函数，主要为以下几种：</p>
@@ -1238,7 +1238,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（四）：TensorBoard可视化]]></title>
-      <url>/2017/06/27/TensorFlow_4/</url>
+      <url>/blog/2017/06/27/TensorFlow_4/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文对TensorFlow的重要可视化工具TensorBoard进行学习。</p>
@@ -1370,7 +1370,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（三）：Name_Scope和变量共享]]></title>
-      <url>/2017/06/24/TensorFlow_3/</url>
+      <url>/blog/2017/06/24/TensorFlow_3/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文学习了TensorFlow中的四个基本函数以及<strong>变量共享(Sharing Variables)</strong>机制：</p>
@@ -1502,7 +1502,7 @@
     
     <entry>
       <title><![CDATA[爬虫笔记（四）：获取某地历史天气数据]]></title>
-      <url>/2017/06/22/Crawler_4/</url>
+      <url>/blog/2017/06/22/Crawler_4/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。</p>
@@ -1624,7 +1624,7 @@
     
     <entry>
       <title><![CDATA[爬虫笔记（三）：BeautifulSoup基础]]></title>
-      <url>/2017/06/15/Crawler_3/</url>
+      <url>/blog/2017/06/15/Crawler_3/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -1776,7 +1776,7 @@
     
     <entry>
       <title><![CDATA[爬虫笔记（二）：Requests基础]]></title>
-      <url>/2017/06/14/Crawler_2/</url>
+      <url>/blog/2017/06/14/Crawler_2/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Requests库以及一些基础用法，基于python3.5版本<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -1881,7 +1881,7 @@
     
     <entry>
       <title><![CDATA[爬虫笔记（一）：爬虫基础知识]]></title>
-      <url>/2017/06/13/Crawler_1/</url>
+      <url>/blog/2017/06/13/Crawler_1/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列记录了爬虫学习的历程，本文整理了学习爬虫需要掌握的基础背景知识，包括HTML、URL在内的基础概念以及爬虫的工作原理。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -1940,7 +1940,7 @@
     
     <entry>
       <title><![CDATA[编码相关知识]]></title>
-      <url>/2017/06/13/EncodingKnowledge/</url>
+      <url>/blog/2017/06/13/EncodingKnowledge/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了一些常见的编码，它们的起源、区分以及在Python 3中的使用，因为平时被各种不同的编码所困扰，索性就整理出来。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -1998,7 +1998,7 @@
     
     <entry>
       <title><![CDATA[配置GithubPage二级域名]]></title>
-      <url>/2017/06/12/GithubPageDomainName/</url>
+      <url>/blog/2017/06/12/GithubPageDomainName/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -2052,7 +2052,7 @@
     
     <entry>
       <title><![CDATA[送给女友的生日礼物]]></title>
-      <url>/2017/06/12/GiftForGirlfriend/</url>
+      <url>/blog/2017/06/12/GiftForGirlfriend/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。</p>
@@ -2113,7 +2113,7 @@
     
     <entry>
       <title><![CDATA[Word2Vec笔记：Negative Sample]]></title>
-      <url>/2017/06/06/Word2Vec_Negative-Sample/</url>
+      <url>/blog/2017/06/06/Word2Vec_Negative-Sample/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -2195,7 +2195,7 @@
     
     <entry>
       <title><![CDATA[Word2Vec笔记：Skip-Gram模型]]></title>
-      <url>/2017/06/05/Word2Vec_skip-gram/</url>
+      <url>/blog/2017/06/05/Word2Vec_skip-gram/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -2248,7 +2248,7 @@
     
     <entry>
       <title><![CDATA[深度学习中几种不同的梯度下降算法]]></title>
-      <url>/2017/06/04/RandomGradientDecreases/</url>
+      <url>/blog/2017/06/04/RandomGradientDecreases/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文整理了关于梯度下降算法几个容易混淆的概念，它们都属于最速下降法。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -2288,7 +2288,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（二）：MNIST进阶]]></title>
-      <url>/2017/06/03/TensorFlow_2/</url>
+      <url>/blog/2017/06/03/TensorFlow_2/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对TensorFlow官方文档进行学习的总结，本篇介绍了利用TensorFlow搭建一个卷积神经网络，并用它来对MNIST数据集进行分类。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -2374,7 +2374,7 @@
     
     <entry>
       <title><![CDATA[TensorFlow 笔记（一）：MNIST入门]]></title>
-      <url>/2017/06/02/Tensorflow_1/</url>
+      <url>/blog/2017/06/02/Tensorflow_1/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列是对TensorFlow官方文档进行学习的总结，本篇主要关于TensorFlow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -2474,7 +2474,7 @@
     
     <entry>
       <title><![CDATA[Mac环境利用GitHub和Hexo搭建个人博客]]></title>
-      <url>/2017/06/01/MacGitHubHexoBlog/</url>
+      <url>/blog/2017/06/01/MacGitHubHexoBlog/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了在Mac环境下如何利用GitHub和Hexo搭建个人博客，网上有不少教程已经过时，自己也走了不少弯路。最近折腾了下，决定总结一下具体的流程。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -2672,7 +2672,7 @@
     
     <entry>
       <title><![CDATA[欢迎来到我的小站]]></title>
-      <url>/2017/05/20/Introduction/</url>
+      <url>/blog/2017/05/20/Introduction/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br><img src="/img/bg-2.jpg" width="520" alt="Welcome"></excerpt></p>
 <hr>
 <p>本站域名 <code>http://zangbo.me</code>。</p>
