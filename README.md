@@ -1,3 +1,3 @@
 # Here is my blog
 
-zangbo.info
+zangbo.me
