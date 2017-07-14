@@ -1,207 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/09/TensorFlow_13/</loc>
-    
-    <lastmod>2017-07-13T13:45:27.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/27/TensorFlow_4/</loc>
-    
-    <lastmod>2017-07-12T09:22:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/24/TensorFlow_3/</loc>
-    
-    <lastmod>2017-07-12T09:22:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/03/TensorFlow_2/</loc>
-    
-    <lastmod>2017-07-12T09:22:10.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/02/Tensorflow_1/</loc>
-    
-    <lastmod>2017-07-12T09:21:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/06/TensorFlow_11/</loc>
-    
-    <lastmod>2017-07-12T09:21:41.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/05/20/Introduction/</loc>
-    
-    <lastmod>2017-07-11T13:18:20.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/photos/index.html</loc>
-    
-    <lastmod>2017-07-11T13:08:31.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/07/TensorFlow_12/</loc>
-    
-    <lastmod>2017-07-08T06:29:28.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/05/TensorFlow_9/</loc>
-    
-    <lastmod>2017-07-06T08:06:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/05/TensorFlow_10/</loc>
-    
-    <lastmod>2017-07-05T09:23:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/03/TensorFlow_8/</loc>
-    
-    <lastmod>2017-07-05T04:25:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/01/TensorFlow_7/</loc>
-    
-    <lastmod>2017-07-01T08:23:00.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/30/TensorFlow_5/</loc>
-    
-    <lastmod>2017-07-01T05:53:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/07/01/TensorFlow_6/</loc>
-    
-    <lastmod>2017-07-01T05:48:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/12/GiftForGirlfriend/</loc>
-    
-    <lastmod>2017-06-23T12:05:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/15/Crawler_3/</loc>
-    
-    <lastmod>2017-06-23T02:17:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/01/MacGitHubHexoBlog/</loc>
-    
-    <lastmod>2017-06-22T17:41:44.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/12/GithubPageDomainName/</loc>
-    
-    <lastmod>2017-06-22T14:53:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/13/EncodingKnowledge/</loc>
-    
-    <lastmod>2017-06-22T13:17:53.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/22/Crawler_4/</loc>
-    
-    <lastmod>2017-06-22T13:02:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/14/Crawler_2/</loc>
-    
-    <lastmod>2017-06-21T16:54:59.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/13/Crawler_1/</loc>
-    
-    <lastmod>2017-06-21T16:53:05.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/</loc>
-    
-    <lastmod>2017-06-21T16:52:33.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/05/Word2Vec_skip-gram/</loc>
-    
-    <lastmod>2017-06-21T16:52:01.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/04/RandomGradientDecreases/</loc>
-    
-    <lastmod>2017-06-11T08:18:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me//404.html</loc>
-    
-    <lastmod>2017-06-09T09:25:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/about/index.html</loc>
-    
-    <lastmod>2017-06-09T09:07:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/tags/index.html</loc>
-    
-    <lastmod>2017-06-09T08:53:07.000Z</lastmod>
-    
-  </url>
-  
-</urlset>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <sitemap>
+        <loc>http://zangbo.me/post-sitemap.xml</loc>
+        <lastmod>2017-07-13T13:45:27.000Z</lastmod>
+    </sitemap>
+
+    <sitemap>
+        <loc>http://zangbo.me/page-sitemap.xml</loc>
+        <lastmod>2017-07-14T08:39:41.000Z</lastmod>
+    </sitemap>
+
+    <sitemap>
+        <loc>http://zangbo.me/category-sitemap.xml</loc>
+        <lastmod>2017-06-21T16:52:33.000Z</lastmod>
+    </sitemap>
+
+    <sitemap>
+        <loc>http://zangbo.me/tag-sitemap.xml</loc>
+        <lastmod>2017-06-11T08:18:17.000Z</lastmod>
+    </sitemap>
+
+</sitemapindex>
+<!-- XML Sitemap generated by Hexo SEO Friendly Sitemap Generator -->
