@@ -3,6 +3,27 @@
 
 
     
+    
+  <url>
+    <loc>http://zangbo.me/2017/07/09/TensorFlow_13/</loc>
+    <lastmod>2017-07-15T12:12:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow 笔记（十三）：tf.contrib.learn入门</title>
+        <pubTime>2017-07-09T05:32:36.000Z</pubTime>
+        
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
   <url>
     <loc>http://zangbo.me/2017/06/01/MacGitHubHexoBlog/</loc>
     <lastmod>2017-07-15T07:19:26.000Z</lastmod>
@@ -243,27 +264,6 @@
     </data>
     </url>
 
-    
-  <url>
-    <loc>http://zangbo.me/2017/07/09/TensorFlow_13/</loc>
-    <lastmod>2017-07-15T06:40:31.000Z</lastmod>
-    <data>
-        <display>
-        <title>TensorFlow 笔记（十三）：tf.contrib.learn入门</title>
-        <pubTime>2017-07-09T05:32:36.000Z</pubTime>
-        
-        <tag>TensorFlow</tag>
-         
-         
-           
-             
-              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
     
   <url>
     <loc>http://zangbo.me/2017/06/02/Tensorflow_1/</loc>
