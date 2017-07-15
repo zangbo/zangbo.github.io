@@ -37,6 +37,9 @@
 .instagram .thumb a {
 	position: relative;
 }
+.instagram .album {
+	margin-bottom: 30px;
+}
 .instagram .album h1 em{
 	font-style: normal;
 	font-size: 14px;

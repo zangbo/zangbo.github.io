@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-07-13T13:45:27.000Z</updated>
+  <updated>2017-07-15T06:40:31.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zangbo.me/2017/07/09/TensorFlow_13/"/>
     <id>http://zangbo.me/2017/07/09/TensorFlow_13/</id>
     <published>2017-07-09T05:32:36.000Z</published>
-    <updated>2017-07-13T13:45:27.000Z</updated>
+    <updated>2017-07-15T06:40:31.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -184,13 +184,10 @@
 </tbody>
 </table>
 <p>第一行为头信息，分别描述了训练数据的样本数、特征数以及种类名，接下来的120行为训练数据。前四列为四种特征，最后一列为所属类别。<code>iris_test.csv</code>与此类似。</p>
-<p><br></p>
 <p>代码开始阶段，我们首先要导入必要的模块，并且定义我们下载并存储数据集的地址：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> urllib</div><div class="line"></div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">IRIS_TRAINING = <span class="string">"iris_training.csv"</span></div><div class="line">IRIS_TRAINING_URL = <span class="string">"http://download.tensorflow.org/data/iris_training.csv"</span></div><div class="line"></div><div class="line">IRIS_TEST = <span class="string">"iris_test.csv"</span></div><div class="line">IRIS_TEST_URL = <span class="string">"http://download.tensorflow.org/data/iris_test.csv"</span></div></pre></td></tr></table></figure>
-<p><br></p>
 <p>接下来判断目标地址有没有该数据集，如果没有则需要下载数据集：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(IRIS_TRAINING):</div><div class="line">  raw = urllib.urlopen(IRIS_TRAINING_URL).read()</div><div class="line">  <span class="keyword">with</span> open(IRIS_TRAINING,<span class="string">'w'</span>) <span class="keyword">as</span> f:</div><div class="line">    f.write(raw)</div><div class="line"></div><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(IRIS_TEST):</div><div class="line">  raw = urllib.urlopen(IRIS_TEST_URL).read()</div><div class="line">  <span class="keyword">with</span> open(IRIS_TEST,<span class="string">'w'</span>) <span class="keyword">as</span> f:</div><div class="line">    f.write(raw)</div></pre></td></tr></table></figure>
-<p><br></p>
 <p>最后使用<code>load_csv_with_header()</code>函数载入训练和测试数据到<code>Dataset</code>中，该函数在<code>tf.contrib.learn.datasets.base</code>类中，有三个必须的参数：</p>
 <ul>
 <li><code>filename</code>：表示CSV文件的路径。</li>
@@ -201,12 +198,10 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Load datasets.</span></div><div class="line">training_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">    filename=IRIS_TRAINING,</div><div class="line">    target_dtype=np.int,</div><div class="line">    features_dtype=np.float32)</div><div class="line">test_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">    filename=IRIS_TEST,</div><div class="line">    target_dtype=np.int,</div><div class="line">    features_dtype=np.float32)</div></pre></td></tr></table></figure>
 <p>在<code>tf.contrib.learn</code>中<code>Dataset</code>是命名元组(named tuples)，我们可以通过<code>training_set.data</code>和 <code>training_set.target</code>命令非常方便的获得训练集的特征数据和目标标签数据。同样的，<code>test_set.data</code>和<code>test_set.target</code>分别包含了测试集的特征数据和目标标签数据。 </p>
 <p><br></p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ol>
-<li><p>关于<code>load_csv_with_header()</code>函数的定义：</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>1、关于<code>load_csv_with_header()</code>函数的定义：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Dataset = collections.namedtuple(<span class="string">'Dataset'</span>, [<span class="string">'data'</span>, <span class="string">'target'</span>])</div><div class="line"><span class="comment">#...</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_csv_with_header</span><span class="params">(filename,</span></span></div><div class="line">                         target_dtype,</div><div class="line">                         features_dtype,</div><div class="line">                         target_column=<span class="number">-1</span>):</div><div class="line">  <span class="string">"""Load dataset from CSV file with a header row."""</span></div><div class="line">  <span class="keyword">with</span> gfile.Open(filename) <span class="keyword">as</span> csv_file:</div><div class="line">    data_file = csv.reader(csv_file)</div><div class="line">    header = next(data_file) <span class="comment"># 返回第一行数据</span></div><div class="line">    n_samples = int(header[<span class="number">0</span>]) <span class="comment"># 返回样本数目</span></div><div class="line">    n_features = int(header[<span class="number">1</span>]) <span class="comment"># 返回特征数目</span></div><div class="line">    data = np.zeros((n_samples, n_features), dtype=features_dtype)</div><div class="line">    target = np.zeros((n_samples,), dtype=target_dtype)</div><div class="line">    <span class="keyword">for</span> i, row <span class="keyword">in</span> enumerate(data_file): </div><div class="line">    <span class="comment"># enumerate()函数可以同时遍历索引和元素</span></div><div class="line">      target[i] = np.asarray(row.pop(target_column), dtype=target_dtype)</div><div class="line">      data[i] = np.asarray(row, dtype=features_dtype)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> Dataset(data=data, target=target)</div></pre></td></tr></table></figure>
 <p><br></p>
-</li>
-<li><p>关于命名元组：</p>
+<p>2、关于命名元组：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">collections.namedtuple(typename, </div><div class="line">                       field_names, </div><div class="line">                       verbose=<span class="keyword">False</span>, </div><div class="line">                       rename=<span class="keyword">False</span>)</div></pre></td></tr></table></figure>
 <blockquote>
 <p>返回一个名为typenname的元组。参数field_names是一个字符串表示的元素名称，每个字段之间可以通过空格、逗号方式来分隔，比如’x y’，’x, y’。另外也可以采用列表的方式，比如[‘x’, ‘y’]。在字段名称命名上需要注意的是每个字段必须是有效的Python标识符，同时不能是python关键字，另外不要以下划线或数字开头。</p>
@@ -214,8 +209,6 @@
 </blockquote>
 <p>例子：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#python 3.4</span></div><div class="line"><span class="keyword">import</span> collections</div><div class="line">Point = collections.namedtuple(<span class="string">'Point'</span>, <span class="string">'x, y, z'</span>)</div><div class="line">p1 = Point(<span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>)</div><div class="line">print(p1)</div><div class="line"><span class="comment"># Point(x=30, y=40, z=50)</span></div><div class="line"></div><div class="line">print(p1[<span class="number">0</span>] + p1[<span class="number">1</span>] + p1[<span class="number">2</span>])</div><div class="line"><span class="comment"># 120</span></div><div class="line"></div><div class="line">x, y, z = p1</div><div class="line"></div><div class="line">print(x, y, z)</div><div class="line"><span class="comment"># 30 40 50</span></div><div class="line"></div><div class="line">print(p1.x, p1.y, p1.z)</div><div class="line"><span class="comment"># 30 40 50</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
 <p><br></p>
 <h1 id="构建深度神经网络分类器"><a href="#构建深度神经网络分类器" class="headerlink" title="构建深度神经网络分类器"></a>构建深度神经网络分类器</h1><p><code>tf.contrib.learn</code>提供了多种预定义好的模型，我们叫它<code>Estimators</code>，我们可以把它当作黑箱子来训练和评估我们的数据。在这里，我们将搭建一个深度神经网络分类器来训练我们的Iris数据。在使用<code>tf.contrib.learn</code>之前，我们首先要用简短的代码实例化<code>tf.contrib.learn.DNNClassifier</code>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Specify that all features have real-value data</span></div><div class="line">feature_columns = [tf.contrib.layers.real_valued_column(<span class="string">""</span>, dimension=<span class="number">4</span>)]</div><div class="line"></div><div class="line"><span class="comment"># Build 3 layer DNN with 10, 20, 10 units respectively.</span></div><div class="line">classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,</div><div class="line">                                            hidden_units=[<span class="number">10</span>, <span class="number">20</span>, <span class="number">10</span>],</div><div class="line">                                            n_classes=<span class="number">3</span>,</div><div class="line">                                            model_dir=<span class="string">"/tmp/iris_model"</span>)</div></pre></td></tr></table></figure>
@@ -241,16 +234,12 @@
 <p>我们会得到以下输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Test Accuracy: 0.966667</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="补充-1"><a href="#补充-1" class="headerlink" title="补充"></a>补充</h2><ol>
-<li><p><code>evaluate</code>函数输出的为一个<code>dict</code>字典，字典如下：</p>
+<h2 id="补充-1"><a href="#补充-1" class="headerlink" title="补充"></a>补充</h2><p>1、<code>evaluate</code>函数输出的为一个<code>dict</code>字典，字典如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'accuracy'</span>: <span class="number">0.93333334</span>, <span class="string">'global_step'</span>: <span class="number">2000</span>, <span class="string">'loss'</span>: <span class="number">0.068770193</span>&#125;</div></pre></td></tr></table></figure>
 <p>其中<code>global_step</code>为训练迭代的次数。代码中我们直接令<code>accuracy_score</code>等于其中的<code>accuracy</code>的值。</p>
 <p><br></p>
-</li>
-<li><p>python格式化输出<code>print(&quot;\nTest Accuracy: {0:f}\n&quot;.format(accuracy_score))</code></p>
+<p>2、python格式化输出<code>print(&quot;\nTest Accuracy: {0:f}\n&quot;.format(accuracy_score))</code></p>
 <p>其中的0表示后面第0个数，f表示数据类型为<code>float</code>型。</p>
-</li>
-</ol>
 <p><br></p>
 <h1 id="分类新样本"><a href="#分类新样本" class="headerlink" title="分类新样本"></a>分类新样本</h1><p>使用<code>classifier</code>的<code>predict()</code>函数可以对新的样本进行分类。例如我们有如下两个新的鸾尾花的样本：·</p>
 <table>
@@ -477,7 +466,7 @@
     <link href="http://zangbo.me/2017/07/06/TensorFlow_11/"/>
     <id>http://zangbo.me/2017/07/06/TensorFlow_11/</id>
     <published>2017-07-06T07:28:12.000Z</published>
-    <updated>2017-07-12T09:21:41.000Z</updated>
+    <updated>2017-07-15T06:45:55.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -491,23 +480,23 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_input.py" target="_blank" rel="external"><code>cifar10_input.py</code></a></td>
+<td><code>cifar10_input.py</code></td>
 <td>读取原始的 CIFAR-10 二进制格式文件</td>
 </tr>
 <tr>
-<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py" target="_blank" rel="external"><code>cifar10.py</code></a></td>
+<td><code>cifar10.py</code></td>
 <td>建立 CIFAR-10 网络模型</td>
 </tr>
 <tr>
-<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_train.py" target="_blank" rel="external"><code>cifar10_train.py</code></a></td>
+<td><code>cifar10_train.py</code></td>
 <td>在单块CPU或者GPU上训练 CIFAR-10 模型</td>
 </tr>
 <tr>
-<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_multi_gpu_train.py" target="_blank" rel="external"><code>cifar10_multi_gpu_train.py</code></a></td>
+<td><code>cifar10_multi_gpu_train.py</code></td>
 <td>在多块GPU上训练 CIFAR-10 模型</td>
 </tr>
 <tr>
-<td><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_eval.py" target="_blank" rel="external"><code>cifar10_eval.py</code></a></td>
+<td><code>cifar10_eval.py</code></td>
 <td>在测试集上评估 CIFAR-10 模型的表现</td>
 </tr>
 </tbody>
@@ -546,12 +535,11 @@
 <p>具体代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 如果是python2的代码，会有不兼容，这里把python3的特性引入，使得python2也可以运行该代码。</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import <span class="comment"># 绝对引用</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division <span class="comment"># 精确除法</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function <span class="comment"># print函数</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="comment"># xrange返回一个生成器，range返回一个列表，xrange在生成大范围数据的时候更节省内存。</span></div><div class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> xrange</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line">IMAGE_SIZE = <span class="number">24</span> <span class="comment"># 图像尺寸</span></div><div class="line"></div><div class="line"><span class="comment"># 描述 CIFAR-10 数据的全局常量。</span></div><div class="line">NUM_CLASSES = <span class="number">10</span> <span class="comment"># 类别数目</span></div><div class="line">NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = <span class="number">50000</span> <span class="comment"># 训练样本数目</span></div><div class="line">NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = <span class="number">10000</span> <span class="comment"># 测试样本数目</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_cifar10</span><span class="params">(filename_queue)</span>:</span></div><div class="line">    </div><div class="line">  <span class="string">"""从文件名队列读取二进制数据并提取出单张图像数据</span></div><div class="line"></div><div class="line">  建议: </div><div class="line">    如果想N个线程同步读取, 调用这个函数N次即可。</div><div class="line">    这将会产生N个独立的Readers从不同文件不同位置读取数据，进而产生更好的样本混合效果。</div><div class="line">    </div><div class="line">  输入参数:</div><div class="line">    filename_queue: 一个包含文件名列表的字符串队列</div><div class="line"></div><div class="line">  返回一个类，包含了单张图像的各种数据。</div><div class="line">  """</div><div class="line"></div><div class="line">  <span class="class"><span class="keyword">class</span> <span class="title">CIFAR10Record</span><span class="params">(object)</span>:</span> <span class="comment"># 定义一个类</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line">  result = CIFAR10Record() <span class="comment"># 建立类的实体对象</span></div><div class="line"></div><div class="line">  </div><div class="line">  <span class="comment"># 输入数据格式</span></div><div class="line">  label_bytes = <span class="number">1</span>  </div><div class="line">  result.height = <span class="number">32</span></div><div class="line">  result.width = <span class="number">32</span></div><div class="line">  result.depth = <span class="number">3</span></div><div class="line">  image_bytes = result.height * result.width * result.depth</div><div class="line">  </div><div class="line">  record_bytes = label_bytes + image_bytes</div><div class="line"></div><div class="line">  <span class="comment"># 定义固定长度阅读器读取长度为record_bytes的数据，从文件名队列中获取文件并读出单张图像数据。</span></div><div class="line">  <span class="comment"># CIFAR-10格式数据没有头数据和尾数据，所以我们令 header_bytes 和 footer_bytes 保持默认值0。</span></div><div class="line">  reader = tf.FixedLengthRecordReader(record_bytes=record_bytes)</div><div class="line">  result.key, value = reader.read(filename_queue)</div><div class="line"></div><div class="line">  <span class="comment"># 使用解码器把字符串类型转化为uint8类型的数据</span></div><div class="line">  record_bytes = tf.decode_raw(value, tf.uint8)</div><div class="line"></div><div class="line">  <span class="comment"># 第一个字节代表着标签数据，所以我们把它的格式从uint8转化为int32。</span></div><div class="line">  <span class="comment"># tf.strided_slice(input_, begin, end, strides)</span></div><div class="line">  result.label = tf.cast(</div><div class="line">      tf.strided_slice(record_bytes, [<span class="number">0</span>], [label_bytes]), tf.int32)</div><div class="line"></div><div class="line">  <span class="comment"># 剩下的字节表示图像数据，我们首先根据CIFAR-10的数据排列[depth * height * width] </span></div><div class="line">  <span class="comment"># 把它转化为 [depth, height, width] 形状的张量。</span></div><div class="line">  depth_major = tf.reshape(</div><div class="line">      tf.strided_slice(record_bytes, [label_bytes],</div><div class="line">                       [label_bytes + image_bytes]),</div><div class="line">      [result.depth, result.height, result.width])</div><div class="line">  <span class="comment"># 把 [depth, height, width] 转化为 [height, width, depth] 形状的张量，这是TensorFlow处理图像的格式。</span></div><div class="line">  result.uint8image = tf.transpose(depth_major, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>])</div><div class="line"></div><div class="line">  <span class="keyword">return</span> result</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_generate_image_and_label_batch</span><span class="params">(image, label, min_queue_examples, batch_size, shuffle)</span>:</span></div><div class="line">  <span class="string">"""生成图像和标签的batch数据</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    image: 3-D Tensor of [height, width, 3] of type.float32.</div><div class="line">    label: 1-D Tensor of type.int32</div><div class="line">    min_queue_examples: int32, 每次出队后队伍中剩下的样本数量的最小值。</div><div class="line">    batch_size: 每个batch的图像数量。</div><div class="line">    shuffle: boolean值表明是否对图像队列随机排序。</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, height, width, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line">  """</div><div class="line">  <span class="comment"># 创造一个样本队列，根据需求决定是否对样本随机排序，每次从队列中出队batch_size个图像数据和标签数据</span></div><div class="line">  num_preprocess_threads = <span class="number">16</span> </div><div class="line">  <span class="comment">#16个Reader平行读取，每个Reader读不同的文件或者位置，可以充分的混合样本数据</span></div><div class="line">  <span class="keyword">if</span> shuffle: <span class="comment"># 对样本队列随机排序</span></div><div class="line">    images, label_batch = tf.train.shuffle_batch(</div><div class="line">        [image, label],</div><div class="line">        batch_size=batch_size,</div><div class="line">        num_threads=num_preprocess_threads,</div><div class="line">        capacity=min_queue_examples + <span class="number">3</span> * batch_size,</div><div class="line">        min_after_dequeue=min_queue_examples)</div><div class="line">  <span class="keyword">else</span>: <span class="comment"># 不对样本队列随机排序</span></div><div class="line">    images, label_batch = tf.train.batch(</div><div class="line">        [image, label],</div><div class="line">        batch_size=batch_size,</div><div class="line">        num_threads=num_preprocess_threads,</div><div class="line">        capacity=min_queue_examples + <span class="number">3</span> * batch_size)</div><div class="line"></div><div class="line">  <span class="comment"># 添加summary节点以便在TensorBoard中对图像信息进行可视化</span></div><div class="line">  tf.summary.image(<span class="string">'images'</span>, images)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> images, tf.reshape(label_batch, [batch_size])</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">distorted_inputs</span><span class="params">(data_dir, batch_size)</span>:</span></div><div class="line">  <span class="string">""" 构造训练数据并对其进行失真处理。</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    data_dir: CIFAR-10数据的存放路径.</div><div class="line">    batch_size: 每个batch中图像的数目.</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line">  """</div><div class="line">  filenames = [os.path.join(data_dir, <span class="string">'data_batch_%d.bin'</span> % i)</div><div class="line">               <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="number">6</span>)]</div><div class="line">  <span class="keyword">for</span> f <span class="keyword">in</span> filenames:</div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(f):</div><div class="line">      <span class="keyword">raise</span> ValueError(<span class="string">'Failed to find file: '</span> + f)</div><div class="line"></div><div class="line">  <span class="comment"># 创建一个文件名队列</span></div><div class="line">  filename_queue = tf.train.string_input_producer(filenames)</div><div class="line"></div><div class="line">  <span class="comment"># 调用read_cifar10函数从文件名队列中读取文件，并得到单张图像信息</span></div><div class="line">  read_input = read_cifar10(filename_queue)</div><div class="line">  reshaped_image = tf.cast(read_input.uint8image, tf.float32)</div><div class="line"></div><div class="line">  height = IMAGE_SIZE <span class="comment"># 24</span></div><div class="line">  width = IMAGE_SIZE <span class="comment"># 24</span></div><div class="line"></div><div class="line">  <span class="comment"># 对训练数据图像预处理，包括多个随机失真操作。</span></div><div class="line"></div><div class="line">  <span class="comment"># 把原始的32*32的图像随机裁剪为24*24</span></div><div class="line">  distorted_image = tf.random_crop(reshaped_image, [height, width, <span class="number">3</span>])</div><div class="line"></div><div class="line">  <span class="comment"># 随机左右翻转</span></div><div class="line">  distorted_image = tf.image.random_flip_left_right(distorted_image)</div><div class="line"></div><div class="line">  <span class="comment"># 随机改变图像亮度和对比度</span></div><div class="line">  distorted_image = tf.image.random_brightness(distorted_image,</div><div class="line">                                               max_delta=<span class="number">63</span>)</div><div class="line">  distorted_image = tf.image.random_contrast(distorted_image,</div><div class="line">                                             lower=<span class="number">0.2</span>, upper=<span class="number">1.8</span>)</div><div class="line"></div><div class="line">  <span class="comment"># 把图像进行归一化处理，变为0均值和1方差。</span></div><div class="line">  float_image = tf.image.per_image_standardization(distorted_image)</div><div class="line"></div><div class="line">  <span class="comment"># 有时候graph没法推断出tensors的形状，我们可以手动保存tensors的形状信息</span></div><div class="line">  float_image.set_shape([height, width, <span class="number">3</span>]) </div><div class="line">  read_input.label.set_shape([<span class="number">1</span>])</div><div class="line"></div><div class="line">  <span class="comment"># 当采用随机生成batch操作时设定min_after_dequeue的值为50000*0.4=20000，保证足够的随机性。</span></div><div class="line">  min_fraction_of_examples_in_queue = <span class="number">0.4</span></div><div class="line">  min_queue_examples = int(NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN *</div><div class="line">                           min_fraction_of_examples_in_queue)</div><div class="line">  <span class="keyword">print</span> (<span class="string">'Filling queue with %d CIFAR images before starting to train. '</span></div><div class="line">         <span class="string">'This will take a few minutes.'</span> % min_queue_examples)</div><div class="line"></div><div class="line">  <span class="comment"># 通过建立样本队列来生成batch图像数据和batch标签数据</span></div><div class="line">  <span class="keyword">return</span> _generate_image_and_label_batch(float_image, read_input.label, </div><div class="line">                                         min_queue_examples, batch_size, shuffle=<span class="keyword">True</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">inputs</span><span class="params">(eval_data, data_dir, batch_size)</span>:</span></div><div class="line">  <span class="string">"""构造测试数据.</span></div><div class="line"></div><div class="line">  输入参数:</div><div class="line">    eval_data: bool型，表明使用训练数据还是测试数据，True为测试集</div><div class="line">    data_dir: CIFAR-10数据集的存放路径</div><div class="line">    batch_size: 每个batch的图片数量</div><div class="line"></div><div class="line">  返回数据:</div><div class="line">    images: batch图像数据. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.</div><div class="line">    labels: batch标签数据. 1D tensor of [batch_size] size.</div><div class="line">  """</div><div class="line">  <span class="keyword">if</span> <span class="keyword">not</span> eval_data: <span class="comment"># 训练数据</span></div><div class="line">    filenames = [os.path.join(data_dir, <span class="string">'data_batch_%d.bin'</span> % i)</div><div class="line">                 <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="number">6</span>)]</div><div class="line">    num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN</div><div class="line">  <span class="keyword">else</span>: <span class="comment"># 测试数据</span></div><div class="line">    filenames = [os.path.join(data_dir, <span class="string">'test_batch.bin'</span>)]</div><div class="line">    num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_EVAL</div><div class="line"></div><div class="line">  <span class="keyword">for</span> f <span class="keyword">in</span> filenames: <span class="comment"># 检查文件是否存在</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(f):</div><div class="line">      <span class="keyword">raise</span> ValueError(<span class="string">'Failed to find file: '</span> + f)</div><div class="line"></div><div class="line">  <span class="comment"># 创建一个文件名队列</span></div><div class="line">  filename_queue = tf.train.string_input_producer(filenames)</div><div class="line"></div><div class="line">  <span class="comment"># 从文件名队列中的文件中读取单个样本</span></div><div class="line">  read_input = read_cifar10(filename_queue)</div><div class="line">  reshaped_image = tf.cast(read_input.uint8image, tf.float32)</div><div class="line"></div><div class="line">  height = IMAGE_SIZE</div><div class="line">  width = IMAGE_SIZE</div><div class="line"></div><div class="line">  <span class="comment"># 测试时的图像预处理</span></div><div class="line">  <span class="comment"># 沿中心裁剪28*28大小的图像</span></div><div class="line">  resized_image = tf.image.resize_image_with_crop_or_pad(reshaped_image, height, width)</div><div class="line"></div><div class="line">  <span class="comment"># 图像归一化处理</span></div><div class="line">  float_image = tf.image.per_image_standardization(resized_image)</div><div class="line"></div><div class="line">  <span class="comment"># 设置张量的形状</span></div><div class="line">  float_image.set_shape([height, width, <span class="number">3</span>])</div><div class="line">  read_input.label.set_shape([<span class="number">1</span>])</div><div class="line"></div><div class="line">  <span class="comment"># 设置min_after_dequeue参数为20000(训练数据)，4000(测试数据)，保证足够随机性。</span></div><div class="line">  min_fraction_of_examples_in_queue = <span class="number">0.4</span></div><div class="line">  min_queue_examples = int(num_examples_per_epoch * min_fraction_of_examples_in_queue)</div><div class="line"></div><div class="line">  <span class="comment"># 通过建立一个样本队列生成batch图像数据和batch标签数据</span></div><div class="line">  <span class="keyword">return</span> _generate_image_and_label_batch(float_image, read_input.label, </div><div class="line">                                         min_queue_examples, batch_size, shuffle=<span class="keyword">False</span>)</div></pre></td></tr></table></figure>
 <p><br></p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ol>
-<li><p><code>tf.strided_slice(input_, begin, end, strides)</code></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>1、<code>tf.strided_slice(input_, begin, end, strides)</code></p>
 <p>用法示例(注意和<code>tf.slice()</code>的区分)：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 'input' is [[[1, 1, 1], [2, 2, 2]],</div><div class="line">#             [[3, 3, 3], [4, 4, 4]],</div><div class="line">#             [[5, 5, 5], [6, 6, 6]]]</div><div class="line">tf.strided_slice(input, [1, 0, 0], [2, 1, 3], [1, 1, 1]) ==&gt; [[[3, 3, 3]]]</div><div class="line">tf.strided_slice(input, [1, 0, 0], [2, 2, 3], [1, 1, 1]) ==&gt; [[[3, 3, 3],</div><div class="line">                                                               [4, 4, 4]]]</div><div class="line">tf.strided_slice(input, [1, -1, 0], [2, -3, 3], [1, -1, 1]) ==&gt;[[[4, 4, 4],</div><div class="line">                                                              [3, 3, 3]]]</div></pre></td></tr></table></figure>
-</li>
-<li><p>TensorFlow提供两种类型的拼接：</p>
+<p><br></p>
+<p>2、TensorFlow提供两种类型的拼接：</p>
 <ul>
 <li><code>tf.concat(values, axis, name=&#39;concat&#39;)</code>：按照指定的<strong>已经存在</strong>的轴进行拼接</li>
 </ul>
@@ -561,8 +549,6 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">t1 = [[1, 2, 3], [4, 5, 6]]</div><div class="line">t2 = [[7, 8, 9], [10, 11, 12]]</div><div class="line">tf.concat([t1, t2], 0) ==&gt; [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]</div><div class="line">tf.concat([t1, t2], 1) ==&gt; [[1, 2, 3, 7, 8, 9], [4, 5, 6, 10, 11, 12]]</div><div class="line">tf.stack([t1, t2], 0)  ==&gt; [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]]</div><div class="line">tf.stack([t1, t2], 1)  ==&gt; [[[1, 2, 3], [7, 8, 9]], [[4, 5, 6], [10, 11, 12]]]</div><div class="line">tf.stack([t1, t2], 2)  ==&gt; [[[1, 7], [2, 8], [3, 9]], [[4, 10], [5, 11], [6, 12]]]</div></pre></td></tr></table></figure>
 <p>上面的结果读起来不太直观，我们从shape角度看一下就很容易明白了：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">t1 = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</div><div class="line">t2 = [[<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], [<span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>]]</div><div class="line">tf.concat([t1, t2], <span class="number">0</span>)  <span class="comment"># [2,3] + [2,3] ==&gt; [4, 3]</span></div><div class="line">tf.concat([t1, t2], <span class="number">1</span>)  <span class="comment"># [2,3] + [2,3] ==&gt; [2, 6]</span></div><div class="line">tf.stack([t1, t2], <span class="number">0</span>)   <span class="comment"># [2,3] + [2,3] ==&gt; [2*,2,3]</span></div><div class="line">tf.stack([t1, t2], <span class="number">1</span>)   <span class="comment"># [2,3] + [2,3] ==&gt; [2,2*,3]</span></div><div class="line">tf.stack([t1, t2], <span class="number">2</span>)   <span class="comment"># [2,3] + [2,3] ==&gt; [2,3,2*]</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
 <p><br></p>
 <h1 id="建立模型"><a href="#建立模型" class="headerlink" title="建立模型"></a>建立模型</h1><p>这部分代码在<code>cifar10.py</code>文件中，该代码主要由以下函数组成：</p>
 <ul>
@@ -609,23 +595,23 @@
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_input.py&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;cifar10_input.py&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;cifar10_input.py&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;读取原始的 CIFAR-10 二进制格式文件&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;cifar10.py&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;cifar10.py&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;建立 CIFAR-10 网络模型&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_train.py&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;cifar10_train.py&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;cifar10_train.py&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;在单块CPU或者GPU上训练 CIFAR-10 模型&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_multi_gpu_train.py&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;cifar10_multi_gpu_train.py&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;cifar10_multi_gpu_train.py&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;在多块GPU上训练 CIFAR-10 模型&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_eval.py&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;cifar10_eval.py&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;cifar10_eval.py&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;在测试集上评估 CIFAR-10 模型的表现&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -857,7 +843,7 @@
     <link href="http://zangbo.me/2017/07/05/TensorFlow_9/"/>
     <id>http://zangbo.me/2017/07/05/TensorFlow_9/</id>
     <published>2017-07-05T02:04:11.000Z</published>
-    <updated>2017-07-06T08:06:24.000Z</updated>
+    <updated>2017-07-15T06:50:54.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -944,13 +930,13 @@
 <h3 id="标准TensorFlow格式"><a href="#标准TensorFlow格式" class="headerlink" title="标准TensorFlow格式"></a>标准TensorFlow格式</h3><p>我们也可以把任意的数据转换为TensorFlow所支持的格式， 这种方法使TensorFlow的数据集更容易与网络应用架构相匹配。这种方法就是使用TFRecords文件，TFRecords文件包含了<code>tf.train.Example</code>的<em>protocol buffer</em>（里面包含了名为 <code>Features</code>的字段）。你可以写一段代码获取你的数据， 将数据填入到<code>Example</code>的<em>protocol buffer</em>，将<em>protocol buffer</em>序列化为一个字符串， 并且通过<code>tf.python_io.TFRecordWriter</code>类写入到TFRecords文件。</p>
 <p>从TFRecords文件中读取数据， 可以使用<code>tf.TFRecordReader</code>阅读器以及<code>tf.parse_single_example</code>解析器。<code>parse_single_example</code>操作可以将<code>Example</code><em>protocol buffer</em>解析为张量。 具体可以参考如下例子，把MNIST数据集转化为TFRecords格式：</p>
 <ul>
-<li><a href="https://www.github.com/tensorflow/tensorflow/blob/r1.2/tensorflow/examples/how_tos/reading_data/convert_to_records.py" target="_blank" rel="external"><code>tensorflow/examples/how_tos/reading_data/convert_to_records.py</code></a> .</li>
+<li><a href="https://www.github.com/tensorflow/tensorflow/blob/r1.2/tensorflow/examples/how_tos/reading_data/convert_to_records.py" target="_blank" rel="external">tensorflow/examples/how_tos/reading_data/convert_to_records.py</a></li>
 </ul>
 <p>SparseTensors这种稀疏输入数据类型使用队列来处理不是太好。如果要使用SparseTensors你就必须在批处理<strong>之后</strong>使用<code>tf.parse_example</code>去解析字符串记录 (而不是在批处理<strong>之前</strong>使用<code>tf.parse_single_example</code>) 。</p>
 <p><br></p>
 <h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><p>我们可以对输入的样本数据进行任意的预处理， 这些预处理不依赖于训练参数， 比如数据归一化， 提取随机数据片，增加噪声或失真等等。具体可以参考如下对CIFAR-10处理的例子：</p>
 <ul>
-<li><a href="https://tensorflow.googlesource.com/tensorflow/+/master/tensorflow/models/image/cifar10/cifar10.py" target="_blank" rel="external"><code>tensorflow/models/image/cifar10/cifar10.py</code></a></li>
+<li><a href="https://tensorflow.googlesource.com/tensorflow/+/master/tensorflow/models/image/cifar10/cifar10.py" target="_blank" rel="external">tensorflow/models/image/cifar10/cifar10.py</a></li>
 </ul>
 <p><br></p>
 <h2 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h2><p>经过了之前的步骤，在数据读取流程的最后， 我们需要有另一个队列来批量执行输入样本的训练，评估或者推断。根据要不要打乱顺序，我们常用的有两个函数：</p>
@@ -1193,7 +1179,7 @@
     <link href="http://zangbo.me/2017/07/01/TensorFlow_6/"/>
     <id>http://zangbo.me/2017/07/01/TensorFlow_6/</id>
     <published>2017-07-01T03:08:19.000Z</published>
-    <updated>2017-07-01T05:48:04.000Z</updated>
+    <updated>2017-07-15T06:54:03.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -1243,15 +1229,11 @@
 <p><br></p>
 <h2 id="init"><a href="#init" class="headerlink" title="__init__"></a>__init__</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">__init__(</div><div class="line">    decay,</div><div class="line">    num_updates=<span class="keyword">None</span>,</div><div class="line">    zero_debias=<span class="keyword">False</span>,</div><div class="line">    name=<span class="string">'ExponentialMovingAverage'</span></div><div class="line">)</div></pre></td></tr></table></figure>
 <p>创建一个<code>ExponentialMovingAverage</code>对象。</p>
-<ol>
-<li><p><code>decay</code>一般取值接近于1.0。</p>
-</li>
-<li><p><code>num_updates</code>允许<code>dacay</code>值动态的变化，在训练开端<code>dacay</code>速率较低，这使得滑动均值更快，如果有值的话，实际<code>decay</code>速率为以下公式：</p>
-<p><code>min(decay, (1 + num_updates) / (10 + num_updates))</code></p>
-</li>
-<li><p><code>name</code>将会给<code>apply()</code>中的<code>ops</code>添加一个额外的前置名字。</p>
-</li>
-</ol>
+<ul>
+<li><code>decay</code>一般取值接近于1.0。</li>
+<li><code>num_updates</code>允许<code>dacay</code>值动态的变化，在训练开端<code>dacay</code>速率较低，这使得滑动均值更快，如果有值的话，实际<code>decay</code>速率公式为：<code>min(decay, (1 + num_updates) / (10 + num_updates))</code></li>
+<li><code>name</code>将会给<code>apply()</code>中的<code>ops</code>添加一个额外的前置名字。</li>
+</ul>
 <p><br></p>
 <h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply(var_list=<span class="keyword">None</span>)</div></pre></td></tr></table></figure>
 <p>该函数维护变量的滑动平均，返回一个<code>op</code>来更新所有影子变量。<code>var_list</code>必须是一个变量或者<code>Tensor</code>对象的列表，这个函数创造<code>var_list</code>中所有变量的副本，对于变量副本，初始化值和原变量初始化值相同。变量类型必须是<code>float</code>相关的类型。</p>
@@ -1384,7 +1366,7 @@
     <link href="http://zangbo.me/2017/06/27/TensorFlow_4/"/>
     <id>http://zangbo.me/2017/06/27/TensorFlow_4/</id>
     <published>2017-06-27T13:50:54.000Z</published>
-    <updated>2017-07-12T09:22:26.000Z</updated>
+    <updated>2017-07-15T06:56:51.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -1410,20 +1392,15 @@
 <p><br></p>
 <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在TensorFlow运行过程中，我们可以通过<code>summary operations</code>操作来保存它的运行日志，TensorBoard通过读取这些运行日志来实现可视化功能。下面是使用TensorBoard的生命周期：</p>
 <ol>
-<li><p>创建一个<code>TensorFlow graph</code>，用<code>summary operations</code>来保存我们需要了解的节点的信息。</p>
-</li>
-<li><p>我们需要整合所有节点的信息，如果一个一个提取太耗费精力和时间，我们可以选择<code>tf.summary.merge_all()</code>函数来把所有的<code>op</code>节点整合成一个单一节点，然后通过运行该节点来提取出所有<code>summary op</code>的信息。</p>
-</li>
-<li><p>用<code>tf.summary.FileWriter()</code>函数把提取出的所有的<code>summary op</code>信息存入磁盘中。我们同时可以用该函数把<code>graph</code>的信息存入磁盘，用来可视化神经网络的结构。</p>
-</li>
-<li><p>在训练过程中用<code>add_summary</code>命令把训练信息存入磁盘，训练结束后记得把<code>FileWriter</code>对象<code>close</code>。</p>
-</li>
-<li><p>打开终端，键入以下命令运行TensorBoard：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tensorboard --logdir=path/to/logs</div></pre></td></tr></table></figure>
+<li>创建一个<code>TensorFlow graph</code>，用<code>summary operations</code>来保存我们需要了解的节点的信息。</li>
+<li>我们需要整合所有节点的信息，如果一个一个提取太耗费精力和时间，我们可以选择<code>tf.summary.merge_all()</code>函数来把所有的<code>op</code>节点整合成一个单一节点，然后通过运行该节点来提取出所有<code>summary op</code>的信息。</li>
+<li>用<code>tf.summary.FileWriter()</code>函数把提取出的所有的<code>summary op</code>信息存入磁盘中。我们同时可以用该函数把<code>graph</code>的信息存入磁盘，用来可视化神经网络的结构。</li>
+<li>在训练过程中用<code>add_summary</code>命令把训练信息存入磁盘，训练结束后记得把<code>FileWriter</code>对象<code>close</code>。</li>
+<li>打开终端，键入以下命令运行TensorBoard：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tensorboard --logdir=path/to/logs</div></pre></td></tr></table></figure>
 <p>得到提示信息<code>“Starting TensorBoard...”</code>则运行成功，我们可以打开浏览器，在地址栏输入<code>localhost:6006</code>进入TensorBoard的操作面板。</p>
 <p><br></p>
-</li>
-</ol>
 <h1 id="Summary-Operations"><a href="#Summary-Operations" class="headerlink" title="Summary Operations"></a>Summary Operations</h1><p>我们利用该操作来从TensorFlow运行过程中获得信息，然后在TensorBoard上展示出来，<code>summary ops</code>同样是<code>ops</code>的一种，它们和<code>tf.matmul</code>或者<code>tf.nn.relu</code>等操作一样。这意味着它们和其他<code>ops</code>相同，包含在一个<code>graph</code>中，读入一个<code>tensors</code>并且输出一个<code>tensors</code>。但是它们也有不同的地方，<code>summary ops</code>输出的向量还包含着连续的<code>protobufs</code>信息，它们可以被保存到磁盘上并且被TensorBoard读取进行可视化。</p>
 <p>常见的<code>summary ops</code>如下：</p>
 <ul>
@@ -1521,7 +1498,7 @@
     <link href="http://zangbo.me/2017/06/24/TensorFlow_3/"/>
     <id>http://zangbo.me/2017/06/24/TensorFlow_3/</id>
     <published>2017-06-24T08:09:34.000Z</published>
-    <updated>2017-07-12T09:22:19.000Z</updated>
+    <updated>2017-07-15T06:57:45.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -1543,15 +1520,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create two variables.</span></div><div class="line">weights = tf.Variable(tf.random_normal([<span class="number">784</span>, <span class="number">200</span>], stddev=<span class="number">0.35</span>),</div><div class="line">                      name=<span class="string">"weights"</span>)</div><div class="line">biases = tf.Variable(tf.zeros([<span class="number">200</span>]), name=<span class="string">"biases"</span>)</div><div class="line">...</div><div class="line"><span class="comment"># Add an op to initialize the variables.</span></div><div class="line">init_op = tf.global_variables_initializer()</div><div class="line"></div><div class="line"><span class="comment"># Later, when launching the model</span></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">  <span class="comment"># Run the init operation.</span></div><div class="line">  sess.run(init_op)</div><div class="line">  ...</div><div class="line">  <span class="comment"># Use the model</span></div><div class="line">  ...</div></pre></td></tr></table></figure>
 <p><br></p>
 <h2 id="get-variable"><a href="#get-variable" class="headerlink" title="get_variable()"></a>get_variable()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">v = tf.get_variable(name, shape, dtype, initializer)</div></pre></td></tr></table></figure>
-<p>函数创建一个新的变量或者返回一个已经存在的变量，它是<code>variable_scope</code>的重要组成部分。</p>
-<ol>
-<li><p>创建一个新的变量，这时默认<code>tf.get_variable_scope().reuse == False</code></p>
+<p>1、函数创建一个新的变量或者返回一个已经存在的变量，它是<code>variable_scope</code>的重要组成部分。</p>
+<p>创建一个新的变量，这时默认<code>tf.get_variable_scope().reuse == False</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"foo"</span>):</div><div class="line">    v = tf.get_variable(<span class="string">"v"</span>, [<span class="number">1</span>])</div><div class="line"><span class="keyword">assert</span> v.name == <span class="string">"foo/v:0"</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>为了重新使用(reuse)已经存在的变量，这时改变<code>tf.get_variable_scope().reuse == True</code></p>
+<p>2、为了重新使用(reuse)已经存在的变量，这时改变<code>tf.get_variable_scope().reuse == True</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"foo"</span>):</div><div class="line">    v = tf.get_variable(<span class="string">"v"</span>, [<span class="number">1</span>])</div><div class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"foo"</span>, reuse=<span class="keyword">True</span>):</div><div class="line">    v1 = tf.get_variable(<span class="string">"v"</span>, [<span class="number">1</span>])</div><div class="line"><span class="keyword">assert</span> v1 <span class="keyword">is</span> v</div></pre></td></tr></table></figure>
-</li>
-</ol>
 <p><strong>注意：</strong></p>
 <ol>
 <li>该函数必须指定<code>name</code>，它会在当前的<code>variable_scope</code>进行<code>reuse</code>检查。</li>
@@ -1664,7 +1637,7 @@
     <link href="http://zangbo.me/2017/06/22/Crawler_4/"/>
     <id>http://zangbo.me/2017/06/22/Crawler_4/</id>
     <published>2017-06-22T11:28:01.000Z</published>
-    <updated>2017-06-22T13:02:02.000Z</updated>
+    <updated>2017-07-15T06:59:09.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -1677,34 +1650,25 @@
 <p><br></p>
 <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近参加了天池的一个大数据竞赛，因为需要用到江苏省扬中市的历史天气信息，所以就写了个简单的爬虫程序来爬取。有很多网站都提供了历史天气，这里我们选择的网站是：<a href="http://lishi.tianqi.com/yangzhong/index.html" target="_blank" rel="external">扬中市历史天气-历史天气网</a>。</p>
 <p><br></p>
-<h1 id="分析网站"><a href="#分析网站" class="headerlink" title="分析网站"></a>分析网站</h1><ol>
-<li><p>打开上述网站，往下滑动，可以看到有一栏记录了该地每个月的天气信息，右键打开审查元素，查看该信息所在的标签，发现每个月的天气信息都在标签<code>&lt;div class=&#39;tqtongji1&#39;&gt;</code>下面的<code>&lt;a&gt;</code>标签中。</p>
+<h1 id="分析网站"><a href="#分析网站" class="headerlink" title="分析网站"></a>分析网站</h1><p>1、打开上述网站，往下滑动，可以看到有一栏记录了该地每个月的天气信息，右键打开审查元素，查看该信息所在的标签，发现每个月的天气信息都在标签<code>&lt;div class=&#39;tqtongji1&#39;&gt;</code>下面的<code>&lt;a&gt;</code>标签中。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_p0q980_2.jpeg" alt="历史月份信息"></center>
 
 <p><br></p>
-</li>
-<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji1&#39;).find_all(&#39;a&#39;)</code>命令得到所有月份的信息，提取出其中的链接，这里只提取最近30个月的信息。</p>
+<p>2、用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji1&#39;).find_all(&#39;a&#39;)</code>命令得到所有月份的信息，提取出其中的链接，这里只提取最近30个月的信息。</p>
 <p><br></p>
-</li>
-<li><p>打开其中一个月份链接，右键审查元素，发现该月份每天的天气信息都在标签<code>&lt;div class=&#39;tqtongji2&#39;&gt;</code>下面的<code>&lt;li&gt;</code>标签中。</p>
+<p>3、打开其中一个月份链接，右键审查元素，发现该月份每天的天气信息都在标签<code>&lt;div class=&#39;tqtongji2&#39;&gt;</code>下面的<code>&lt;li&gt;</code>标签中。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XtWKBE_3.jpeg" alt="部分天气信息"></center>
 
 <p><br></p>
-</li>
-<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;li&#39;)</code>命令得到该月份每天的部分天气信息并保存在<code>list</code>中，同时用<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;a&#39;)</code>命令提取出其中的链接。</p>
+<p>4、用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;li&#39;)</code>命令得到该月份每天的部分天气信息并保存在<code>list</code>中，同时用<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;a&#39;)</code>命令提取出其中的链接。</p>
 <p><br></p>
-</li>
-<li><p>打开其中一天的链接，右键审查元素，发现该天的其他天气信息都在标签<code>&lt;div class=&#39;history_sh&#39;&gt;</code>下面的<code>&lt;span&gt;</code>标签中。</p>
+<p>5、打开其中一天的链接，右键审查元素，发现该天的其他天气信息都在标签<code>&lt;div class=&#39;history_sh&#39;&gt;</code>下面的<code>&lt;span&gt;</code>标签中。</p>
 <center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XNW30r_4.jpeg" alt="其他天气信息"></center>
 
 <p><br></p>
-</li>
-<li><p>用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;history_sh&#39;).find_all(&#39;span&#39;)</code>命令提取出该天的其他天气信息并保存在<code>list</code>中。</p>
+<p>6、用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;history_sh&#39;).find_all(&#39;span&#39;)</code>命令提取出该天的其他天气信息并保存在<code>list</code>中。</p>
 <p><br></p>
-</li>
-<li><p>利用numpy数组和pandas的DataFrame结构对提取出的数据进行整合，最后输出为CSV文件。</p>
-</li>
-</ol>
+<p>7、利用numpy数组和pandas的DataFrame结构对提取出的数据进行整合，最后输出为CSV文件。</p>
 <p><br></p>
 <h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">	</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">History_weather</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">begin_url</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_index = self.get_all_weather_index(url)</div><div class="line">        all_weather_index = all_weather_index[:<span class="number">30</span>]</div><div class="line">        print(<span class="string">"Get all weather index!"</span>)</div><div class="line">        result_weather = self.get_all_weather(all_weather_index)</div><div class="line">        result_weather.to_csv(<span class="string">'all_weather.csv'</span>, index=<span class="keyword">False</span>)</div><div class="line">        print(<span class="string">'Save all weather success!'</span>)</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_soup</span><span class="params">(self, url)</span>:</span></div><div class="line">        headers = &#123;</div><div class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 \</span></div><div class="line">            (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'&#125;</div><div class="line">        html = requests.get(url, headers)</div><div class="line">        soup = BeautifulSoup(html.text, <span class="string">'lxml'</span>)</div><div class="line">        <span class="keyword">return</span> soup</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather_index</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_soup = self.get_soup(url)</div><div class="line">        all_weather_index = all_weather_soup.find(</div><div class="line">            <span class="string">'div'</span>, class_=<span class="string">'tqtongji1'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">        <span class="keyword">return</span> all_weather_index</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather</span><span class="params">(self, all_weather_index)</span>:</span></div><div class="line">        all_month_weather = list()</div><div class="line">        day_weather = list()</div><div class="line">        	</div><div class="line">        <span class="keyword">for</span> weather <span class="keyword">in</span> all_weather_index:</div><div class="line">            month_url = weather[<span class="string">'href'</span>]</div><div class="line">            month_name = weather.get_text()</div><div class="line">            month_weather_soup = self.get_soup(month_url)</div><div class="line">            month_weather = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'li'</span>)</div><div class="line">            day_weather_url = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">            <span class="keyword">for</span> day <span class="keyword">in</span> day_weather_url:</div><div class="line">                day_url = day[<span class="string">'href'</span>]</div><div class="line">                day_soup = self.get_soup(day_url)</div><div class="line">                day_text = day_soup.find(</div><div class="line">                    <span class="string">'div'</span>, class_=<span class="string">'history_sh'</span>).find_all(<span class="string">'span'</span>)</div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> day_text:</div><div class="line">                    day_weather.append(i.get_text())</div><div class="line">            weather_list = list()</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> month_weather:</div><div class="line">                weather_list.append(i.get_text())</div><div class="line">            weather_list = weather_list[<span class="number">6</span>:]</div><div class="line">            all_month_weather = all_month_weather + weather_list</div><div class="line">            print(<span class="string">"Get weather :"</span> + month_name)</div><div class="line">            	</div><div class="line">        day_weather = np.array(day_weather).reshape(<span class="number">-1</span>, <span class="number">8</span>)</div><div class="line">        day_weather = DataFrame(day_weather, columns=[</div><div class="line">            <span class="string">'Ultraviolet'</span>, <span class="string">'Dress'</span>, <span class="string">'Travel'</span>, <span class="string">'Comfort_level'</span>,</div><div class="line">            <span class="string">'Morning_exercise'</span>, <span class="string">'Car_wash'</span>, <span class="string">'Drying_index'</span>, <span class="string">'Breath_allergy'</span>])</div><div class="line">        all_month_weather = np.array(all_month_weather).reshape(<span class="number">-1</span>, <span class="number">6</span>)</div><div class="line">        all_month_weather = DataFrame(all_month_weather, columns=[</div><div class="line">            <span class="string">'Date'</span>, <span class="string">'Max_temp'</span>, <span class="string">'Min_temp'</span>, </div><div class="line">            <span class="string">'Whether'</span>, <span class="string">'Wind_direction'</span>, <span class="string">'Wind_power'</span>])</div><div class="line">        print(all_month_weather.shape)</div><div class="line">        print(day_weather.shape)</div><div class="line">        result_weather = pd.merge(</div><div class="line">            all_month_weather, day_weather, left_index=<span class="keyword">True</span>, right_index=<span class="keyword">True</span>)</div><div class="line">        <span class="keyword">return</span> result_weather</div><div class="line">	</div><div class="line">history_weather = History_weather()</div><div class="line">begin_url = <span class="string">'http://lishi.tianqi.com/yangzhong/index.html'</span></div><div class="line">history_weather.begin_url(begin_url)</div></pre></td></tr></table></figure>
 <p><br></p>
@@ -1792,7 +1756,7 @@
     <link href="http://zangbo.me/2017/06/15/Crawler_3/"/>
     <id>http://zangbo.me/2017/06/15/Crawler_3/</id>
     <published>2017-06-15T13:48:57.000Z</published>
-    <updated>2017-06-23T02:17:12.000Z</updated>
+    <updated>2017-07-15T07:00:01.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -1871,19 +1835,14 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all([<span class="string">"a"</span>, <span class="string">"b"</span>])</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
 <p><code>find_all()</code>方法搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。</p>
 <p><br></p>
-<h3 id="keyword-参数"><a href="#keyword-参数" class="headerlink" title="keyword 参数"></a>keyword 参数</h3><ol>
-<li><p>如果一个指定名字的参数不是搜索内置的参数名，搜索时会把该参数当作指定名字tag的属性来搜索，如果包含一个名字为 <code>id</code> 的参数，Beautiful Soup会搜索每个tag的”id”属性：</p>
+<h3 id="keyword-参数"><a href="#keyword-参数" class="headerlink" title="keyword 参数"></a>keyword 参数</h3><p>1、如果一个指定名字的参数不是搜索内置的参数名，搜索时会把该参数当作指定名字tag的属性来搜索，如果包含一个名字为 <code>id</code> 的参数，Beautiful Soup会搜索每个tag的”id”属性：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="string">'link2'</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
 <p><br></p>
-</li>
-<li><p>如果传入 <code>href</code> 参数，Beautiful Soup会搜索每个tag的”href”属性:</p>
+<p>2、如果传入 <code>href</code> 参数，Beautiful Soup会搜索每个tag的”href”属性:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(href=re.compile(<span class="string">"elsie"</span>))</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
 <p><br></p>
-</li>
-<li><p>利用<code>true</code>参数在文档树中查找所有包含 <code>id</code> 属性的tag，无论 <code>id</code> 的值是什么:</p>
+<p>3、利用<code>true</code>参数在文档树中查找所有包含 <code>id</code> 属性的tag，无论 <code>id</code> 的值是什么:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="keyword">True</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
 <p>搜索指定名字的属性时可以使用的参数值包括字符串、正则表达式、列表或是 <code>True</code></p>
 <p><br></p>
 <h3 id="按CSS搜索"><a href="#按CSS搜索" class="headerlink" title="按CSS搜索"></a>按CSS搜索</h3><p>按照CSS类名搜索tag的功能非常实用，但标识CSS类名的关键字 <code>class</code> 在Python中是保留字，使用 <code>class</code> 做参数会导致语法错误。这里我们可以通过 <code>class_</code> 参数搜索有指定CSS类名的tag:</p>
@@ -2178,20 +2137,16 @@
     <link href="http://zangbo.me/2017/06/12/GithubPageDomainName/"/>
     <id>http://zangbo.me/2017/06/12/GithubPageDomainName/</id>
     <published>2017-06-12T14:10:55.000Z</published>
-    <updated>2017-06-22T14:53:19.000Z</updated>
+    <updated>2017-07-15T07:02:23.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>因为女友生日做了两个网站，就思考该如何把它们放在GithubPage下，并且设置成二级域名，查阅了一堆资料终于明白GithubPage二级域名该如何配置，于是整理在下面。</excerpt></p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="Github-Page种类"><a href="#Github-Page种类" class="headerlink" title="Github Page种类"></a>Github Page种类</h1><ol>
-<li><p><code>UserPage</code>: 用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p>
-</li>
-<li><p><code>ProjectPage</code>: 用户创建出来的其他网站项目也可以托管在github上，首先新建一个项目，然后建立一个名叫<code>gh-pages</code>的branch，这个branch里的文件就是page的站点文件。</p>
+<h1 id="Github-Page种类"><a href="#Github-Page种类" class="headerlink" title="Github Page种类"></a>Github Page种类</h1><p>1、<code>UserPage</code>: 用户的整个站点，这个是最初github支持的类型，创建一个形如username.github.com的项目就可以，用户想要在github上托管网站，这个是必须要建的，而且命名方式固定。</p>
+<p>2、<code>ProjectPage</code>: 用户创建出来的其他网站项目也可以托管在github上，首先新建一个项目，然后建立一个名叫<code>gh-pages</code>的branch，这个branch里的文件就是page的站点文件。</p>
 <p><br></p>
-</li>
-</ol>
 <h1 id="UserPage默认域名"><a href="#UserPage默认域名" class="headerlink" title="UserPage默认域名"></a>UserPage默认域名</h1><p>用户站点的默认域名是<code>username.github.io</code>，比如我的站点就是<code>zangbo.github.io</code></p>
 <p><br></p>
 <h1 id="ProjectPage默认域名"><a href="#ProjectPage默认域名" class="headerlink" title="ProjectPage默认域名"></a>ProjectPage默认域名</h1><p>其他网站项目的默认域名，是使用UserPage域名加上二级目录实现的，比如我有个项目叫<code>mylove</code>，那么该项目的站点就是访问 <code>zangbo.github.io/mylove</code></p>
@@ -2203,15 +2158,10 @@
 </blockquote>
 <p><br></p>
 <h1 id="ProjectPage自定义域名"><a href="#ProjectPage自定义域名" class="headerlink" title="ProjectPage自定义域名"></a>ProjectPage自定义域名</h1><p>比如用<code>mylove.zangbo.me</code>替代<code>zangbo.github.io/mylove</code></p>
-<ol>
-<li><p>同样的，去域名注册商那里，做一个<code>CNAME</code>指向，将<code>mylove.zangbo.me</code> 指向 <code>zangbo.github.io</code>，如果以后会有很多二级域名都指过来，操作方式相同。</p>
-</li>
-<li><p>在<code>zangbo/mylove</code>这个项目(也就是page项目)根目录下建一个<code>CNAME</code>文件，里面填写<code>mylove.zangbo.me</code>，然后提交到仓库;</p>
-</li>
-<li><p>等几分钟。</p>
+<p>1、同样的，去域名注册商那里，做一个<code>CNAME</code>指向，将<code>mylove.zangbo.me</code> 指向 <code>zangbo.github.io</code>，如果以后会有很多二级域名都指过来，操作方式相同。</p>
+<p>2、在<code>zangbo/mylove</code>这个项目(也就是page项目)根目录下建一个<code>CNAME</code>文件，里面填写<code>mylove.zangbo.me</code>，然后提交到仓库;</p>
+<p>3、等几分钟。</p>
 <p><br></p>
-</li>
-</ol>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.zhaoxiaodan.com/%E5%85%B6%E4%BB%96/%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AEGithubPage%E7%9A%84%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D.html" target="_blank" rel="external">如何配置GithubPage的二级域名</a></p>
 <p><br></p>
 </the>]]></content>
@@ -2234,7 +2184,7 @@
     <link href="http://zangbo.me/2017/06/12/GiftForGirlfriend/"/>
     <id>http://zangbo.me/2017/06/12/GiftForGirlfriend/</id>
     <published>2017-06-12T13:36:59.000Z</published>
-    <updated>2017-06-23T12:05:23.000Z</updated>
+    <updated>2017-07-15T07:04:29.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -2266,18 +2216,13 @@
 </ul>
 <p>注：手机端打开会出现排版问题，建议电脑浏览器浏览。</p>
 <p><br></p>
-<h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><ul>
-<li><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
+<h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
 <p>作者主页：<a href="http://chengdazhi.com" target="_blank" rel="external">程大治</a></p>
 <p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的模版，很容易就搜到了：<a href="http://www.cssmoban.com/cssthemes/6077.shtml" target="_blank" rel="external">简洁瀑布流布局动物世界博客模板</a>，于是直接进行二次加工。</p>
-</li>
-</ul>
-<ul>
-<li><p>第二个网站参考：<a href="http://hackerzhou.me/ex_love/" target="_blank" rel="external">Our Love Story</a></p>
+<p><br></p>
+<p>第二个网站参考：<a href="http://hackerzhou.me/ex_love/" target="_blank" rel="external">Our Love Story</a></p>
 <p>作者GitHub：<a href="https://github.com/hackerzhou" target="_blank" rel="external">hackerzhou</a></p>
 <p>这个网站在圈子里可以说是很有名了，作者开发于2011年，当年送的人如今已经变成了前女友，不免一阵唏嘘。作者把代码放在GitHub上允许大家自由的进行二次开发，我便拿来进行修改，因为女朋友并非程序员，所以原本的网页中代码生成部分改为了一封信。</p>
-</li>
-</ul>
 <p><br></p>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>因为妹子是文科生，送之前我也不知道妹子会不会喜欢这种理工男的浪漫，所以这两个网页只能算是礼物的一部分，自然还是要准备其他实质性的东西的。</p>
 <p><br></p>
