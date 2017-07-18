@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://zangbo.me/photos/index.html</loc>
+    <loc>http://zangbo.me/2017/07/18/TensorFlow_14/</loc>
     
-    <lastmod>2017-07-16T12:45:10.000Z</lastmod>
+    <lastmod>2017-07-18T15:09:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://zangbo.me/2017/07/09/TensorFlow_13/</loc>
     
-    <lastmod>2017-07-15T12:12:10.000Z</lastmod>
+    <lastmod>2017-07-18T11:41:20.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://zangbo.me/photos/index.html</loc>
+    
+    <lastmod>2017-07-16T12:45:10.000Z</lastmod>
     
   </url>
   

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-07-15T12:12:10.000Z</updated>
+  <updated>2017-07-18T15:09:42.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -16,11 +16,192 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>TensorFlow 笔记（十四）：tf.contrib.learn输入函数</title>
+    <link href="http://zangbo.me/2017/07/18/TensorFlow_14/"/>
+    <id>http://zangbo.me/2017/07/18/TensorFlow_14/</id>
+    <published>2017-07-18T11:42:52.000Z</published>
+    <updated>2017-07-18T15:09:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本教程介绍了<code>tf.contrib.learn</code>中的输入函数，我们将首先学习如何建立一个<code>input_fn</code>来预处理数据并且把它们送入模型中训练、评估或测试。接着我们将运用<code>input_fn</code>构造一个神经网络回归器用来预测房价。</excerpt></p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>教程地址：<a href="https://www.tensorflow.org/get_started/input_fn" target="_blank" rel="external">https://www.tensorflow.org/get_started/input_fn</a></p>
+<p><br></p>
+<h1 id="使用input-fn的输入方法"><a href="#使用input-fn的输入方法" class="headerlink" title="使用input_fn的输入方法"></a>使用input_fn的输入方法</h1><p>当我们用<code>tf.contrib.learn</code>来训练一个神经网络时，我们可以直接把特征数据和标签数据送入<code>fit</code>、<code>evaluate</code>或<code>predict</code>操作中。如下例子是我们上篇教程中用到的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">training_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">    filename=IRIS_TRAINING, target_dtype=np.int, features_dtype=np.float32)</div><div class="line">test_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">    filename=IRIS_TEST, target_dtype=np.int, features_dtype=np.float32)</div><div class="line">...</div><div class="line"></div><div class="line">classifier.fit(x=training_set.data,</div><div class="line">               y=training_set.target,</div><div class="line">               steps=<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>当我们对源数据操作较小时，这种方法很好。但如果我们需要大量的特征工程，我们可以使用输入函数<code>input_fn</code>来进行数据预处理的操作。</p>
+<p><br></p>
+<h2 id="input-fn结构"><a href="#input-fn结构" class="headerlink" title="input_fn结构"></a>input_fn结构</h2><p>如下代码显示了一个输入函数的基本框架：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_input_fn</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 在这里预处理你的数据...</span></div><div class="line">    <span class="comment"># return:1) 特征列与相应特征数据的Tensors的映射 </span></div><div class="line">    <span class="comment">#        2) 包含标签的Tensor</span></div><div class="line">    <span class="keyword">return</span> feature_cols, labels</div></pre></td></tr></table></figure>
+<p>函数主体包含了对输入数据的预处理操作，例如清除异常点等。输入函数必须返回如下两个值：</p>
+<ul>
+<li><code>feature_cols</code>：一个包含了键值对的字典，把特征名映射到对应的<code>Tensor</code>上，该<code>Tensor</code>包含了特征数据。</li>
+<li><code>labels</code>：一个包含了标签数据的<code>Tensor</code></li>
+</ul>
+<p><br></p>
+<h2 id="把特征数据转化为Tensors"><a href="#把特征数据转化为Tensors" class="headerlink" title="把特征数据转化为Tensors"></a>把特征数据转化为Tensors</h2><p>如果在<code>input_fn</code>函数中，我们的特征数据或标签数据保存在<code>pandas dataframes</code>或者<code>numpy arrays</code>里面，我们需要把它们转化为<code>Tensor</code>返回。</p>
+<p>对于连续数据，我们可以用<code>tf.constant</code>创建一个<code>Tensor</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">feature_column_data = [<span class="number">1</span>, <span class="number">2.4</span>, <span class="number">0</span>, <span class="number">9.9</span>, <span class="number">3</span>, <span class="number">120</span>]</div><div class="line">feature_tensor = tf.constant(feature_column_data)</div></pre></td></tr></table></figure>
+<p>对于稀疏矩阵数据（大部分值为0），我们可以使用<code>SparseTensor</code>，一般来说我们用三个参数来实例化一个<code>SparseTensor</code>：</p>
+<ul>
+<li><code>dense_shape</code>：<code>tensor</code>的形状，用一个列表来表示每个维度的元素的个数，例如<code>dense_shape=[3,5]</code>表示一个二维的<code>tensor</code>，有3行5列；而<code>dense_shape=[9]</code>表示一个一维的<code>tensor</code>，有9个元素。</li>
+<li><code>indices</code>：表示<code>tensor</code>中非0值的位置。用一个嵌套列表来表示，每个嵌套列表代表一个非0值所在的位置。例如<code>indices=[[0,1], [2,4]]</code>表示在<code>tensor</code>中第0行第1个元素和第2行第4个元素为非零值。</li>
+<li><code>values</code>：一维<code>tensor</code>，<code>values</code>中的第i个值位于在<code>indices</code>中第i个值表示的位置上。例如下面的例子，表示在第0行第1个元素为6，第2行第4个元素为0.5。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sparse_tensor = tf.SparseTensor(indices=[[<span class="number">0</span>,<span class="number">1</span>], [<span class="number">2</span>,<span class="number">4</span>]],</div><div class="line">                                values=[<span class="number">6</span>, <span class="number">0.5</span>],</div><div class="line">                                dense_shape=[<span class="number">3</span>, <span class="number">5</span>])</div></pre></td></tr></table></figure>
+<p>对应的<code>tensor</code>为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[<span class="number">0</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</div><div class="line"> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</div><div class="line"> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.5</span>]]</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="把input-fn送入模型中"><a href="#把input-fn送入模型中" class="headerlink" title="把input_fn送入模型中"></a>把input_fn送入模型中</h2><p>为了把数据送入模型进行训练，我们只需要把创建的输入函数赋值给<code>fit</code>的<code>input_fn</code>参数即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">classifier.fit(input_fn=my_input_fn, steps=<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>注意<code>input_fn</code>会把特征数据和标签数据一起送入模型中，它代替了<code>fit</code>中的<code>x</code>和<code>y</code>参数，如果我们同时保留了<code>input_fn</code>和<code>x</code>或者<code>y</code>，程序会报错。</p>
+<p>同时需要注意的是<code>input_fn</code>参数必须接受一个函数名(<code>input_fn=my_input_fn</code>)而不是接受一个函数调用(<code>input_fn=my_input_fn()</code>)。这意味着如果我们尝试在<code>fit</code>函数的参数中使用一个函数调用，如下代码，将会报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">classifier.fit(input_fn=my_input_fn(training_set), steps=<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>不过如果我们想让我们的输入函数具有输入参数，第一个方法是用另一个无参数函数包含它，然后用该函数名作为<code>input_fn</code>的值，这样我们就可以在内层函数送入我们需要的参数。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_input_function_training_set</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">return</span> my_input_function(training_set)</div><div class="line"></div><div class="line">classifier.fit(input_fn=my_input_fn_training_set, steps=<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>第二个方法是使用python内置的偏函数<code>functools.partial</code>来实现上述功能，它会建立一个新的函数同时把所有的参数固定住：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">classifier.fit(input_fn=functools.partial(my_input_function,</div><div class="line">                                          data_set=training_set), steps=<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>第三个方法我们可以使用<code>lambda</code>操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">classifier.fit(input_fn=<span class="keyword">lambda</span>: my_input_fn(training_set), steps=<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>上述三个方法最大的优点是我们可以把同一个<code>input_fn</code>送到<code>evaluate</code>和<code>predict</code>操作上，而只需要修改内层函数的输入参数即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">classifier.evaluate(input_fn=<span class="keyword">lambda</span>: my_input_fn(test_set), steps=<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>这些方法增强了代码的可操作性，我们不需要对每个操作都分别获取<code>x</code>和<code>y</code>的值并用两个变量表示出来，如 <code>x_train</code>, <code>x_test</code>, <code>y_train</code>, <code>y_test</code>。</p>
+<p><br></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>关于<code>functools.partial()</code>：</p>
+<p>如果某一个函数的其中一个输入参数始终固定，而我们每次调用该函数都要输入一次就显得很没有必要，于是我们就可以对该函数进行封装，使得输入参数减少。用到的函数就是<code>functools.partial()</code>。举个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">input1</span><span class="params">(key1,key2)</span>:</span></div><div class="line">    <span class="keyword">return</span> key1+<span class="string">'_'</span>+key2</div></pre></td></tr></table></figure>
+<p>如果我们的<code>key1</code>在使用过程中始终是固定的，而只有<code>key2</code>是变化的，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a = input1(<span class="string">'China'</span>,<span class="string">'liming'</span>)</div><div class="line">b = input1(<span class="string">'China'</span>,<span class="string">'zhangsan'</span>)</div><div class="line">c = input1(<span class="string">'China'</span>,<span class="string">'wangwei'</span>)</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>这时候我们就可以固定<code>key1</code>的值，对<code>input1()</code>进行封装：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> functools</div><div class="line">input2 = functools.partial(input1, <span class="string">'China'</span>)</div></pre></td></tr></table></figure>
+<p>这样我们就可以很方便的使用该函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = input2(<span class="string">'liming'</span>)</div><div class="line">b = input2(<span class="string">'zhangsan'</span>)</div><div class="line">c = input2(<span class="string">'wangwei'</span>)</div></pre></td></tr></table></figure>
+<p>输出<code>a,b,c</code>的值得到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">China_liming </div><div class="line">China_zhangsan </div><div class="line">China_wangwei</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="波士顿房价神经网络模型"><a href="#波士顿房价神经网络模型" class="headerlink" title="波士顿房价神经网络模型"></a>波士顿房价神经网络模型</h1><p>接下来我们将携一个输入函数来预处理波士顿房价数据，然后我们把处理后的数据送入神经网络回归器中进行训练，进而预测房价中位数。</p>
+<p>我们要用到的数据集的CSV文件包含以下特征：</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CRIM</td>
+<td>Crime rate per capita</td>
+</tr>
+<tr>
+<td>ZN</td>
+<td>Fraction of residential land zoned to permit 25,000+ sq ft lots</td>
+</tr>
+<tr>
+<td>INDUS</td>
+<td>Fraction of land that is non-retail business</td>
+</tr>
+<tr>
+<td>NOX</td>
+<td>Concentration of nitric oxides in parts per 10 million</td>
+</tr>
+<tr>
+<td>RM</td>
+<td>Average Rooms per dwelling</td>
+</tr>
+<tr>
+<td>AGE</td>
+<td>Fraction of owner-occupied residences built before 1940</td>
+</tr>
+<tr>
+<td>DIS</td>
+<td>Distance to Boston-area employment centers</td>
+</tr>
+<tr>
+<td>TAX</td>
+<td>Property tax rate per $10,000</td>
+</tr>
+<tr>
+<td>PTRATIO</td>
+<td>Student-teacher ratio</td>
+</tr>
+</tbody>
+</table>
+<p>模型预测的标签是MEDV，表示房价的中位数，以<strong>千美元</strong>为计数单位。</p>
+<p>通过以下链接下载数据集：</p>
+<ul>
+<li>训练数据：<a href="http://download.tensorflow.org/data/boston_train.csv" target="_blank" rel="external">boston_train.csv</a></li>
+<li>测试数据：<a href="http://download.tensorflow.org/data/boston_test.csv" target="_blank" rel="external">boston_test.csv</a></li>
+<li>预测数据：<a href="http://download.tensorflow.org/data/boston_predict.csv" target="_blank" rel="external">boston_predict.csv</a></li>
+</ul>
+<p>接下来我们将依次介绍如何创建一个输入函数，把它们送入神经网络回归器中，训练并评估模型，进行房价预测。</p>
+<p><br></p>
+<h2 id="引入房价数据"><a href="#引入房价数据" class="headerlink" title="引入房价数据"></a>引入房价数据</h2><p>首先我们需要引入必要的库，包括<code>pandas</code>和<code>tensorflow</code>，同时我们利用<code>set_verbosity</code>来获得更多的输出信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div><div class="line"></div><div class="line"><span class="keyword">import</span> itertools</div><div class="line"></div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line">tf.logging.set_verbosity(tf.logging.INFO)</div></pre></td></tr></table></figure>
+<p>关于<code>logging</code>我们将在下个笔记中介绍，简单来说我们在代码开始(<code>import</code>之后)加上这行代码，训练过程将打印出详细的<code>loss</code>信息和<code>step</code>信息，可以更好的监控整个训练过程。</p>
+<p>因为我们是使用<code>pandas</code>来倒入CSV数据，所以在此之前先定义好<code>column</code>的名字，以及特征名和标签名。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">COLUMNS = [<span class="string">"crim"</span>, <span class="string">"zn"</span>, <span class="string">"indus"</span>, <span class="string">"nox"</span>, <span class="string">"rm"</span>, <span class="string">"age"</span>,</div><div class="line">           <span class="string">"dis"</span>, <span class="string">"tax"</span>, <span class="string">"ptratio"</span>, <span class="string">"medv"</span>]</div><div class="line">FEATURES = [<span class="string">"crim"</span>, <span class="string">"zn"</span>, <span class="string">"indus"</span>, <span class="string">"nox"</span>, <span class="string">"rm"</span>,</div><div class="line">            <span class="string">"age"</span>, <span class="string">"dis"</span>, <span class="string">"tax"</span>, <span class="string">"ptratio"</span>]</div><div class="line">LABEL = <span class="string">"medv"</span></div><div class="line"></div><div class="line">training_set = pd.read_csv(<span class="string">"boston_train.csv"</span>, skipinitialspace=<span class="keyword">True</span>,</div><div class="line">                           skiprows=<span class="number">1</span>, names=COLUMNS)</div><div class="line">test_set = pd.read_csv(<span class="string">"boston_test.csv"</span>, skipinitialspace=<span class="keyword">True</span>,</div><div class="line">                       skiprows=<span class="number">1</span>, names=COLUMNS)</div><div class="line">prediction_set = pd.read_csv(<span class="string">"boston_predict.csv"</span>, skipinitialspace=<span class="keyword">True</span>,</div><div class="line">                             skiprows=<span class="number">1</span>, names=COLUMNS)</div></pre></td></tr></table></figure>
+<p>因为第一行是关于数据的介绍，所以我们在这里跳过第一行，用<code>skiprows=1</code>。</p>
+<p><br></p>
+<h2 id="定义FeatureColumns并创建回归器"><a href="#定义FeatureColumns并创建回归器" class="headerlink" title="定义FeatureColumns并创建回归器"></a>定义FeatureColumns并创建回归器</h2><p>接下来我们创建一系列<code>FeatureColumn</code>来组成特征数据。每个<code>FeatureColumn</code>表示一个特征，根据数据类型的不同用相应的函数创建，更详细内容可以看以下两个参考链接：</p>
+<ul>
+<li>所有函数类型：<a href="https://www.tensorflow.org/api_guides/python/contrib.layers#Feature_columns" target="_blank" rel="external">Layers (contrib)  |  TensorFlow</a>，</li>
+<li>特征是分类数据(categorical data)的例子：<a href="https://www.tensorflow.org/tutorials/wide#base_categorical_feature_columns" target="_blank" rel="external">TensorFlow Linear Model Tutorial  |  TensorFlow</a>。</li>
+</ul>
+<p>因为本数据集所有的特征都是连续值，所以我们可以用<code>tf.contrib.layers.real_valued_column()</code>函数来创建，函数输入是特征的名字，这和下面的<code>input_fn()</code>函数相对应。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">feature_cols = [tf.contrib.layers.real_valued_column(k)</div><div class="line">                  <span class="keyword">for</span> k <span class="keyword">in</span> FEATURES]</div></pre></td></tr></table></figure>
+<p>接下来，我们将实例化一个<code>DNNRegressor</code>，我们需要提供两个参数，一个<code>hidden_units</code>，它是用来定义隐藏层神经元个数的超参数，这里我们用两层各10个神经元；另一个是<code>feature_columns</code>，即我们刚刚定义的<code>FeatureColumns</code>的列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">regressor = tf.contrib.learn.DNNRegressor(feature_columns=feature_cols,</div><div class="line">                                          hidden_units=[<span class="number">10</span>, <span class="number">10</span>],</div><div class="line">                                          model_dir=<span class="string">"/tmp/boston_model"</span>)</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="建立input-fn"><a href="#建立input-fn" class="headerlink" title="建立input_fn"></a>建立input_fn</h2><p>为了把输入数据送入<code>regressor</code>中，我们要创建一个输入函数，它接受一个<code>pandas</code>的<code>Datafram</code>同时返回包含特征信息和标签信息的两个<code>Tensor</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">input_fn</span><span class="params">(data_set)</span>:</span></div><div class="line">  feature_cols = &#123;k: tf.constant(data_set[k].values)</div><div class="line">                  <span class="keyword">for</span> k <span class="keyword">in</span> FEATURES&#125;</div><div class="line">  labels = tf.constant(data_set[LABEL].values)</div><div class="line">  <span class="keyword">return</span> feature_cols, labels</div></pre></td></tr></table></figure>
+<p>注意<code>data_set[k].values</code>将返回一个<code>numpy array</code>，<code>feature_cols</code>是一个字典。<code>input_fn()</code>函数将对<code>data_set</code>进行处理，这意味着我们可以把任何我们需要的<code>DataFrame</code>送入该函数中，包括<code>training_set</code>、<code>test_set</code>和 <code>prediction_set</code>。</p>
+<p><br></p>
+<h2 id="训练回归器"><a href="#训练回归器" class="headerlink" title="训练回归器"></a>训练回归器</h2><p>训练神经网络回归器，我们只需要执行<code>fit</code>方法，然后把<code>training_set</code>送入<code>input_fn</code>中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">regressor.fit(input_fn=<span class="keyword">lambda</span>: input_fn(training_set), steps=<span class="number">5000</span>)</div></pre></td></tr></table></figure>
+<p>我们将会看到打印出的训练信息，每100步迭代打印一次训练损失：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">INFO:tensorflow:Step 1: loss = 483.179</div><div class="line">INFO:tensorflow:Step 101: loss = 81.2072</div><div class="line">INFO:tensorflow:Step 201: loss = 72.4354</div><div class="line">...</div><div class="line">INFO:tensorflow:Step 1801: loss = 33.4454</div><div class="line">INFO:tensorflow:Step 1901: loss = 32.3397</div><div class="line">INFO:tensorflow:Step 2001: loss = 32.0053</div><div class="line">INFO:tensorflow:Step 4801: loss = 27.2791</div><div class="line">INFO:tensorflow:Step 4901: loss = 27.2251</div><div class="line">INFO:tensorflow:Saving checkpoints for 5000 into /tmp/boston_model/model.ckpt.</div><div class="line">INFO:tensorflow:Loss for final step: 27.1674.</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="评估模型"><a href="#评估模型" class="headerlink" title="评估模型"></a>评估模型</h2><p>借下来我们在测试集上评估训练好的模型，执行<code>evaluate</code>指令，这次把<code>test_set</code>送入<code>input_fn</code>函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ev = regressor.evaluate(input_fn=<span class="keyword">lambda</span>: input_fn(test_set), steps=<span class="number">1</span>)</div></pre></td></tr></table></figure>
+<p>打印出损失的确切值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">loss_score = ev[<span class="string">"loss"</span>]</div><div class="line">print(<span class="string">"Loss: &#123;0:f&#125;"</span>.format(loss_score))</div></pre></td></tr></table></figure>
+<p>可以看到以下输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">INFO:tensorflow:Eval steps [0,1) for training step 5000.</div><div class="line">INFO:tensorflow:Saving evaluation summary for 5000 step: loss = 11.9221</div><div class="line">Loss: 11.922098</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="进行预测"><a href="#进行预测" class="headerlink" title="进行预测"></a>进行预测</h2><p>最后，我们可以用训练好的模型来进行房价的预测，这里我们使用的数据集是<code>prediction_set</code>，共有6个样本，包含了特征数据但是没有包含标签数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">y = regressor.predict(input_fn=<span class="keyword">lambda</span>: input_fn(prediction_set))</div><div class="line"><span class="comment"># .predict() returns an iterator; convert to a list and print predictions</span></div><div class="line">predictions = list(itertools.islice(y, <span class="number">6</span>))</div><div class="line"><span class="keyword">print</span> (<span class="string">"Predictions: &#123;&#125;"</span>.format(str(predictions)))</div></pre></td></tr></table></figure>
+<p>结果输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Predictions: [ 33.30348587  17.04452896  22.56370163  34.74345398  14.55953979  19.58005714]</div></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://www.tensorflow.org/get_started/input_fn" target="_blank" rel="external">Building Input Functions with tf.contrib.learn  |  TensorFlow</a></li>
+<li><a href="http://blog.csdn.net/handsomekang/article/details/9712125" target="_blank" rel="external">飘逸的python - 偏函数functools.partial - mattkang - CSDN博客</a></li>
+<li><a href="https://www.tensorflow.org/get_started/monitors#enabling_logging_with_tensorflow" target="_blank" rel="external">Logging and Monitoring Basics with tf.contrib.learn  |  TensorFlow</a></li>
+</ul>
+<p><br></p>
+</the>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本教程介绍了&lt;code&gt;tf.contrib.learn&lt;/code&gt;中的输入函数，我们将首先学习如何建立一个&lt;code&gt;input_fn&lt;/code&gt;来预处理数据并且把它们送入模型中训练、评估或测试。接着我们将运用&lt;code&gt;input_fn&lt;/code&gt;构造一个神经网络回归器用来预测房价。&lt;/excerpt&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
+    
+  </entry>
+  
+  <entry>
     <title>TensorFlow 笔记（十三）：tf.contrib.learn入门</title>
     <link href="http://zangbo.me/2017/07/09/TensorFlow_13/"/>
     <id>http://zangbo.me/2017/07/09/TensorFlow_13/</id>
     <published>2017-07-09T05:32:36.000Z</published>
-    <updated>2017-07-15T12:12:10.000Z</updated>
+    <updated>2017-07-18T11:41:20.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -199,7 +380,11 @@
 <p>在<code>tf.contrib.learn</code>中<code>Dataset</code>是命名元组(named tuples)，我们可以通过<code>training_set.data</code>和 <code>training_set.target</code>命令非常方便的获得训练集的特征数据和目标标签数据。同样的，<code>test_set.data</code>和<code>test_set.target</code>分别包含了测试集的特征数据和目标标签数据。 </p>
 <p><br></p>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>1、关于<code>load_csv_with_header()</code>函数的定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Dataset = collections.namedtuple(<span class="string">'Dataset'</span>, [<span class="string">'data'</span>, <span class="string">'target'</span>])</div><div class="line"><span class="comment">#...</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_csv_with_header</span><span class="params">(filename,</span></span></div><div class="line">                         target_dtype,</div><div class="line">                         features_dtype,</div><div class="line">                         target_column=<span class="number">-1</span>):</div><div class="line">  <span class="string">"""Load dataset from CSV file with a header row."""</span></div><div class="line">  <span class="keyword">with</span> gfile.Open(filename) <span class="keyword">as</span> csv_file:</div><div class="line">    data_file = csv.reader(csv_file)</div><div class="line">    header = next(data_file) <span class="comment"># 返回第一行数据</span></div><div class="line">    n_samples = int(header[<span class="number">0</span>]) <span class="comment"># 返回样本数目</span></div><div class="line">    n_features = int(header[<span class="number">1</span>]) <span class="comment"># 返回特征数目</span></div><div class="line">    data = np.zeros((n_samples, n_features), dtype=features_dtype)</div><div class="line">    target = np.zeros((n_samples,), dtype=target_dtype)</div><div class="line">    <span class="keyword">for</span> i, row <span class="keyword">in</span> enumerate(data_file): </div><div class="line">    <span class="comment"># enumerate()函数可以同时遍历索引和元素</span></div><div class="line">      target[i] = np.asarray(row.pop(target_column), dtype=target_dtype)</div><div class="line">      data[i] = np.asarray(row, dtype=features_dtype)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> Dataset(data=data, target=target)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">Dataset = collections.namedtuple(<span class="string">'Dataset'</span>, [<span class="string">'data'</span>, <span class="string">'target'</span>])</div><div class="line"><span class="comment">#...</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_csv_with_header</span><span class="params">(filename,</span></span></div><div class="line">                         target_dtype,</div><div class="line">                         features_dtype,</div><div class="line">                         target_column=<span class="number">-1</span>):</div><div class="line">	<span class="string">"""Load dataset from CSV file with a header row."""</span></div><div class="line">	<span class="keyword">with</span> gfile.Open(filename) <span class="keyword">as</span> csv_file:</div><div class="line">		data_file = csv.reader(csv_file)</div><div class="line">    	header = next(data_file) <span class="comment"># 返回第一行数据</span></div><div class="line">        <span class="comment"># 此处data_file可以理解为一个迭代器</span></div><div class="line">        <span class="comment"># 该行代码可以替换为: header = data_file.__next__()</span></div><div class="line">    	n_samples = int(header[<span class="number">0</span>]) <span class="comment"># 返回样本数目</span></div><div class="line">    	n_features = int(header[<span class="number">1</span>]) <span class="comment"># 返回特征数目</span></div><div class="line">    	data = np.zeros((n_samples, n_features), dtype=features_dtype)</div><div class="line">    	target = np.zeros((n_samples,), dtype=target_dtype)</div><div class="line">    	<span class="keyword">for</span> i, row <span class="keyword">in</span> enumerate(data_file): </div><div class="line">    	<span class="comment"># enumerate()函数可以同时遍历索引和元素</span></div><div class="line">        <span class="comment"># 因为data_file为迭代器，上面用过一次next，此处则从第二行开始</span></div><div class="line">      		target[i] = np.asarray(row.pop(target_column), dtype=target_dtype)</div><div class="line">      		data[i] = np.asarray(row, dtype=features_dtype)</div><div class="line"></div><div class="line">	<span class="keyword">return</span> Dataset(data=data, target=target)</div></pre></td></tr></table></figure>
+<p>关于生成器的相关概念，可以看下面这个教程：</p>
+<ul>
+<li><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-python-yield/" target="_blank" rel="external">Python yield 使用浅析</a></li>
+</ul>
 <p><br></p>
 <p>2、关于命名元组：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">collections.namedtuple(typename, </div><div class="line">                       field_names, </div><div class="line">                       verbose=<span class="keyword">False</span>, </div><div class="line">                       rename=<span class="keyword">False</span>)</div></pre></td></tr></table></figure>
@@ -241,7 +426,7 @@
 <p>2、python格式化输出<code>print(&quot;\nTest Accuracy: {0:f}\n&quot;.format(accuracy_score))</code></p>
 <p>其中的0表示后面第0个数，f表示数据类型为<code>float</code>型。</p>
 <p><br></p>
-<h1 id="分类新样本"><a href="#分类新样本" class="headerlink" title="分类新样本"></a>分类新样本</h1><p>使用<code>classifier</code>的<code>predict()</code>函数可以对新的样本进行分类。例如我们有如下两个新的鸾尾花的样本：·</p>
+<h1 id="分类新样本"><a href="#分类新样本" class="headerlink" title="分类新样本"></a>分类新样本</h1><p>使用<code>classifier</code>的<code>predict()</code>函数可以对新的样本进行分类。例如我们有如下两个新的鸾尾花的样本：</p>
 <table>
 <thead>
 <tr>
@@ -1487,9 +1672,9 @@
       <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    
       <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
+    
+      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
     
   </entry>
   
@@ -2317,61 +2502,6 @@
     <summary type="html">
     
       &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。
-    
-    </summary>
-    
-      <category term="自然语言处理" scheme="http://zangbo.me/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"/>
-    
-    
-      <category term="Word2Vec" scheme="http://zangbo.me/tags/Word2Vec/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Word2Vec笔记：Skip-Gram模型</title>
-    <link href="http://zangbo.me/2017/06/05/Word2Vec_skip-gram/"/>
-    <id>http://zangbo.me/2017/06/05/Word2Vec_skip-gram/</id>
-    <published>2017-06-05T08:23:12.000Z</published>
-    <updated>2017-06-21T16:52:01.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。<a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<h1 id="模型任务"><a href="#模型任务" class="headerlink" title="模型任务"></a>模型任务</h1><p>我们将要训练一个简单的神经网络来执行某个确定的任务，它只有一个隐层，但是我们却不去使用该训练好的网络，我们只是来学习隐层的权值，该权值就是我们的词向量(word vectors)。</p>
-<p>具体任务如下：在一个句子中间部分选择一个单词作为输入单词，然后网络会告诉我们字典中每个单词在该单词附近的概率，这里的附近范围指的是该输入单词前面5个和后面5个(共10个)单词。比如我们输入单词是“苏联”，那么字典中“联邦”和“俄罗斯”的概率会高于“西瓜”和“袋鼠”</p>
-<p>我们训练文件中存在很多成对的单词，我们不停的把一对单词送入神经网络进行训练，神经网络会统计单词出现的频率，比如（“苏联”，“联邦”）出现的次数更多，那么当我们输入“苏联”这个单词时，“联邦”的概率将会更大。如下是一个窗口为2的例子，前面2个后面2个，蓝色的为输入单词。</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
-
-<p><br></p>
-<h1 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h1><p>我们不可能直接把一个单词送入神经网络中训练，因此我们需要找到一个方式来代替单词。为了实现这点，我们先从训练文件中建立一个单词字典，假设我们有10000个独立单词。</p>
-<p>我们讲吧每个输入单词例如“ants”作为一个one-hot向量，这个向量有10000维，我们将某一维设置为1，其他位置设置为0来表示单词“蚂蚁”。在训练网络时，输入是10000维向量(表示输入单词)，输出标签是与它相关单词对中的另外一个单词的one-hot向量，也是10000维。但是当我们使用该网络时，输出层使用softmax层，输出将变成一个10000维的概率向量(因为字典中有10000个单词)，其中的每一个维度都表示字典中的一个单词在该输入单词附近的概率。下图为使用时的模型：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_EBQYfm_2.jpeg" alt=""></center>
-
-<h1 id="隐藏层"><a href="#隐藏层" class="headerlink" title="隐藏层"></a>隐藏层</h1><p>如果我们用300个单元来表示隐藏层，那么我们学到的词向量就是300维的，因此隐层的参数矩阵是[10000,300]的，300是Google在发行的数据库中使用的长度，这是个超参数，可以根据自己的需求更改。</p>
-<p>因此我们的目标实际上是学习这样一个参数矩阵，输出层在我们训练完网络就丢弃不用。那么输入的one-hot向量什么作用呢，因为该向量大部分都是0，只有一个维度是1，因此可以起到选择的作用，如下简单的例子：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_HQ30yx_3.jpeg" alt=""></center>
-
-<p>我们可以看出隐层的输出是输入one-hot向量的一个词向量表示。</p>
-<p><br></p>
-<h1 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h1><p>1*300的词向量”ants”将会被送到输出层，输出层是一个softmax回归分类器，分类器会输出字典中出现过的每一个单词在它附近的概率，这些概率在0-1之间，而且加起来的和为1。特别的，每个输出单元都有个权值向量和词向量相乘，然后用exp()函数得出结果，最后为了使得所有的向量概率加起来为1，还要除以10000个词向量的exp()结果的和。</p>
-<p>以下是计算输出神经元输出“car”这个单词的图示：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_XjsDH7_4.jpeg" alt=""></center>
-
-<p>注意即使训练时某个单词在另一个单词附近的概率是100%，但使用时输出改单词的概率也不是100%，这和softmax函数有关。</p>
-<p><br></p>
-<h1 id="一些直觉"><a href="#一些直觉" class="headerlink" title="一些直觉"></a>一些直觉</h1><p>如果两个单词又非常相似的语义，我们的模型将会对这两个单词的输入来输出非常相似的结果。其中的一个方法是这两个单词的词向量是相似的。因此如果两个单词有相似的语义，那么他们有相似的词向量。</p>
-<p>那么什么叫相似的语义呢？比如“intelligent”和“smart”这种有相似意思的单词，或者“engine”和“transmission”这种相关的单词，或者“ant”和“ants”这种具有相同意思的不同词性的单词。</p>
-<p><br></p>
-<h1 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h1><p>这种模型包含了数量庞大的参数，对于300特征的隐层和10000单词的字典，需要隐层和输出层各3M大小的权值数量，训练一个庞大的数据库是很困难的，因此我们做了一些改进来便于训练，这就是下篇文章提到的Negative Sample。</p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/" target="_blank" rel="external">Word2Vec Tutorial - The Skip-Gram Model · Chris McCormick</a></p>
-<p><br></p>
-</the>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了Word2Vec的基本概念，同时对Word2Vec的经典模型——The skip gram neural network model进行详细的学习和整理。
     
     </summary>
     
