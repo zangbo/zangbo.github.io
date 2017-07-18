@@ -20,7 +20,7 @@
 <meta property="og:url" content="http://zangbo.me/2017/07/18/TensorFlow_14/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本教程介绍了tf.contrib.learn中的输入函数，我们将首先学习如何建立一个input_fn来预处理数据并且把它们送入模型中训练、评估或测试。接着我们将运用input_fn构造一个神经网络回归器用来预测房价。">
-<meta property="og:updated_time" content="2017-07-18T15:14:17.000Z">
+<meta property="og:updated_time" content="2017-07-18T15:19:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorFlow 笔记（十四）：tf.contrib.learn输入函数">
 <meta name="twitter:description" content="本教程介绍了tf.contrib.learn中的输入函数，我们将首先学习如何建立一个input_fn来预处理数据并且把它们送入模型中训练、评估或测试。接着我们将运用input_fn构造一个神经网络回归器用来预测房价。">
@@ -89,6 +89,8 @@ var _hmt = _hmt || [];
 			
 				<li><a href="/">主页</a></li>
 	        
+				<li><a href="/archives/">文章</a></li>
+	        
 				<li><a href="/photos/">相册</a></li>
 	        
 			</ul>
@@ -96,13 +98,9 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
-    			
             
     			
             
-    			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
     			
             
 		</nav>
@@ -145,6 +143,8 @@ var _hmt = _hmt || [];
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -160,12 +160,14 @@ var _hmt = _hmt || [];
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/photos/">相册</a></li>
+					<li style="width: 33.333333333333336%"><a href="/archives/">文章</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/photos/">相册</a></li>
 		        
 				</ul>
 			</nav>
@@ -354,6 +356,7 @@ var _hmt = _hmt || [];
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">y = regressor.predict(input_fn=<span class="keyword">lambda</span>: input_fn(prediction_set))</div><div class="line"><span class="comment"># .predict() returns an iterator; convert to a list and print predictions</span></div><div class="line">predictions = list(itertools.islice(y, <span class="number">6</span>))</div><div class="line"><span class="keyword">print</span> (<span class="string">"Predictions: &#123;&#125;"</span>.format(str(predictions)))</div></pre></td></tr></table></figure>
 <p>结果输出如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Predictions: [ 33.30348587  17.04452896  22.56370163  34.74345398  14.55953979  19.58005714]</div></pre></td></tr></table></figure>
+<p>结果给出了六个样本的预测房价。</p>
 <p><br></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a href="https://www.tensorflow.org/get_started/input_fn" target="_blank" rel="external">Building Input Functions with tf.contrib.learn  |  TensorFlow</a></li>
@@ -369,7 +372,7 @@ var _hmt = _hmt || [];
         <p><span>本文标题:</span><a href="/2017/07/18/TensorFlow_14/">TensorFlow 笔记（十四）：tf.contrib.learn输入函数</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 ZangBo 的个人博客">ZangBo</a></p>
         <p><span>发布时间:</span>2017-07-18, 19:42:52</p>
-        <p><span>最后更新:</span>2017-07-18, 23:14:17</p>
+        <p><span>最后更新:</span>2017-07-18, 23:19:36</p>
         <p><span>原始链接:</span><a class="post-url" href="/2017/07/18/TensorFlow_14/" title="TensorFlow 笔记（十四）：tf.contrib.learn输入函数">http://zangbo.me/2017/07/18/TensorFlow_14/</a><span class="copy-path" data-clipboard-text="原文:http://zangbo.me/2017/07/18/TensorFlow_14/　作者:ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
         <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -597,7 +600,7 @@ var _hmt = _hmt || [];
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
-		innerArchive: true,
+		innerArchive: false,
 		showTags: true
 	}
 </script>
@@ -632,13 +635,9 @@ MathJax.Hub.Queue(function() {
     
     
       
-      
-      
     
       
     
-      
-      
       
     
     
@@ -647,111 +646,18 @@ MathJax.Hub.Queue(function() {
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
-      
         
       
         
-      
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
       
         
     </ul>
   </div>
   <div class="tools-wrap">
     
-    	<section class="tools-section tools-section-all" q-show="innerArchive">
-        <div class="search-wrap">
-          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
-          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
-          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
-        </div>
-        <div class="widget tagcloud search-tag">
-          <p class="search-tag-wording">tag:</p>
-          <label class="search-switch">
-            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
-          </label>
-          <ul class="article-tag-list" q-show="showTags">
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">个人网站</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">梯度下降算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">可视化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Word2Vec</a>
-              </li>
-            
-            <div class="clearfix"></div>
-          </ul>
-        </div>
-        <ul class="search-ul">
-          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
-            3、在根目录_config.yml里添加配置：
-<pre style="font-size: 12px;" q-show="jsonFail">
-  jsonContent:
-    meta: false
-    pages: false
-    posts:
-      title: true
-      date: true
-      path: true
-      text: false
-      raw: false
-      content: false
-      slug: false
-      updated: false
-      comments: false
-      link: false
-      permalink: false
-      excerpt: false
-      categories: false
-      tags: true
-</pre>
-          </p>
-          <li class="search-li" q-repeat="items" q-show="isShow">
-            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
-            <p class="search-time">
-              <i class="icon-calendar icon"></i>
-              <span q-text="date|dateformat"></span>
-            </p>
-            <p class="search-tag">
-              <i class="icon-price-tags icon"></i>
-              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
-            </p>
-          </li>
-        </ul>
-    	</section>
-    
 
     
 
-    
-    	<section class="tools-section tools-section-me" q-show="aboutme">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">机器学习菜鸟研究生，平时会分享一些机器学习、深度学习、数据挖掘、计算机视觉、编程语言相关的笔记，也有一些教程以及个人随笔。&lt;br /&gt;&lt;br /&gt;本人由于学识尚浅，文中难免会有错误，如发现请邮件告知，同时也欢迎与我交流。&lt;br /&gt;&lt;br /&gt;本站全部文章均为个人原创，如需转载请注明出处和作者。</div>
-  	  	
-    	</section>
     
   </div>
   

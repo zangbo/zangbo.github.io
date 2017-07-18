@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://zangbo.me/2017/07/18/TensorFlow_14/</loc>
-    <lastmod>2017-07-18T15:14:17.000Z</lastmod>
+    <lastmod>2017-07-18T15:19:36.000Z</lastmod>
     <data>
         <display>
         <title>TensorFlow 笔记（十四）：tf.contrib.learn输入函数</title>
@@ -211,9 +211,9 @@
         <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
         <pubTime>2017-06-27T13:50:54.000Z</pubTime>
         
-        <tag>TensorFlow</tag>
-         
         <tag>可视化</tag>
+         
+        <tag>TensorFlow</tag>
          
          
            
