@@ -5,7 +5,9 @@
     <entry>
       <title><![CDATA[TensorFlow 笔记（十四）：tf.contrib.learn输入函数]]></title>
       <url>/2017/07/18/TensorFlow_14/</url>
-      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本教程介绍了<code>tf.contrib.learn</code>中的输入函数，我们将首先学习如何建立一个<code>input_fn</code>来预处理数据并且把它们送入模型中训练、评估或测试。接着我们将运用<code>input_fn</code>构造一个神经网络回归器用来预测房价。</excerpt></p>
+      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本教程介绍了<code>tf.contrib.learn</code>中的输入函数，我们将首先学习如何建立一个<code>input_fn</code>来预处理数据并且把它们送入模型中训练、评估或测试。接着我们将运用<code>input_fn</code>构造一个神经网络回归器用来预测房价。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -164,7 +166,7 @@
 <li><a href="https://www.tensorflow.org/get_started/monitors#enabling_logging_with_tensorflow" target="_blank" rel="external">Logging and Monitoring Basics with tf.contrib.learn  |  TensorFlow</a></li>
 </ul>
 <p><br></p>
-</the>]]></content>
+</the></excerpt>]]></content>
       
         <categories>
             
