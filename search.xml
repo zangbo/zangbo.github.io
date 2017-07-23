@@ -3,6 +3,168 @@
   
     
     <entry>
+      <title><![CDATA[TensorFlow 笔记（十五）：tf.contrib.learn日志和监控]]></title>
+      <url>/2017/07/22/TensorFlow_15/</url>
+      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文介绍了<code>tf.contrib.learn</code>中的<strong>日志(Logging)</strong>和<strong>监控(Monitoring)</strong>的基础知识。当我们训练一个模型时，实时的追踪和评估训练进度往往是很有用的。在本教程中，我们将学会如何使用<code>TensorFLow</code>的日志功能和监控器<code>Monitor</code>API来监控一个神经网络分类器的训练过程，该分类器对鸾尾花(Iris)数据集进行分类。</p>
+<p>该笔记的代码基于我之前的一篇笔记<a href="http://zangbo.me/2017/07/09/TensorFlow_13/">《TensorFlow 笔记（十三）：tf.contrib.learn入门》</a>改进而来，如果大家还没看那篇笔记，可以先去看完再来看这篇。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>教程地址：<a href="https://www.tensorflow.org/get_started/monitors" target="_blank" rel="external">https://www.tensorflow.org/get_started/monitors</a></p>
+<p><br></p>
+<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><p>如下代码来源于笔记<a href="http://zangbo.me/2017/07/09/TensorFlow_13/">《TensorFlow 笔记（十三）：tf.contrib.learn入门》</a>，我们将在该代码的基础上改进。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line"><span class="comment"># Data sets</span></div><div class="line">IRIS_TRAINING = os.path.join(os.path.dirname(__file__), <span class="string">"iris_training.csv"</span>)</div><div class="line">IRIS_TEST = os.path.join(os.path.dirname(__file__), <span class="string">"iris_test.csv"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(unused_argv)</span>:</span></div><div class="line">    <span class="comment"># Load datasets.</span></div><div class="line">    training_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">        filename=IRIS_TRAINING, target_dtype=np.int, features_dtype=np.float32)</div><div class="line">    test_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">        filename=IRIS_TEST, target_dtype=np.int, features_dtype=np.float32)</div><div class="line"></div><div class="line">    <span class="comment"># Specify that all features have real-value data</span></div><div class="line">    feature_columns = [tf.contrib.layers.real_valued_column(<span class="string">""</span>, dimension=<span class="number">4</span>)]</div><div class="line"></div><div class="line">    <span class="comment"># Build 3 layer DNN with 10, 20, 10 units respectively.</span></div><div class="line">    classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,</div><div class="line">                                                hidden_units=[<span class="number">10</span>, <span class="number">20</span>, <span class="number">10</span>],</div><div class="line">                                                n_classes=<span class="number">3</span>,</div><div class="line">                                                model_dir=<span class="string">"/tmp/iris_model"</span>)</div><div class="line"></div><div class="line">    <span class="comment"># Fit model.</span></div><div class="line">    classifier.fit(x=training_set.data,</div><div class="line">                   y=training_set.target,</div><div class="line">                   steps=<span class="number">2000</span>)</div><div class="line"></div><div class="line">    <span class="comment"># Evaluate accuracy.</span></div><div class="line">    accuracy_score = classifier.evaluate(x=test_set.data,</div><div class="line">                                         y=test_set.target)[<span class="string">"accuracy"</span>]</div><div class="line">    print(<span class="string">'Accuracy: &#123;0:f&#125;'</span>.format(accuracy_score))</div><div class="line"></div><div class="line">    <span class="comment"># Classify two new flower samples.</span></div><div class="line">    new_samples = np.array(</div><div class="line">        [[<span class="number">6.4</span>, <span class="number">3.2</span>, <span class="number">4.5</span>, <span class="number">1.5</span>], [<span class="number">5.8</span>, <span class="number">3.1</span>, <span class="number">5.0</span>, <span class="number">1.7</span>]], dtype=float)</div><div class="line">    y = list(classifier.predict(new_samples, as_iterable=<span class="keyword">True</span>))</div><div class="line">    print(<span class="string">'Predictions: &#123;&#125;'</span>.format(str(y)))</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">	tf.app.run()</div></pre></td></tr></table></figure>
+<p>下面，我们将在这个代码基础上，一点点更新，最终使得它具有日志和监控的功能。</p>
+<p><br></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>上述代码仅仅是实现了一个神经网络分类器的功能，把鸾尾花样本正确分类。但是该代码没有打印任何记录模型训练过程的日志，仅仅展示出<code>print</code>语句中的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Accuracy: 0.933333</div><div class="line">Predictions: [1 2]</div></pre></td></tr></table></figure>
+<p>没有任何日志记录，模型的训练就让人感觉像是一个黑箱子，在TensorFlow每次执行梯度下降算法时，我们都不知道里面发生了什么，也不了解模型是否正确收敛，或者确定是否应该提前<strong>停止训练(early stopping)</strong>。</p>
+<p>其中一个解决方法是将模型训练分成多个<code>fit</code>来调用，以更小的步数来逐步评估模型的准确性。然而，这种方法在实践中并不推荐，因为这会使得训练过程变得很漫长。幸运的是，<code>tf.contrib.learn</code>提供了另外一个解决方法——<code>Monitor API</code>，我们可以用它在训练过程中打印出训练日志同时评估我们的模型。</p>
+<p>在接下来的小节我们将学习如何在TensorFlow中打印日志，如何建立一个<strong>验证监控器(ValidationMonitor)</strong>来做评估，同时在TensorBoard中进行可视化。</p>
+<p><br></p>
+<h1 id="打印日志"><a href="#打印日志" class="headerlink" title="打印日志"></a>打印日志</h1><p>TensorFlow定义了五种不同层次的日志信息。以升序排列分别为<code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>, <code>FATAL</code>。当我们配置了其中一个层次的日志，TensorFlow不仅会输出该层次的日志，同时会输出比它高层次的日志记录。例如，当我们配置日志层次为<code>ERROR</code>，我们将会得到包含<code>ERROR</code>和<code>FATAL</code>的日志信息；当我们设置日志层次为<code>DEBUG</code>，我们将得到全部五种层次的日志信息。</p>
+<p>TensorFlow默认的配置层次为<code>WARN</code>，但是当我们追踪模型的训练时，我们最好把它调整为<code>INFO</code>，这会给我们提供训练时<code>fit</code>节点的信息。</p>
+<p>在代码的开始阶段(import 之后)添加以下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.logging.set_verbosity(tf.logging.INFO)</div></pre></td></tr></table></figure>
+<p>现在当我们执行代码，我们会看到如下额外的输出信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">INFO:tensorflow:loss = 1.18812, step = 1</div><div class="line">INFO:tensorflow:loss = 0.210323, step = 101</div><div class="line">INFO:tensorflow:loss = 0.109025, step = 201</div></pre></td></tr></table></figure>
+<p>当我们用<code>INFO</code>层次的日志时，<code>tf.contirb.learn</code>会默认每100步迭代输出一次训练损失。</p>
+<p><br></p>
+<h1 id="配置验证监控器进行评估"><a href="#配置验证监控器进行评估" class="headerlink" title="配置验证监控器进行评估"></a>配置验证监控器进行评估</h1><p>打印出来训练模型可以帮助我们了解模型是否收敛，但是如果我们想要进一步的了解训练过程中发生了什么，<code>tf.contrib.learn</code>提供了一些高水平的<code>Monitor</code>，我们可以把它们运用到<code>fit</code>操作中来追踪训练过程或者调试一些低水平的TensorFlow操作。<code>Monitor</code>主要有以下几种：</p>
+<table>
+<thead>
+<tr>
+<th>Monitor</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CaptureVariable</code></td>
+<td>每N次迭代把一个指定变量值保存到一个收集器中。</td>
+</tr>
+<tr>
+<td><code>PrintTensor</code></td>
+<td>每N次迭代打印出来指定<code>tensor</code>的值。</td>
+</tr>
+<tr>
+<td><code>SummarySaver</code></td>
+<td>对于一个指定<code>tensor</code>每N次迭代保存一次 <code>tf.Summary</code> <code>protocol buffers</code>，通过使用<a href="https://www.tensorflow.org/api_docs/python/tf/summary/FileWriter" target="_blank" rel="external"><code>tf.summary.FileWriter</code></a> 指令。</td>
+</tr>
+<tr>
+<td><code>ValidationMonitor</code></td>
+<td>每N次迭代打印一次评估结果，还可以选择什么情况下提前停止训练(early stopping)。</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<h2 id="每N次迭代做一次评估"><a href="#每N次迭代做一次评估" class="headerlink" title="每N次迭代做一次评估"></a>每N次迭代做一次评估</h2><p>对于鸾尾花神经网络分类器，当我们打印训练损失时，我们可能还想要同步的在测试数据集上进行评估，进而得知模型的泛化能力。我们可以通过配置<code>ValidationMonitor</code>来实现这个功能，同时还可以设置每多少次迭代评估一次，<code>every_n_steps</code>默认值是100，这里我们设置<code>every_n_steps</code>为50，即让它每50次迭代来对测试集进行一次评估。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(</div><div class="line">    test_set.data,</div><div class="line">    test_set.target,</div><div class="line">    every_n_steps=<span class="number">50</span>)</div></pre></td></tr></table></figure>
+<p>把这行代码放在初始化<code>classifier</code>之前。</p>
+<p><code>ValidationMonitor</code>依赖于保存的<em>checkpoint</em>文件来进行评估操作，因此我们需要在实例化<code>classifier</code>时添加<code>tf.contirb.learn.RunConfig</code>项，它包含了<code>save_checkpoints_secs</code>值来定义我们每多少秒保存一次<em>checkpoint</em>文件。因为鸾尾花数据集十分小，并且训练的特别快，我们可以把<code>save_checkpoints_secs</code>设置为1，也就是每秒钟保存一次<em>checkpoint</em>文件，这样我们可以确保有足够数量的<em>checkpoint</em>文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">classifier = tf.contrib.learn.DNNClassifier(</div><div class="line">    feature_columns=feature_columns,</div><div class="line">    hidden_units=[<span class="number">10</span>, <span class="number">20</span>, <span class="number">10</span>],</div><div class="line">    n_classes=<span class="number">3</span>,</div><div class="line">    model_dir=<span class="string">"/tmp/iris_model"</span>,</div><div class="line">    config=tf.contrib.learn.RunConfig(save_checkpoints_secs=<span class="number">1</span>))</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong><code>model_dir</code>参数定义了一个绝对地址来保存模型数据。每次运行代码时，该路径下的所有现有数据将被加载，并且模型训练将从上次停止的地方继续运行（例如，若训练期间每次<code>fit</code>操作迭代2000次，则连续执行脚本两次将迭代4000次 ）。</p>
+<p>最后，我们来把之前定义好的监控器<code>validation_monitor</code>添加进<code>fit</code>操作里，把它赋值给<code>monitor</code>参数，该参数会接受一个包含了所有监控器的列表，并在训练过程中执行它们：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">classifier.fit(x=training_set.data,</div><div class="line">               y=training_set.target,</div><div class="line">               steps=<span class="number">2000</span>,</div><div class="line">               monitors=[validation_monitor])</div></pre></td></tr></table></figure>
+<p>现在，当我们运行该代码，我们可以看到打印出来的评估结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">INFO:tensorflow:Validation (step 50): loss = 1.71139, global_step = 0, accuracy = 0.266667</div><div class="line">...</div><div class="line">INFO:tensorflow:Validation (step 300): loss = 0.0714158, global_step = 268, accuracy = 0.966667</div><div class="line">...</div><div class="line">INFO:tensorflow:Validation (step 1750): loss = 0.0574449, global_step = 1729, accuracy = 0.966667</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="用MetricSpec改进评估指标"><a href="#用MetricSpec改进评估指标" class="headerlink" title="用MetricSpec改进评估指标"></a>用MetricSpec改进评估指标</h2><p>如果我们没有定义评估指标，在验证阶段<code>ValidationMonitor</code>将会默认同时打印出损失值和准确率。但是我们可以更改指标列表，定义我们想要的评估指标，我们可以向<code>ValidationMonitor</code>函数添加<code>metircs</code>参数。 <code>metircs</code>采用字典的键/值对来定义，其中每个键都是我们想要记录的指标的名字，相应的值是<code>MetricSpec</code>对象。</p>
+<p><code>MetricSpec</code>对象使用函数<code>tf.contirb.learn.MetricSpec()</code>来定义，它接受四个参数：</p>
+<p><br></p>
+<ul>
+<li><code>metric_fn</code>：函数计算并且返回一组指标的值，可以是<code>tf.contrib.metrics</code>模块中已经预定义好的函数，例如<code>tf.contrib.metrics.streaming_precision</code>或<code>tf.contrib.metrics.streaming_recall</code>。同时我们可以定义我们自己需要的指标函数，这需要把<code>pridictions</code>和<code>labels</code>张量作为参数(<code>weights</code>参数是可选的)。该函数必须返回两种形式的指标值<ul>
+<li>一个<code>tensor</code></li>
+<li>一组<code>ops(value_op, update_op)</code>，其中<code>value_op</code>返回指标的值，<code>update_op</code>执行一个相关的操作来更新内部模型状态。</li>
+</ul>
+</li>
+</ul>
+<p><br></p>
+<ul>
+<li><code>prediction_key</code>：该<code>tensor</code>包含了模型返回的预测值。如果模型返回单个张量或具有单个条目的字典，则可以省略此参数。对于<code>DNNClassifier</code>模型，类预测将使用关键字<code>tf.contrib.learn.PredictionKey.CLASSES</code>在张量中返回。</li>
+</ul>
+<p><br></p>
+<ul>
+<li><code>label_key</code>：该<code>tensor</code>包含了模型返回的标签，它被模型的<code>input_fn</code>函数定义。与<code>prediction_key</code>一样，如果<code>input_fn</code>返回单个张量或具有单个条目的字典，则可以省略此参数。在本教程中，<code>DNNClassifier</code>没有<code>input_fn</code>（x，y数据直接传递给fit），因此不需要提供<code>label_key</code>。</li>
+</ul>
+<p><br></p>
+<ul>
+<li><code>weights_key</code>：可选项。<code>tensor</code>（由<code>input_fn</code>返回）包含<code>metric_fn</code>的权重输入。</li>
+</ul>
+<p><br></p>
+<p>下面的代码创建一个<code>validation_metrics</code>字典，定义了三个在模型评估过程中需要打印的指标。</p>
+<ul>
+<li><code>&quot;accuracy&quot;</code>，使用<code>tf.contrib.metrics.streaming_accuracy</code>作为<code>metric_fn</code></li>
+<li><code>&quot;precision&quot;</code>，使用<code>tf.contrib.metrics.streaming_precision</code>作为<code>metric_fn</code></li>
+<li><code>&quot;recall&quot;</code>使用<code>tf.contrib.metrics.streaming_recall</code>作为<code>metric_fn</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">validation_metrics = &#123;</div><div class="line">    <span class="string">"accuracy"</span>:</div><div class="line">        tf.contrib.learn.MetricSpec(</div><div class="line">            metric_fn=tf.contrib.metrics.streaming_accuracy,</div><div class="line">            prediction_key=tf.contrib.learn.PredictionKey.CLASSES),</div><div class="line">    <span class="string">"precision"</span>:</div><div class="line">        tf.contrib.learn.MetricSpec(</div><div class="line">            metric_fn=tf.contrib.metrics.streaming_precision,</div><div class="line">            prediction_key=tf.contrib.learn.PredictionKey.CLASSES),</div><div class="line">    <span class="string">"recall"</span>:</div><div class="line">        tf.contrib.learn.MetricSpec(</div><div class="line">            metric_fn=tf.contrib.metrics.streaming_recall,</div><div class="line">            prediction_key=tf.contrib.learn.PredictionKey.CLASSES)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>把上述代码添加到<code>ValidationMonitor</code>的定义之前，然后修改关于<code>ValidationMonitor</code>的定义，添加一个<code>metrics</code>参数来打印准确率，预测值和召回率指标，这些都是之前在<code>validation_metrics</code>中定义过的。（损失值是始终都会被打印出来的，我们不需要明确去定义它）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(</div><div class="line">    test_set.data,</div><div class="line">    test_set.target,</div><div class="line">    every_n_steps=<span class="number">50</span>,</div><div class="line">    metrics=validation_metrics)</div></pre></td></tr></table></figure>
+<p>执行该代码，我们可以看到预测值和召回率包含在输出中了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">INFO:tensorflow:Validation (step 50): recall = 0.0, loss = 1.20626, global_step = 1, precision = 0.0, accuracy = 0.266667</div><div class="line">...</div><div class="line">INFO:tensorflow:Validation (step 600): recall = 1.0, loss = 0.0530696, global_step = 571, precision = 1.0, accuracy = 0.966667</div><div class="line">...</div><div class="line">INFO:tensorflow:Validation (step 1500): recall = 1.0, loss = 0.0617403, global_step = 1452, precision = 1.0, accuracy = 0.966667</div></pre></td></tr></table></figure>
+<p><br></p>
+<h2 id="用验证监控器实现Early-Stopping"><a href="#用验证监控器实现Early-Stopping" class="headerlink" title="用验证监控器实现Early Stopping"></a>用验证监控器实现Early Stopping</h2><p>注意在上述打印的日志中，到第600次迭代时，模型在测试集上已经到达接近于1的准确率和召回率，这种情况下我们可以使用<code>early stopping</code>。</p>
+<p>除了打印评估指标，<code>ValidationMonitor</code>实现<code>early stopping</code>也十分的简单。我们可以通过定义以下三个参数来实现：</p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>early_stopping_metric</code></td>
+<td>引发early stopping的指标 (例如loss或accuracy)，触发条件定义在<code>early_stopping_rounds</code>和 <code>early_stopping_metric_minimize</code>中，默认的值是 <code>&quot;loss&quot;</code>。</td>
+</tr>
+<tr>
+<td><code>early_stopping_metric_minimize</code></td>
+<td>如果模型是想要最小化<code>early_stopping_metric</code>则为<code>True</code>; 如果模型是想要最大化<code>early_stopping_metric</code>则为<code>False</code>。默认为<code>True</code>。</td>
+</tr>
+<tr>
+<td><code>early_stopping_rounds</code></td>
+<td>设置一定的迭代次数，如果在这些次数内<code>early_stopping_metric</code>没有减少(<code>early_stopping_metric_minimize</code>值为<code>True</code>) 或者没有增加(<code>early_stopping_metric_minimize</code>值为<code>False</code>)，训练将会停止。默认值为<code>None</code>，这意味着<code>early stopping</code>不会被触发。</td>
+</tr>
+</tbody>
+</table>
+<p>我们对<code>ValidationMonitor</code>的定义做如下修改，当我们的损失持续了200次迭代都没有减小，模型的训练将会停止，将不会执行完<code>fit</code>中定义的2000次迭代。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(</div><div class="line">    test_set.data,</div><div class="line">    test_set.target,</div><div class="line">    every_n_steps=<span class="number">50</span>,</div><div class="line">    metrics=validation_metrics,</div><div class="line">    early_stopping_metric=<span class="string">"loss"</span>,</div><div class="line">    early_stopping_metric_minimize=<span class="keyword">True</span>,</div><div class="line">    early_stopping_rounds=<span class="number">200</span>)</div></pre></td></tr></table></figure>
+<p>再次执行该代码，我们会看到模型提前停止了训练：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">INFO:tensorflow:Validation (step 1150): recall = 1.0, loss = 0.056436, global_step = 1119, precision = 1.0, accuracy = 0.966667</div><div class="line">INFO:tensorflow:Stopping. Best step: 800 with loss = 0.048313818872.</div></pre></td></tr></table></figure>
+<p>训练在第1150次迭代停止，这表明在之前的200次训练迭代中，损失都没有下降，总体来说，800次迭代就已经在测试集达到了最小的损失值。这表明通过减少训练次数可以进一步改进模型，同时改善超参数。</p>
+<p><br></p>
+<h2 id="TensorBoard可视化日志数据"><a href="#TensorBoard可视化日志数据" class="headerlink" title="TensorBoard可视化日志数据"></a>TensorBoard可视化日志数据</h2><p><code>ValidationMonitor</code>在训练期间生成了大量关于模型性能的原始数据，我们可以可视化它们来进一步了解训练情况——例如准确率是如何随着训练次数改变的。我们可以使用TensorBoard来实现这个功能，地址是我们保存模型数据的地址，打开命令行输入以下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tensorboard --logdir=/tmp/iris_model/</div></pre></td></tr></table></figure>
+<p>然后打开浏览器在地址栏输入<code>localhost:6006</code>进入TensorBoard的操作面板。具体的使用方法可以参考我的笔记<a href="http://zangbo.me/2017/06/27/TensorFlow_4/">《TensorFlow 笔记（四）：TensorBoard可视化》</a></p>
+<p><br></p>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><p>完整代码可以在TensorFlow官方GitHub下载：</p>
+<p><a href="https://github.com/tensorflow/tensorflow/blob/r1.2/tensorflow/examples/tutorials/monitors/iris_monitors.py" target="_blank" rel="external">iris_monitors.py</a></p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://www.tensorflow.org/get_started/monitors" target="_blank" rel="external">Logging and Monitoring Basics with tf.contrib.learn  |  TensorFlow</a></li>
+</ul>
+<p><br></p>
+</the></excerpt>]]></content>
+      
+        <categories>
+            
+            <category> 深度学习 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> TensorFlow </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[TensorFlow 笔记（十四）：tf.contrib.learn输入函数]]></title>
       <url>/2017/07/18/TensorFlow_14/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 

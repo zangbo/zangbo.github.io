@@ -1,3 +1,4 @@
+http://zangbo.me/2017/07/22/TensorFlow_15/
 http://zangbo.me/2017/07/18/TensorFlow_14/
 http://zangbo.me/2017/07/09/TensorFlow_13/
 http://zangbo.me/2017/07/07/TensorFlow_12/
@@ -22,4 +23,3 @@ http://zangbo.me/2017/06/05/Word2Vec_skip-gram/
 http://zangbo.me/2017/06/04/RandomGradientDecreases/
 http://zangbo.me/2017/06/03/TensorFlow_2/
 http://zangbo.me/2017/06/02/Tensorflow_1/
-http://zangbo.me/2017/06/01/MacGitHubHexoBlog/
