@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-07-23T06:31:06.000Z</updated>
+  <updated>2017-07-26T06:47:35.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -14,6 +14,116 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深度学习基础：全连接层</title>
+    <link href="http://zangbo.me/2017/07/26/DeepLearningFc/"/>
+    <id>http://zangbo.me/2017/07/26/DeepLearningFc/</id>
+    <published>2017-07-26T04:16:43.000Z</published>
+    <updated>2017-07-26T06:47:35.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>最近补了一下深度学习的基础知识，对全连接层中数据的前向传播和梯度的反向传播有了更深的认识，同时自己用Python实现了一个三层的全连接网络，并将结果可视化出来。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>全连接的神经网络也叫多层感知机(MLP)，前后两层的任意两个神经元都相连，同层的神经元之间没有连接关系，通过如下线性组合后送入一个激活函数进行非线性运算。<br>$$<br>Zi = \sum_j W{i,~ j} x_j + b_i<br>$$<br>常见的激活函数有<code>Sigmoid</code>、<code>ReLU</code>、双曲正切等，本次试验要实现一个二分类的神经网络，固采用<code>Sigmoid</code>函数。<br>$$<br>Sigmoid=\frac {1}{1+e^{-z}}<br>$$<br><code>Sigmoid</code>函数图像如下所示，它会把任意范围的数映射到0和1之间，我们可以把它的输出当作二分类的概率，当最后一层的输出大于0.5时我们认为它类别为1，小于0.5时我们认为类别为0。</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/deeplearning/20170726123606_MsxRaI_全连接层.jpeg" alt="Sigmoid"></center>
+
+<p>本试验采用的损失函数(Loss Function)为最简单的二次损失函数，即：<br>$$<br>Loss(y,t)=\frac{1}{2}(y-t)^2<br>$$<br>其中t表示标签数据，y表示神经网络的输出。</p>
+<p><br></p>
+<h1 id="实验数据"><a href="#实验数据" class="headerlink" title="实验数据"></a>实验数据</h1><p>本次试验构造一个三层全连接神经网络，第一层为输入层，维度为2；最后一层为输出层，维度为1；隐藏层神经元为超参数。</p>
+<p>训练样本共有96个，特征数据为浮点数，标签数据为0或者1，分别表示两类。</p>
+<p>训练数据如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">-0.1097</th>
+<th style="text-align:center">0.5517</th>
+<th style="text-align:center">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0.1097</td>
+<td style="text-align:center">-0.5517</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">-0.2392</td>
+<td style="text-align:center">0.5774</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0.2392</td>
+<td style="text-align:center">-0.5774</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<p>可视化如图：</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/deeplearning/20170726130640_GLPFuK_train.jpeg" alt="Train Data" width="500"></center>
+
+<p>测试数据和其相似，只是在坐标上有轻微变化。</p>
+<h1 id="实验分析"><a href="#实验分析" class="headerlink" title="实验分析"></a>实验分析</h1><p>我简单的画了下前向传播和反向传播的流程，为方便起见这里令隐藏层神经元数目为4个，这个值对后续的代码没有影响。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning/20170726134924_1EqSco_WechatIMG202.jpeg" alt=""></p>
+<p>此处x的每一行都表示一个样本，总的行数表示样本的个数。</p>
+<p><br></p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>我们首先来定义全连接层：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FC</span>:</span></div><div class="line">    <span class="string">"""Define a fully connected layer"""</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_dim, output_dim, lr)</span>:</span></div><div class="line">        self._input_dim = input_dim</div><div class="line">        self._output_dim = output_dim</div><div class="line">        self.lr = lr</div><div class="line">        self.w = np.random.randn(input_dim, output_dim)</div><div class="line">        self.b = np.zeros(output_dim)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_sigmoid</span><span class="params">(self, z)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-z))</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></div><div class="line">        self.y = self._sigmoid(np.dot(x, self.w) + self.b)</div><div class="line">        self.x = x</div><div class="line">        <span class="keyword">return</span> self.y</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backward</span><span class="params">(self, gradient)</span>:</span></div><div class="line">        grad_z = gradient * self.y * (<span class="number">1</span> - self.y)</div><div class="line">        grad_w = np.dot(self.x.T, grad_z)</div><div class="line">        grad_b = grad_z.sum(<span class="number">0</span>)</div><div class="line">        grad_x = np.dot(grad_z, self.w.T)</div><div class="line">        self.w -= grad_w * self.lr</div><div class="line">        self.b -= grad_b * self.lr</div><div class="line">        <span class="keyword">return</span> grad_x</div></pre></td></tr></table></figure>
+<p>注意这里反向传播时，对于参数b的偏导<code>grad_b</code>，我们令它等于z的偏导<code>grad_z</code>在第一维度上的求和。在每次前向传播时，我们都把x的值保留下来，用于反向传播。把所有的梯度传播完成之后，进行参数的更新。</p>
+<p><br></p>
+<p>然后我们定义损失函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquareLoss</span>:</span></div><div class="line">    <span class="string">"""Define the loss function"""</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, output, label)</span>:</span></div><div class="line">        self.loss = output - label</div><div class="line">        <span class="keyword">return</span> np.sum(self.loss * self.loss) / self.loss.shape[<span class="number">0</span>] / <span class="number">2</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backward</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.loss</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accuracy</span><span class="params">(self, output, label)</span>:</span></div><div class="line">        <span class="keyword">return</span> (np.around(output) == label).sum() / len(label)</div></pre></td></tr></table></figure>
+<p><br></p>
+<p>接下来我们就可以开始搭建神经网络了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span>:</span></div><div class="line">    <span class="string">"""Train the model"""</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_dim, hidden_dim, output_dim, lr)</span>:</span></div><div class="line">        self.fc1 = FC(input_dim, hidden_dim, lr)</div><div class="line">        self.fc2 = FC(hidden_dim, output_dim, lr)</div><div class="line">        self.loss = SquareLoss()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(self, train_data, train_label, iter)</span>:</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(iter):</div><div class="line">            <span class="comment"># forward step</span></div><div class="line">            out_fc1 = self.fc1.forward(train_data)</div><div class="line">            out_fc2 = self.fc2.forward(out_fc1)</div><div class="line">            out_loss = self.loss.forward(out_fc2, train_label)</div><div class="line">            <span class="comment"># backward step</span></div><div class="line">            loss_grad = self.loss.backward()</div><div class="line">            loss_fc2 = self.fc2.backward(loss_grad)</div><div class="line">            loss_fc1 = self.fc1.backward(loss_fc2)</div><div class="line">            <span class="keyword">if</span> i % <span class="number">10</span> == <span class="number">0</span>:</div><div class="line">                train_accuracy = self.loss.accuracy(out_fc2, train_label)</div><div class="line">                print(<span class="string">"Iter: &#123;0&#125;   Train accuracy: &#123;1&#125;"</span>.format(</div><div class="line">                    i, train_accuracy))</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(self, test_data, test_label)</span>:</span></div><div class="line">        out_fc1 = self.fc1.forward(test_data)</div><div class="line">        out_fc2 = self.fc2.forward(out_fc1)</div><div class="line">        out_loss = self.loss.forward(out_fc2, test_label)</div><div class="line">        accuracy = self.loss.accuracy(out_fc2, test_label)</div><div class="line">        <span class="keyword">return</span> accuracy</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, predict_data)</span>:</span></div><div class="line">        out_fc1 = self.fc1.forward(predict_data)</div><div class="line">        out_fc2 = self.fc2.forward(out_fc1)</div><div class="line">        out_result = np.around(out_fc2)</div><div class="line">        <span class="keyword">return</span> out_result</div></pre></td></tr></table></figure>
+<p>我们让每10次训练打印一次训练准确率，最终训练完成后用测试数据进行测试，并打印出测试准确率。</p>
+<p><br></p>
+<p>下面我们把训练数据和测试数据输入进去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    train_set=np.loadtxt(TRAIN_DATA)</div><div class="line">    test_set=np.loadtxt(TEST_DATA)</div><div class="line">    train_data = train_set[:, :<span class="number">2</span>]</div><div class="line">    train_label = train_set[:, <span class="number">2</span>].reshape((<span class="number">-1</span>, <span class="number">1</span>))</div><div class="line">    test_data = test_set[:, :<span class="number">2</span>]</div><div class="line">    test_label = test_set[:, <span class="number">2</span>].reshape((<span class="number">-1</span>, <span class="number">1</span>))</div><div class="line"></div><div class="line">    net = Net(<span class="number">2</span>, <span class="number">10</span>, <span class="number">1</span>, <span class="number">0.1</span>)</div><div class="line">    net.train(train_data, train_label, <span class="number">5000</span>)</div><div class="line">    accuracy = net.test(test_data, test_label)</div><div class="line">    print(<span class="string">'Test accuracy: &#123;0&#125;'</span>.format(accuracy))</div><div class="line">    </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<p><br></p>
+<p>我们首先定义隐藏层神经元为10个，训练迭代次数为5000次，结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Iter: 0   Train accuracy: 0.6041666666666666</div><div class="line">Iter: 10   Train accuracy: 0.6458333333333334</div><div class="line">Iter: 20   Train accuracy: 0.6458333333333334</div><div class="line">...</div><div class="line">Iter: 650   Train accuracy: 0.6875</div><div class="line">Iter: 660   Train accuracy: 0.6979166666666666</div><div class="line">Iter: 670   Train accuracy: 0.6979166666666666</div><div class="line">...</div><div class="line">Iter: 1530   Train accuracy: 0.9270833333333334</div><div class="line">Iter: 1540   Train accuracy: 0.9270833333333334</div><div class="line">Iter: 1550   Train accuracy: 0.9375</div><div class="line">...</div><div class="line">Iter: 1790   Train accuracy: 0.9791666666666666</div><div class="line">Iter: 1800   Train accuracy: 0.9895833333333334</div><div class="line">Iter: 1810   Train accuracy: 1.0</div><div class="line">Iter: 1820   Train accuracy: 1.0</div><div class="line">...</div><div class="line">Iter: 4980   Train accuracy: 1.0</div><div class="line">Iter: 4990   Train accuracy: 1.0</div><div class="line">Test accuracy: 1.0</div></pre></td></tr></table></figure>
+<p>可以看出从1800次迭代之后就已经达到了1的训练准确率，最终的测试数据准确率同样为1。</p>
+<p><br></p>
+<p>我们添加一个类<code>Draw</code>来画出整个模型的收敛结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Draw</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.x = np.linspace(<span class="number">-5</span>,<span class="number">5</span>,<span class="number">100</span>)</div><div class="line">        self.y = np.linspace(<span class="number">-5</span>,<span class="number">5</span>,<span class="number">100</span>)</div><div class="line">        self.X, self.Y = np.meshgrid(self.x,self.y)</div><div class="line">        self.X_f = self.X.flatten()</div><div class="line">        self.Y_f = self.Y.flatten()</div><div class="line">        self.p = zip(self.X_f, self.Y_f)</div><div class="line">        self.data = list()</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.p:</div><div class="line">            self.data.append(list(i))</div><div class="line">        self.data = np.array(self.data)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">draw2D</span><span class="params">(self, Z)</span>:</span></div><div class="line">        plt.figure()</div><div class="line">        plt.scatter(self.X,self.Y,c=Z)</div><div class="line">        plt.show()</div><div class="line">        </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    ...</div><div class="line">    draw = Draw()</div><div class="line">    out = net.predict(draw.data)</div><div class="line">    draw.draw2D(out)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/deeplearning/20170726140239_JEbLon_10.jpeg" width="500"></center>
+
+<p>我们把隐藏层神经元改为30，得出的结果：</p>
+<center><img src="http://orwbuystz.bkt.clouddn.com/deeplearning/20170726140243_R5cuNf_30.jpeg" width="500"></center>
+
+<p>可以看出隐藏层在30的情况下边界相对更加平滑，而且收敛速度也更快。</p>
+<p>完整代码和训练数据可在我的<a href="https://github.com/zangbo/MachineLearning/tree/master/FC" target="_blank" rel="external">GitHub</a>下载。</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/21535703" target="_blank" rel="external">神经网络-全连接层（2） - 知乎专栏</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/21572419" target="_blank" rel="external">神经网络-全连接层（3） - 知乎专栏</a></li>
+</ul>
+<p><br></p>
+</the></excerpt>]]></content>
+    
+    <summary type="html">
+    
+      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
+
+&lt;p&gt;最近补了一下深度学习的基础知识，对全连接层中数据的前向传播和梯度的反向传播有了更深的认识，同时自己用Python实现了一个三层的全连接网络，并将结果可视化出来。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>TensorFlow 笔记（十五）：tf.contrib.learn日志和监控</title>
@@ -1844,9 +1954,9 @@
       <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
-    
       <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
+    
+      <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
     
   </entry>
   
@@ -2533,70 +2643,6 @@
     
     
       <category term="个人网站" scheme="http://zangbo.me/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>送给女友的生日礼物</title>
-    <link href="http://zangbo.me/2017/06/12/GiftForGirlfriend/"/>
-    <id>http://zangbo.me/2017/06/12/GiftForGirlfriend/</id>
-    <published>2017-06-12T13:36:59.000Z</published>
-    <updated>2017-07-15T07:04:29.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
-
-<p>女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。</p>
-<a id="more"></a>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<div id="aplayer0" class="aplayer" style="margin-bottom: 20px;"></div>
-		<script>
-			new APlayer({
-				element: document.getElementById("aplayer0"),
-				narrow: false,
-				autoplay: false,
-				showlrc: 0,
-				music: {
-					title: "童话镇",
-					author: "陈一发儿",
-					url: "http://mp3.haoduoge.com/s/2016-12-24/1482568978.mp3",
-					pic: "http://p4.music.126.net/tfa811GLreJI_S0h9epqRA==/3394192426154346.jpg?param=130y130",
-				}
-			});
-		</script>
-<p><br></p>
-<h1 id="我的礼物"><a href="#我的礼物" class="headerlink" title="我的礼物"></a>我的礼物</h1><p>以下是我的两个网站：</p>
-<ul>
-<li>博莎小站：<a href="http://lisa.zangbo.me" target="_blank" rel="external">http://lisa.zangbo.me</a></li>
-<li>送给Lisa的一封信：<a href="http://mylove.zangbo.me" target="_blank" rel="external">http://mylove.zangbo.me</a></li>
-</ul>
-<p>注：手机端打开会出现排版问题，建议电脑浏览器浏览。</p>
-<p><br></p>
-<h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><p>第一个网站参考：<a href="http://huyuqian.chengdazhi.com" target="_blank" rel="external">治芊小站</a></p>
-<p>作者主页：<a href="http://chengdazhi.com" target="_blank" rel="external">程大治</a></p>
-<p>发现这个网站是在知乎问题 <a href="https://www.zhihu.com/question/37804443" target="_blank" rel="external">程序员能给女朋友做什么特别浪漫的礼物？ - 知乎</a> 下，其中不乏很多很好的创意，通过评论得知作者也是在网上找的模版，很容易就搜到了：<a href="http://www.cssmoban.com/cssthemes/6077.shtml" target="_blank" rel="external">简洁瀑布流布局动物世界博客模板</a>，于是直接进行二次加工。</p>
-<p><br></p>
-<p>第二个网站参考：<a href="http://hackerzhou.me/ex_love/" target="_blank" rel="external">Our Love Story</a></p>
-<p>作者GitHub：<a href="https://github.com/hackerzhou" target="_blank" rel="external">hackerzhou</a></p>
-<p>这个网站在圈子里可以说是很有名了，作者开发于2011年，当年送的人如今已经变成了前女友，不免一阵唏嘘。作者把代码放在GitHub上允许大家自由的进行二次开发，我便拿来进行修改，因为女朋友并非程序员，所以原本的网页中代码生成部分改为了一封信。</p>
-<p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>因为妹子是文科生，送之前我也不知道妹子会不会喜欢这种理工男的浪漫，所以这两个网页只能算是礼物的一部分，自然还是要准备其他实质性的东西的。</p>
-<p><br></p>
-</the></excerpt>]]></content>
-    
-    <summary type="html">
-    
-      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
-
-&lt;p&gt;女朋友生日来临之际，自己在别人模版基础上修改着做了两个网站当作礼物，并没有兼容手机端，最好在电脑端登录观看效果。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="个人网站" scheme="http://zangbo.me/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"/>
-    
-      <category term="前端" scheme="http://zangbo.me/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   

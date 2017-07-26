@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://zangbo.me/2017/07/26/DeepLearningFc/</loc>
+    
+    <lastmod>2017-07-26T06:47:35.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://zangbo.me/2017/06/02/Tensorflow_1/</loc>
+    
+    <lastmod>2017-07-26T05:14:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://zangbo.me/2017/07/22/TensorFlow_15/</loc>
     
     <lastmod>2017-07-23T06:31:06.000Z</lastmod>
@@ -110,13 +124,6 @@
     <loc>http://zangbo.me/2017/07/06/TensorFlow_11/</loc>
     
     <lastmod>2017-07-15T06:45:55.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://zangbo.me/2017/06/02/Tensorflow_1/</loc>
-    
-    <lastmod>2017-07-12T09:21:56.000Z</lastmod>
     
   </url>
   

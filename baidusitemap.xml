@@ -4,6 +4,44 @@
 
     
   <url>
+    <loc>http://zangbo.me/2017/07/26/DeepLearningFc/</loc>
+    <lastmod>2017-07-26T06:47:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>深度学习基础：全连接层</title>
+        <pubTime>2017-07-26T04:16:43.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://zangbo.me/2017/06/02/Tensorflow_1/</loc>
+    <lastmod>2017-07-26T05:14:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow 笔记（一）：MNIST入门</title>
+        <pubTime>2017-06-02T05:22:10.000Z</pubTime>
+        
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://zangbo.me/2017/07/22/TensorFlow_15/</loc>
     <lastmod>2017-07-23T06:31:06.000Z</lastmod>
     <data>
@@ -231,9 +269,9 @@
         <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
         <pubTime>2017-06-27T13:50:54.000Z</pubTime>
         
-        <tag>可视化</tag>
-         
         <tag>TensorFlow</tag>
+         
+        <tag>可视化</tag>
          
          
            
@@ -292,26 +330,6 @@
         <display>
         <title>TensorFlow 笔记（十一）：CNN示例代码CIFAR-10分析（上）</title>
         <pubTime>2017-07-06T07:28:12.000Z</pubTime>
-        
-        <tag>TensorFlow</tag>
-         
-         
-           
-             
-              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://zangbo.me/2017/06/02/Tensorflow_1/</loc>
-    <lastmod>2017-07-12T09:21:56.000Z</lastmod>
-    <data>
-        <display>
-        <title>TensorFlow 笔记（一）：MNIST入门</title>
-        <pubTime>2017-06-02T05:22:10.000Z</pubTime>
         
         <tag>TensorFlow</tag>
          

@@ -21,11 +21,11 @@
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本系列是对TensorFlow官方文档进行学习的总结，本篇主要关于TensorFlow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。">
 <meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230301_Z8l9h5_unnamed.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_FE7lvU_2.jpeg?imageMogr2/thumbnail/800x">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230309_tE1HOU_11.jpeg?imageView2/2/w/800">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230307_YKyvO7_softmax-regression-vectorequation.jpeg?imageView2/2/w/800">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg?imageView2/2/w/800">
-<meta property="og:updated_time" content="2017-07-12T09:21:56.000Z">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_FE7lvU_2.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230309_tE1HOU_11.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230307_YKyvO7_softmax-regression-vectorequation.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg">
+<meta property="og:updated_time" content="2017-07-26T05:14:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorFlow 笔记（一）：MNIST入门">
 <meta name="twitter:description" content="本系列是对TensorFlow官方文档进行学习的总结，本篇主要关于TensorFlow的基础知识和在MNIST数据集上结合Softmax回归的简单实现。">
@@ -232,7 +232,7 @@ var _hmt = _hmt || [];
 <p><code>+ - * /</code>，均为矩阵间对应项操作。</p>
 <p><code>tf.matmul(a,b)</code>，矩阵乘法，不同于*。</p>
 <p><code>tf.assign(a,b)</code>，赋值操作，把b的值赋给a。</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_FE7lvU_2.jpeg?imageMogr2/thumbnail/800x" alt=""></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_FE7lvU_2.jpeg" width="800"></center>
 
 
 
@@ -247,20 +247,20 @@ var _hmt = _hmt || [];
 <p>首先下载MNIST数据集，我们只需要用如下两行代码自动下载并且引用：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
 <p> 每张图片包含28*28个像素点，我们可以用一个数字矩阵来表示它。</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230309_tE1HOU_11.jpeg?imageView2/2/w/800" alt=""></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230309_tE1HOU_11.jpeg" width="800"></center>
 
 <p>在该模型中，我们直接把这个数组展开成一个一维向量，也就是忽视它的空间结构，把每张图片都看作一个长度为28*28=784的向量。数据集的标签数据是”one-hot vectors” ，标签是介于0～9之间的数字，每个标签都是长为10的一维向量，只有一个元素为1其他均为0，例如标签9将表示成([0,0,0,0,0,0,0,0,0,0,1]) .</p>
 <p>下面介绍下Softmax回归，对于输入的每张图片，我们希望得到每个标签对应的概率，且所有标签的概率加起来应为1，Softmax回归就实现了这样一个功能。</p>
 <p>Softmax回归分两步：第一步，我们通过一系列的加权求和，如果某个像素具有很强的证据说明这张图片不属于该类，那么相应的权值为负数，相反如果这个像素拥有有利的证据支持这张图片属于这个类，那么权值是正数。 再加上一个额外的偏置项(bias)，因此对于给定输入x我们可以得到某张图片的得分：<br>$$<br>\text{evidence}_i = \sum_j W_{i,~ j} x_j + b_i<br>$$<br>第二步，我们利用Softmax函数把它转化为概率值：<br>$$<br>y = \text{softmax}(\text{evidence})<br>$$<br>其中，Softmax函数的具体形式为：</p>
 <p>$$<br>\text{softmax}(x)_i = \frac{\exp(x_i)}{\sum_j \exp(x_j)}<br>$$<br>因此我们得到如下形式(假设x为一个长度为3的一维向量，标签数量同样为3)：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230307_YKyvO7_softmax-regression-vectorequation.jpeg?imageView2/2/w/800" alt=""></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621230307_YKyvO7_softmax-regression-vectorequation.jpeg" width="800"></center>
 
 <p>简写为：</p>
 <p>$$<br>y = \text{softmax}(Wx + b)<br>$$<br>在我们的模型中，训练数据共60000张图片，但由于我们采用随机梯度下降来优化，因此我们x的尺寸为[batch_size,784]，W的尺寸为[784,10]，b的尺寸为[1,10]，最终输出的<code>y</code>尺寸和标签<code>y_</code>尺寸均为[batch_size,10]。具体实现我用的jupyter notebook，过程如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</div><div class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</div><div class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.05</span>).minimize(cross_entropy)</div><div class="line">sess = tf.Session()</div><div class="line">tf.global_variables_initializer().run()</div><div class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</div></pre></td></tr></table></figure>
 <p>我们首先定义了变量W和b，用来存储模型参数，在一遍遍迭代中不断的对其进行更新，初始化为全零矩阵。然后定义占位符x，先在图中分配好节点，类型为float型，None表示此张量的第一个维度可以是任何长度的，在执行时可以利用feed操作输入任何数量的图片。接着定义了矩阵乘法操作<code>tf.matmul()</code>和加操作+，以及定义了节点y进行softmax计算。</p>
 <p>我把数据流图简单画了下：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg?imageView2/2/w/800" alt=""></center>
+<center><img src="http://orwbuystz.bkt.clouddn.com/Tensorflow学习笔记/20170621203909_wnrrZf_9.jpeg" width="800"></center>
 
 <p>我们已经定义了一个指标来说明一个模型是好的，但在机器学习，我们通常定义指标来表示一个模型是坏的，这个指标称为成本(cost)或损失(loss)，然后尽量最小化这个指标，这两种方式是相同的。</p>
 <p>这里我们用到的成本函数是“交叉熵”(cross-entropy) ，它的定义如下：</p>
@@ -294,7 +294,7 @@ var _hmt = _hmt || [];
         <p><span>本文标题:</span><a href="/2017/06/02/Tensorflow_1/">TensorFlow 笔记（一）：MNIST入门</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 ZangBo 的个人博客">ZangBo</a></p>
         <p><span>发布时间:</span>2017-06-02, 13:22:10</p>
-        <p><span>最后更新:</span>2017-07-12, 17:21:56</p>
+        <p><span>最后更新:</span>2017-07-26, 13:14:44</p>
         <p><span>原始链接:</span><a class="post-url" href="/2017/06/02/Tensorflow_1/" title="TensorFlow 笔记（一）：MNIST入门">http://zangbo.me/2017/06/02/Tensorflow_1/</a><span class="copy-path" data-clipboard-text="原文:http://zangbo.me/2017/06/02/Tensorflow_1/　作者:ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
         <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -612,10 +612,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">可视化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">个人网站</a>
               </li>
              
@@ -629,6 +625,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">可视化</a>
               </li>
              
               <li class="article-tag-list-item">
