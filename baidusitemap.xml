@@ -24,7 +24,7 @@
 
     
   <url>
-    <loc>http://zangbo.me/2017/07/26/essay_1/</loc>
+    <loc>http://zangbo.me/2017/07/26/Essay_1/</loc>
     <lastmod>2017-07-26T14:09:10.000Z</lastmod>
     <data>
         <display>
@@ -307,9 +307,9 @@
         <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
         <pubTime>2017-06-27T13:50:54.000Z</pubTime>
         
-        <tag>TensorFlow</tag>
-         
         <tag>可视化</tag>
+         
+        <tag>TensorFlow</tag>
          
          
            

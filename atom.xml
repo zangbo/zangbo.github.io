@@ -77,8 +77,8 @@
   
   <entry>
     <title>午后随感</title>
-    <link href="http://zangbo.me/2017/07/26/essay_1/"/>
-    <id>http://zangbo.me/2017/07/26/essay_1/</id>
+    <link href="http://zangbo.me/2017/07/26/Essay_1/"/>
+    <id>http://zangbo.me/2017/07/26/Essay_1/</id>
     <published>2017-07-26T08:34:40.000Z</published>
     <updated>2017-07-26T14:09:10.000Z</updated>
     
@@ -2065,9 +2065,9 @@
       <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
-    
       <category term="可视化" scheme="http://zangbo.me/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+    
+      <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
     
   </entry>
   

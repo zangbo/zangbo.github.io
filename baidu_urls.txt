@@ -1,5 +1,5 @@
 http://zangbo.me/2017/09/03/DeepLearning_ai_1/
-http://zangbo.me/2017/07/26/essay_1/
+http://zangbo.me/2017/07/26/Essay_1/
 http://zangbo.me/2017/07/26/DeepLearningFc/
 http://zangbo.me/2017/07/22/TensorFlow_15/
 http://zangbo.me/2017/07/18/TensorFlow_14/

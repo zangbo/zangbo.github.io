@@ -60,7 +60,7 @@
     
     <entry>
       <title><![CDATA[午后随感]]></title>
-      <url>/2017/07/26/essay_1/</url>
+      <url>/2017/07/26/Essay_1/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p><img src="http://orwbuystz.bkt.clouddn.com/随笔/20170726212755_GyZWqy_午后随想.jpeg" width="60%"></p>
@@ -1883,9 +1883,9 @@
         
         <tags>
             
-            <tag> TensorFlow </tag>
-            
             <tag> 可视化 </tag>
+            
+            <tag> TensorFlow </tag>
             
         </tags>
         
