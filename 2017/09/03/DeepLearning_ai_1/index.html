@@ -11,24 +11,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://zangbo.me">
-  <title>Word2Vec笔记：Negative Sample | ZangBo&#39;s Home</title>
+  <title>deeplearning.ai学习笔记（一） | ZangBo&#39;s Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="keywords" content="Word2Vec">
+  <meta name="description" content="最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。">
+<meta name="keywords" content="deeplearning.ai">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Word2Vec笔记：Negative Sample">
-<meta property="og:url" content="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/index.html">
+<meta property="og:title" content="deeplearning.ai学习笔记（一）">
+<meta property="og:url" content="http://zangbo.me/2017/09/03/DeepLearning_ai_1/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg">
-<meta property="og:updated_time" content="2017-06-21T16:52:33.000Z">
+<meta property="og:description" content="最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170903132108_afZMXl_1.jpeg">
+<meta property="og:updated_time" content="2017-09-03T05:34:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Word2Vec笔记：Negative Sample">
-<meta name="twitter:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
+<meta name="twitter:title" content="deeplearning.ai学习笔记（一）">
+<meta name="twitter:description" content="最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170903132108_afZMXl_1.jpeg">
   
     <link rel="alternative" href="/atom.xml" title="ZangBo&#39;s Home" type="application/atom+xml">
   
@@ -185,98 +182,72 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Word2Vec_Negative-Sample" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-DeepLearning_ai_1" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Word2Vec笔记：Negative Sample
+      deeplearning.ai学习笔记（一）
     </h1>
   
 
         
-        <a href="/2017/06/06/Word2Vec_Negative-Sample/" class="archive-article-date">
-  	<time datetime="2017-06-06T09:08:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-06</time>
+        <a href="/2017/09/03/DeepLearning_ai_1/" class="archive-article-date">
+  	<time datetime="2017-09-03T04:39:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-03</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。</p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-<p><br></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在skip-gram模型中，我们发现这是个十分庞大的神经网络，如果我们把词向量设置成300，那么在一个具有10000个单词的字典中，隐层和输出层分别具有3百万个参数。执行梯度下降算法时将会十分缓慢，更糟糕的是，我们需要事先在一个数量庞大的数据集上训练，以便于fine-tune参数和避免过拟合。因此对模型的训练将十分困难。</p>
-<p>为了解决这个问题，作者提出了三个修改方案：</p>
 <ol>
-<li>把常见的短语或单词对当成一个单词来对待</li>
-<li>降采样高频单词来见少训练样本数量</li>
-<li>用一种他们称之为“负采样”的方式来修改优化目标，这将使得每个训练样本只更新一小部分的模型参数。</li>
+<li>训练样本分为结构化数据和非结构化数据，后者包括语音、图像、自然语言等抽象的数据；前者的每一个特征都有特定含义，如预测房价问题中的住房面积特征等，结构化数据在数据挖掘领域用的更多。</li>
+<li>传统机器学习算法相比于深度学习算法，不能很好的处理大数据。</li>
+<li>loss function：适用于计算单个样本。</li>
+<li>cost function：表示参数总的代价。</li>
+<li>logistics regression，损失函数不能使用平方差函数来表示，这是个非凸优化问题，可以使用交叉熵损失，变为凸优化问题。</li>
+<li>应避免任何显式的for循环，能用向量计算就用向量，实在无法用向量的，比如迭代次数，可以使用for循环。</li>
+<li>尽量避免使用一维数组，用<code>np.random.randn(1, 5)</code>而不是<code>np.random.randn(5)</code>。</li>
+<li>学会用<code>assert(a.shape == (1,5))</code>来确保代码正确，减少bug。</li>
+<li>训练数据和测试数据X一般以列为单位进行堆积，形成输入矩阵，如果单个样本的维度为n_x，样本数目为m，则X的维度为(n_x, m)。</li>
+<li>输出预测值的维度为(1, m)。</li>
+<li>前向传播的线性运算<code>Z = WX + b</code>，python代码为<code>Z = np.dot(W, X) + b</code>。</li>
+<li>如果当前的层数为l，则当前的参数矩阵W的维度为(n_l, n_l-1)，其中n_l为当前层的神经元个数，n_l-1为前一层的神经元个数。</li>
+<li>如果当前层数位l，则当前的偏执矩阵b的维度为(n_l, 1)，在进行线性运算时，b会进行广播(broadcasting)，先把自己复制m次变成维度为(n_l, m)，再进行相加运算。</li>
+<li>dW和W的维度相同，db和b维度相同，Z和A维度相同。</li>
+<li>前向传播线性运算后会进行激活函数运算，<code>A = g(Z)</code>。</li>
+<li>激活函数使用tanh(Z)总比sigmoid(Z)效果要好，因为前者输出均值为0，更便于下一层的学习。输出层如果是二元分类的话，应使用sigmoid(Z)。</li>
+<li>除了输出层以外，默认的激活函数使用relu函数。</li>
+<li>在relu中，有足够多的隐藏单元使得Z大于0，对大多数训练样本速度还是很快的。</li>
+<li>如果激活函数<code>A = g(Z) = tanh(Z)</code>，则<code>g&#39;(Z) = 1 - A^2</code>。</li>
+<li>如果激活函数<code>A = g(Z) = sigmoid(Z)</code>, 且损失函数为交叉熵损失，则<code>dZ = A - Y</code>，Y为标签矩阵。</li>
+<li>参数矩阵W不能全0初始化，因为对称性会使得多个隐藏单元变的没有意义，每个隐藏单元的输出都相同，表示的函数也相同。应该随机初始化为极小的值，通常代码为<code>np.random.randn(n_l, n_l-1) * 0.01</code>。</li>
+<li>参数b可以进行全0初始化，通常代码为<code>np.zeros((n_l, 1))</code>。</li>
+<li>以上两个代码中，一个是单括号()，一个是双括号(())，容易混淆。</li>
+<li>超参数有很多种：学习率、迭代次数、隐藏层数、隐藏层单元数、激活函数、momentum、mini batch size、正则化系数等。</li>
+<li>深度学习中，深层网络比浅层网络更有用，可以从两个角度解释。生物学角度，低层网络提取简单特征如边缘特征，后面每一层网络都是对前一层进行组合，高层网络表示抽象特征。电路学角度，用单隐层来实现多隐层的功能往往需要的神经元数目呈指数级增长。</li>
+<li>二元分类，最后一层激活函数为sigmoid函数，损失函数为交叉熵损失的情况下，前向传播和反向传播流程如下：</li>
 </ol>
-<p>它们均可以使得训练变的可行同时也改善了结果词向量的质量。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170903132108_afZMXl_1.jpeg" alt=""></p>
 <p><br></p>
-<h1 id="单词对和短语"><a href="#单词对和短语" class="headerlink" title="单词对和短语"></a>单词对和短语</h1><p>作者指出一个单词对像“Boston Globe”(一个报纸名)，它的含义和“Boston”以及“Globe”都有着很大的区别，因此把“Boston Globe”当作一个单词来对待是很有意义的，它将会得到一个词向量来表示。在Google News数据集上，这个改变可以把模型字典尺寸从一千亿降低为三百万。Google开源了它们训练好得到的词向量，长度是300，共计三百万个。至于如何从单词中区分短语并且缩短字典尺寸，一个方法是可以参考维基百科的词条目录。</p>
-<p><br></p>
-<h1 id="降采样高频单词"><a href="#降采样高频单词" class="headerlink" title="降采样高频单词"></a>降采样高频单词</h1><p>在之前的例子中，针对一些通用单词例如“the”存在一些问题：</p>
-<ol>
-<li>当我们看一些单词对的时候，(“fox”，“the”)没有告诉我们过多的关于“fox”的含义的信息，“the”出现在几乎每个单词的前面。</li>
-<li>我们拥有太多的关于(“the”，…)的采样，而我们学习一个好的关于“the”的向量不需要这么多的采样。</li>
-</ol>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
-
-<p>Word2Vec采用了一个叫做“降采样”的框架来解决这个问题。对于每个出现在我们训练文件中的单词，它们将会有一定的概率被删除相关的训练数据，概率的高低取决于它们出现的频率。</p>
-<p>如果我们有一个尺寸为10的窗口，那么我们将移除一个特定的关于“the”的训练样本：</p>
-<ol>
-<li>当我们训练其他单词，“the”将不会在任何窗口中出现。</li>
-<li>当我们训练“the”作为输入时，窗口尺寸会小于10。</li>
-</ol>
-<p><br></p>
-<h1 id="采样频率"><a href="#采样频率" class="headerlink" title="采样频率"></a>采样频率</h1><p>关于如何计算字典中一个单词被保留下来的概率，有一套C语言的代码实现的公式。</p>
-<p>Wi代表单词，z(wi)表示单词在语料库中出现的频率，例如“peanut”在一个拥有10亿单词语料库中出现了1000次，那么z(‘peanut’)=1E-6。</p>
-<p>代码中还有一个参数称之为’sample’，它将控制采样发生的力度，默认是0.001，该数值越小则单词越不可能被保存。</p>
-<p>P(wi)为保留单词的概率：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg" alt=""></center>
-
-<p>我们可以画出该公式的图：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg" alt=""></center>
-
-<p>如果我们使用默认采样值为0.001，那么有以下有趣的点：</p>
-<ul>
-<li>P=1，当z&lt;=0.0026时，这意味着当单词数量小于0.26%时将会被全部保留下来。</li>
-<li>P=0.5，当z=0.00746时，这意味着有50%的概率被保留下来</li>
-<li>P=0.033，当z=1时，这意味着如果语料库中全部是同一个单词时，只有3.3%的概率会被保存下来，这种情况当然很荒谬。</li>
-</ul>
-<p>论文中定义的公式和C语言代码中有所区别，我觉得C语言代码的实现更加权威。</p>
-<p><br></p>
-<h1 id="负采样-Negative-Sampling"><a href="#负采样-Negative-Sampling" class="headerlink" title="负采样(Negative Sampling)"></a>负采样(Negative Sampling)</h1><p>训练一个神经网络意味着每个样本都要更新所有参数，使用skip-gram模型将会每次都要更新数量庞大的模型，负采样采用的策略是更新每个样本时之更新很小比例的参数，而不是更新所有参数。</p>
-<p>我们训练一个单词对时，例如(“fox”，“quick”)，当输入是“fox”时标签是“quick”的one-hot向量，那么也就是说输出标签神经元中只有一个是1，其他的成千上万个都是0。</p>
-<p>因此当我们使用负采样时，我们将随机选择很小数量的“负”单词(例如选择5个)来更新权值，在我们的语料库中，一个“负”单词指的是我们希望让输出的标签的神经元为0，我们依然会更新“正”单词的神经元参数(也就是标签中为1的神经元)，论文中提到对于一个小规模的数据集，可以选择5-20个单词，如果是庞大的数据集，可以选择2-5个。</p>
-<p>之前我们的输出层是300<em>10000的参数矩阵，但如今我们更新权值时只需要更新(“quick”)所代表的神经元的参数(输出为1)，以及再加上5个随机的输出为0的神经元，总共只需要更新6个神经元的参数，也就是300</em>6=1800个参数，这仅仅是原来输出层参数的0.06%！</p>
-<p>注意在隐藏层中，不管是否使用负采样策略，都只有输入单词的权值被更新。</p>
-<p><br></p>
-<h1 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h1><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg" alt=""></center>
-
-<p>这种在C语言中实现的方式很有趣。他们有一个100M大小的元素数组（他们称之为unigram表），他们用词表中每个单词的索引多次填充这个表。然后，要实际选择一个负样本，只需生成0到100M之间的随机整数，并选择表中该索引处的单词。由于较高概率单词在表中出现次数较多，因此更有可能选择这些单词。</p>
-<p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这里有一些关于Word2Vec的学习资源：</p>
-<p><a href="http://mccormickml.com/2016/04/27/word2vec-resources/" target="_blank" rel="external">Word2Vec Resources · Chris McCormick</a></p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="external">Word2Vec Tutorial Part 2 - Negative Sampling · Chris McCormick</a></p>
-<p><br></p>
-</the>
+</the></excerpt>
       
 
       
       <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/06/Word2Vec_Negative-Sample/">Word2Vec笔记：Negative Sample</a></p>
+        <p><span>本文标题:</span><a href="/2017/09/03/DeepLearning_ai_1/">deeplearning.ai学习笔记（一）</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 ZangBo 的个人博客">ZangBo</a></p>
-        <p><span>发布时间:</span>2017-06-06, 17:08:43</p>
-        <p><span>最后更新:</span>2017-06-22, 00:52:33</p>
-        <p><span>原始链接:</span><a class="post-url" href="/2017/06/06/Word2Vec_Negative-Sample/" title="Word2Vec笔记：Negative Sample">http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/</a><span class="copy-path" data-clipboard-text="原文:http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/　作者:ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+        <p><span>发布时间:</span>2017-09-03, 12:39:44</p>
+        <p><span>最后更新:</span>2017-09-03, 13:34:10</p>
+        <p><span>原始链接:</span><a class="post-url" href="/2017/09/03/DeepLearning_ai_1/" title="deeplearning.ai学习笔记（一）">http://zangbo.me/2017/09/03/DeepLearning_ai_1/</a><span class="copy-path" data-clipboard-text="原文:http://zangbo.me/2017/09/03/DeepLearning_ai_1/　作者:ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
         <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者 </p>
@@ -325,7 +296,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Word2Vec</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">deeplearning.ai</a>
         		</li>
       		
 		</ul>
@@ -337,7 +308,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/自然语言处理/" class="article-tag-list-link color2">自然语言处理</a>
+        			<a href="/categories/深度学习/" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		
 		</ul>
@@ -392,7 +363,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://zangbo.me/2017/09/03/DeepLearning_ai_1/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -406,18 +377,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2017/06/12/GiftForGirlfriend/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          送给女友的生日礼物
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/06/05/Word2Vec_skip-gram/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Word2Vec笔记：Skip-Gram模型</div>
+    <a href="/2017/07/26/essay_1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">午后随感</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -444,7 +406,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#单词对和短语"><span class="toc-number">2.</span> <span class="toc-text">单词对和短语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#降采样高频单词"><span class="toc-number">3.</span> <span class="toc-text">降采样高频单词</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#采样频率"><span class="toc-number">4.</span> <span class="toc-text">采样频率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#负采样-Negative-Sampling"><span class="toc-number">5.</span> <span class="toc-text">负采样(Negative Sampling)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#选择负采样"><span class="toc-number">6.</span> <span class="toc-text">选择负采样</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">7.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+                    无目录
                     </div>
                 </span>
             </div>

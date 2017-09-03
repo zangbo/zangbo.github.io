@@ -1,3 +1,4 @@
+http://zangbo.me/2017/09/03/DeepLearning_ai_1/
 http://zangbo.me/2017/07/26/essay_1/
 http://zangbo.me/2017/07/26/DeepLearningFc/
 http://zangbo.me/2017/07/22/TensorFlow_15/
@@ -22,4 +23,3 @@ http://zangbo.me/2017/06/12/GithubPageDomainName/
 http://zangbo.me/2017/06/12/GiftForGirlfriend/
 http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/
 http://zangbo.me/2017/06/05/Word2Vec_skip-gram/
-http://zangbo.me/2017/06/04/RandomGradientDecreases/

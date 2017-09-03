@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://zangbo.me/2017/09/03/DeepLearning_ai_1/</loc>
+    <lastmod>2017-09-03T05:34:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>deeplearning.ai学习笔记（一）</title>
+        <pubTime>2017-09-03T04:39:44.000Z</pubTime>
+        
+        <tag>deeplearning.ai</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://zangbo.me/2017/07/26/essay_1/</loc>
     <lastmod>2017-07-26T14:09:10.000Z</lastmod>
     <data>
@@ -287,9 +307,9 @@
         <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
         <pubTime>2017-06-27T13:50:54.000Z</pubTime>
         
-        <tag>可视化</tag>
-         
         <tag>TensorFlow</tag>
+         
+        <tag>可视化</tag>
          
          
            

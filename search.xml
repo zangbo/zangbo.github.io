@@ -3,6 +3,62 @@
   
     
     <entry>
+      <title><![CDATA[deeplearning.ai学习笔记（一）]]></title>
+      <url>/2017/09/03/DeepLearning_ai_1/</url>
+      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<ol>
+<li>训练样本分为结构化数据和非结构化数据，后者包括语音、图像、自然语言等抽象的数据；前者的每一个特征都有特定含义，如预测房价问题中的住房面积特征等，结构化数据在数据挖掘领域用的更多。</li>
+<li>传统机器学习算法相比于深度学习算法，不能很好的处理大数据。</li>
+<li>loss function：适用于计算单个样本。</li>
+<li>cost function：表示参数总的代价。</li>
+<li>logistics regression，损失函数不能使用平方差函数来表示，这是个非凸优化问题，可以使用交叉熵损失，变为凸优化问题。</li>
+<li>应避免任何显式的for循环，能用向量计算就用向量，实在无法用向量的，比如迭代次数，可以使用for循环。</li>
+<li>尽量避免使用一维数组，用<code>np.random.randn(1, 5)</code>而不是<code>np.random.randn(5)</code>。</li>
+<li>学会用<code>assert(a.shape == (1,5))</code>来确保代码正确，减少bug。</li>
+<li>训练数据和测试数据X一般以列为单位进行堆积，形成输入矩阵，如果单个样本的维度为n_x，样本数目为m，则X的维度为(n_x, m)。</li>
+<li>输出预测值的维度为(1, m)。</li>
+<li>前向传播的线性运算<code>Z = WX + b</code>，python代码为<code>Z = np.dot(W, X) + b</code>。</li>
+<li>如果当前的层数为l，则当前的参数矩阵W的维度为(n_l, n_l-1)，其中n_l为当前层的神经元个数，n_l-1为前一层的神经元个数。</li>
+<li>如果当前层数位l，则当前的偏执矩阵b的维度为(n_l, 1)，在进行线性运算时，b会进行广播(broadcasting)，先把自己复制m次变成维度为(n_l, m)，再进行相加运算。</li>
+<li>dW和W的维度相同，db和b维度相同，Z和A维度相同。</li>
+<li>前向传播线性运算后会进行激活函数运算，<code>A = g(Z)</code>。</li>
+<li>激活函数使用tanh(Z)总比sigmoid(Z)效果要好，因为前者输出均值为0，更便于下一层的学习。输出层如果是二元分类的话，应使用sigmoid(Z)。</li>
+<li>除了输出层以外，默认的激活函数使用relu函数。</li>
+<li>在relu中，有足够多的隐藏单元使得Z大于0，对大多数训练样本速度还是很快的。</li>
+<li>如果激活函数<code>A = g(Z) = tanh(Z)</code>，则<code>g&#39;(Z) = 1 - A^2</code>。</li>
+<li>如果激活函数<code>A = g(Z) = sigmoid(Z)</code>, 且损失函数为交叉熵损失，则<code>dZ = A - Y</code>，Y为标签矩阵。</li>
+<li>参数矩阵W不能全0初始化，因为对称性会使得多个隐藏单元变的没有意义，每个隐藏单元的输出都相同，表示的函数也相同。应该随机初始化为极小的值，通常代码为<code>np.random.randn(n_l, n_l-1) * 0.01</code>。</li>
+<li>参数b可以进行全0初始化，通常代码为<code>np.zeros((n_l, 1))</code>。</li>
+<li>以上两个代码中，一个是单括号()，一个是双括号(())，容易混淆。</li>
+<li>超参数有很多种：学习率、迭代次数、隐藏层数、隐藏层单元数、激活函数、momentum、mini batch size、正则化系数等。</li>
+<li>深度学习中，深层网络比浅层网络更有用，可以从两个角度解释。生物学角度，低层网络提取简单特征如边缘特征，后面每一层网络都是对前一层进行组合，高层网络表示抽象特征。电路学角度，用单隐层来实现多隐层的功能往往需要的神经元数目呈指数级增长。</li>
+<li>二元分类，最后一层激活函数为sigmoid函数，损失函数为交叉熵损失的情况下，前向传播和反向传播流程如下：</li>
+</ol>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170903132108_afZMXl_1.jpeg" alt=""></p>
+<p><br></p>
+</the></excerpt>]]></content>
+      
+        <categories>
+            
+            <category> 深度学习 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> deeplearning.ai </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[午后随感]]></title>
       <url>/2017/07/26/essay_1/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
@@ -1827,9 +1883,9 @@
         
         <tags>
             
-            <tag> 可视化 </tag>
-            
             <tag> TensorFlow </tag>
+            
+            <tag> 可视化 </tag>
             
         </tags>
         
