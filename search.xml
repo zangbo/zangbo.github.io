@@ -3,23 +3,6 @@
   
     
     <entry>
-      <title><![CDATA[deeplearning]]></title>
-      <url>/2017/09/07/DeepLearning_ai_3/</url>
-      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-
-
-<p>$$<br>J=-\frac{1}{m}\sum\limits_{i = 1}^{m}\large{(}\small  y^{(i)}\log\left(a^{<a href="i">L</a>}\right) + (1-y^{(i)})\log\left(1- a^{<a href="i">L</a>}\right) \large{)}<br>$$</p>
-<h2 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h2><p>$$<br>\begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}<br>$$</p>
-<p>$$<br>\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}<br>$$</p>
-<h2 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h2><p>$$<br>\begin{cases}<br>v_{W^{[l]}} = \beta_1 v_{W^{[l]}} + (1 - \beta_1) \frac{\partial J }{ \partial W^{[l]} } \\<br>v^{corrected}_{W^{[l]}} = \frac{v_{W^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{W^{[l]}} = \beta_2 s_{W^{[l]}} + (1 - \beta_2) (\frac{\partial J }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{W^{[l]}} = \frac{s_{W^{[l]}}}{1 - (\beta_2)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{W^{[l]}}}{\sqrt{s^{corrected}_{W^{[l]}}}+\varepsilon}<br>\end{cases}<br>$$</p>
-</the>]]></content>
-      
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[DeepLearning.ai学习笔记（二）]]></title>
       <url>/2017/09/03/DeepLearning_ai_2/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
