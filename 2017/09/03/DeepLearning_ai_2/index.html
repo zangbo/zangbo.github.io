@@ -11,17 +11,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://zangbo.me">
-  <title>Tag: 前端 | ZangBo&#39;s Home</title>
+  <title>DeepLearning.ai学习笔记（二） | ZangBo&#39;s Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="A student from SJTU">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ZangBo&#39;s Home">
-<meta property="og:url" content="http://zangbo.me/tags/前端/index.html">
+  <meta name="description" content="最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data a">
+<meta name="keywords" content="deeplearning.ai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DeepLearning.ai学习笔记（二）">
+<meta property="og:url" content="http://zangbo.me/2017/09/03/DeepLearning_ai_2/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="A student from SJTU">
+<meta property="og:description" content="最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data a">
+<meta property="og:updated_time" content="2017-09-07T09:33:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ZangBo&#39;s Home">
-<meta name="twitter:description" content="A student from SJTU">
+<meta name="twitter:title" content="DeepLearning.ai学习笔记（二）">
+<meta name="twitter:description" content="最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data a">
   
     <link rel="alternative" href="/atom.xml" title="ZangBo&#39;s Home" type="application/atom+xml">
   
@@ -178,64 +180,368 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-DeepLearning_ai_2" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/12/GiftForGirlfriend/" class="archive-article-date">
-  	<time datetime="2017-06-12T13:36:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-12</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/12/GiftForGirlfriend/">送给女友的生日礼物</a>
+    <h1 class="article-title" itemprop="name">
+      DeepLearning.ai学习笔记（二）
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/09/03/DeepLearning_ai_2/" class="archive-article-date">
+  	<time datetime="2017-09-03T13:21:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a>数据集划分</h1><p>数据集一般分为训练数据(trainingdata)、验证数据(development data)和测试数据(test data)。</p>
+<p>传统机器学习算法的分割方式一般为60%、20%、20%。</p>
+<p>大数据时代不需要特别多的验证数据和测试数据，如果有100万数据，那么可能训练数据有98万，验证数据和测试数据各1万，还可能更少各5000。</p>
+<p>验证数据的作用是选择更好的算法，可以理解为确定超参数，测试数据用来无偏估计算法的性能。如果不需要无偏估计算法性能，有时候也可以不需要测试数据，直接用验证数据来当测试数据用，这种情况下有的人也把它称为测试数据，最合适的叫法是<strong>训练-验证集</strong>。</p>
+<p>验证集和测试集的分布要相同，即来源要相同，它们两者和训练集有时为了更快捷的获得数据可以分布不同。</p>
+<p><br></p>
+<h1 id="偏差-amp-方差"><a href="#偏差-amp-方差" class="headerlink" title="偏差&amp;方差"></a>偏差&amp;方差</h1><p>偏差(bias)和方差(variance)，训练集损失一般用来衡量偏差，验证集损失一般用来衡量方差。基础损失(base error)一般表示一个可以达到的最低损失，比如人眼观测的损失。</p>
+<p><br></p>
+<p>举个例子：假如有个判断是否为猫的图片的数据集，人眼错误率为0。</p>
+<p>训练集损失低(1%)，验证集损失高(15%)，过拟合，高方差。</p>
+<p>训练集损失高(15%)，验证集损失高(16%)，两者相差不多且明显高于基础损失(0)，欠拟合，高偏差。</p>
+<p>训练集损失高(15%)，验证集损失更高(30%)，且明显高于基础损失(0)，高偏差，高方差。</p>
+<p>训练集损失低(0.5%)，验证集损失低(1%)，且和基础损失(0)差不多，低偏差，低方差。</p>
+<p> <br></p>
+<p>在训练一个网络时，首先要做的是观察偏差，先把偏差降到最低。如果偏差过高，那么使用更大规模的神经网络，一般这种做法是有用的。也可以训练更长时间，这方法有时候有用。</p>
+<p>一旦偏差降低到可接受程度，再看方差，通过查看验证集损失。若方差高，可以使用更多的数据，一般是有用的。如果不能得到更多数据，可以使用正则化的方法。当然也可以更换神经网络，通过找到合适的神经网络实现一箭双雕的目的。</p>
+<p>重复以上过程直到实现低方差和低偏差。</p>
+<p> <br></p>
+<p>在机器学习初期，通常方差和偏差互相影响。而在深度学习时期，通常使用一个更大规模的网络配合正则化，可以在不影响方差的基础上降低偏差。而增加更多的的数据量，可以在不影响偏差的基础上降低方差。</p>
+<p><br></p>
+<h1 id="降低方差-amp-减小过拟合"><a href="#降低方差-amp-减小过拟合" class="headerlink" title="降低方差&amp;减小过拟合"></a>降低方差&amp;减小过拟合</h1><h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>正则化方法分为多种，用的比较多的是L2正则化和dropout。</p>
+<p><br></p>
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>使用L2正则化的交叉熵损失：<br>$$<br>J{regularized} = \small \underbrace{-\frac{1}{m} \sum\limits{i = 1}^{m} \large{(}\small y^{(i)}\log\left(a^{L}\right) + (1-y^{(i)})\log\left(1- a^{L}\right) \large{)} }\text{cross-entropy cost} + \underbrace{\frac{1}{m} \frac{\lambda}{2} \sum\limits_l\sum\limits_k\sum\limits_j W{k,j}^{[l]2} }_\text{L2 regularization cost}<br>$$<br>正则化用于减少方差，一般用L2正则化而不用L1，因为L1正则化倾向于把W变得很稀疏，会有很多0。L2正则化在代价函数后面加上$\frac{\lambda}{2m} ||W||^2$，因为<code>lambda</code>是python的保留字，所以我们用<code>lambd</code>表示正则化系数，这是个超参数。在训练时，在dW项后面加一个$\frac{\lambda}{m}W$，即正则化项总是倾向于使得W减少，相当于乘了一个小于1的权重衰减系数（weightdecay)。<br>$$<br>\frac{d}{dW} ( \frac{1}{2}\frac{\lambda}{m}  W^2) = \frac{\lambda}{m} W<br>$$<br>关于正则化为什么有用，其中一种说法是，当使用正则化时，整个网络会被迫使得一部分参数项变小，进而使得原本复杂的网络变的简单，相当于变相的把复杂的神经网络简单化，也就减小了过拟合的程度。</p>
+<p><br></p>
+<p>总结：</p>
+<ol>
+<li>代价函数要添加正则化项</li>
+<li>反向传播梯度dW要添加额外的项$\frac{\lambda}{m}W$</li>
+<li>正则化使得参数更倾向于取较小的值</li>
+</ol>
+<p><br></p>
+<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p>dropout本身是一种正则化方法，可以理解为，神经网络不会把高权值放在任何一个神经元节点上，因为每一个节点都有可能失活，于是它会倾向于利用每一个神经元把它们权值压缩的很小，某种意义上和L2正则化相似。</p>
+<p>如果某一层输出为a，则：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">d= np.random.rand(a.shape[<span class="number">0</span>], a.shape[<span class="number">1</span>]) &lt; keep_prob</div><div class="line">a =np.multiply(a, d)</div><div class="line">a = a / keep_prob <span class="comment">#为了不影响a的期望值，添加这一步，使得测试阶段不需要调整数值范围。</span></div></pre></td></tr></table></figure>
+<p>我们只需要在训练阶段使用dropout，在测试阶段不需要使用。</p>
+<p>我们可以在参数矩阵W较大的层上使用较小的keep_prob，一般不对输入层使用dropout，一般只在计算机视觉领域使用dropout，因为通常没有足够的数据，dropout仅仅用于解决过拟合问题。</p>
+<p>dropout缺点是代价函数J不再被明确定义。梯度下降不容易复查，通常我们会关闭dropout，确保J单调递减，再打开dropout。</p>
+<p><br></p>
+<p>实现代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#正向传播：</span></div><div class="line"><span class="comment"># Step 1: initialize matrix D1 = np.random.rand(..., ...)</span></div><div class="line">D1 =np.random.rand(A1.shape[<span class="number">0</span>],A1.shape[<span class="number">1</span>])</div><div class="line"><span class="comment"># Step 2: convert entries of D1 to 0 or 1 (using keep_prob as the threshold)</span></div><div class="line">D1 = D1 &lt; keep_prob  </div><div class="line"><span class="comment"># Step 3: shut down some neurons of A1</span></div><div class="line">A1 = A1 * D1       </div><div class="line"><span class="comment"># Step 4: scalethe value of neurons that haven't been shut down</span></div><div class="line">A1 = A1 / keep_prob                             </div><div class="line">  </div><div class="line"><span class="comment">#反向传播</span></div><div class="line"><span class="comment"># Step 1: Apply mask D1 to shutdown the same neurons as during the forward propagation</span></div><div class="line">dA1 = dA1 * D1              </div><div class="line"><span class="comment"># Step 2: Scale the value ofneurons that haven't been shut down</span></div><div class="line">dA1 = dA1 / keep_prob</div></pre></td></tr></table></figure>
+<p><br></p>
+<p>总结：</p>
+<ol>
+<li>dropout是一种正则化方法</li>
+<li>只能在训练过程中使用dropout，不能在测试时使用</li>
+<li>在前向传播和反向传播中都使用dropout</li>
+<li>在dropout时，因为dropout过程会使得输出值变为原本的keep_prob倍，固把输出A除以keep_prob的值，可以使得激活函数的输出得到期盼的值。</li>
+</ol>
+<p><br></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>不同的正则化方法得到的实验结果：</p>
+<table>
+<thead>
+<tr>
+<th>model</th>
+<th>train accuracy</th>
+<th>test accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3-layer NN without regularization</td>
+<td>95%</td>
+<td>91.5%</td>
+</tr>
+<tr>
+<td>3-layer NN with L2-regularization</td>
+<td>94%</td>
+<td>93%</td>
+</tr>
+<tr>
+<td>3-layer NN with dropout</td>
+<td>93%</td>
+<td>95%</td>
+</tr>
+</tbody>
+</table>
+<p>正则化方法会降低训练准确率，但是会有利于测试集准确率。</p>
+<p>结论：</p>
+<ol>
+<li>正则化有利于避免过拟合</li>
+<li>正则化会使得参数倾向于更小的值</li>
+<li>L2正则化和Dropout是两种很有效的正则化方法。</li>
+</ol>
+<p><br></p>
+<h2 id="Data-augmentation"><a href="#Data-augmentation" class="headerlink" title="Data augmentation"></a>Data augmentation</h2><p>解决过拟合问题，如果不能增加数据量，还可以对图片水平翻转，随机旋转，随机裁剪放大后的图片，称为data augmentation。</p>
+<p><br></p>
+<h2 id="Early-stopping"><a href="#Early-stopping" class="headerlink" title="Early stopping"></a>Early stopping</h2><p>另一个解决过拟合的方法是early stopping。验证集误差不再下降则停止训练。它和L2正则化可以二选一。L2正则化需要更大的计算代价，需要找最优的正则化系数。early stopping缺点是不能独立的解决训练数据最优化和防止过拟合两个问题，我们一般倾向于用独立的方法解决单一问题，所以一般不用early stopping。</p>
+<p><br></p>
+<h1 id="加速训练"><a href="#加速训练" class="headerlink" title="加速训练"></a>加速训练</h1><h2 id="归一化输入数据"><a href="#归一化输入数据" class="headerlink" title="归一化输入数据"></a>归一化输入数据</h2><p>其中一个加速训练的方法是归一化输入。第一步零均值化，第二步归一化方差。如果用某均值和方差来归一化训练集，那么应该用同样的均值和方差来归一化测试集。我们在两个数据集上要使用同样的数据转换。</p>
+<p> 归一化的目的是使得输入数据的各个维度的特征具有相似的范围，这样更有利于梯度下降算法的实施，我们也就可以用相对来说更大的学习率，训练速度就会变的更快。比如如果x1范围是[0, 1000]，x2范围是[0, 1]，优化起来就会变的特别慢。<br><br></p>
+<h2 id="Xavier初始化权值"><a href="#Xavier初始化权值" class="headerlink" title="Xavier初始化权值"></a>Xavier初始化权值</h2><p>梯度消失和梯度爆炸，梯度值将伴随着层数呈指数增加或衰减，目前的解决方法之一是使用Xavier方法初始化权值，这也是加快训练速度的技巧之一。</p>
+<p>Xavier初始化指的是当激活函数为relu时，<code>W = np.random.randn(…) * np.sqrt(2/n[l-1])</code>，使得W的方差变为2/n，这样最终的输出a依然是可以接受的方差。如果激活函数是tanh，则为<code>W = np.random.randn(…) *np.sqrt(1/n[l-1])</code>，把W方差变为1/n。</p>
+<p><br></p>
+<p>参数初始化时需要注意的点：</p>
+<ol>
+<li>不同的初始化方式导致不同的结果，较差的方法会导致梯度爆炸或梯度消失，</li>
+<li>随机初始化用来打破对称性，使得不同的隐层神经元学到不同的东西。</li>
+<li>不要把权值初始化太大，会减慢训练速度。</li>
+<li>He初始化方法对于ReLU网络效果最好，即<code>W = np.random.randn(...) * np.sqrt(2/layers_dims[l-1])</code></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Train accuracy</th>
+<th>Problem/Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3-layer NN with zeros initialization</td>
+<td>50%</td>
+<td>fails to break symmetry</td>
+</tr>
+<tr>
+<td>3-layer NN with large random initialization</td>
+<td>83%</td>
+<td>too large weights</td>
+</tr>
+<tr>
+<td>3-layer NN with He initialization</td>
+<td>99%</td>
+<td>recommended method</td>
+</tr>
+</tbody>
+</table>
+<p> <br></p>
+<h1 id="梯度检验"><a href="#梯度检验" class="headerlink" title="梯度检验"></a>梯度检验</h1><p>梯度检验用于检查反向传播是否正确实施，做梯度检验时，使用双边误差比单边误差更准确。不要再训练过程中使用梯度检验，它只用来debug。 </p>
+<p>梯度检验时，把所有的参数矩阵W转换成一个一维向量，然后把所有的转换后的W一维向量以及一维的b参数连接成一个大的一维向量$\theta$。对于dW和db做同样的对应处理，得到$d\theta$。然后对$J(\theta)$进行双边误差计算(公式4)，得到$d{\theta}approx$，然后计算$d{\theta}approx$和$d\theta$的距离(公式5) 。</p>
+<p>$$<br>\frac{\partial J}{\partial \theta} = \lim_{\varepsilon \to 0} \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon}<br>$$</p>
+<p>$$<br>difference = \frac {| grad - gradapprox |_2}{| grad |_2 + | gradapprox |_2 }<br>$$</p>
+<p>梯度检验时要加上正则化项，但梯度检验不能和dropout同时使用，进行梯度检验时要关掉dropout。 </p>
+<p><br>  </p>
+<p>总结：</p>
+<ol>
+<li>如果$\epsilon=1e-7$，则最后的difference应小于等于1e-7，这样说明梯度下降没问题。</li>
+<li>梯度检查速度很慢，因此不要在训练过程中执行梯度检查，只需要在验证梯度下降是否正确时使用。</li>
+<li>梯度检查不能再dropout时使用，应先关闭dropout，使用梯度检查确保梯度下降正确，再使用dropout进行训练。</li>
+</ol>
+<p><br></p>
+</the></excerpt>
+      
+
+      
+      <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/09/03/DeepLearning_ai_2/">DeepLearning.ai学习笔记（二）</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 ZangBo 的个人博客">ZangBo</a></p>
+        <p><span>发布时间:</span>2017-09-03, 21:21:33</p>
+        <p><span>最后更新:</span>2017-09-07, 17:33:06</p>
+        <p><span>原始链接:</span><a class="post-url" href="/2017/09/03/DeepLearning_ai_2/" title="DeepLearning.ai学习笔记（二）">http://zangbo.me/2017/09/03/DeepLearning_ai_2/</a><span class="copy-path" data-clipboard-text="原文:http://zangbo.me/2017/09/03/DeepLearning_ai_2/　作者:ZangBo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+        <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者 </p>
+      </div>
+            
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay-reward-qr.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wechat-reward-qr.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">个人网站</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">deeplearning.ai</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/深度学习/" class="article-tag-list-link color5">深度学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://zangbo.me/2017/09/03/DeepLearning_ai_2/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/09/07/DeepLearning_ai_3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          deeplearning
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2017/09/03/DeepLearning_ai_1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">deeplearning.ai学习笔记（一）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据集划分"><span class="toc-number">1.</span> <span class="toc-text">数据集划分</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#偏差-amp-方差"><span class="toc-number">2.</span> <span class="toc-text">偏差&方差</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#降低方差-amp-减小过拟合"><span class="toc-number">3.</span> <span class="toc-text">降低方差&减小过拟合</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#正则化"><span class="toc-number">3.1.</span> <span class="toc-text">正则化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#L2正则化"><span class="toc-number">3.1.1.</span> <span class="toc-text">L2正则化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dropout"><span class="toc-number">3.1.2.</span> <span class="toc-text">Dropout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">3.1.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Data-augmentation"><span class="toc-number">3.2.</span> <span class="toc-text">Data augmentation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Early-stopping"><span class="toc-number">3.3.</span> <span class="toc-text">Early stopping</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加速训练"><span class="toc-number">4.</span> <span class="toc-text">加速训练</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#归一化输入数据"><span class="toc-number">4.1.</span> <span class="toc-text">归一化输入数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Xavier初始化权值"><span class="toc-number">4.2.</span> <span class="toc-text">Xavier初始化权值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#梯度检验"><span class="toc-number">5.</span> <span class="toc-text">梯度检验</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
 
 
           </div>
@@ -279,9 +585,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

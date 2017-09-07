@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-09-03T05:34:10.000Z</updated>
+  <updated>2017-09-07T09:38:23.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -14,6 +14,204 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>deeplearning</title>
+    <link href="http://zangbo.me/2017/09/07/DeepLearning_ai_3/"/>
+    <id>http://zangbo.me/2017/09/07/DeepLearning_ai_3/</id>
+    <published>2017-09-07T09:27:37.000Z</published>
+    <updated>2017-09-07T09:38:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+
+<p>$$<br>J=-\frac{1}{m}\sum\limits_{i = 1}^{m}\large{(}\small  y^{(i)}\log\left(a^{<a href="i">L</a>}\right) + (1-y^{(i)})\log\left(1- a^{<a href="i">L</a>}\right) \large{)}<br>$$</p>
+<h2 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h2><p>$$<br>\begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}<br>$$</p>
+<p>$$<br>\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}<br>$$</p>
+<h2 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h2><p>$$<br>\begin{cases}<br>v_{W^{[l]}} = \beta_1 v_{W^{[l]}} + (1 - \beta_1) \frac{\partial J }{ \partial W^{[l]} } \\<br>v^{corrected}_{W^{[l]}} = \frac{v_{W^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{W^{[l]}} = \beta_2 s_{W^{[l]}} + (1 - \beta_2) (\frac{\partial J }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{W^{[l]}} = \frac{s_{W^{[l]}}}{1 - (\beta_2)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{W^{[l]}}}{\sqrt{s^{corrected}_{W^{[l]}}}+\varepsilon}<br>\end{cases}<br>$$</p>
+</the>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>DeepLearning.ai学习笔记（二）</title>
+    <link href="http://zangbo.me/2017/09/03/DeepLearning_ai_2/"/>
+    <id>http://zangbo.me/2017/09/03/DeepLearning_ai_2/</id>
+    <published>2017-09-03T13:21:33.000Z</published>
+    <updated>2017-09-07T09:33:06.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a>数据集划分</h1><p>数据集一般分为训练数据(trainingdata)、验证数据(development data)和测试数据(test data)。</p>
+<p>传统机器学习算法的分割方式一般为60%、20%、20%。</p>
+<p>大数据时代不需要特别多的验证数据和测试数据，如果有100万数据，那么可能训练数据有98万，验证数据和测试数据各1万，还可能更少各5000。</p>
+<p>验证数据的作用是选择更好的算法，可以理解为确定超参数，测试数据用来无偏估计算法的性能。如果不需要无偏估计算法性能，有时候也可以不需要测试数据，直接用验证数据来当测试数据用，这种情况下有的人也把它称为测试数据，最合适的叫法是<strong>训练-验证集</strong>。</p>
+<p>验证集和测试集的分布要相同，即来源要相同，它们两者和训练集有时为了更快捷的获得数据可以分布不同。</p>
+<p><br></p>
+<h1 id="偏差-amp-方差"><a href="#偏差-amp-方差" class="headerlink" title="偏差&amp;方差"></a>偏差&amp;方差</h1><p>偏差(bias)和方差(variance)，训练集损失一般用来衡量偏差，验证集损失一般用来衡量方差。基础损失(base error)一般表示一个可以达到的最低损失，比如人眼观测的损失。</p>
+<p><br></p>
+<p>举个例子：假如有个判断是否为猫的图片的数据集，人眼错误率为0。</p>
+<p>训练集损失低(1%)，验证集损失高(15%)，过拟合，高方差。</p>
+<p>训练集损失高(15%)，验证集损失高(16%)，两者相差不多且明显高于基础损失(0)，欠拟合，高偏差。</p>
+<p>训练集损失高(15%)，验证集损失更高(30%)，且明显高于基础损失(0)，高偏差，高方差。</p>
+<p>训练集损失低(0.5%)，验证集损失低(1%)，且和基础损失(0)差不多，低偏差，低方差。</p>
+<p> <br></p>
+<p>在训练一个网络时，首先要做的是观察偏差，先把偏差降到最低。如果偏差过高，那么使用更大规模的神经网络，一般这种做法是有用的。也可以训练更长时间，这方法有时候有用。</p>
+<p>一旦偏差降低到可接受程度，再看方差，通过查看验证集损失。若方差高，可以使用更多的数据，一般是有用的。如果不能得到更多数据，可以使用正则化的方法。当然也可以更换神经网络，通过找到合适的神经网络实现一箭双雕的目的。</p>
+<p>重复以上过程直到实现低方差和低偏差。</p>
+<p> <br></p>
+<p>在机器学习初期，通常方差和偏差互相影响。而在深度学习时期，通常使用一个更大规模的网络配合正则化，可以在不影响方差的基础上降低偏差。而增加更多的的数据量，可以在不影响偏差的基础上降低方差。</p>
+<p><br></p>
+<h1 id="降低方差-amp-减小过拟合"><a href="#降低方差-amp-减小过拟合" class="headerlink" title="降低方差&amp;减小过拟合"></a>降低方差&amp;减小过拟合</h1><h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>正则化方法分为多种，用的比较多的是L2正则化和dropout。</p>
+<p><br></p>
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>使用L2正则化的交叉熵损失：<br>$$<br>J{regularized} = \small \underbrace{-\frac{1}{m} \sum\limits{i = 1}^{m} \large{(}\small y^{(i)}\log\left(a^{L}\right) + (1-y^{(i)})\log\left(1- a^{L}\right) \large{)} }\text{cross-entropy cost} + \underbrace{\frac{1}{m} \frac{\lambda}{2} \sum\limits_l\sum\limits_k\sum\limits_j W{k,j}^{[l]2} }_\text{L2 regularization cost}<br>$$<br>正则化用于减少方差，一般用L2正则化而不用L1，因为L1正则化倾向于把W变得很稀疏，会有很多0。L2正则化在代价函数后面加上$\frac{\lambda}{2m} ||W||^2$，因为<code>lambda</code>是python的保留字，所以我们用<code>lambd</code>表示正则化系数，这是个超参数。在训练时，在dW项后面加一个$\frac{\lambda}{m}W$，即正则化项总是倾向于使得W减少，相当于乘了一个小于1的权重衰减系数（weightdecay)。<br>$$<br>\frac{d}{dW} ( \frac{1}{2}\frac{\lambda}{m}  W^2) = \frac{\lambda}{m} W<br>$$<br>关于正则化为什么有用，其中一种说法是，当使用正则化时，整个网络会被迫使得一部分参数项变小，进而使得原本复杂的网络变的简单，相当于变相的把复杂的神经网络简单化，也就减小了过拟合的程度。</p>
+<p><br></p>
+<p>总结：</p>
+<ol>
+<li>代价函数要添加正则化项</li>
+<li>反向传播梯度dW要添加额外的项$\frac{\lambda}{m}W$</li>
+<li>正则化使得参数更倾向于取较小的值</li>
+</ol>
+<p><br></p>
+<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p>dropout本身是一种正则化方法，可以理解为，神经网络不会把高权值放在任何一个神经元节点上，因为每一个节点都有可能失活，于是它会倾向于利用每一个神经元把它们权值压缩的很小，某种意义上和L2正则化相似。</p>
+<p>如果某一层输出为a，则：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">d= np.random.rand(a.shape[<span class="number">0</span>], a.shape[<span class="number">1</span>]) &lt; keep_prob</div><div class="line">a =np.multiply(a, d)</div><div class="line">a = a / keep_prob <span class="comment">#为了不影响a的期望值，添加这一步，使得测试阶段不需要调整数值范围。</span></div></pre></td></tr></table></figure>
+<p>我们只需要在训练阶段使用dropout，在测试阶段不需要使用。</p>
+<p>我们可以在参数矩阵W较大的层上使用较小的keep_prob，一般不对输入层使用dropout，一般只在计算机视觉领域使用dropout，因为通常没有足够的数据，dropout仅仅用于解决过拟合问题。</p>
+<p>dropout缺点是代价函数J不再被明确定义。梯度下降不容易复查，通常我们会关闭dropout，确保J单调递减，再打开dropout。</p>
+<p><br></p>
+<p>实现代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#正向传播：</span></div><div class="line"><span class="comment"># Step 1: initialize matrix D1 = np.random.rand(..., ...)</span></div><div class="line">D1 =np.random.rand(A1.shape[<span class="number">0</span>],A1.shape[<span class="number">1</span>])</div><div class="line"><span class="comment"># Step 2: convert entries of D1 to 0 or 1 (using keep_prob as the threshold)</span></div><div class="line">D1 = D1 &lt; keep_prob  </div><div class="line"><span class="comment"># Step 3: shut down some neurons of A1</span></div><div class="line">A1 = A1 * D1       </div><div class="line"><span class="comment"># Step 4: scalethe value of neurons that haven't been shut down</span></div><div class="line">A1 = A1 / keep_prob                             </div><div class="line">  </div><div class="line"><span class="comment">#反向传播</span></div><div class="line"><span class="comment"># Step 1: Apply mask D1 to shutdown the same neurons as during the forward propagation</span></div><div class="line">dA1 = dA1 * D1              </div><div class="line"><span class="comment"># Step 2: Scale the value ofneurons that haven't been shut down</span></div><div class="line">dA1 = dA1 / keep_prob</div></pre></td></tr></table></figure>
+<p><br></p>
+<p>总结：</p>
+<ol>
+<li>dropout是一种正则化方法</li>
+<li>只能在训练过程中使用dropout，不能在测试时使用</li>
+<li>在前向传播和反向传播中都使用dropout</li>
+<li>在dropout时，因为dropout过程会使得输出值变为原本的keep_prob倍，固把输出A除以keep_prob的值，可以使得激活函数的输出得到期盼的值。</li>
+</ol>
+<p><br></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>不同的正则化方法得到的实验结果：</p>
+<table>
+<thead>
+<tr>
+<th>model</th>
+<th>train accuracy</th>
+<th>test accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3-layer NN without regularization</td>
+<td>95%</td>
+<td>91.5%</td>
+</tr>
+<tr>
+<td>3-layer NN with L2-regularization</td>
+<td>94%</td>
+<td>93%</td>
+</tr>
+<tr>
+<td>3-layer NN with dropout</td>
+<td>93%</td>
+<td>95%</td>
+</tr>
+</tbody>
+</table>
+<p>正则化方法会降低训练准确率，但是会有利于测试集准确率。</p>
+<p>结论：</p>
+<ol>
+<li>正则化有利于避免过拟合</li>
+<li>正则化会使得参数倾向于更小的值</li>
+<li>L2正则化和Dropout是两种很有效的正则化方法。</li>
+</ol>
+<p><br></p>
+<h2 id="Data-augmentation"><a href="#Data-augmentation" class="headerlink" title="Data augmentation"></a>Data augmentation</h2><p>解决过拟合问题，如果不能增加数据量，还可以对图片水平翻转，随机旋转，随机裁剪放大后的图片，称为data augmentation。</p>
+<p><br></p>
+<h2 id="Early-stopping"><a href="#Early-stopping" class="headerlink" title="Early stopping"></a>Early stopping</h2><p>另一个解决过拟合的方法是early stopping。验证集误差不再下降则停止训练。它和L2正则化可以二选一。L2正则化需要更大的计算代价，需要找最优的正则化系数。early stopping缺点是不能独立的解决训练数据最优化和防止过拟合两个问题，我们一般倾向于用独立的方法解决单一问题，所以一般不用early stopping。</p>
+<p><br></p>
+<h1 id="加速训练"><a href="#加速训练" class="headerlink" title="加速训练"></a>加速训练</h1><h2 id="归一化输入数据"><a href="#归一化输入数据" class="headerlink" title="归一化输入数据"></a>归一化输入数据</h2><p>其中一个加速训练的方法是归一化输入。第一步零均值化，第二步归一化方差。如果用某均值和方差来归一化训练集，那么应该用同样的均值和方差来归一化测试集。我们在两个数据集上要使用同样的数据转换。</p>
+<p> 归一化的目的是使得输入数据的各个维度的特征具有相似的范围，这样更有利于梯度下降算法的实施，我们也就可以用相对来说更大的学习率，训练速度就会变的更快。比如如果x1范围是[0, 1000]，x2范围是[0, 1]，优化起来就会变的特别慢。<br><br></p>
+<h2 id="Xavier初始化权值"><a href="#Xavier初始化权值" class="headerlink" title="Xavier初始化权值"></a>Xavier初始化权值</h2><p>梯度消失和梯度爆炸，梯度值将伴随着层数呈指数增加或衰减，目前的解决方法之一是使用Xavier方法初始化权值，这也是加快训练速度的技巧之一。</p>
+<p>Xavier初始化指的是当激活函数为relu时，<code>W = np.random.randn(…) * np.sqrt(2/n[l-1])</code>，使得W的方差变为2/n，这样最终的输出a依然是可以接受的方差。如果激活函数是tanh，则为<code>W = np.random.randn(…) *np.sqrt(1/n[l-1])</code>，把W方差变为1/n。</p>
+<p><br></p>
+<p>参数初始化时需要注意的点：</p>
+<ol>
+<li>不同的初始化方式导致不同的结果，较差的方法会导致梯度爆炸或梯度消失，</li>
+<li>随机初始化用来打破对称性，使得不同的隐层神经元学到不同的东西。</li>
+<li>不要把权值初始化太大，会减慢训练速度。</li>
+<li>He初始化方法对于ReLU网络效果最好，即<code>W = np.random.randn(...) * np.sqrt(2/layers_dims[l-1])</code></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Train accuracy</th>
+<th>Problem/Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3-layer NN with zeros initialization</td>
+<td>50%</td>
+<td>fails to break symmetry</td>
+</tr>
+<tr>
+<td>3-layer NN with large random initialization</td>
+<td>83%</td>
+<td>too large weights</td>
+</tr>
+<tr>
+<td>3-layer NN with He initialization</td>
+<td>99%</td>
+<td>recommended method</td>
+</tr>
+</tbody>
+</table>
+<p> <br></p>
+<h1 id="梯度检验"><a href="#梯度检验" class="headerlink" title="梯度检验"></a>梯度检验</h1><p>梯度检验用于检查反向传播是否正确实施，做梯度检验时，使用双边误差比单边误差更准确。不要再训练过程中使用梯度检验，它只用来debug。 </p>
+<p>梯度检验时，把所有的参数矩阵W转换成一个一维向量，然后把所有的转换后的W一维向量以及一维的b参数连接成一个大的一维向量$\theta$。对于dW和db做同样的对应处理，得到$d\theta$。然后对$J(\theta)$进行双边误差计算(公式4)，得到$d{\theta}approx$，然后计算$d{\theta}approx$和$d\theta$的距离(公式5) 。</p>
+<p>$$<br>\frac{\partial J}{\partial \theta} = \lim_{\varepsilon \to 0} \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon}<br>$$</p>
+<p>$$<br>difference = \frac {| grad - gradapprox |_2}{| grad |_2 + | gradapprox |_2 }<br>$$</p>
+<p>梯度检验时要加上正则化项，但梯度检验不能和dropout同时使用，进行梯度检验时要关掉dropout。 </p>
+<p><br>  </p>
+<p>总结：</p>
+<ol>
+<li>如果$\epsilon=1e-7$，则最后的difference应小于等于1e-7，这样说明梯度下降没问题。</li>
+<li>梯度检查速度很慢，因此不要在训练过程中执行梯度检查，只需要在验证梯度下降是否正确时使用。</li>
+<li>梯度检查不能再dropout时使用，应先关闭dropout，使用梯度检查确保梯度下降正确，再使用dropout进行训练。</li>
+</ol>
+<p><br></p>
+</the></excerpt>]]></content>
+    
+    <summary type="html">
+    
+      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
+
+&lt;p&gt;最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="deeplearning.ai" scheme="http://zangbo.me/tags/deeplearning-ai/"/>
+    
+  </entry>
   
   <entry>
     <title>deeplearning.ai学习笔记（一）</title>
@@ -2468,174 +2666,6 @@
     <summary type="html">
     
       &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了&lt;code&gt;find_all()&lt;/code&gt;和&lt;code&gt;find()&lt;/code&gt;    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。
-    
-    </summary>
-    
-      <category term="数据挖掘" scheme="http://zangbo.me/categories/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
-    
-    
-      <category term="爬虫" scheme="http://zangbo.me/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>爬虫笔记（二）：Requests基础</title>
-    <link href="http://zangbo.me/2017/06/14/Crawler_2/"/>
-    <id>http://zangbo.me/2017/06/14/Crawler_2/</id>
-    <published>2017-06-14T02:47:57.000Z</published>
-    <updated>2017-06-21T16:54:59.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Requests库以及一些基础用法，基于python3.5版本<a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<h1 id="Requests介绍"><a href="#Requests介绍" class="headerlink" title="Requests介绍"></a>Requests介绍</h1><p>Requests是一个基于urllib3的HTTP库，简单优美，支持python2.6–3.5的各版本，具有无比强大的功能，完全满足今日web的需求。在爬虫学习过程中，我们用它向服务器发送请求，以获取我们需要的信息。</p>
-<p><br></p>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>只需要在终端中运行以下代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install requests</div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>我们先来看一个具体的实例来感受下Request：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"></div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>, auth=(<span class="string">'user'</span>, <span class="string">'pass'</span>))</div><div class="line">r.status_code</div><div class="line">r.headers[<span class="string">'content-type'</span>]</div><div class="line">r.encoding</div><div class="line">r.text</div></pre></td></tr></table></figure>
-<p>以下是输出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">200</span></div><div class="line"><span class="string">'text/html; charset=utf-8'</span></div><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'&lt;!DOCTYPE html&gt;'</span></div></pre></td></tr></table></figure>
-<p>以上代码我们请求了本站的地址，然后依次打印出状态码，请求头，编码方式和相应内容。</p>
-<p>是不是功能强大，下面，我们正式开始学习Requests。</p>
-<p><br></p>
-<h1 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h1><p>首先导入Requests模块：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div></pre></td></tr></table></figure>
-<p>Requests包含各种不同的请求方式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>)</div><div class="line">r = requests.put(<span class="string">"http://httpbin.org/put"</span>)</div><div class="line">r = requests.delete(<span class="string">"http://httpbin.org/delete"</span>)</div><div class="line">r = requests.head(<span class="string">"http://httpbin.org/get"</span>)</div><div class="line">r = requests.options(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>我们用的最多的是get请求，用来获取某个网页：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>)</div></pre></td></tr></table></figure>
-<p>现在，我们有一个名叫r的Response对象，它包含了所有关于该页面的信息，我们可以从中提取出我们想要的信息。</p>
-<p><br></p>
-<h2 id="带参数的get请求"><a href="#带参数的get请求" class="headerlink" title="带参数的get请求"></a>带参数的get请求</h2><p>如果你是手工构建 URL，那么数据会以键/值对的形式置于 URL 中，跟在一个问号的后面，我们可以用字典的形式传递URL参数。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.get(<span class="string">"http://httpbin.org/get"</span>, params=payload)</div><div class="line">print(r.url)</div></pre></td></tr></table></figure>
-<p>可以得到输出：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://httpbin.org/get?key2=value2&amp;key1=value1</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>如果我们想要发送一些编码为表单形式的数据——非常像一个 HTML 表单。只需简单地传递一个字典给 data 参数，该字典在发出请求时会自动编码为表单形式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</div><div class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>, data=payload)</div><div class="line">print(r.text)</div></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  <span class="string">"form"</span>: &#123;</div><div class="line">    <span class="string">"key2"</span>: <span class="string">"value2"</span>,</div><div class="line">    <span class="string">"key1"</span>: <span class="string">"value1"</span></div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="获取响应内容"><a href="#获取响应内容" class="headerlink" title="获取响应内容"></a>获取响应内容</h1><h2 id="响应状态码"><a href="#响应状态码" class="headerlink" title="响应状态码"></a>响应状态码</h2><p>我们可以检测发送请求是否成功获得想要的数据，通过检测响应状态码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://www.baidu.com'</span>)</div><div class="line">r.status_code</div></pre></td></tr></table></figure>
-<p>若输出为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">200</div></pre></td></tr></table></figure>
-<p>表明获取成功。</p>
-<p><br></p>
-<h2 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h2><p>以百度首页为例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">r.text</div></pre></td></tr></table></figure>
-<p>Requests会基于HTTP的头部对响应的编码进行推测，让我们访问<code>r.text</code>时，Requests会使用其推测的文本编码，我们可以用<code>r.encoding</code>改变解码方式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r.encoding</div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span></div><div class="line">r.encoding</div></pre></td></tr></table></figure>
-<p>以上代码输出为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">'utf-8'</span></div><div class="line"><span class="string">'ISO-8859-1'</span></div></pre></td></tr></table></figure>
-<p>如果你改变了编码，每当你访问 <code>r.text</code> ，Request 都将会使用 <code>r.encoding</code> 的新值。当不确定时，可以使用 <code>r.content</code> 来找到编码，然后设置 <code>r.encoding</code> 为相应的编码。这样就能使用正确的编码解析 <code>r.text</code> 了。关于<code>r.content</code>下面会介绍。</p>
-<p><br></p>
-<h2 id="二进制内容"><a href="#二进制内容" class="headerlink" title="二进制内容"></a>二进制内容</h2><p>对于非文本请求，例如图片等多媒体内容，可以以字节的方式访问：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">r.content</div></pre></td></tr></table></figure>
-<p>这里注意两者的区别：</p>
-<ul>
-<li>r.text返回的是Unicode型的数据。如果是读取文本，可以通过r.text。</li>
-<li>r.content返回的是bytes型也就是二进制的数据。如果读取图片，文件，可以通过r.content来实现。</li>
-</ul>
-<p>例如我们下载并保存一张图片：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">jpg_url = <span class="string">'http://mm.howkuai.com/wp-content/uploads/2017a/04/13/01.jpg'</span><span class="comment">#一张美女图</span></div><div class="line">content = requests.get(jpg_url).content</div><div class="line"><span class="keyword">with</span> open(<span class="string">'image.jpg'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f: <span class="comment">#写入多媒体文件必须要 b 这个参数！</span></div><div class="line">    f.write(content)</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="JSON内容"><a href="#JSON内容" class="headerlink" title="JSON内容"></a>JSON内容</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</div><div class="line">r.json()</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h2><p>通过命令可以查看服务器响应头，以一个Python字典形式展示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">r = requests.get(<span class="string">'http://zangbo.me'</span>)</div><div class="line">r.headers</div></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	<span class="string">'Server'</span>: <span class="string">'GitHub.com'</span>, </div><div class="line">	<span class="string">'Date'</span>: <span class="string">'Thu, 15 Jun 2017 04:04:47 GMT'</span>, </div><div class="line">	<span class="string">'Content-Type'</span>: <span class="string">'text/html; charset=utf-8'</span>, </div><div class="line">	<span class="string">'Transfer-Encoding'</span>: <span class="string">'chunked'</span>, </div><div class="line">	<span class="string">'Last-Modified'</span>: <span class="string">'Wed, 14 Jun 2017 15:41:23 GMT'</span>, </div><div class="line">	<span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'*'</span>, </div><div class="line">	<span class="string">'Expires'</span>: <span class="string">'Thu, 15 Jun 2017 04:14:47 GMT'</span>, </div><div class="line">	<span class="string">'Cache-Control'</span>: <span class="string">'max-age=600'</span>, </div><div class="line">	<span class="string">'Content-Encoding'</span>: <span class="string">'gzip'</span>, </div><div class="line">	<span class="string">'X-GitHub-Request-Id'</span>: <span class="string">'E1D6:0B0F:15941BE:1E637E3:5942075F'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="获取响应内容总结"><a href="#获取响应内容总结" class="headerlink" title="获取响应内容总结"></a>获取响应内容总结</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">r.status_code<span class="comment">#获取状态码</span></div><div class="line">r.text<span class="comment">#文本内容</span></div><div class="line">r.encoding<span class="comment">#查看编码</span></div><div class="line">r.encoding = <span class="string">'ISO-8859-1'</span><span class="comment">#改变编码</span></div><div class="line">r.content<span class="comment">#二进制内容</span></div><div class="line">r.json()<span class="comment">#JSON内容</span></div><div class="line">r.raw<span class="comment">#原始内容</span></div><div class="line">r.headers<span class="comment">#响应头</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="定制请求头"><a href="#定制请求头" class="headerlink" title="定制请求头"></a>定制请求头</h1><p>有些网站具有反爬虫机制，我们有时候需要把爬虫伪装成浏览器来访问网页，因此我们需要为请求添加HTTP头部，只需要简单地传递一个<code>dict</code>给<code>headers</code>参数即可。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">url = <span class="string">"https://www.baidu.com"</span></div><div class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'</span>&#125;</div><div class="line">r = requests.get(url,headers=headers)</div></pre></td></tr></table></figure>
-<p>注：如何查看自己浏览器的userAgent</p>
-<p>打开浏览器的控制台，输入：javascript:alert(navigator.userAgent)</p>
-<p><br></p>
-<h1 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h1><p>我们可以告诉 requests 在经过以 <code>timeout</code> 参数设定的秒数时间之后停止等待响应：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">requests.get(<span class="string">'http://github.com'</span>, timeout=<span class="number">0.001</span>)</div></pre></td></tr></table></figure>
-<p><strong>注意：</strong></p>
-<p><code>timeout</code> 仅对连接过程有效，与响应体的下载无关。 <code>timeout</code> 并不是整个下载响应的时间限制，而是如果服务器在 <code>timeout</code> 秒内没有应答，将会引发一个异常（更精确地说，是在 <code>timeout</code> 秒内没有从基础套接字上接收到任何字节的数据时）</p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>本文基于Requests官方文档：</p>
-<ul>
-<li>英文版：<a href="http://docs.python-requests.org/en/master/" target="_blank" rel="external">Requests: HTTP for Humans</a></li>
-<li>中文版：<a href="http://docs.python-requests.org/zh_CN/latest/" target="_blank" rel="external">Requests: 让HTTP服务人类</a></li>
-</ul>
-<p>本文仅介绍基础用法，更高阶以及更详细的内容（Cookie、重定向与请求历史、错误与异常等）请参考官方文档。</p>
-<p><br></p>
-</the>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了Requests库以及一些基础用法，基于python3.5版本
-    
-    </summary>
-    
-      <category term="数据挖掘" scheme="http://zangbo.me/categories/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
-    
-    
-      <category term="爬虫" scheme="http://zangbo.me/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>爬虫笔记（一）：爬虫基础知识</title>
-    <link href="http://zangbo.me/2017/06/13/Crawler_1/"/>
-    <id>http://zangbo.me/2017/06/13/Crawler_1/</id>
-    <published>2017-06-13T04:43:52.000Z</published>
-    <updated>2017-06-21T16:53:05.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本系列记录了爬虫学习的历程，本文整理了学习爬虫需要掌握的基础背景知识，包括HTML、URL在内的基础概念以及爬虫的工作原理。<a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<h1 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h1><p>HTML中文全称“超文本标记语言”。超文本指页面内可以包含图片、链接，甚至音乐、程序等非文字元素。</p>
-<p>超文本标记语言包括Head部分和Body部分，其中Head部分提供关于网页的信息，Body部分提供网页的具体内容。</p>
-<ul>
-<li><code>&lt;head&gt;&lt;/head&gt;；</code>这2个标记符分别表示头部信息的开始和结尾。头部中包含的标记是页面的标题、序言、说明等内容，它本身不作为内容来显示，但影响网页显示的效果。</li>
-<li><code>&lt;body&gt;&lt;/body&gt;；</code>网页中显示的实际内容均包含在这2个正文标记符之间。正文标记符又称为实体标记。</li>
-</ul>
-<p><br></p>
-<h1 id="URI"><a href="#URI" class="headerlink" title="URI"></a>URI</h1><p>统一资源标识符(Uniform Resource Identifier)，是一个用于标识某一互联网资源名称的字符串。Web上可用的每种资源：HTML文档、图像、视频片段、程序等，由一个URI进行定位。</p>
-<p>URI由三部分组成：</p>
-<ol>
-<li>访问资源的命名机制</li>
-<li>存放资源的主机名</li>
-<li>资源自身的名称，由路径表示，着重强调于资源。</li>
-</ol>
-<p><br></p>
-<h1 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h1><p>统一资源定位符(Uniform Resource Location)，是URI的一个子集，URI确定一个资源，URL不仅确定一个资源，还告诉你它在哪里。互联网上每个文件都有一个唯一的URL，它包含的信息指出文件的位置以及浏览器应该怎么处理它。</p>
-<p>URL一般由三部组成：</p>
-<ol>
-<li>协议(或称为服务方式)</li>
-<li>存有该资源的服务器名称或者主机IP地址(有时也包括端口号)</li>
-<li>主机资源的具体地址。如目录和文件名等。</li>
-</ol>
-<p>以下是一个例子：</p>
-<p><code>https://tianchi.aliyun.com/competition/information.htm?raceId=231602</code></p>
-<p>协议://授权/路径?查询</p>
-<ul>
-<li>第一部分和第二部分用“://”符号隔开，</li>
-<li>第二部分和第三部分用“/”符号隔开。</li>
-<li>第一部分和第二部分是不可缺少的，第三部分有时可以省略。</li>
-</ul>
-<p>URI表示请求服务器的路径，定义这么一个资源，而URL同时说明要如何访问这个资源（通过http://）</p>
-<p><br></p>
-<h1 id="浏览网页的过程和爬虫原理"><a href="#浏览网页的过程和爬虫原理" class="headerlink" title="浏览网页的过程和爬虫原理"></a>浏览网页的过程和爬虫原理</h1><p>浏览器作为一个客户端，输入地址后，会向服务器端发送一次请求(Request)，服务器正常的话会返回一个响应(Response)，响应的内容是请求打开的页面内容。浏览器收到相应后，对信息进行相应处理，页面就显示在我们面前了。</p>
-<p>爬虫的流程相似，我们通过http库向目标站点发送一个Request(里面包含URL)，如果服务器响应，会得到一个Response，我们在利用正则表达式等工具对它进行解析，最后保存数据。</p>
-<p><br></p>
-</the>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本系列记录了爬虫学习的历程，本文整理了学习爬虫需要掌握的基础背景知识，包括HTML、URL在内的基础概念以及爬虫的工作原理。
     
     </summary>
     
