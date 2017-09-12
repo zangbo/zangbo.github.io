@@ -203,7 +203,7 @@
     
     <entry>
       <title><![CDATA[DeepLearning.ai 笔记（二）]]></title>
-      <url>/2017/09/03/DeepLearning_ai_2/</url>
+      <url>/2017/09/04/DeepLearning_ai_2/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
 <p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。</p>
