@@ -3,45 +3,210 @@
   
     
     <entry>
-      <title><![CDATA[deeplearning]]></title>
-      <url>/2017/09/07/DeepLearning_ai_3/</url>
-      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p>
+      <title><![CDATA[DeepLearning.ai 笔记（五）]]></title>
+      <url>/2017/09/08/DeepLearning_ai_5/</url>
+      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Structuring Machine Learning Projects》的学习笔记，该课程介绍了在进行机器学习项目时需要注意的一些点，包括正交化方法，误差分析，迁移学习，多任务学习和端到端(end to end)系统。</p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-
-
-<p>$$<br>J=-\frac{1}{m}\sum\limits_{i = 1}^{m}\large{(}\small  y^{(i)}\log\left(a^{<a href="i">L</a>}\right) + (1-y^{(i)})\log\left(1- a^{<a href="i">L</a>}\right) \large{)}<br>$$</p>
-<h2 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h2><p>$$<br>\begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}<br>$$</p>
-<p>$$<br>\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}<br>$$</p>
-<h2 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h2><p>$$<br>\begin{cases}<br>v_{W^{[l]}} = \beta_1 v_{W^{[l]}} + (1 - \beta_1) \frac{\partial J }{ \partial W^{[l]} } \\<br>v^{corrected}_{W^{[l]}} = \frac{v_{W^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{W^{[l]}} = \beta_2 s_{W^{[l]}} + (1 - \beta_2) (\frac{\partial J }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{W^{[l]}} = \frac{s_{W^{[l]}}}{1 - (\beta_2)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{W^{[l]}}}{\sqrt{s^{corrected}_{W^{[l]}}}+\varepsilon}<br>\end{cases}<br>$$</p>
-<ol>
-<li><p>hhhhh</p>
-</li>
-<li><ul>
-<li>df</li>
-<li>hh</li>
-</ul>
-</li>
-<li><p>woaini</p>
-</li>
-<li><p>hhhh</p>
 <p><br></p>
-</li>
-<li><p>d</p>
-<p>​</p>
-</li>
+<h1 id="正交化"><a href="#正交化" class="headerlink" title="正交化"></a>正交化</h1><p>正交化方法指的是在修改算法的一部分时不会对另一部分造成影响。其中一个反例是early stopping，当我们使用early stopping来改善验证集误差时，会对训练集误差产生影响，因此我们一般选择其他的避免过拟合的方式，比如正则化方法。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912203529_414qSz_15.jpeg" alt=""></p>
+<p>注意：如果在验证集表现好，在测试集表现差，那需要增加验证集的大小。</p>
+<p><br></p>
+<h1 id="贝叶斯误差"><a href="#贝叶斯误差" class="headerlink" title="贝叶斯误差"></a>贝叶斯误差</h1><p>贝叶斯误差被认为是能达到的极限误差，我们再怎么努力也无法超越。</p>
+<p>有时候会把人类水平误差认为是贝叶斯误差，然后把训练集误差和人类水平误差之间的差距称为可避免偏差，把训练集误差和验证集误差之间的差距称为方差，重点减少训练集误差还是验证集误差，取决于可避免偏差和误差谁更大一些。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204122_g3l9XM_16.jpeg" alt=""></p>
+<ol>
+<li>A例子表明应重点减少训练误差</li>
+<li>B例子表明应重点减少验证误差</li>
 </ol>
-</the>]]></content>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_aLGNLg_18.jpeg" alt=""></p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_8PoLQw_17.jpeg" alt=""></p>
+<p><br></p>
+<h1 id="误差分析"><a href="#误差分析" class="headerlink" title="误差分析"></a>误差分析</h1><p>找出验证集中错误分类的样本，对它们分类错误的原因进行分类统计，找出错误最多的原因进行重点改善。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_UjMb9A_19.jpeg" alt=""></p>
+<p>验证集和测试集分布必须一样，它俩和训练集分布可以不同。可以先用庞大的数据来做训练数据，例如高清网络猫图，然后用目标图像做验证和测试数据，例如手机上传的猫图。</p>
+<p>验证集和测试集误差有很大差距的话，说明对验证集过拟合了，需要增大验证集。</p>
+<p>这种情况下，我们可以从训练集再分出来一小部分座位训练-验证集，衡量它的误差。</p>
+<ol>
+<li>人类水平误差</li>
+<li>训练集误差</li>
+<li>训练-验证集误差</li>
+<li>验证集误差</li>
+<li>测试集误差</li>
+</ol>
+<p><br></p>
+<p>1-2之间差距表明可避免偏差bias。</p>
+<p>2-3之间差距表明方差variance</p>
+<p>3-4之间差距表明数据不匹配差距</p>
+<p>4-5之间差距表明验证集过拟合程度</p>
+<p><br></p>
+<p>做人工误差分析，看看训练集和验证集的样本差别，然后尽量让训练集像验证集。</p>
+<p><br></p>
+<h1 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h1><p>迁移学习适合目标任务训练数据集较少的情况。</p>
+<p>任务A迁移到B上，需要A和B有相同的输入，例如都是图像，或者都是音频。</p>
+<p>A的数据量要远大于B。</p>
+<p>A的低层次特征可以帮助B。</p>
+<p>可以A数据集上先训练好网络，然后把最后一层或者几层参数重新初始化，最后用B数据集进行重新训练。如果B数据集较大也可以把网络所有层都重新训练。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_3NLqmv_20.jpeg" alt=""></p>
+<p><br></p>
+<h1 id="多任务学习"><a href="#多任务学习" class="headerlink" title="多任务学习"></a>多任务学习</h1><p>例如多标签分类。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_yxUXTh_21.jpeg" alt=""></p>
+<p>也可以应对标签有部分缺省的情况，这样在j加的时候只加有标注的类别的损失。</p>
+<p>在物体检测领域，自动驾驶领域多任务学习用的更多。大部分时候迁移学习用的更多。</p>
+<p>多个任务的底层特征对彼此都有帮助的前提下，可以用多任务学习。</p>
+<p>每个任务的数据量相差不大的情况下可以用多任务学习，效果会更好些。</p>
+<p>如果能训练一个足够大的神经网络，那么多任务学习的效果不会比训练多个神经网络效果差。</p>
+<p><br></p>
+<h1 id="端到端系统"><a href="#端到端系统" class="headerlink" title="端到端系统"></a>端到端系统</h1><p>端到端系统可能会需要更庞大的数据量，它省去了人为设计的很多环节，数据量庞大的情况下效果会特别好。</p>
+<p>然而如果没有庞大的数据量，可以选择人为的设计，人为的设计系统可以把人类对问题的很多认识直接注入系统中。</p>
+<p><br></p>
+</the></excerpt>]]></content>
       
+        <categories>
+            
+            <category> 深度学习 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> deeplearning.ai </tag>
+            
+        </tags>
         
     </entry>
     
     <entry>
-      <title><![CDATA[DeepLearning.ai学习笔记（二）]]></title>
+      <title><![CDATA[DeepLearning.ai 笔记（四）]]></title>
+      <url>/2017/09/06/DeepLearning_ai_4/</url>
+      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第三周学习笔记，主要内容为超参数的选择策略，Batch normalization(BN层)和softmax函数。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="超参数"><a href="#超参数" class="headerlink" title="超参数"></a>超参数</h1><p>超参数选择中，学习率是最重要的。可以采用随机撒点的策略，也可以又粗到细搜索的策略。</p>
+<p> 学习率的随机取值，可以采用对数坐标的随机取值：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_hEMvHU_11.jpeg" alt=""></p>
+<p>指数加权平均的超参数beta随机取值，可以对1-beta进行随机取值，然后采用对数坐标的方式：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_wwbVkR_10.jpeg" alt=""><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_t5wkc2_9.jpeg" alt=""></p>
+<p>在[-3, -1]之间随机取值。</p>
+<p>超参数搜索有两个方式：</p>
+<ol>
+<li>当设备资源有限时，可以采用“熊猫”的方式，只训练一个模型，然后一遍又一遍的逐步改善，逐步调试。</li>
+<li>当设备资源充足时，可以采用“鱼子酱”的方式，同时训练多个模型，然后选择其中效果较好的超参数。</li>
+</ol>
+<p><br></p>
+<h1 id="Batch-normalization"><a href="#Batch-normalization" class="headerlink" title="Batch normalization"></a>Batch normalization</h1><p>每次只是针对一个mini-batch来计算。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_23ljBT_12.jpeg" alt=""></p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_ulJssJ_13.jpeg" alt=""></p>
+<p>训练算法会把隐层神经元的均值和方差设置成某一固定值。一般是对Z进行BN处理。</p>
+<p>使用BN时，参数b通常没用，一般效果会被$\beta$取代，可以省去或者设置为0。</p>
+<p>$\beta$和$\gamma$并非超参数，而是可以被训练的参数，它们的size等于Z。</p>
+<p>BN层减少了后层神经元输入分布的改变程度，使得它们更加稳定。前层改变。迫使后层适应的程度减小了，它减少了前后层的联系程度，使得网络每层都可以自己学习，有助于加速整个网络的学习。</p>
+<p>BN层也有轻微的正则化效果，因为每一个Mini-batch的均值和标准差都是带有一定的噪音的，因此会使得隐层神经元不会过分依赖前面任何一个神经元输出。因为噪音比较小，所以是轻微的正则化效果，而应用较大的batch size可以减少正则化效果，因为噪声减少了。可以把BN和dropout同时使用。</p>
+<p>把BN当做一个加速的方式，不要当作正则化的方式，正则化是附带的作用。BN还可以有助于训练更深的神经网络。</p>
+<p>在测试时，在所有的Mini-batch上对均值和标准差进行指数加权平均，最后用平均后的均值和标准差，结合训练后得到的$\beta$和$\gamma$，来进行测试。</p>
+<p><br></p>
+<h1 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_Oq2TL1_14.jpeg" alt=""></p>
+<p>softmax梯度反向传播时，dZl = y^ - y，和logistics回归相同，但和logistics回归维度不同。反向传播时的梯度计算如下（y为标签）：<br>$$<br>dZ^{[l]}=\hat{y}-y<br>$$<br><br></p>
+</the></excerpt>]]></content>
+      
+        <categories>
+            
+            <category> 深度学习 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> deeplearning.ai </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[DeepLearning.ai 笔记（三）]]></title>
+      <url>/2017/09/05/DeepLearning_ai_3/</url>
+      <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第二周学习笔记，主要内容为三种不同的梯度下降且重点介绍了Mini-batch gradient descent，指数加权平均，指数加权平均中的偏差修正，动量(Momentum)，RMSprop，Adam算法以及神经网络中的局部最优问题。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h1><ol>
+<li>Batch gradient descent：每次训练迭代处理所有的训练样本，速度慢。</li>
+<li>Mini-batch gradient descent：每次训练迭代尺寸为Mini-batch size的一部分样本。</li>
+<li>stochastic gradient descent：每次训练迭代单个样本，效率低。</li>
+</ol>
+<p><br></p>
+<p>把整个训练集遍历一遍称为一个epoch。</p>
+<p>sgd和Mini-batch gd永远不会收敛，只会在最小值附近波动。</p>
+<p>一般Mini-batch 大小为64-512，2的次方速度更快，且需要考虑CPU/GPU内存，这是个超参数。</p>
+<p> <br></p>
+<p>用Mini-batch gd一般分两步：</p>
+<ol>
+<li>打乱顺序</li>
+<li>分成大小为Mini-batch size的数据集列表。</li>
+</ol>
+<p><br></p>
+<h1 id="指数加权移动平均"><a href="#指数加权移动平均" class="headerlink" title="指数加权移动平均"></a>指数加权移动平均</h1><p>指数加权移动平均，也叫指数加权平均，公式如下。若$\beta =0.9$，相当于今天的加权温度等于昨天温度的0.9倍加上今天温度的0.1倍，也就相当于平均了过去10天($\frac{1}{1-0.9}$)的温度作为今天的加权温度。$\beta$越小，曲线越延后，也越平缓。<br>$$<br>v_t = \beta v_{t-1}+(1-\beta)\theta_t<br>$$<br>指数加权平均，如果权值为0.9，则$0.9^{10}$约等于1/e，也就是大概原值的约1/3，小于这个值我们就认为贡献不是很大。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195258_bdJdyB_2.jpeg" alt=""></p>
+<p><br></p>
+<h2 id="偏差修正"><a href="#偏差修正" class="headerlink" title="偏差修正"></a>偏差修正</h2><p>一般计算时令$v_0=0$，固在初期计算值比较低，可以用$\frac{v_t}{1-\beta^t}$代替$v_t$，修正初期数值，而后期作用就不是这么大了。也有人不用偏差修正，直接熬过初期的一些计算。</p>
+<p><br></p>
+<h1 id="动量-Momentum"><a href="#动量-Momentum" class="headerlink" title="动量(Momentum)"></a>动量(Momentum)</h1><p>每次迭代，在当前mini-batch下计算：<br>$$<br>\begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}<br>$$</p>
+<p>$$<br>\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}<br>$$</p>
+<p>$\beta$是超参数，最常用的是0.9，可以加速梯度下降，加快训练速度。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195530_K7bia8_4.jpeg" alt=""></p>
+<p>从蓝色变为红色，公式加号前面相当于速度，后面的梯度项相当于加速度，相当于增加了一个动量，可以使用更大的学习率。</p>
+<p><br></p>
+<h1 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195554_tMgYh7_5.jpeg" alt=""></p>
+<p>假设水平方向为W参数，垂直方向为b参数。可以看出b方向梯度较大，$db^2$也就更大，$S_{db}$也就更大，那么最后b的更新步长也就更小，因此在垂直方向上更新步长会减小，水平方向相对更大，所以更新曲线从蓝色变为了绿色，加快了学习速度。</p>
+<p>可以使用更大的学习率，$\epsilon$一般为了防止分母变为0，一般设置$10^{-8}$。</p>
+<p><br> </p>
+<h1 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h1><p>Adam算法结合了Momentum和RMSprop。<br>$$<br>\begin{cases}<br>v_{W^{[l]}} = \beta_1 v_{W^{[l]}} + (1 - \beta_1) \frac{\partial J }{ \partial W^{[l]} } \\<br>v^{corrected}_{W^{[l]}} = \frac{v_{W^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{W^{[l]}} = \beta_2 s_{W^{[l]}} + (1 - \beta_2) (\frac{\partial J }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{W^{[l]}} = \frac{s_{W^{[l]}}}{1 - (\beta_2)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{W^{[l]}}}{\sqrt{s^{corrected}_{W^{[l]}}}+\varepsilon}<br>\end{cases}<br>$$<br><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200303_I5mLOR_6.jpeg" alt=""></p>
+<p>超参数设置建议：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200306_F5SYHx_7.jpeg" alt=""></p>
+<p>平时一般只需要把后三者超参数调整成这三个值即可，然后主要调整学习率超参数。</p>
+<p><br></p>
+<h1 id="局部最优问题"><a href="#局部最优问题" class="headerlink" title="局部最优问题"></a>局部最优问题</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200415_T0cfp3_8.jpeg" alt=""></p>
+<p>局部最优问题更像是一个马鞍形的问题。</p>
+<p>我们不太可能被困在一个很差的局部最优点上，如果我们训练一个较大的神经网络，存在较多参数，并且成本函数被定义在较高的维度空间。</p>
+<p>平稳区域是一个很大的问题，因为在这个区域参数会更新的很慢，这时Momentum、RMSprop和Adam等算法就起到了作用。</p>
+<p><br></p>
+</the></excerpt>]]></content>
+      
+        <categories>
+            
+            <category> 深度学习 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> deeplearning.ai </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[DeepLearning.ai 笔记（二）]]></title>
       <url>/2017/09/03/DeepLearning_ai_2/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
-<p>最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。</p>
+<p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -68,7 +233,7 @@
 <p><br></p>
 <h1 id="降低方差-amp-减小过拟合"><a href="#降低方差-amp-减小过拟合" class="headerlink" title="降低方差&amp;减小过拟合"></a>降低方差&amp;减小过拟合</h1><h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>正则化方法分为多种，用的比较多的是L2正则化和dropout。</p>
 <p><br></p>
-<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>使用L2正则化的交叉熵损失：<br>$$<br>J{regularized} = \small \underbrace{-\frac{1}{m} \sum\limits{i = 1}^{m} \large{(}\small y^{(i)}\log\left(a^{L}\right) + (1-y^{(i)})\log\left(1- a^{L}\right) \large{)} }\text{cross-entropy cost} + \underbrace{\frac{1}{m} \frac{\lambda}{2} \sum\limits_l\sum\limits_k\sum\limits_j W{k,j}^{[l]2} }_\text{L2 regularization cost}<br>$$<br>正则化用于减少方差，一般用L2正则化而不用L1，因为L1正则化倾向于把W变得很稀疏，会有很多0。L2正则化在代价函数后面加上$\frac{\lambda}{2m} ||W||^2$，因为<code>lambda</code>是python的保留字，所以我们用<code>lambd</code>表示正则化系数，这是个超参数。在训练时，在dW项后面加一个$\frac{\lambda}{m}W$，即正则化项总是倾向于使得W减少，相当于乘了一个小于1的权重衰减系数（weightdecay)。<br>$$<br>\frac{d}{dW} ( \frac{1}{2}\frac{\lambda}{m}  W^2) = \frac{\lambda}{m} W<br>$$<br>关于正则化为什么有用，其中一种说法是，当使用正则化时，整个网络会被迫使得一部分参数项变小，进而使得原本复杂的网络变的简单，相当于变相的把复杂的神经网络简单化，也就减小了过拟合的程度。</p>
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>使用L2正则化的交叉熵损失：<br>$$<br>J{regularized} = \small \underbrace{-\frac{1}{m} \sum\limits{i = 1}^{m} \large{(}\small y^{(i)}\log\left(a^{L}\right) + (1-y^{(i)})\log\left(1- a^{L}\right) \large{)} }_\text{cross-entropy cost} + \underbrace{\frac{1}{m} \frac{\lambda}{2} \sum\limits_l\sum\limits_k\sum\limits_j W{k,j}^{[l]2} }_\text{L2 regularization cost}<br>$$<br>正则化用于减少方差，一般用L2正则化而不用L1，因为L1正则化倾向于把W变得很稀疏，会有很多0。L2正则化在代价函数后面加上$\frac{\lambda}{2m} ||W||^2$，因为<code>lambda</code>是python的保留字，所以我们用<code>lambd</code>表示正则化系数，这是个超参数。在训练时，在dW项后面加一个$\frac{\lambda}{m}W$，即正则化项总是倾向于使得W减少，相当于乘了一个小于1的权重衰减系数（weightdecay)。<br>$$<br>\frac{d}{dW} ( \frac{1}{2}\frac{\lambda}{m}  W^2) = \frac{\lambda}{m} W<br>$$<br>关于正则化为什么有用，其中一种说法是，当使用正则化时，整个网络会被迫使得一部分参数项变小，进而使得原本复杂的网络变的简单，相当于变相的把复杂的神经网络简单化，也就减小了过拟合的程度。</p>
 <p><br></p>
 <p>总结：</p>
 <ol>
@@ -204,11 +369,11 @@
     </entry>
     
     <entry>
-      <title><![CDATA[deeplearning.ai学习笔记（一）]]></title>
+      <title><![CDATA[DeepLearning.ai 笔记（一）]]></title>
       <url>/2017/09/03/DeepLearning_ai_1/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
-<p>最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。</p>
+<p>最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《Neural Networks and Deep Learning》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 

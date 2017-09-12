@@ -81,7 +81,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Word2Vec," />
+  <meta name="keywords" content="deeplearning.ai," />
 
 
 
@@ -99,22 +99,24 @@
 
 
 
-<meta name="description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="keywords" content="Word2Vec">
+<meta name="description" content="本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第二周学习笔记，主要内容为三种不同的梯度下降且重点介绍了Mini-batch gradient descent，指数加权平均，指数加权平均中的偏差修正，动量(Momentum)，RMSprop，Adam算">
+<meta name="keywords" content="deeplearning.ai">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Word2Vec笔记：Negative Sample">
-<meta property="og:url" content="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/index.html">
+<meta property="og:title" content="DeepLearning.ai 笔记（三）">
+<meta property="og:url" content="http://zangbo.me/2017/09/05/DeepLearning_ai_3/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg">
-<meta property="og:updated_time" content="2017-06-21T16:52:33.000Z">
+<meta property="og:description" content="本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第二周学习笔记，主要内容为三种不同的梯度下降且重点介绍了Mini-batch gradient descent，指数加权平均，指数加权平均中的偏差修正，动量(Momentum)，RMSprop，Adam算">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195258_bdJdyB_2.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195530_K7bia8_4.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195554_tMgYh7_5.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200303_I5mLOR_6.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200306_F5SYHx_7.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200415_T0cfp3_8.jpeg">
+<meta property="og:updated_time" content="2017-09-12T12:08:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Word2Vec笔记：Negative Sample">
-<meta name="twitter:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
+<meta name="twitter:title" content="DeepLearning.ai 笔记（三）">
+<meta name="twitter:description" content="本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第二周学习笔记，主要内容为三种不同的梯度下降且重点介绍了Mini-batch gradient descent，指数加权平均，指数加权平均中的偏差修正，动量(Momentum)，RMSprop，Adam算">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195258_bdJdyB_2.jpeg">
 
 
 
@@ -144,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/"/>
+  <link rel="canonical" href="http://zangbo.me/2017/09/05/DeepLearning_ai_3/"/>
 
 
 
 
 
-  <title>Word2Vec笔记：Negative Sample | ZangBo's Home</title>
+  <title>DeepLearning.ai 笔记（三） | ZangBo's Home</title>
   
 
 
@@ -296,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/">
+    <link itemprop="mainEntityOfPage" href="http://zangbo.me/2017/09/05/DeepLearning_ai_3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ZangBo">
@@ -313,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Word2Vec笔记：Negative Sample</h1>
+          <h1 class="post-title" itemprop="name headline">DeepLearning.ai 笔记（三）</h1>
         
 
         <div class="post-meta">
@@ -325,8 +327,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T17:08:43+08:00">
-                2017-06-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-05T17:27:37+08:00">
+                2017-09-05
               </time>
             
 
@@ -348,8 +350,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/自然语言处理/" itemprop="url" rel="index">
-                    <span itemprop="name">自然语言处理</span>
+                  <a href="/categories/深度学习/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
                   </a>
                 </span>
 
@@ -390,69 +392,55 @@
       
 
       
-        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第二周学习笔记，主要内容为三种不同的梯度下降且重点介绍了Mini-batch gradient descent，指数加权平均，指数加权平均中的偏差修正，动量(Momentum)，RMSprop，Adam算法以及神经网络中的局部最优问题。</p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在skip-gram模型中，我们发现这是个十分庞大的神经网络，如果我们把词向量设置成300，那么在一个具有10000个单词的字典中，隐层和输出层分别具有3百万个参数。执行梯度下降算法时将会十分缓慢，更糟糕的是，我们需要事先在一个数量庞大的数据集上训练，以便于fine-tune参数和避免过拟合。因此对模型的训练将十分困难。</p>
-<p>为了解决这个问题，作者提出了三个修改方案：</p>
-<ol>
-<li>把常见的短语或单词对当成一个单词来对待</li>
-<li>降采样高频单词来见少训练样本数量</li>
-<li>用一种他们称之为“负采样”的方式来修改优化目标，这将使得每个训练样本只更新一小部分的模型参数。</li>
-</ol>
-<p>它们均可以使得训练变的可行同时也改善了结果词向量的质量。</p>
-<p><br></p>
-<h1 id="单词对和短语"><a href="#单词对和短语" class="headerlink" title="单词对和短语"></a>单词对和短语</h1><p>作者指出一个单词对像“Boston Globe”(一个报纸名)，它的含义和“Boston”以及“Globe”都有着很大的区别，因此把“Boston Globe”当作一个单词来对待是很有意义的，它将会得到一个词向量来表示。在Google News数据集上，这个改变可以把模型字典尺寸从一千亿降低为三百万。Google开源了它们训练好得到的词向量，长度是300，共计三百万个。至于如何从单词中区分短语并且缩短字典尺寸，一个方法是可以参考维基百科的词条目录。</p>
-<p><br></p>
-<h1 id="降采样高频单词"><a href="#降采样高频单词" class="headerlink" title="降采样高频单词"></a>降采样高频单词</h1><p>在之前的例子中，针对一些通用单词例如“the”存在一些问题：</p>
-<ol>
-<li>当我们看一些单词对的时候，(“fox”，“the”)没有告诉我们过多的关于“fox”的含义的信息，“the”出现在几乎每个单词的前面。</li>
-<li>我们拥有太多的关于(“the”，…)的采样，而我们学习一个好的关于“the”的向量不需要这么多的采样。</li>
-</ol>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
-
-<p>Word2Vec采用了一个叫做“降采样”的框架来解决这个问题。对于每个出现在我们训练文件中的单词，它们将会有一定的概率被删除相关的训练数据，概率的高低取决于它们出现的频率。</p>
-<p>如果我们有一个尺寸为10的窗口，那么我们将移除一个特定的关于“the”的训练样本：</p>
-<ol>
-<li>当我们训练其他单词，“the”将不会在任何窗口中出现。</li>
-<li>当我们训练“the”作为输入时，窗口尺寸会小于10。</li>
+<h1 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h1><ol>
+<li>Batch gradient descent：每次训练迭代处理所有的训练样本，速度慢。</li>
+<li>Mini-batch gradient descent：每次训练迭代尺寸为Mini-batch size的一部分样本。</li>
+<li>stochastic gradient descent：每次训练迭代单个样本，效率低。</li>
 </ol>
 <p><br></p>
-<h1 id="采样频率"><a href="#采样频率" class="headerlink" title="采样频率"></a>采样频率</h1><p>关于如何计算字典中一个单词被保留下来的概率，有一套C语言的代码实现的公式。</p>
-<p>Wi代表单词，z(wi)表示单词在语料库中出现的频率，例如“peanut”在一个拥有10亿单词语料库中出现了1000次，那么z(‘peanut’)=1E-6。</p>
-<p>代码中还有一个参数称之为’sample’，它将控制采样发生的力度，默认是0.001，该数值越小则单词越不可能被保存。</p>
-<p>P(wi)为保留单词的概率：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg" alt=""></center>
-
-<p>我们可以画出该公式的图：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg" alt=""></center>
-
-<p>如果我们使用默认采样值为0.001，那么有以下有趣的点：</p>
-<ul>
-<li>P=1，当z&lt;=0.0026时，这意味着当单词数量小于0.26%时将会被全部保留下来。</li>
-<li>P=0.5，当z=0.00746时，这意味着有50%的概率被保留下来</li>
-<li>P=0.033，当z=1时，这意味着如果语料库中全部是同一个单词时，只有3.3%的概率会被保存下来，这种情况当然很荒谬。</li>
-</ul>
-<p>论文中定义的公式和C语言代码中有所区别，我觉得C语言代码的实现更加权威。</p>
+<p>把整个训练集遍历一遍称为一个epoch。</p>
+<p>sgd和Mini-batch gd永远不会收敛，只会在最小值附近波动。</p>
+<p>一般Mini-batch 大小为64-512，2的次方速度更快，且需要考虑CPU/GPU内存，这是个超参数。</p>
+<p> <br></p>
+<p>用Mini-batch gd一般分两步：</p>
+<ol>
+<li>打乱顺序</li>
+<li>分成大小为Mini-batch size的数据集列表。</li>
+</ol>
 <p><br></p>
-<h1 id="负采样-Negative-Sampling"><a href="#负采样-Negative-Sampling" class="headerlink" title="负采样(Negative Sampling)"></a>负采样(Negative Sampling)</h1><p>训练一个神经网络意味着每个样本都要更新所有参数，使用skip-gram模型将会每次都要更新数量庞大的模型，负采样采用的策略是更新每个样本时之更新很小比例的参数，而不是更新所有参数。</p>
-<p>我们训练一个单词对时，例如(“fox”，“quick”)，当输入是“fox”时标签是“quick”的one-hot向量，那么也就是说输出标签神经元中只有一个是1，其他的成千上万个都是0。</p>
-<p>因此当我们使用负采样时，我们将随机选择很小数量的“负”单词(例如选择5个)来更新权值，在我们的语料库中，一个“负”单词指的是我们希望让输出的标签的神经元为0，我们依然会更新“正”单词的神经元参数(也就是标签中为1的神经元)，论文中提到对于一个小规模的数据集，可以选择5-20个单词，如果是庞大的数据集，可以选择2-5个。</p>
-<p>之前我们的输出层是300<em>10000的参数矩阵，但如今我们更新权值时只需要更新(“quick”)所代表的神经元的参数(输出为1)，以及再加上5个随机的输出为0的神经元，总共只需要更新6个神经元的参数，也就是300</em>6=1800个参数，这仅仅是原来输出层参数的0.06%！</p>
-<p>注意在隐藏层中，不管是否使用负采样策略，都只有输入单词的权值被更新。</p>
+<h1 id="指数加权移动平均"><a href="#指数加权移动平均" class="headerlink" title="指数加权移动平均"></a>指数加权移动平均</h1><p>指数加权移动平均，也叫指数加权平均，公式如下。若$\beta =0.9$，相当于今天的加权温度等于昨天温度的0.9倍加上今天温度的0.1倍，也就相当于平均了过去10天($\frac{1}{1-0.9}$)的温度作为今天的加权温度。$\beta$越小，曲线越延后，也越平缓。<br>$$<br>v_t = \beta v_{t-1}+(1-\beta)\theta_t<br>$$<br>指数加权平均，如果权值为0.9，则$0.9^{10}$约等于1/e，也就是大概原值的约1/3，小于这个值我们就认为贡献不是很大。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195258_bdJdyB_2.jpeg" alt=""></p>
 <p><br></p>
-<h1 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h1><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg" alt=""></center>
-
-<p>这种在C语言中实现的方式很有趣。他们有一个100M大小的元素数组（他们称之为unigram表），他们用词表中每个单词的索引多次填充这个表。然后，要实际选择一个负样本，只需生成0到100M之间的随机整数，并选择表中该索引处的单词。由于较高概率单词在表中出现次数较多，因此更有可能选择这些单词。</p>
+<h2 id="偏差修正"><a href="#偏差修正" class="headerlink" title="偏差修正"></a>偏差修正</h2><p>一般计算时令$v_0=0$，固在初期计算值比较低，可以用$\frac{v_t}{1-\beta^t}$代替$v_t$，修正初期数值，而后期作用就不是这么大了。也有人不用偏差修正，直接熬过初期的一些计算。</p>
 <p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这里有一些关于Word2Vec的学习资源：</p>
-<p><a href="http://mccormickml.com/2016/04/27/word2vec-resources/" target="_blank" rel="external">Word2Vec Resources · Chris McCormick</a></p>
+<h1 id="动量-Momentum"><a href="#动量-Momentum" class="headerlink" title="动量(Momentum)"></a>动量(Momentum)</h1><p>每次迭代，在当前mini-batch下计算：<br>$$<br>\begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}<br>$$</p>
+<p>$$<br>\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}<br>$$</p>
+<p>$\beta$是超参数，最常用的是0.9，可以加速梯度下降，加快训练速度。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195530_K7bia8_4.jpeg" alt=""></p>
+<p>从蓝色变为红色，公式加号前面相当于速度，后面的梯度项相当于加速度，相当于增加了一个动量，可以使用更大的学习率。</p>
 <p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="external">Word2Vec Tutorial Part 2 - Negative Sampling · Chris McCormick</a></p>
+<h1 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195554_tMgYh7_5.jpeg" alt=""></p>
+<p>假设水平方向为W参数，垂直方向为b参数。可以看出b方向梯度较大，$db^2$也就更大，$S_{db}$也就更大，那么最后b的更新步长也就更小，因此在垂直方向上更新步长会减小，水平方向相对更大，所以更新曲线从蓝色变为了绿色，加快了学习速度。</p>
+<p>可以使用更大的学习率，$\epsilon$一般为了防止分母变为0，一般设置$10^{-8}$。</p>
+<p><br> </p>
+<h1 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h1><p>Adam算法结合了Momentum和RMSprop。<br>$$<br>\begin{cases}<br>v_{W^{[l]}} = \beta_1 v_{W^{[l]}} + (1 - \beta_1) \frac{\partial J }{ \partial W^{[l]} } \\<br>v^{corrected}_{W^{[l]}} = \frac{v_{W^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{W^{[l]}} = \beta_2 s_{W^{[l]}} + (1 - \beta_2) (\frac{\partial J }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{W^{[l]}} = \frac{s_{W^{[l]}}}{1 - (\beta_2)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{W^{[l]}}}{\sqrt{s^{corrected}_{W^{[l]}}}+\varepsilon}<br>\end{cases}<br>$$<br><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200303_I5mLOR_6.jpeg" alt=""></p>
+<p>超参数设置建议：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200306_F5SYHx_7.jpeg" alt=""></p>
+<p>平时一般只需要把后三者超参数调整成这三个值即可，然后主要调整学习率超参数。</p>
 <p><br></p>
-</the>
+<h1 id="局部最优问题"><a href="#局部最优问题" class="headerlink" title="局部最优问题"></a>局部最优问题</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200415_T0cfp3_8.jpeg" alt=""></p>
+<p>局部最优问题更像是一个马鞍形的问题。</p>
+<p>我们不太可能被困在一个很差的局部最优点上，如果我们训练一个较大的神经网络，存在较多参数，并且成本函数被定义在较高的维度空间。</p>
+<p>平稳区域是一个很大的问题，因为在这个区域参数会更新的很慢，这时Momentum、RMSprop和Adam等算法就起到了作用。</p>
+<p><br></p>
+</the></excerpt>
       
     </div>
     
@@ -472,7 +460,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/" title="Word2Vec笔记：Negative Sample">http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/</a>
+    <a href="http://zangbo.me/2017/09/05/DeepLearning_ai_3/" title="DeepLearning.ai 笔记（三）">http://zangbo.me/2017/09/05/DeepLearning_ai_3/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -487,7 +475,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Word2Vec/" rel="tag"># Word2Vec</a>
+            <a href="/tags/deeplearning-ai/" rel="tag"># deeplearning.ai</a>
           
         </div>
       
@@ -500,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/05/Word2Vec_skip-gram/" rel="next" title="Word2Vec笔记：Skip-Gram模型">
-                <i class="fa fa-chevron-left"></i> Word2Vec笔记：Skip-Gram模型
+              <a href="/2017/09/03/DeepLearning_ai_2/" rel="next" title="DeepLearning.ai 笔记（二）">
+                <i class="fa fa-chevron-left"></i> DeepLearning.ai 笔记（二）
               </a>
             
           </div>
@@ -510,8 +498,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/12/GiftForGirlfriend/" rel="prev" title="送给女友的生日礼物">
-                送给女友的生日礼物 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/06/DeepLearning_ai_4/" rel="prev" title="DeepLearning.ai 笔记（四）">
+                DeepLearning.ai 笔记（四） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -656,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单词对和短语"><span class="nav-number">2.</span> <span class="nav-text">单词对和短语</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#降采样高频单词"><span class="nav-number">3.</span> <span class="nav-text">降采样高频单词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#采样频率"><span class="nav-number">4.</span> <span class="nav-text">采样频率</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负采样-Negative-Sampling"><span class="nav-number">5.</span> <span class="nav-text">负采样(Negative Sampling)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择负采样"><span class="nav-number">6.</span> <span class="nav-text">选择负采样</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">7.</span> <span class="nav-text">后记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#梯度下降算法"><span class="nav-number">1.</span> <span class="nav-text">梯度下降算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指数加权移动平均"><span class="nav-number">2.</span> <span class="nav-text">指数加权移动平均</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#偏差修正"><span class="nav-number">2.1.</span> <span class="nav-text">偏差修正</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动量-Momentum"><span class="nav-number">3.</span> <span class="nav-text">动量(Momentum)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RMSprop"><span class="nav-number">4.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Adam"><span class="nav-number">5.</span> <span class="nav-text">Adam</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#局部最优问题"><span class="nav-number">6.</span> <span class="nav-text">局部最优问题</span></a></li></ol></div>
             
 
           </div>

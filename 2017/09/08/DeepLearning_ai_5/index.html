@@ -81,7 +81,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Word2Vec," />
+  <meta name="keywords" content="deeplearning.ai," />
 
 
 
@@ -99,22 +99,25 @@
 
 
 
-<meta name="description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="keywords" content="Word2Vec">
+<meta name="description" content="本笔记是课程《Structuring Machine Learning Projects》的学习笔记，该课程介绍了在进行机器学习项目时需要注意的一些点，包括正交化方法，误差分析，迁移学习，多任务学习和端到端(end to end)系统。">
+<meta name="keywords" content="deeplearning.ai">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Word2Vec笔记：Negative Sample">
-<meta property="og:url" content="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/index.html">
+<meta property="og:title" content="DeepLearning.ai 笔记（五）">
+<meta property="og:url" content="http://zangbo.me/2017/09/08/DeepLearning_ai_5/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
-<meta property="og:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg">
-<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg">
-<meta property="og:updated_time" content="2017-06-21T16:52:33.000Z">
+<meta property="og:description" content="本笔记是课程《Structuring Machine Learning Projects》的学习笔记，该课程介绍了在进行机器学习项目时需要注意的一些点，包括正交化方法，误差分析，迁移学习，多任务学习和端到端(end to end)系统。">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912203529_414qSz_15.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204122_g3l9XM_16.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_aLGNLg_18.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_8PoLQw_17.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_UjMb9A_19.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_3NLqmv_20.jpeg">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_yxUXTh_21.jpeg">
+<meta property="og:updated_time" content="2017-09-12T12:49:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Word2Vec笔记：Negative Sample">
-<meta name="twitter:description" content="本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。">
-<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg">
+<meta name="twitter:title" content="DeepLearning.ai 笔记（五）">
+<meta name="twitter:description" content="本笔记是课程《Structuring Machine Learning Projects》的学习笔记，该课程介绍了在进行机器学习项目时需要注意的一些点，包括正交化方法，误差分析，迁移学习，多任务学习和端到端(end to end)系统。">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912203529_414qSz_15.jpeg">
 
 
 
@@ -144,13 +147,13 @@
 
 
 
-  <link rel="canonical" href="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/"/>
+  <link rel="canonical" href="http://zangbo.me/2017/09/08/DeepLearning_ai_5/"/>
 
 
 
 
 
-  <title>Word2Vec笔记：Negative Sample | ZangBo's Home</title>
+  <title>DeepLearning.ai 笔记（五） | ZangBo's Home</title>
   
 
 
@@ -296,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/">
+    <link itemprop="mainEntityOfPage" href="http://zangbo.me/2017/09/08/DeepLearning_ai_5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ZangBo">
@@ -313,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Word2Vec笔记：Negative Sample</h1>
+          <h1 class="post-title" itemprop="name headline">DeepLearning.ai 笔记（五）</h1>
         
 
         <div class="post-meta">
@@ -325,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T17:08:43+08:00">
-                2017-06-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-08T14:18:37+08:00">
+                2017-09-08
               </time>
             
 
@@ -348,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/自然语言处理/" itemprop="url" rel="index">
-                    <span itemprop="name">自然语言处理</span>
+                  <a href="/categories/深度学习/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
                   </a>
                 </span>
 
@@ -390,69 +393,66 @@
       
 
       
-        <script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Word2Vec中对Skip Gram模型的改进——Negative Sample方法。<a id="more"></a></excerpt></p>
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Structuring Machine Learning Projects》的学习笔记，该课程介绍了在进行机器学习项目时需要注意的一些点，包括正交化方法，误差分析，迁移学习，多任务学习和端到端(end to end)系统。</p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在skip-gram模型中，我们发现这是个十分庞大的神经网络，如果我们把词向量设置成300，那么在一个具有10000个单词的字典中，隐层和输出层分别具有3百万个参数。执行梯度下降算法时将会十分缓慢，更糟糕的是，我们需要事先在一个数量庞大的数据集上训练，以便于fine-tune参数和避免过拟合。因此对模型的训练将十分困难。</p>
-<p>为了解决这个问题，作者提出了三个修改方案：</p>
+<h1 id="正交化"><a href="#正交化" class="headerlink" title="正交化"></a>正交化</h1><p>正交化方法指的是在修改算法的一部分时不会对另一部分造成影响。其中一个反例是early stopping，当我们使用early stopping来改善验证集误差时，会对训练集误差产生影响，因此我们一般选择其他的避免过拟合的方式，比如正则化方法。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912203529_414qSz_15.jpeg" alt=""></p>
+<p>注意：如果在验证集表现好，在测试集表现差，那需要增加验证集的大小。</p>
+<p><br></p>
+<h1 id="贝叶斯误差"><a href="#贝叶斯误差" class="headerlink" title="贝叶斯误差"></a>贝叶斯误差</h1><p>贝叶斯误差被认为是能达到的极限误差，我们再怎么努力也无法超越。</p>
+<p>有时候会把人类水平误差认为是贝叶斯误差，然后把训练集误差和人类水平误差之间的差距称为可避免偏差，把训练集误差和验证集误差之间的差距称为方差，重点减少训练集误差还是验证集误差，取决于可避免偏差和误差谁更大一些。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204122_g3l9XM_16.jpeg" alt=""></p>
 <ol>
-<li>把常见的短语或单词对当成一个单词来对待</li>
-<li>降采样高频单词来见少训练样本数量</li>
-<li>用一种他们称之为“负采样”的方式来修改优化目标，这将使得每个训练样本只更新一小部分的模型参数。</li>
+<li>A例子表明应重点减少训练误差</li>
+<li>B例子表明应重点减少验证误差</li>
 </ol>
-<p>它们均可以使得训练变的可行同时也改善了结果词向量的质量。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_aLGNLg_18.jpeg" alt=""></p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_8PoLQw_17.jpeg" alt=""></p>
 <p><br></p>
-<h1 id="单词对和短语"><a href="#单词对和短语" class="headerlink" title="单词对和短语"></a>单词对和短语</h1><p>作者指出一个单词对像“Boston Globe”(一个报纸名)，它的含义和“Boston”以及“Globe”都有着很大的区别，因此把“Boston Globe”当作一个单词来对待是很有意义的，它将会得到一个词向量来表示。在Google News数据集上，这个改变可以把模型字典尺寸从一千亿降低为三百万。Google开源了它们训练好得到的词向量，长度是300，共计三百万个。至于如何从单词中区分短语并且缩短字典尺寸，一个方法是可以参考维基百科的词条目录。</p>
-<p><br></p>
-<h1 id="降采样高频单词"><a href="#降采样高频单词" class="headerlink" title="降采样高频单词"></a>降采样高频单词</h1><p>在之前的例子中，针对一些通用单词例如“the”存在一些问题：</p>
+<h1 id="误差分析"><a href="#误差分析" class="headerlink" title="误差分析"></a>误差分析</h1><p>找出验证集中错误分类的样本，对它们分类错误的原因进行分类统计，找出错误最多的原因进行重点改善。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_UjMb9A_19.jpeg" alt=""></p>
+<p>验证集和测试集分布必须一样，它俩和训练集分布可以不同。可以先用庞大的数据来做训练数据，例如高清网络猫图，然后用目标图像做验证和测试数据，例如手机上传的猫图。</p>
+<p>验证集和测试集误差有很大差距的话，说明对验证集过拟合了，需要增大验证集。</p>
+<p>这种情况下，我们可以从训练集再分出来一小部分座位训练-验证集，衡量它的误差。</p>
 <ol>
-<li>当我们看一些单词对的时候，(“fox”，“the”)没有告诉我们过多的关于“fox”的含义的信息，“the”出现在几乎每个单词的前面。</li>
-<li>我们拥有太多的关于(“the”，…)的采样，而我们学习一个好的关于“the”的向量不需要这么多的采样。</li>
-</ol>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_S9yXV9_1.jpeg" alt=""></center>
-
-<p>Word2Vec采用了一个叫做“降采样”的框架来解决这个问题。对于每个出现在我们训练文件中的单词，它们将会有一定的概率被删除相关的训练数据，概率的高低取决于它们出现的频率。</p>
-<p>如果我们有一个尺寸为10的窗口，那么我们将移除一个特定的关于“the”的训练样本：</p>
-<ol>
-<li>当我们训练其他单词，“the”将不会在任何窗口中出现。</li>
-<li>当我们训练“the”作为输入时，窗口尺寸会小于10。</li>
+<li>人类水平误差</li>
+<li>训练集误差</li>
+<li>训练-验证集误差</li>
+<li>验证集误差</li>
+<li>测试集误差</li>
 </ol>
 <p><br></p>
-<h1 id="采样频率"><a href="#采样频率" class="headerlink" title="采样频率"></a>采样频率</h1><p>关于如何计算字典中一个单词被保留下来的概率，有一套C语言的代码实现的公式。</p>
-<p>Wi代表单词，z(wi)表示单词在语料库中出现的频率，例如“peanut”在一个拥有10亿单词语料库中出现了1000次，那么z(‘peanut’)=1E-6。</p>
-<p>代码中还有一个参数称之为’sample’，它将控制采样发生的力度，默认是0.001，该数值越小则单词越不可能被保存。</p>
-<p>P(wi)为保留单词的概率：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_BJPh3y_5.jpeg" alt=""></center>
-
-<p>我们可以画出该公式的图：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_f7DguJ_6.jpeg" alt=""></center>
-
-<p>如果我们使用默认采样值为0.001，那么有以下有趣的点：</p>
-<ul>
-<li>P=1，当z&lt;=0.0026时，这意味着当单词数量小于0.26%时将会被全部保留下来。</li>
-<li>P=0.5，当z=0.00746时，这意味着有50%的概率被保留下来</li>
-<li>P=0.033，当z=1时，这意味着如果语料库中全部是同一个单词时，只有3.3%的概率会被保存下来，这种情况当然很荒谬。</li>
-</ul>
-<p>论文中定义的公式和C语言代码中有所区别，我觉得C语言代码的实现更加权威。</p>
+<p>1-2之间差距表明可避免偏差bias。</p>
+<p>2-3之间差距表明方差variance</p>
+<p>3-4之间差距表明数据不匹配差距</p>
+<p>4-5之间差距表明验证集过拟合程度</p>
 <p><br></p>
-<h1 id="负采样-Negative-Sampling"><a href="#负采样-Negative-Sampling" class="headerlink" title="负采样(Negative Sampling)"></a>负采样(Negative Sampling)</h1><p>训练一个神经网络意味着每个样本都要更新所有参数，使用skip-gram模型将会每次都要更新数量庞大的模型，负采样采用的策略是更新每个样本时之更新很小比例的参数，而不是更新所有参数。</p>
-<p>我们训练一个单词对时，例如(“fox”，“quick”)，当输入是“fox”时标签是“quick”的one-hot向量，那么也就是说输出标签神经元中只有一个是1，其他的成千上万个都是0。</p>
-<p>因此当我们使用负采样时，我们将随机选择很小数量的“负”单词(例如选择5个)来更新权值，在我们的语料库中，一个“负”单词指的是我们希望让输出的标签的神经元为0，我们依然会更新“正”单词的神经元参数(也就是标签中为1的神经元)，论文中提到对于一个小规模的数据集，可以选择5-20个单词，如果是庞大的数据集，可以选择2-5个。</p>
-<p>之前我们的输出层是300<em>10000的参数矩阵，但如今我们更新权值时只需要更新(“quick”)所代表的神经元的参数(输出为1)，以及再加上5个随机的输出为0的神经元，总共只需要更新6个神经元的参数，也就是300</em>6=1800个参数，这仅仅是原来输出层参数的0.06%！</p>
-<p>注意在隐藏层中，不管是否使用负采样策略，都只有输入单词的权值被更新。</p>
+<p>做人工误差分析，看看训练集和验证集的样本差别，然后尽量让训练集像验证集。</p>
 <p><br></p>
-<h1 id="选择负采样"><a href="#选择负采样" class="headerlink" title="选择负采样"></a>选择负采样</h1><p>选择一个单词作为负采样和它出现的频率有关，出现频率越高的单词越容易被选为负样本。在word2vec的C语言实现中，我们可以看到一个计算概率的公式：</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/word2vec/20170621204146_OWB2Gx_7.jpeg" alt=""></center>
-
-<p>这种在C语言中实现的方式很有趣。他们有一个100M大小的元素数组（他们称之为unigram表），他们用词表中每个单词的索引多次填充这个表。然后，要实际选择一个负样本，只需生成0到100M之间的随机整数，并选择表中该索引处的单词。由于较高概率单词在表中出现次数较多，因此更有可能选择这些单词。</p>
+<h1 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h1><p>迁移学习适合目标任务训练数据集较少的情况。</p>
+<p>任务A迁移到B上，需要A和B有相同的输入，例如都是图像，或者都是音频。</p>
+<p>A的数据量要远大于B。</p>
+<p>A的低层次特征可以帮助B。</p>
+<p>可以A数据集上先训练好网络，然后把最后一层或者几层参数重新初始化，最后用B数据集进行重新训练。如果B数据集较大也可以把网络所有层都重新训练。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_3NLqmv_20.jpeg" alt=""></p>
 <p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这里有一些关于Word2Vec的学习资源：</p>
-<p><a href="http://mccormickml.com/2016/04/27/word2vec-resources/" target="_blank" rel="external">Word2Vec Resources · Chris McCormick</a></p>
+<h1 id="多任务学习"><a href="#多任务学习" class="headerlink" title="多任务学习"></a>多任务学习</h1><p>例如多标签分类。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_yxUXTh_21.jpeg" alt=""></p>
+<p>也可以应对标签有部分缺省的情况，这样在j加的时候只加有标注的类别的损失。</p>
+<p>在物体检测领域，自动驾驶领域多任务学习用的更多。大部分时候迁移学习用的更多。</p>
+<p>多个任务的底层特征对彼此都有帮助的前提下，可以用多任务学习。</p>
+<p>每个任务的数据量相差不大的情况下可以用多任务学习，效果会更好些。</p>
+<p>如果能训练一个足够大的神经网络，那么多任务学习的效果不会比训练多个神经网络效果差。</p>
 <p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="external">Word2Vec Tutorial Part 2 - Negative Sampling · Chris McCormick</a></p>
+<h1 id="端到端系统"><a href="#端到端系统" class="headerlink" title="端到端系统"></a>端到端系统</h1><p>端到端系统可能会需要更庞大的数据量，它省去了人为设计的很多环节，数据量庞大的情况下效果会特别好。</p>
+<p>然而如果没有庞大的数据量，可以选择人为的设计，人为的设计系统可以把人类对问题的很多认识直接注入系统中。</p>
 <p><br></p>
-</the>
+</the></excerpt>
       
     </div>
     
@@ -472,7 +472,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/" title="Word2Vec笔记：Negative Sample">http://zangbo.me/2017/06/06/Word2Vec_Negative-Sample/</a>
+    <a href="http://zangbo.me/2017/09/08/DeepLearning_ai_5/" title="DeepLearning.ai 笔记（五）">http://zangbo.me/2017/09/08/DeepLearning_ai_5/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -487,7 +487,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Word2Vec/" rel="tag"># Word2Vec</a>
+            <a href="/tags/deeplearning-ai/" rel="tag"># deeplearning.ai</a>
           
         </div>
       
@@ -500,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/05/Word2Vec_skip-gram/" rel="next" title="Word2Vec笔记：Skip-Gram模型">
-                <i class="fa fa-chevron-left"></i> Word2Vec笔记：Skip-Gram模型
+              <a href="/2017/09/06/DeepLearning_ai_4/" rel="next" title="DeepLearning.ai 笔记（四）">
+                <i class="fa fa-chevron-left"></i> DeepLearning.ai 笔记（四）
               </a>
             
           </div>
@@ -509,10 +509,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/12/GiftForGirlfriend/" rel="prev" title="送给女友的生日礼物">
-                送给女友的生日礼物 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -656,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单词对和短语"><span class="nav-number">2.</span> <span class="nav-text">单词对和短语</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#降采样高频单词"><span class="nav-number">3.</span> <span class="nav-text">降采样高频单词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#采样频率"><span class="nav-number">4.</span> <span class="nav-text">采样频率</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负采样-Negative-Sampling"><span class="nav-number">5.</span> <span class="nav-text">负采样(Negative Sampling)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择负采样"><span class="nav-number">6.</span> <span class="nav-text">选择负采样</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">7.</span> <span class="nav-text">后记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#正交化"><span class="nav-number">1.</span> <span class="nav-text">正交化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#贝叶斯误差"><span class="nav-number">2.</span> <span class="nav-text">贝叶斯误差</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#误差分析"><span class="nav-number">3.</span> <span class="nav-text">误差分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#迁移学习"><span class="nav-number">4.</span> <span class="nav-text">迁移学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多任务学习"><span class="nav-number">5.</span> <span class="nav-text">多任务学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#端到端系统"><span class="nav-number">6.</span> <span class="nav-text">端到端系统</span></a></li></ol></div>
             
 
           </div>

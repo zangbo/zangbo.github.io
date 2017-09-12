@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-09-12T09:36:03.000Z</updated>
+  <updated>2017-09-12T12:49:06.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -16,59 +16,226 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>deeplearning</title>
-    <link href="http://zangbo.me/2017/09/07/DeepLearning_ai_3/"/>
-    <id>http://zangbo.me/2017/09/07/DeepLearning_ai_3/</id>
-    <published>2017-09-07T09:27:37.000Z</published>
-    <updated>2017-09-12T09:36:03.000Z</updated>
+    <title>DeepLearning.ai 笔记（五）</title>
+    <link href="http://zangbo.me/2017/09/08/DeepLearning_ai_5/"/>
+    <id>http://zangbo.me/2017/09/08/DeepLearning_ai_5/</id>
+    <published>2017-09-08T06:18:37.000Z</published>
+    <updated>2017-09-12T12:49:06.000Z</updated>
     
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Structuring Machine Learning Projects》的学习笔记，该课程介绍了在进行机器学习项目时需要注意的一些点，包括正交化方法，误差分析，迁移学习，多任务学习和端到端(end to end)系统。</p>
+<a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-
-
-<p>$$<br>J=-\frac{1}{m}\sum\limits_{i = 1}^{m}\large{(}\small  y^{(i)}\log\left(a^{<a href="i">L</a>}\right) + (1-y^{(i)})\log\left(1- a^{<a href="i">L</a>}\right) \large{)}<br>$$</p>
-<h2 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h2><p>$$<br>\begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}<br>$$</p>
-<p>$$<br>\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}<br>$$</p>
-<h2 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h2><p>$$<br>\begin{cases}<br>v_{W^{[l]}} = \beta_1 v_{W^{[l]}} + (1 - \beta_1) \frac{\partial J }{ \partial W^{[l]} } \\<br>v^{corrected}_{W^{[l]}} = \frac{v_{W^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{W^{[l]}} = \beta_2 s_{W^{[l]}} + (1 - \beta_2) (\frac{\partial J }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{W^{[l]}} = \frac{s_{W^{[l]}}}{1 - (\beta_2)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{W^{[l]}}}{\sqrt{s^{corrected}_{W^{[l]}}}+\varepsilon}<br>\end{cases}<br>$$</p>
-<ol>
-<li><p>hhhhh</p>
-</li>
-<li><ul>
-<li>df</li>
-<li>hh</li>
-</ul>
-</li>
-<li><p>woaini</p>
-</li>
-<li><p>hhhh</p>
 <p><br></p>
-</li>
-<li><p>d</p>
-<p>​</p>
-</li>
+<h1 id="正交化"><a href="#正交化" class="headerlink" title="正交化"></a>正交化</h1><p>正交化方法指的是在修改算法的一部分时不会对另一部分造成影响。其中一个反例是early stopping，当我们使用early stopping来改善验证集误差时，会对训练集误差产生影响，因此我们一般选择其他的避免过拟合的方式，比如正则化方法。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912203529_414qSz_15.jpeg" alt=""></p>
+<p>注意：如果在验证集表现好，在测试集表现差，那需要增加验证集的大小。</p>
+<p><br></p>
+<h1 id="贝叶斯误差"><a href="#贝叶斯误差" class="headerlink" title="贝叶斯误差"></a>贝叶斯误差</h1><p>贝叶斯误差被认为是能达到的极限误差，我们再怎么努力也无法超越。</p>
+<p>有时候会把人类水平误差认为是贝叶斯误差，然后把训练集误差和人类水平误差之间的差距称为可避免偏差，把训练集误差和验证集误差之间的差距称为方差，重点减少训练集误差还是验证集误差，取决于可避免偏差和误差谁更大一些。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204122_g3l9XM_16.jpeg" alt=""></p>
+<ol>
+<li>A例子表明应重点减少训练误差</li>
+<li>B例子表明应重点减少验证误差</li>
 </ol>
-</the>]]></content>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_aLGNLg_18.jpeg" alt=""></p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204206_8PoLQw_17.jpeg" alt=""></p>
+<p><br></p>
+<h1 id="误差分析"><a href="#误差分析" class="headerlink" title="误差分析"></a>误差分析</h1><p>找出验证集中错误分类的样本，对它们分类错误的原因进行分类统计，找出错误最多的原因进行重点改善。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_UjMb9A_19.jpeg" alt=""></p>
+<p>验证集和测试集分布必须一样，它俩和训练集分布可以不同。可以先用庞大的数据来做训练数据，例如高清网络猫图，然后用目标图像做验证和测试数据，例如手机上传的猫图。</p>
+<p>验证集和测试集误差有很大差距的话，说明对验证集过拟合了，需要增大验证集。</p>
+<p>这种情况下，我们可以从训练集再分出来一小部分座位训练-验证集，衡量它的误差。</p>
+<ol>
+<li>人类水平误差</li>
+<li>训练集误差</li>
+<li>训练-验证集误差</li>
+<li>验证集误差</li>
+<li>测试集误差</li>
+</ol>
+<p><br></p>
+<p>1-2之间差距表明可避免偏差bias。</p>
+<p>2-3之间差距表明方差variance</p>
+<p>3-4之间差距表明数据不匹配差距</p>
+<p>4-5之间差距表明验证集过拟合程度</p>
+<p><br></p>
+<p>做人工误差分析，看看训练集和验证集的样本差别，然后尽量让训练集像验证集。</p>
+<p><br></p>
+<h1 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h1><p>迁移学习适合目标任务训练数据集较少的情况。</p>
+<p>任务A迁移到B上，需要A和B有相同的输入，例如都是图像，或者都是音频。</p>
+<p>A的数据量要远大于B。</p>
+<p>A的低层次特征可以帮助B。</p>
+<p>可以A数据集上先训练好网络，然后把最后一层或者几层参数重新初始化，最后用B数据集进行重新训练。如果B数据集较大也可以把网络所有层都重新训练。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_3NLqmv_20.jpeg" alt=""></p>
+<p><br></p>
+<h1 id="多任务学习"><a href="#多任务学习" class="headerlink" title="多任务学习"></a>多任务学习</h1><p>例如多标签分类。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912204339_yxUXTh_21.jpeg" alt=""></p>
+<p>也可以应对标签有部分缺省的情况，这样在j加的时候只加有标注的类别的损失。</p>
+<p>在物体检测领域，自动驾驶领域多任务学习用的更多。大部分时候迁移学习用的更多。</p>
+<p>多个任务的底层特征对彼此都有帮助的前提下，可以用多任务学习。</p>
+<p>每个任务的数据量相差不大的情况下可以用多任务学习，效果会更好些。</p>
+<p>如果能训练一个足够大的神经网络，那么多任务学习的效果不会比训练多个神经网络效果差。</p>
+<p><br></p>
+<h1 id="端到端系统"><a href="#端到端系统" class="headerlink" title="端到端系统"></a>端到端系统</h1><p>端到端系统可能会需要更庞大的数据量，它省去了人为设计的很多环节，数据量庞大的情况下效果会特别好。</p>
+<p>然而如果没有庞大的数据量，可以选择人为的设计，人为的设计系统可以把人类对问题的很多认识直接注入系统中。</p>
+<p><br></p>
+</the></excerpt>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;
+      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
+
+&lt;p&gt;本笔记是课程《Structuring Machine Learning Projects》的学习笔记，该课程介绍了在进行机器学习项目时需要注意的一些点，包括正交化方法，误差分析，迁移学习，多任务学习和端到端(end to end)系统。&lt;/p&gt;
     
     </summary>
     
+      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="deeplearning.ai" scheme="http://zangbo.me/tags/deeplearning-ai/"/>
     
   </entry>
   
   <entry>
-    <title>DeepLearning.ai学习笔记（二）</title>
-    <link href="http://zangbo.me/2017/09/03/DeepLearning_ai_2/"/>
-    <id>http://zangbo.me/2017/09/03/DeepLearning_ai_2/</id>
-    <published>2017-09-03T13:21:33.000Z</published>
-    <updated>2017-09-07T09:33:06.000Z</updated>
+    <title>DeepLearning.ai 笔记（四）</title>
+    <link href="http://zangbo.me/2017/09/06/DeepLearning_ai_4/"/>
+    <id>http://zangbo.me/2017/09/06/DeepLearning_ai_4/</id>
+    <published>2017-09-06T10:27:37.000Z</published>
+    <updated>2017-09-12T12:27:28.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
-<p>最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。</p>
+<p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第三周学习笔记，主要内容为超参数的选择策略，Batch normalization(BN层)和softmax函数。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="超参数"><a href="#超参数" class="headerlink" title="超参数"></a>超参数</h1><p>超参数选择中，学习率是最重要的。可以采用随机撒点的策略，也可以又粗到细搜索的策略。</p>
+<p> 学习率的随机取值，可以采用对数坐标的随机取值：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_hEMvHU_11.jpeg" alt=""></p>
+<p>指数加权平均的超参数beta随机取值，可以对1-beta进行随机取值，然后采用对数坐标的方式：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_wwbVkR_10.jpeg" alt=""><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_t5wkc2_9.jpeg" alt=""></p>
+<p>在[-3, -1]之间随机取值。</p>
+<p>超参数搜索有两个方式：</p>
+<ol>
+<li>当设备资源有限时，可以采用“熊猫”的方式，只训练一个模型，然后一遍又一遍的逐步改善，逐步调试。</li>
+<li>当设备资源充足时，可以采用“鱼子酱”的方式，同时训练多个模型，然后选择其中效果较好的超参数。</li>
+</ol>
+<p><br></p>
+<h1 id="Batch-normalization"><a href="#Batch-normalization" class="headerlink" title="Batch normalization"></a>Batch normalization</h1><p>每次只是针对一个mini-batch来计算。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_23ljBT_12.jpeg" alt=""></p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_ulJssJ_13.jpeg" alt=""></p>
+<p>训练算法会把隐层神经元的均值和方差设置成某一固定值。一般是对Z进行BN处理。</p>
+<p>使用BN时，参数b通常没用，一般效果会被$\beta$取代，可以省去或者设置为0。</p>
+<p>$\beta$和$\gamma$并非超参数，而是可以被训练的参数，它们的size等于Z。</p>
+<p>BN层减少了后层神经元输入分布的改变程度，使得它们更加稳定。前层改变。迫使后层适应的程度减小了，它减少了前后层的联系程度，使得网络每层都可以自己学习，有助于加速整个网络的学习。</p>
+<p>BN层也有轻微的正则化效果，因为每一个Mini-batch的均值和标准差都是带有一定的噪音的，因此会使得隐层神经元不会过分依赖前面任何一个神经元输出。因为噪音比较小，所以是轻微的正则化效果，而应用较大的batch size可以减少正则化效果，因为噪声减少了。可以把BN和dropout同时使用。</p>
+<p>把BN当做一个加速的方式，不要当作正则化的方式，正则化是附带的作用。BN还可以有助于训练更深的神经网络。</p>
+<p>在测试时，在所有的Mini-batch上对均值和标准差进行指数加权平均，最后用平均后的均值和标准差，结合训练后得到的$\beta$和$\gamma$，来进行测试。</p>
+<p><br></p>
+<h1 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912201338_Oq2TL1_14.jpeg" alt=""></p>
+<p>softmax梯度反向传播时，dZl = y^ - y，和logistics回归相同，但和logistics回归维度不同。反向传播时的梯度计算如下（y为标签）：<br>$$<br>dZ^{[l]}=\hat{y}-y<br>$$<br><br></p>
+</the></excerpt>]]></content>
+    
+    <summary type="html">
+    
+      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
+
+&lt;p&gt;本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第三周学习笔记，主要内容为超参数的选择策略，Batch normalization(BN层)和softmax函数。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="deeplearning.ai" scheme="http://zangbo.me/tags/deeplearning-ai/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DeepLearning.ai 笔记（三）</title>
+    <link href="http://zangbo.me/2017/09/05/DeepLearning_ai_3/"/>
+    <id>http://zangbo.me/2017/09/05/DeepLearning_ai_3/</id>
+    <published>2017-09-05T09:27:37.000Z</published>
+    <updated>2017-09-12T12:08:53.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第二周学习笔记，主要内容为三种不同的梯度下降且重点介绍了Mini-batch gradient descent，指数加权平均，指数加权平均中的偏差修正，动量(Momentum)，RMSprop，Adam算法以及神经网络中的局部最优问题。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h1><ol>
+<li>Batch gradient descent：每次训练迭代处理所有的训练样本，速度慢。</li>
+<li>Mini-batch gradient descent：每次训练迭代尺寸为Mini-batch size的一部分样本。</li>
+<li>stochastic gradient descent：每次训练迭代单个样本，效率低。</li>
+</ol>
+<p><br></p>
+<p>把整个训练集遍历一遍称为一个epoch。</p>
+<p>sgd和Mini-batch gd永远不会收敛，只会在最小值附近波动。</p>
+<p>一般Mini-batch 大小为64-512，2的次方速度更快，且需要考虑CPU/GPU内存，这是个超参数。</p>
+<p> <br></p>
+<p>用Mini-batch gd一般分两步：</p>
+<ol>
+<li>打乱顺序</li>
+<li>分成大小为Mini-batch size的数据集列表。</li>
+</ol>
+<p><br></p>
+<h1 id="指数加权移动平均"><a href="#指数加权移动平均" class="headerlink" title="指数加权移动平均"></a>指数加权移动平均</h1><p>指数加权移动平均，也叫指数加权平均，公式如下。若$\beta =0.9$，相当于今天的加权温度等于昨天温度的0.9倍加上今天温度的0.1倍，也就相当于平均了过去10天($\frac{1}{1-0.9}$)的温度作为今天的加权温度。$\beta$越小，曲线越延后，也越平缓。<br>$$<br>v_t = \beta v_{t-1}+(1-\beta)\theta_t<br>$$<br>指数加权平均，如果权值为0.9，则$0.9^{10}$约等于1/e，也就是大概原值的约1/3，小于这个值我们就认为贡献不是很大。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195258_bdJdyB_2.jpeg" alt=""></p>
+<p><br></p>
+<h2 id="偏差修正"><a href="#偏差修正" class="headerlink" title="偏差修正"></a>偏差修正</h2><p>一般计算时令$v_0=0$，固在初期计算值比较低，可以用$\frac{v_t}{1-\beta^t}$代替$v_t$，修正初期数值，而后期作用就不是这么大了。也有人不用偏差修正，直接熬过初期的一些计算。</p>
+<p><br></p>
+<h1 id="动量-Momentum"><a href="#动量-Momentum" class="headerlink" title="动量(Momentum)"></a>动量(Momentum)</h1><p>每次迭代，在当前mini-batch下计算：<br>$$<br>\begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}<br>$$</p>
+<p>$$<br>\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}<br>$$</p>
+<p>$\beta$是超参数，最常用的是0.9，可以加速梯度下降，加快训练速度。</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195530_K7bia8_4.jpeg" alt=""></p>
+<p>从蓝色变为红色，公式加号前面相当于速度，后面的梯度项相当于加速度，相当于增加了一个动量，可以使用更大的学习率。</p>
+<p><br></p>
+<h1 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912195554_tMgYh7_5.jpeg" alt=""></p>
+<p>假设水平方向为W参数，垂直方向为b参数。可以看出b方向梯度较大，$db^2$也就更大，$S_{db}$也就更大，那么最后b的更新步长也就更小，因此在垂直方向上更新步长会减小，水平方向相对更大，所以更新曲线从蓝色变为了绿色，加快了学习速度。</p>
+<p>可以使用更大的学习率，$\epsilon$一般为了防止分母变为0，一般设置$10^{-8}$。</p>
+<p><br> </p>
+<h1 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h1><p>Adam算法结合了Momentum和RMSprop。<br>$$<br>\begin{cases}<br>v_{W^{[l]}} = \beta_1 v_{W^{[l]}} + (1 - \beta_1) \frac{\partial J }{ \partial W^{[l]} } \\<br>v^{corrected}_{W^{[l]}} = \frac{v_{W^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{W^{[l]}} = \beta_2 s_{W^{[l]}} + (1 - \beta_2) (\frac{\partial J }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{W^{[l]}} = \frac{s_{W^{[l]}}}{1 - (\beta_2)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{W^{[l]}}}{\sqrt{s^{corrected}_{W^{[l]}}}+\varepsilon}<br>\end{cases}<br>$$<br><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200303_I5mLOR_6.jpeg" alt=""></p>
+<p>超参数设置建议：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200306_F5SYHx_7.jpeg" alt=""></p>
+<p>平时一般只需要把后三者超参数调整成这三个值即可，然后主要调整学习率超参数。</p>
+<p><br></p>
+<h1 id="局部最优问题"><a href="#局部最优问题" class="headerlink" title="局部最优问题"></a>局部最优问题</h1><p><img src="http://orwbuystz.bkt.clouddn.com/deeplearning_ai/20170912200415_T0cfp3_8.jpeg" alt=""></p>
+<p>局部最优问题更像是一个马鞍形的问题。</p>
+<p>我们不太可能被困在一个很差的局部最优点上，如果我们训练一个较大的神经网络，存在较多参数，并且成本函数被定义在较高的维度空间。</p>
+<p>平稳区域是一个很大的问题，因为在这个区域参数会更新的很慢，这时Momentum、RMSprop和Adam等算法就起到了作用。</p>
+<p><br></p>
+</the></excerpt>]]></content>
+    
+    <summary type="html">
+    
+      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
+
+&lt;p&gt;本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第二周学习笔记，主要内容为三种不同的梯度下降且重点介绍了Mini-batch gradient descent，指数加权平均，指数加权平均中的偏差修正，动量(Momentum)，RMSprop，Adam算法以及神经网络中的局部最优问题。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://zangbo.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="deeplearning.ai" scheme="http://zangbo.me/tags/deeplearning-ai/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DeepLearning.ai 笔记（二）</title>
+    <link href="http://zangbo.me/2017/09/03/DeepLearning_ai_2/"/>
+    <id>http://zangbo.me/2017/09/03/DeepLearning_ai_2/</id>
+    <published>2017-09-03T13:21:33.000Z</published>
+    <updated>2017-09-12T12:20:39.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -95,7 +262,7 @@
 <p><br></p>
 <h1 id="降低方差-amp-减小过拟合"><a href="#降低方差-amp-减小过拟合" class="headerlink" title="降低方差&amp;减小过拟合"></a>降低方差&amp;减小过拟合</h1><h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>正则化方法分为多种，用的比较多的是L2正则化和dropout。</p>
 <p><br></p>
-<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>使用L2正则化的交叉熵损失：<br>$$<br>J{regularized} = \small \underbrace{-\frac{1}{m} \sum\limits{i = 1}^{m} \large{(}\small y^{(i)}\log\left(a^{L}\right) + (1-y^{(i)})\log\left(1- a^{L}\right) \large{)} }\text{cross-entropy cost} + \underbrace{\frac{1}{m} \frac{\lambda}{2} \sum\limits_l\sum\limits_k\sum\limits_j W{k,j}^{[l]2} }_\text{L2 regularization cost}<br>$$<br>正则化用于减少方差，一般用L2正则化而不用L1，因为L1正则化倾向于把W变得很稀疏，会有很多0。L2正则化在代价函数后面加上$\frac{\lambda}{2m} ||W||^2$，因为<code>lambda</code>是python的保留字，所以我们用<code>lambd</code>表示正则化系数，这是个超参数。在训练时，在dW项后面加一个$\frac{\lambda}{m}W$，即正则化项总是倾向于使得W减少，相当于乘了一个小于1的权重衰减系数（weightdecay)。<br>$$<br>\frac{d}{dW} ( \frac{1}{2}\frac{\lambda}{m}  W^2) = \frac{\lambda}{m} W<br>$$<br>关于正则化为什么有用，其中一种说法是，当使用正则化时，整个网络会被迫使得一部分参数项变小，进而使得原本复杂的网络变的简单，相当于变相的把复杂的神经网络简单化，也就减小了过拟合的程度。</p>
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>使用L2正则化的交叉熵损失：<br>$$<br>J{regularized} = \small \underbrace{-\frac{1}{m} \sum\limits{i = 1}^{m} \large{(}\small y^{(i)}\log\left(a^{L}\right) + (1-y^{(i)})\log\left(1- a^{L}\right) \large{)} }_\text{cross-entropy cost} + \underbrace{\frac{1}{m} \frac{\lambda}{2} \sum\limits_l\sum\limits_k\sum\limits_j W{k,j}^{[l]2} }_\text{L2 regularization cost}<br>$$<br>正则化用于减少方差，一般用L2正则化而不用L1，因为L1正则化倾向于把W变得很稀疏，会有很多0。L2正则化在代价函数后面加上$\frac{\lambda}{2m} ||W||^2$，因为<code>lambda</code>是python的保留字，所以我们用<code>lambd</code>表示正则化系数，这是个超参数。在训练时，在dW项后面加一个$\frac{\lambda}{m}W$，即正则化项总是倾向于使得W减少，相当于乘了一个小于1的权重衰减系数（weightdecay)。<br>$$<br>\frac{d}{dW} ( \frac{1}{2}\frac{\lambda}{m}  W^2) = \frac{\lambda}{m} W<br>$$<br>关于正则化为什么有用，其中一种说法是，当使用正则化时，整个网络会被迫使得一部分参数项变小，进而使得原本复杂的网络变的简单，相当于变相的把复杂的神经网络简单化，也就减小了过拟合的程度。</p>
 <p><br></p>
 <p>总结：</p>
 <ol>
@@ -219,7 +386,7 @@
     
       &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
 
-&lt;p&gt;最近在学习Andrew Ng（吴恩达）开设的deeplearning.ai课程，本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。&lt;/p&gt;
+&lt;p&gt;本笔记是课程《Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization》的第一周学习笔记，主要内容是数据集划分，偏差和方差，解决过拟合问题的正则化方法（包括L2正则化和dropout），Data augmentation和early stopping，加速训练的方法像归一化输入，Xavier初始化权值方法，以及确保反向传播的梯度检验。&lt;/p&gt;
     
     </summary>
     
@@ -231,15 +398,15 @@
   </entry>
   
   <entry>
-    <title>deeplearning.ai学习笔记（一）</title>
+    <title>DeepLearning.ai 笔记（一）</title>
     <link href="http://zangbo.me/2017/09/03/DeepLearning_ai_1/"/>
     <id>http://zangbo.me/2017/09/03/DeepLearning_ai_1/</id>
     <published>2017-09-03T04:39:44.000Z</published>
-    <updated>2017-09-03T05:34:10.000Z</updated>
+    <updated>2017-09-12T11:22:39.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
-<p>最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。</p>
+<p>最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《Neural Networks and Deep Learning》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -279,7 +446,7 @@
     
       &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
 
-&lt;p&gt;最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《神经网络和深度学习》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。&lt;/p&gt;
+&lt;p&gt;最近对Andrew Ng（吴恩达）新开的课程进行了学习，该系列课程共五门课，我首先学习了第一门课《Neural Networks and Deep Learning》，本课程较为基础，适合查缺补漏。观看过程中整理了一系列笔记，以供以后回顾使用。&lt;/p&gt;
     
     </summary>
     
@@ -2422,274 +2589,6 @@
     
     
       <category term="TensorFlow" scheme="http://zangbo.me/tags/TensorFlow/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>爬虫笔记（四）：获取某地历史天气数据</title>
-    <link href="http://zangbo.me/2017/06/22/Crawler_4/"/>
-    <id>http://zangbo.me/2017/06/22/Crawler_4/</id>
-    <published>2017-06-22T11:28:01.000Z</published>
-    <updated>2017-07-15T06:59:09.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
-
-<p>本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。</p>
-<p>中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。</p>
-<p>所有代码基于python3.5版本。</p>
-<a id="more"></a>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近参加了天池的一个大数据竞赛，因为需要用到江苏省扬中市的历史天气信息，所以就写了个简单的爬虫程序来爬取。有很多网站都提供了历史天气，这里我们选择的网站是：<a href="http://lishi.tianqi.com/yangzhong/index.html" target="_blank" rel="external">扬中市历史天气-历史天气网</a>。</p>
-<p><br></p>
-<h1 id="分析网站"><a href="#分析网站" class="headerlink" title="分析网站"></a>分析网站</h1><p>1、打开上述网站，往下滑动，可以看到有一栏记录了该地每个月的天气信息，右键打开审查元素，查看该信息所在的标签，发现每个月的天气信息都在标签<code>&lt;div class=&#39;tqtongji1&#39;&gt;</code>下面的<code>&lt;a&gt;</code>标签中。</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_p0q980_2.jpeg" alt="历史月份信息"></center>
-
-<p><br></p>
-<p>2、用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji1&#39;).find_all(&#39;a&#39;)</code>命令得到所有月份的信息，提取出其中的链接，这里只提取最近30个月的信息。</p>
-<p><br></p>
-<p>3、打开其中一个月份链接，右键审查元素，发现该月份每天的天气信息都在标签<code>&lt;div class=&#39;tqtongji2&#39;&gt;</code>下面的<code>&lt;li&gt;</code>标签中。</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XtWKBE_3.jpeg" alt="部分天气信息"></center>
-
-<p><br></p>
-<p>4、用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;li&#39;)</code>命令得到该月份每天的部分天气信息并保存在<code>list</code>中，同时用<code>find(&#39;div&#39;, class_=&#39;tqtongji2&#39;).find_all(&#39;a&#39;)</code>命令提取出其中的链接。</p>
-<p><br></p>
-<p>5、打开其中一天的链接，右键审查元素，发现该天的其他天气信息都在标签<code>&lt;div class=&#39;history_sh&#39;&gt;</code>下面的<code>&lt;span&gt;</code>标签中。</p>
-<center><img src="http://orwbuystz.bkt.clouddn.com/爬虫笔记/20170622200503_XNW30r_4.jpeg" alt="其他天气信息"></center>
-
-<p><br></p>
-<p>6、用Beautiful Soup对象的<code>find(&#39;div&#39;, class_=&#39;history_sh&#39;).find_all(&#39;span&#39;)</code>命令提取出该天的其他天气信息并保存在<code>list</code>中。</p>
-<p><br></p>
-<p>7、利用numpy数组和pandas的DataFrame结构对提取出的数据进行整合，最后输出为CSV文件。</p>
-<p><br></p>
-<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">	</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">History_weather</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">begin_url</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_index = self.get_all_weather_index(url)</div><div class="line">        all_weather_index = all_weather_index[:<span class="number">30</span>]</div><div class="line">        print(<span class="string">"Get all weather index!"</span>)</div><div class="line">        result_weather = self.get_all_weather(all_weather_index)</div><div class="line">        result_weather.to_csv(<span class="string">'all_weather.csv'</span>, index=<span class="keyword">False</span>)</div><div class="line">        print(<span class="string">'Save all weather success!'</span>)</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_soup</span><span class="params">(self, url)</span>:</span></div><div class="line">        headers = &#123;</div><div class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 \</span></div><div class="line">            (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'&#125;</div><div class="line">        html = requests.get(url, headers)</div><div class="line">        soup = BeautifulSoup(html.text, <span class="string">'lxml'</span>)</div><div class="line">        <span class="keyword">return</span> soup</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather_index</span><span class="params">(self, url)</span>:</span></div><div class="line">        all_weather_soup = self.get_soup(url)</div><div class="line">        all_weather_index = all_weather_soup.find(</div><div class="line">            <span class="string">'div'</span>, class_=<span class="string">'tqtongji1'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">        <span class="keyword">return</span> all_weather_index</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all_weather</span><span class="params">(self, all_weather_index)</span>:</span></div><div class="line">        all_month_weather = list()</div><div class="line">        day_weather = list()</div><div class="line">        	</div><div class="line">        <span class="keyword">for</span> weather <span class="keyword">in</span> all_weather_index:</div><div class="line">            month_url = weather[<span class="string">'href'</span>]</div><div class="line">            month_name = weather.get_text()</div><div class="line">            month_weather_soup = self.get_soup(month_url)</div><div class="line">            month_weather = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'li'</span>)</div><div class="line">            day_weather_url = month_weather_soup.find(</div><div class="line">                <span class="string">'div'</span>, class_=<span class="string">'tqtongji2'</span>).find_all(<span class="string">'a'</span>)</div><div class="line">            <span class="keyword">for</span> day <span class="keyword">in</span> day_weather_url:</div><div class="line">                day_url = day[<span class="string">'href'</span>]</div><div class="line">                day_soup = self.get_soup(day_url)</div><div class="line">                day_text = day_soup.find(</div><div class="line">                    <span class="string">'div'</span>, class_=<span class="string">'history_sh'</span>).find_all(<span class="string">'span'</span>)</div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> day_text:</div><div class="line">                    day_weather.append(i.get_text())</div><div class="line">            weather_list = list()</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> month_weather:</div><div class="line">                weather_list.append(i.get_text())</div><div class="line">            weather_list = weather_list[<span class="number">6</span>:]</div><div class="line">            all_month_weather = all_month_weather + weather_list</div><div class="line">            print(<span class="string">"Get weather :"</span> + month_name)</div><div class="line">            	</div><div class="line">        day_weather = np.array(day_weather).reshape(<span class="number">-1</span>, <span class="number">8</span>)</div><div class="line">        day_weather = DataFrame(day_weather, columns=[</div><div class="line">            <span class="string">'Ultraviolet'</span>, <span class="string">'Dress'</span>, <span class="string">'Travel'</span>, <span class="string">'Comfort_level'</span>,</div><div class="line">            <span class="string">'Morning_exercise'</span>, <span class="string">'Car_wash'</span>, <span class="string">'Drying_index'</span>, <span class="string">'Breath_allergy'</span>])</div><div class="line">        all_month_weather = np.array(all_month_weather).reshape(<span class="number">-1</span>, <span class="number">6</span>)</div><div class="line">        all_month_weather = DataFrame(all_month_weather, columns=[</div><div class="line">            <span class="string">'Date'</span>, <span class="string">'Max_temp'</span>, <span class="string">'Min_temp'</span>, </div><div class="line">            <span class="string">'Whether'</span>, <span class="string">'Wind_direction'</span>, <span class="string">'Wind_power'</span>])</div><div class="line">        print(all_month_weather.shape)</div><div class="line">        print(day_weather.shape)</div><div class="line">        result_weather = pd.merge(</div><div class="line">            all_month_weather, day_weather, left_index=<span class="keyword">True</span>, right_index=<span class="keyword">True</span>)</div><div class="line">        <span class="keyword">return</span> result_weather</div><div class="line">	</div><div class="line">history_weather = History_weather()</div><div class="line">begin_url = <span class="string">'http://lishi.tianqi.com/yangzhong/index.html'</span></div><div class="line">history_weather.begin_url(begin_url)</div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>打开<code>all_weather.csv</code>文件：</p>
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Max_temp</th>
-<th>Min_temp</th>
-<th>Whether</th>
-<th>…</th>
-<th>Breath_allergy</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2017-04-01</td>
-<td>18</td>
-<td>8</td>
-<td>晴</td>
-<td>…</td>
-<td>极易</td>
-</tr>
-<tr>
-<td>2017-04-02</td>
-<td>22</td>
-<td>10</td>
-<td>晴</td>
-<td>…</td>
-<td>极易</td>
-</tr>
-<tr>
-<td>2017-04-03</td>
-<td>24</td>
-<td>12</td>
-<td>多云</td>
-<td>…</td>
-<td>极易</td>
-</tr>
-<tr>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-<tr>
-<td>2014-11-30</td>
-<td>10</td>
-<td>2</td>
-<td>多云转晴</td>
-<td>…</td>
-<td>极不易发</td>
-</tr>
-</tbody>
-</table>
-<p>共得到910天、14项天气特征数据。</p>
-<p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>以上只是简单的调用Requests和Beautiful Soup来进行爬取，是一个非常简单的爬虫实现，后面我们会学习更加高阶的爬虫方法。</p>
-<p>爬虫源代码可以在我的<a href="https://github.com/zangbo/MachineLearning/tree/master/Web%20Crawler/history%20weather" target="_blank" rel="external">Github</a>上下载。</p>
-<p><br></p>
-</the></excerpt>]]></content>
-    
-    <summary type="html">
-    
-      &lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt; 
-
-&lt;p&gt;本文记录了爬虫的一个简单实战应用，因为前不久做了个竞赛需要用到历史天气，所以就写了个简单的爬虫程序，利用Requests库和Beautiful Soup库爬取某地的历史天气记录。&lt;/p&gt;
-&lt;p&gt;中间的数据整合方便起见调用了numpy库和pandas库，关于两者的详细使用方法大家可以去查阅相关资料。&lt;/p&gt;
-&lt;p&gt;所有代码基于python3.5版本。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="数据挖掘" scheme="http://zangbo.me/categories/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
-    
-    
-      <category term="爬虫" scheme="http://zangbo.me/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>爬虫笔记（三）：BeautifulSoup基础</title>
-    <link href="http://zangbo.me/2017/06/15/Crawler_3/"/>
-    <id>http://zangbo.me/2017/06/15/Crawler_3/</id>
-    <published>2017-06-15T13:48:57.000Z</published>
-    <updated>2017-07-15T07:00:01.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p><excerpt in="" index="" |="" 首页摘要=""><br>本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了<code>find_all()</code>和<code>find()</code>    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。<a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p><br></p>
-<h1 id="Beautiful-Soup介绍"><a href="#Beautiful-Soup介绍" class="headerlink" title="Beautiful Soup介绍"></a>Beautiful Soup介绍</h1><p>我们之前已经用Requests获得了需要的页面，接下来需要从页面中提取出我们想要的信息，我们可以选择用正则表达式，但对于很多新手来说正则表达式使用的不熟练会产生很多不必要的麻烦。而对于很多任务来说，有一个工具即高效又便捷，它就是Beautiful Soup。</p>
-<p>Beautiful Soup是一个可以从HTML或XML文件中提取数据的Python库，它能够通过你喜欢的转换器实现惯用的文档导航，查找，修改文档的方式。因为BeautifulSoup用法太多，本文仅介绍在爬虫中常用的功能，如果需要了解更多，请查阅官方文档。</p>
-<p>文章中代码输出结果用#表示。</p>
-<p><br></p>
-<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>下面一段HTML代码将作为我们的例子反复使用：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">html_doc = """</div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>Once upon a time there were three little sisters; and their names were</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/elsie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link1"</span>&gt;</span>Elsie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>,</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/lacie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link2"</span>&gt;</span>Lacie<span class="tag">&lt;/<span class="name">a</span>&gt;</span> and</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/tillie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link3"</span>&gt;</span>Tillie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>;</div><div class="line">and they lived at the bottom of a well.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">"""</div></pre></td></tr></table></figure>
-<p>使用BeautifulSoup解析这段代码，能够得到一个<code>BeautifulSoup</code>的对象，并能按照标准的缩进格式的结构输出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc)</div><div class="line">	</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;title&gt;</span></div><div class="line"><span class="comment">#    The Dormouse's story</span></div><div class="line"><span class="comment">#   &lt;/title&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="title"&gt;</span></div><div class="line"><span class="comment">#    &lt;b&gt;</span></div><div class="line"><span class="comment">#     The Dormouse's story</span></div><div class="line"><span class="comment">#    &lt;/b&gt;</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    Once upon a time there were three little sisters; and their names were</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;</span></div><div class="line"><span class="comment">#     Elsie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ,</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Lacie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    and</span></div><div class="line"><span class="comment">#    &lt;a class="sister" href="http://example.com/tillie" id="link2"&gt;</span></div><div class="line"><span class="comment">#     Tillie</span></div><div class="line"><span class="comment">#    &lt;/a&gt;</span></div><div class="line"><span class="comment">#    ; and they lived at the bottom of a well.</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#   &lt;p class="story"&gt;</span></div><div class="line"><span class="comment">#    ...</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="安装-Beautiful-Soup"><a href="#安装-Beautiful-Soup" class="headerlink" title="安装 Beautiful Soup"></a>安装 Beautiful Soup</h1><p>Beautiful Soup有3和4两个版本，3版本目前已经停止开发，建议使用4版本。</p>
-<p>我们可以很方便的使用pip进行安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install beautifulsoup4</div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="安装解析器"><a href="#安装解析器" class="headerlink" title="安装解析器"></a>安装解析器</h1><p>Beautiful Soup支持Python标准库中的HTML解析器，还支持一些第三方的解析器，下表列出了主要的解析器，以及它们的优缺点：</p>
-<table>
-<thead>
-<tr>
-<th>解析器</th>
-<th>使用方法</th>
-<th>优势</th>
-<th>劣势</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Python标准库</td>
-<td><code>BeautifulSoup(markup, &quot;html.parser&quot;)</code></td>
-<td>Python的内置标准库执行速度适中文档容错能力强</td>
-<td>Python 2.7.3 or 3.2.2前的版本中文档容错能力差</td>
-</tr>
-<tr>
-<td>lxml HTML 解析器</td>
-<td><code>BeautifulSoup(markup, &quot;lxml&quot;)</code></td>
-<td>速度快文档容错能力强</td>
-<td>需要安装C语言库</td>
-</tr>
-<tr>
-<td>lxml XML 解析器</td>
-<td><code>BeautifulSoup(markup, [&quot;lxml&quot;, &quot;xml&quot;])``BeautifulSoup(markup, &quot;xml&quot;)</code></td>
-<td>速度快唯一支持XML的解析器</td>
-<td>需要安装C语言库</td>
-</tr>
-<tr>
-<td>html5lib</td>
-<td><code>BeautifulSoup(markup, &quot;html5lib&quot;)</code></td>
-<td>最好的容错性以浏览器的方式解析文档生成HTML5格式的文档</td>
-<td>速度慢不依赖外部扩展</td>
-</tr>
-</tbody>
-</table>
-<p>这里推荐使用lxml作为解析器，因为它的效率更高。</p>
-<p>可以用pip来安装lxml：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install lxml</div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="使用Beautiful-Soup"><a href="#使用Beautiful-Soup" class="headerlink" title="使用Beautiful Soup"></a>使用Beautiful Soup</h1><p>将一段文档传入BeautifulSoup 的构造方法，就能得到一个文档的对象，我们可以制定解析器。例如，我们将开头的例子传入BeautifulSoup，并使用lxml解析器：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc, <span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
-<p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构，每个节点都是Python对象，所有对象可以归纳为4种： <code>Tag</code> , <code>NavigableString</code> , <code>BeautifulSoup</code> , <code>Comment</code> 。</p>
-<p><br></p>
-<p>我们重点讲两个搜索方法：<code>find()</code>和<code>find_all()</code>，我们用这两种方法可以根据HTML文档的标签快速找到我们需要的内容。</p>
-<p>以开头提到的文档作为例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">html_doc = <span class="string">"""</span></div><div class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;p class="title"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;Once upon a time there were three little sisters; and their names were</div><div class="line">&lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;Elsie&lt;/a&gt;,</div><div class="line">&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; and</div><div class="line">&lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;;</div><div class="line">and they lived at the bottom of a well.&lt;/p&gt;</div><div class="line">&lt;p class="story"&gt;...&lt;/p&gt;</div><div class="line">"""</div><div class="line">	</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line">soup = BeautifulSoup(html_doc,<span class="string">'lxml'</span>)</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="find-all"><a href="#find-all" class="headerlink" title="find_all()"></a>find_all()</h2><p><strong>find_all(name, attrs, recursive, text, kwargs)</strong></p>
-<h3 id="name-参数"><a href="#name-参数" class="headerlink" title="name 参数"></a>name 参数</h3><p><code>name</code>参数可以查找所有名字为 <code>name</code> 的tag：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div></pre></td></tr></table></figure>
-<p><code>name</code>参数的值可以是字符串、正则表达式、列表、方法或是 <code>True</code></p>
-<p>例如：</p>
-<p>在<code>find_all()</code>中传入一个<strong>字符串</strong>参数，Beautiful Soup会查找与字符串完整匹配的内容，下面的例子用于查找文档中所有的<code>&lt;b&gt;</code>标签:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'b'</span>)</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;]</span></div></pre></td></tr></table></figure>
-<p>如果传入<strong>列表</strong>参数，Beautiful Soup会将与列表中任一元素匹配的内容返回。下面代码找到文档中所有<code>&lt;a&gt;</code>标签和<code>&lt;b&gt;</code>标签:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all([<span class="string">"a"</span>, <span class="string">"b"</span>])</div><div class="line"><span class="comment"># [&lt;b&gt;The Dormouse's story&lt;/b&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, </span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
-<p><code>find_all()</code>方法搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。</p>
-<p><br></p>
-<h3 id="keyword-参数"><a href="#keyword-参数" class="headerlink" title="keyword 参数"></a>keyword 参数</h3><p>1、如果一个指定名字的参数不是搜索内置的参数名，搜索时会把该参数当作指定名字tag的属性来搜索，如果包含一个名字为 <code>id</code> 的参数，Beautiful Soup会搜索每个tag的”id”属性：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="string">'link2'</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<p>2、如果传入 <code>href</code> 参数，Beautiful Soup会搜索每个tag的”href”属性:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(href=re.compile(<span class="string">"elsie"</span>))</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<p>3、利用<code>true</code>参数在文档树中查找所有包含 <code>id</code> 属性的tag，无论 <code>id</code> 的值是什么:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(id=<span class="keyword">True</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
-<p>搜索指定名字的属性时可以使用的参数值包括字符串、正则表达式、列表或是 <code>True</code></p>
-<p><br></p>
-<h3 id="按CSS搜索"><a href="#按CSS搜索" class="headerlink" title="按CSS搜索"></a>按CSS搜索</h3><p>按照CSS类名搜索tag的功能非常实用，但标识CSS类名的关键字 <code>class</code> 在Python中是保留字，使用 <code>class</code> 做参数会导致语法错误。这里我们可以通过 <code>class_</code> 参数搜索有指定CSS类名的tag:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>, class_=<span class="string">"sister"</span>)</div><div class="line"><span class="comment"># [&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Elsie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;,</span></div><div class="line"><span class="comment"># &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;]</span></div></pre></td></tr></table></figure>
-<p><code>class_</code> 参数同样接受不同类型的过滤器：字符串、正则表达式、方法或 <code>True</code> 。</p>
-<p><br></p>
-<h3 id="text-参数"><a href="#text-参数" class="headerlink" title="text 参数"></a>text 参数</h3><p>通过 <code>text</code> 参数可以搜搜文档中的字符串内容。与 <code>name</code> 参数的可选值一样，<code>text</code> 参数接受字符串、正则表达式、方法或 <code>True</code> ：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">soup.find_all(text=<span class="string">"Elsie"</span>)</div><div class="line"><span class="comment"># [u'Elsie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=[<span class="string">"Tillie"</span>, <span class="string">"Elsie"</span>, <span class="string">"Lacie"</span>])</div><div class="line"><span class="comment"># [u'Elsie', u'Lacie', u'Tillie']</span></div><div class="line">	</div><div class="line">soup.find_all(text=re.compile(<span class="string">"Dormouse"</span>))</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story"]</span></div><div class="line">	</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_the_only_string_within_a_tag</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="string">""</span>Return <span class="keyword">True</span> <span class="keyword">if</span> this string <span class="keyword">is</span> the only child of its parent tag.<span class="string">""</span></div><div class="line">    <span class="keyword">return</span> (s == s.parent.string)</div><div class="line">	</div><div class="line">soup.find_all(text=is_the_only_string_within_a_tag)</div><div class="line"><span class="comment"># [u"The Dormouse's story", u"The Dormouse's story", u'Elsie', u'Lacie', u'Tillie', u'...']</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><p>下面两行代码是等价的:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">"a"</span>)</div><div class="line">soup(<span class="string">"a"</span>)</div></pre></td></tr></table></figure>
-<p>这两行也是等价的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">soup.title.find_all(text=<span class="keyword">True</span>)</div><div class="line">soup.title(text=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
-<p><br></p>
-<h2 id="find"><a href="#find" class="headerlink" title="find()"></a>find()</h2><p><strong>find(name, attrs, recursive, text, kwargs)</strong></p>
-<p><code>find_all()</code> 方法将返回文档中符合条件的所有tag，尽管有时候我们只想得到一个结果.比如文档中只有一个<code>&lt;body&gt;</code>标签，那么使用 <code>find_all()</code>方法来查找<code>&lt;body&gt;</code>标签就不太合适， 使用 <code>find_all</code> 方法并设置 <code>limit=1</code> 参数不如直接使用 <code>find()</code> 方法。下面两行代码是等价的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.find_all(<span class="string">'title'</span>, limit=<span class="number">1</span>)</div><div class="line"><span class="comment"># [&lt;title&gt;The Dormouse's story&lt;/title&gt;]</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">'title'</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
-<p>唯一的区别是 <code>find_all()</code> 方法的返回结果是值包含一个元素的列表,而 <code>find()</code> 方法直接返回结果.</p>
-<p><code>find_all()</code> 方法没有找到目标是返回空列表， <code>find()</code> 方法找不到目标时返回 <code>None</code>。</p>
-<p><br></p>
-<h3 id="简写-1"><a href="#简写-1" class="headerlink" title="简写"></a>简写</h3><p><code>soup.head.title</code>是利用tag的名字来简写，这个简写的原理就是多次调用当前tag的<code>find()</code>方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">soup.head.title</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div><div class="line">	</div><div class="line">soup.find(<span class="string">"head"</span>).find(<span class="string">"title"</span>)</div><div class="line"><span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="输出文本"><a href="#输出文本" class="headerlink" title="输出文本"></a>输出文本</h1><p>如果只想得到tag中包含的文本内容，那么可以采用<code>get_text()</code>方法，这个方法获取到tag中包含的所有文版内容，包括子孙tag中的内容，并将结果作为Unicode字符串返回：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">'&lt;a href="http://example.com/"&gt;\nI linked to &lt;i&gt;example.com&lt;/i&gt;\n&lt;/a&gt;'</span></div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">	</div><div class="line">soup.get_text()</div><div class="line"><span class="comment"># u'\nI linked to example.com\n'</span></div><div class="line">soup.i.get_text()</div><div class="line"><span class="comment"># u'example.com'</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="关于编码"><a href="#关于编码" class="headerlink" title="关于编码"></a>关于编码</h1><p>使用Beautiful Soup解析后，文档都被转换成了Unicode。</p>
-<p>Beautiful Soup用了<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码。<code>BeautifulSoup</code>对象的<code>.original_encoding</code>属性记录了自动识别编码的结果：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">"&lt;h1&gt;Sacr\xc3\xa9 bleu!&lt;/h1&gt;"</span></div><div class="line">soup = BeautifulSoup(markup,<span class="string">'lxml'</span>)</div><div class="line">soup.original_encoding</div><div class="line"><span class="comment"># 'utf-8'</span></div></pre></td></tr></table></figure>
-<p><strong>注意：</strong></p>
-<p>如果先用<code>r = requests.get(url)</code>指令获得了html页面，建议先用指令<code>r.encoding</code>判断<code>r.text</code>所用的编码方式和源html是否相同（可以通过查看html中的charset= 来判断源html采用的编码方式），如果不同的话要用<code>r.encoding=</code>进行修改，再用<code>soup = BeautifulSoup(r.text,&#39;lxml&#39;)</code>命令。因为<code>r.text</code>会根据当前的编码方式把html转化为Unicode编码输出，如果html包含汉字，而没有采用<code>utf-8</code>进行编码的话，<code>r.text</code>没有办法把汉字转化为相应的Unicode编码，再送进Beautiful Soup中也就无法得到汉字信息了。</p>
-<p>也可以直接用<code>soup = BeautifulSoup(r.content,&#39;lxml&#39;)</code>指令，因为<code>r.content</code>返回的是bytes型原始编码信息，而Beautiful Soup可以用<strong>编码自动检测</strong>子库来识别当前文档编码并转换成Unicode编码，但获取文本信息时不建议这样使用，一般来说图像等多媒体内容用content更多一些。</p>
-<p><br></p>
-<p>而通过Beautiful Soup<strong>输出文档</strong>时，不管输入文档是什么编码方式，输出编码均为UTF-8编码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">markup = <span class="string">b'''</span></div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;meta content="text/html; charset=ISO-Latin-1" http-equiv="Content-type" /&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body&gt;</div><div class="line">    &lt;p&gt;Sacr\xe9 bleu!&lt;/p&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div><div class="line">'''</div><div class="line">	</div><div class="line">soup = BeautifulSoup(markup)</div><div class="line">print(soup.prettify())</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=utf-8" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment">#  &lt;/head&gt;</span></div><div class="line"><span class="comment">#  &lt;body&gt;</span></div><div class="line"><span class="comment">#   &lt;p&gt;</span></div><div class="line"><span class="comment">#    Sacré bleu!</span></div><div class="line"><span class="comment">#   &lt;/p&gt;</span></div><div class="line"><span class="comment">#  &lt;/body&gt;</span></div><div class="line"><span class="comment"># &lt;/html&gt;</span></div></pre></td></tr></table></figure>
-<p>如果不想用UTF-8编码输出，可以将编码方式传入<code>prettify()</code>方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">print(soup.prettify(<span class="string">"latin-1"</span>))</div><div class="line"><span class="comment"># &lt;html&gt;</span></div><div class="line"><span class="comment">#  &lt;head&gt;</span></div><div class="line"><span class="comment">#   &lt;meta content="text/html; charset=latin-1" http-equiv="Content-type" /&gt;</span></div><div class="line"><span class="comment"># ...</span></div></pre></td></tr></table></figure>
-<p><br></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>关于Beautiful Soup还有很多其他用法，这里只是重点介绍了运用最多的两个搜索方法<code>find_all()</code>和<code>find()</code>，如果想了解更多的使用方法，请参考官方文档。</p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>官方文档：<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.html#" target="_blank" rel="external">Beautiful Soup Documentation — Beautiful Soup 4.4.0 documentation</a></p>
-<p><br></p>
-</the>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;本文介绍了Beautiful Soup库以及一些基础用法，并主要介绍了&lt;code&gt;find_all()&lt;/code&gt;和&lt;code&gt;find()&lt;/code&gt;    两个搜索方法。利用Beautiful Soup我们可以很方便的从页面中提取信息，该库兼容python2和3版本。
-    
-    </summary>
-    
-      <category term="数据挖掘" scheme="http://zangbo.me/categories/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
-    
-    
-      <category term="爬虫" scheme="http://zangbo.me/tags/%E7%88%AC%E8%99%AB/"/>
     
   </entry>
   
