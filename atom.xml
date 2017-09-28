@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zangbo.me/"/>
-  <updated>2017-09-27T11:45:11.000Z</updated>
+  <updated>2017-09-28T03:17:28.000Z</updated>
   <id>http://zangbo.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zangbo.me/2017/09/27/CutConcatVideo/"/>
     <id>http://zangbo.me/2017/09/27/CutConcatVideo/</id>
     <published>2017-09-27T11:31:12.000Z</published>
-    <updated>2017-09-27T11:45:11.000Z</updated>
+    <updated>2017-09-28T03:17:28.000Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
@@ -29,7 +29,7 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="分割视频"><a href="#分割视频" class="headerlink" title="分割视频"></a>分割视频</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i input.mp4 -ss **START_TIME** -t **DURATION_TIME** -acodec copy -vcodec copy output.mp4</div></pre></td></tr></table></figure>
+<h1 id="分割视频"><a href="#分割视频" class="headerlink" title="分割视频"></a>分割视频</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -ss **START_TIME** -i input.mp4 -vcodec copy -acodec copy -t **DURATION_TIME** output.mp4</div></pre></td></tr></table></figure>
 <p>其中 <strong>START_TIME/DURATION_TIME</strong> 分别表示开始时间和持续时间。它们可以写成两种格式：</p>
 <ol>
 <li>以秒为单位技术：80</li>

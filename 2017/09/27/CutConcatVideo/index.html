@@ -106,7 +106,7 @@
 <meta property="og:url" content="http://zangbo.me/2017/09/27/CutConcatVideo/index.html">
 <meta property="og:site_name" content="ZangBo&#39;s Home">
 <meta property="og:description" content="本文记录了用ffmpeg无损分割和切割视频的方法。">
-<meta property="og:updated_time" content="2017-09-27T11:45:11.000Z">
+<meta property="og:updated_time" content="2017-09-28T03:17:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用ffmpeg无损分割和合并视频">
 <meta name="twitter:description" content="本文记录了用ffmpeg无损分割和切割视频的方法。">
@@ -392,7 +392,7 @@
 <the rest="" of="" contents="" |="" 余下全文="">
 
 <p><br></p>
-<h1 id="分割视频"><a href="#分割视频" class="headerlink" title="分割视频"></a>分割视频</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i input.mp4 -ss **START_TIME** -t **DURATION_TIME** -acodec copy -vcodec copy output.mp4</div></pre></td></tr></table></figure>
+<h1 id="分割视频"><a href="#分割视频" class="headerlink" title="分割视频"></a>分割视频</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -ss **START_TIME** -i input.mp4 -vcodec copy -acodec copy -t **DURATION_TIME** output.mp4</div></pre></td></tr></table></figure>
 <p>其中 <strong>START_TIME/DURATION_TIME</strong> 分别表示开始时间和持续时间。它们可以写成两种格式：</p>
 <ol>
 <li>以秒为单位技术：80</li>
