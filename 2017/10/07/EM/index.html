@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="0S9d_1BNOvzfeLsLC7dH50qovcEkxL629hcyoWHThaA" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据挖掘十大算法,半监督学习,概率模型," />
+
+
+
+
+
+  <link rel="alternate" href="http://zangbo.me/atom.xml" title="ZangBo's Home" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="本文介绍了机器学习领域经典算法之一的EM算法，也被称为数据挖掘十法算法之一。EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计或极大后验概率估计。EM算法的每次迭代由两步组成：E步，求期望（expectation）；M步，求极大（maximization）。所以这一算法称为期望极大算法（expectation maximization algorithm），简称为EM算法。">
+<meta name="keywords" content="数据挖掘十大算法,半监督学习,概率模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EM算法基础">
+<meta property="og:url" content="http://zangbo.me/2017/10/07/EM/index.html">
+<meta property="og:site_name" content="ZangBo&#39;s Home">
+<meta property="og:description" content="本文介绍了机器学习领域经典算法之一的EM算法，也被称为数据挖掘十法算法之一。EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计或极大后验概率估计。EM算法的每次迭代由两步组成：E步，求期望（expectation）；M步，求极大（maximization）。所以这一算法称为期望极大算法（expectation maximization algorithm），简称为EM算法。">
+<meta property="og:image" content="http://orwbuystz.bkt.clouddn.com/EM/20171007230641_2s4o7k_WechatIMG232.jpeg">
+<meta property="og:updated_time" content="2017-10-07T15:11:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EM算法基础">
+<meta name="twitter:description" content="本文介绍了机器学习领域经典算法之一的EM算法，也被称为数据挖掘十法算法之一。EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计或极大后验概率估计。EM算法的每次迭代由两步组成：E步，求期望（expectation）；M步，求极大（maximization）。所以这一算法称为期望极大算法（expectation maximization algorithm），简称为EM算法。">
+<meta name="twitter:image" content="http://orwbuystz.bkt.clouddn.com/EM/20171007230641_2s4o7k_WechatIMG232.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zangbo.me/2017/10/07/EM/"/>
+
+
+
+
+
+  <title>EM算法基础 | ZangBo's Home</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-100951797-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2697f2f0e109a018f0f89683fab342e6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZangBo's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">永远年轻 永远热泪盈眶</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zangbo.me/2017/10/07/EM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZangBo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZangBo's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">EM算法基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T16:16:08+08:00">
+                2017-10-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据挖掘/" itemprop="url" rel="index">
+                    <span itemprop="name">数据挖掘</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
+
+<p>本文介绍了机器学习领域经典算法之一的EM算法，也被称为数据挖掘十法算法之一。EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计或极大后验概率估计。EM算法的每次迭代由两步组成：E步，求期望（expectation）；M步，求极大（maximization）。所以这一算法称为<strong>期望极大算法（expectation maximization algorithm）</strong>，简称为EM算法。</p>
+<a id="more"></a>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p><br></p>
+<h1 id="预知识"><a href="#预知识" class="headerlink" title="预知识"></a>预知识</h1><h2 id="符号说明"><a href="#符号说明" class="headerlink" title="符号说明"></a>符号说明</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$D$</td>
+<td>已有的数据(data)</td>
+</tr>
+<tr>
+<td>$\theta$</td>
+<td>要估计的参数(parameter)</td>
+</tr>
+<tr>
+<td>$p(\theta)$</td>
+<td>先验概率(prior)</td>
+</tr>
+<tr>
+<td>$p(\theta\mid{D})$</td>
+<td>后验概率(posterior)</td>
+</tr>
+<tr>
+<td>$p(D)$</td>
+<td>数据分布(evidence)</td>
+</tr>
+<tr>
+<td>$p(D\mid\theta)$</td>
+<td>似然函数(likelihood of θ w.r.t. D)</td>
+</tr>
+<tr>
+<td>$p(x,\theta\mid{D})$</td>
+<td>已知数据条件下的y,θ概率</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<h2 id="先验概率-amp-后验概率"><a href="#先验概率-amp-后验概率" class="headerlink" title="先验概率&amp;后验概率"></a>先验概率&amp;后验概率</h2><p>先验概率(prior)与后验概率(posterior)简称为<strong>先验</strong>和<strong>后验</strong>。</p>
+<p>这两个概念来自于贝叶斯定理，我们肯定是针对同一个事物才有先后之分，如果针对两个事物，先后不是没有意义了么？那这个共同的对象，就是我们的参数$\theta$。后验概率是指掌握了一定量的数据后我们的参数分布是怎么样的，表示为$p(\theta|D)$；那先验就是在没有掌握数据后我们的参数怎么分布。</p>
+<p>看到这里，你可能会问：如果连数据都没有，我怎么知道我的参数是怎么分布的？你提出这个问题，就说明你是一个赤裸裸的频率派学家，你需要通过数据来得到你的参数！而这并不是贝叶斯派的考虑，贝叶斯估计最重要的就是那个先验的获得。虽然你这次的一组数据，比如说扔三次硬币产生的序列是（110）这样分布的，但是其实我根据我历史的经验来看，一枚硬币正反面其实很有可能是按照均匀分布来的，只不过可能因为你<strong>抛得次数少</strong>了所以产生了不是均匀分布的效果。所以我要考虑我以往的经验在里面。</p>
+<p>你可能又会问：那你这个均匀分布不就是完全猜来的嘛，你怎么知道我这次是不是一样的硬币呢？没错！就是<strong>“猜来的”</strong>。先验在很多时候完全是假设，然后去验证有的数据是否吻合先验猜想，所以这里的猜很重要。还要注意，先验一定是与数据无关的，你不能看到了数据再做这些猜想，一定是<strong>没有任何数据之前</strong>你就猜了一个参数的先验概率。</p>
+<p>有个这部分知识，我们可以开始推导贝叶斯估计模型了。</p>
+<p><br></p>
+<h2 id="贝叶斯定理"><a href="#贝叶斯定理" class="headerlink" title="贝叶斯定理"></a>贝叶斯定理</h2><p>通常，事件A在事件B（发生）的条件下的概率，与事件B在事件A（发生）的条件下的概率是不一样的；然而，这两者是有确定的关系的，贝叶斯定理就是这种关系的陈述。贝叶斯公式的一个用途在于通过已知的三个概率函数推出第四个。</p>
+<p>作为一个普遍的原理，贝叶斯定理对于所有概率的解释是有效的；然而，<strong>频率主义者</strong>和<strong>贝叶斯主义者</strong>对于在应用中，某个随机事件的概率该如何被赋值，有着不同的看法：频率主义者根据随机事件发生的频率，或者总体样本里面的发生的个数来赋值概率；贝叶斯主义者则根据未知的命题来赋值概率。这样的理念导致贝叶斯主义者有更多的机会使用贝叶斯定理。<br>$$<br>P(A|B) = \frac{P(B|A)P(A)}{P(B)}\tag{1}<br>$$<br>在贝叶斯定理中，每个名词都有约定俗成的名称：</p>
+<ul>
+<li>P(<em>A</em>|<em>B</em>)是已知B发生后A的条件概率，也因为和B有关被称作A的后验概率。</li>
+<li>P(<em>B</em>|<em>A</em>)是已知A发生后B的条件概率，也因为和A有关被称作B的后验概率。</li>
+<li>P(<em>A</em>)是A的先验概率（或边缘概率），因为它不考虑任何B方面的因素。</li>
+<li>P(<em>B</em>)是B的先验概率（或边缘概率），因为它不考虑任何A方面的因素。</li>
+</ul>
+<p>按这些术语，贝叶斯定理可表述为：<br>$$<br>后验概率 = \frac{相似度\times先验概率}{标准化向量}\tag{2}<br>$$</p>
+<p>也就是说，后验概率与先验概率和相似度的乘积成正比。</p>
+<p><br></p>
+<h2 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h2><p>极大似然估计法认为参数是固有的，但是可能由于一些外界噪声的干扰，使数据看起来不是完全由参数决定的。没关系，数学家们觉得，虽然有误差存在，<strong>但只要让在这个数据给定的情况下，找到一个概率最大的参数就可以了</strong>。那问题其实就变成了一个条件概率最大的求解，即求使得$p(\theta|D)$ 最大的参数$\theta$，形式化表达为求解<br>$$<br>\arg\max_{\theta}p(\theta|D)\tag{3}<br>$$</p>
+<p>而根据条件概率公式有<br>$$<br>p(\theta|D)=\frac{p(D|\theta)p(\theta)}{p(D)}\tag{4}<br>$$</p>
+<p>因为我们在极大似然估计中假设是确定的，所以$p(\theta)$就是一个常数。$p(D)$同样是根据已有的数据得到的，也是确定的，或者我们可以把其看作是对整个概率的一个归一化因子。这时候，求解公式(3)就变成了求解<br>$$<br>\arg\max_{\theta}p(D|\theta)\tag{5}<br>$$<br>(5)式中的$p(D|\theta)$就是似然函数，我们要做的就是求一个是似然最大的参数，所以称为极大似然估计。想求解这个问题，需要假设我们的数据是相互独立的。$D=\{y1,y_2,y_3,…,y_n\}$，这时候有<br>$$<br>p(D|\theta)=\prod_{i=1}^{n}p(y_i|\theta)\tag{6}<br>$$<br>一般对(6)式取对数求解对数极大似然，就可以把连乘变成求和，然后求导取极值点就是要求的参数值，不在此赘述。</p>
+<p><br></p>
+<h2 id="Jensen不等式"><a href="#Jensen不等式" class="headerlink" title="Jensen不等式"></a>Jensen不等式</h2><p>若f(x)是区间(a,b)上的凹函数，则对任意的$x_1,x_2,x_3,…,x_n\in(a,b)$，有：<br>$$<br>f(\frac{x_1+x_2+x_3+…+x_n}{n})\le \frac{f(x_1)+f(x_2)+f(x_3)+…+f(x_n)}{n}\tag{7}<br>$$<br>当且仅当$x_1=x_2=x3=…=x_n$时等号成立。</p>
+<p>若f(x)是区间(a,b)上的凸函数，则对任意的$x_1,x_2,x_3,…,x_n\in(a,b)$，有：<br>$$<br>f(\frac{x_1+x_2+x_3+…+x_n}{n})\ge \frac{f(x_1)+f(x_2)+f(x_3)+…+f(x_n)}{n}\tag{8}<br>$$<br>当且仅当$x_1=x_2=x3=…=x_n$时等号成立。</p>
+<p>其加权形式为，若f(x)是区间(a,b)上的凹函数，则对任意的$x_1,x_2,x_3,…,x_n\in(a,b),a_1+a_2+a_3+…+a_n=1$，有：<br>$$<br>f(a_1x_1+a_2x_2+a_3x_3+…+a_nx_n)\leq a_1f(x_1)+a_2f(x_2)+a_3f(x_3)+…+a_nf(x_n)\tag{8}<br>$$<br>凸函数同理。</p>
+<p><br></p>
+<h1 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>概率模型有时既含有观测变量，又含有隐变量或潜在变脸，如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单的使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。这里仅讨论极大似然估计法。</p>
+<p>在理解EM算法之前，先来举个例子，我们叫它<strong>“三硬币模型”</strong>：现在有A、B、C三个不同的硬币，它们的材料并非均匀，投掷一次正面朝上的概率分别为$\pi、p、q$。在每轮开始前首先掷硬币A，根据结果选择另外两个硬币，如果是正面则选择B来掷，如果是反面则选择C来掷。选择完之后开始掷选择的硬币，如果是正面则记为1，反面则记为0。在每轮开始前都先掷A进行选择，然后记录B或C的投掷结果。独立重复n次试验，这里n=10，得到结果如下：<br>$$<br>1，1，0，1，0，0，1，0，1，1<br>$$<br>假设我们只能观测到掷硬币的结果，不能观测掷硬币的过程，问如何估计三硬币出现的概率，即三硬币模型的参数。</p>
+<p>这里的观测变量Y即如上的观测结果，隐变量Z就是每次掷硬币选择的是B还是C，我们无法得知Z的值，因为我们无法观测掷硬币的过程。这种情况下，我们就可以用EM算法来解决这个问题。</p>
+<p><br></p>
+<h2 id="感性的理解"><a href="#感性的理解" class="headerlink" title="感性的理解"></a>感性的理解</h2><p>这部分有一篇论文个人感觉写的特别好，强烈推荐大家：</p>
+<p><a href="https://www.nature.com/nbt/journal/v26/n8/pdf/nbt1406.pdf" target="_blank" rel="external">What is the expectation maximization algorithm?</a></p>
+<blockquote>
+<p>Do, C. B., &amp; Batzoglou, S. (2008). What is the expectation maximization algorithm?. Nature biotechnology, 26(8), 897.</p>
+</blockquote>
+<p>论文中提到的例子，我用python做了简单的实现，代码放在了我的GitHub上，地址：</p>
+<p><a href="https://github.com/zangbo/MachineLearning/tree/master/EM" target="_blank" rel="external">https://github.com/zangbo/MachineLearning/tree/master/EM</a></p>
+<p>关于论文的中文解析可以参考这篇博文：</p>
+<p><a href="http://www.jianshu.com/p/1121509ac1dc" target="_blank" rel="external">如何感性的理解EM算法? - 简书</a></p>
+<h2 id="数学推导"><a href="#数学推导" class="headerlink" title="数学推导"></a>数学推导</h2><p>这里我们令观测数据为Y。我们面对一个概率模型，用极大似然估计法来做的话就是要极大化观测数据Y关于参数$\theta$的对数似然函数$L(\theta)=logP(Y|\theta)$。然而在存在隐变量Z的情况下，完整数据除了Y之外还包括Z，这时我们把上面的对数似然函数就变成了：<br>$$<br>L(\theta)=logP(Y|\theta)=log\sum_ZP(Y,Z|\theta)\tag{9}<br>$$<br>极大化该似然函数是比较困难的，因为其中包含了隐变量Z，属于未观测数据。这时候我们想，我们能不能找出来一个式子，使得$L(\theta)$总能大于或等于该式子，那么如果我们能求出该式子的极大值，是不是就可以进而得出$L(\theta)$的极大值呢？我们首先对如上式子做一个等价变换：<br>$$<br>log\sum_ZP(Y,Z|\theta)=log\sum_ZQ(Z)\frac{P(Y,Z|\theta)}{Q(Z)}\tag{10}<br>$$<br>这里的Q函数我们可以认为是只和Z有关的概率函数。接下来要用到Jensen不等式，上面已经介绍过Jensen不等式，这里我们用的是$log\sum_j\lambda_jy_j\ge\sum_j\lambda_jlogy_j$，其中$\lambda_j\ge0$，$\sum_j\lambda_j=1$。根据Jensen不等式，(10)式可以写成：<br>$$<br>log\sum_ZQ(Z)\frac{P(Y,Z|\theta)}{Q(Z)}\ge \sum_ZQ(Z)log\frac{P(Y,Z|\theta)}{Q(Z)} \tag{11}<br>$$<br>这里Q需要满足的条件是$\sum_ZQ(Z)=1$，接着我们想等号成立的条件是什么，也就是左式的下限是什么。使得等号成立，则必须满足$log\frac{P(Y,Z|\theta)}{Q(Z)}=c$，其中c为常数。那么同时满足这两个条件的Q，我们可以构造它为：<br>$$<br>\begin{split}<br>Q(Z)=&amp;\frac{P(Y,Z|\theta^{(i)})}{\sum_ZP(Y,Z|\theta^{(i)})}\\<br>       =&amp;\frac{P(Y,Z|\theta)}{P(Y|\theta^{(i)})}\\<br>       =&amp;P(Z|Y,\theta^{(i)})<br> \end{split}<br> \tag{12}<br>$$<br>即在给定观测数据Y和当前参数估计$\theta^{(i)}$下隐变量数据Z的条件概率分布，代入(11)式得：<br>$$<br>\sum_ZQ(Z)log\frac{P(Y,Z|\theta)}{Q(Z)}=\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Y,Z|\theta)}{P(Z|Y,\theta^{(i)})} \tag{13}<br>$$<br>此时只需要极大化右式即可，省去对$\theta$的极大化而言是常数的项，最终转化为求下式：<br>$$<br>\begin{split}<br>&amp;\arg\mathop{\max} \limits_{\theta}\lgroup\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Y,Z|\theta)}{P(Z|Y,\theta^{(i)})} \rgroup \\<br>=&amp;\arg\mathop{\max} \limits_{\theta}\lgroup \sum_ZP(Z|Y,\theta^{(i)})logP(Y,Z|\theta) \rgroup \\<br>=&amp;\arg\mathop{\max} \limits_{\theta}\lgroup \sum_ZQ(Z)logP(Y,Z|\theta) \rgroup\\<br>=&amp;\arg\mathop{\max} \limits_{\theta}\lgroup Q(\theta,\theta^{(i)}) \rgroup<br>\end{split}<br>\tag{14}<br>$$<br>其中，$Q(\theta,\theta^{(i)})=E_Z[logP(Y,Z|\theta)|Y,\theta^{(i)}]$，即最终转化为求完全数据的对数似然函数$logP(Y,Z|\theta)$关于在给定观测数据Y和当前参数$\theta^{(i)}$下对未观测数据Z的条件概率分布$P(Z|Y,\theta^{(i)})$的期望并且求其极大化。</p>
+<p>这就完成了EM算法的一次迭代。由此可以得出EM算法的步骤：</p>
+<ol>
+<li><p>选择参数的初值$\theta^{(0)}$，开始迭代；</p>
+</li>
+<li><p>E步：记$\theta^{(i)}$为第i次迭代参数$\theta$的估计值，在第i+1次迭代的E步，计算$Q(Z)=P(Z|Y,\theta^{(i)})$，并代入(14)式得到<br>$$<br>Q(\theta,\theta^{(i)})=\sum_ZQ(Z)logP(Y,Z|\theta)\tag{15}<br>$$</p>
+</li>
+<li><p>M步：求使$Q(\theta,\theta^{(i)})$极大化的$\theta$，确定第i+1次迭代的参数估计值$\theta^{(i+1)}$<br>$$<br>\theta^{(i+1)}=\arg\mathop{\max} \limits_{\theta}\lgroup Q(\theta,\theta^{(i)}) \rgroup\tag{16}<br>$$</p>
+</li>
+<li><p>重复第2步和第3步，直到收敛。</p>
+</li>
+</ol>
+<p>由此可以看出，EM算法是通过不断求解下界的极大化逼近求解对数似然函数极大化的算法。</p>
+<p>下图可以看出EM算法的直观解释：</p>
+<p><img src="http://orwbuystz.bkt.clouddn.com/EM/20171007230641_2s4o7k_WechatIMG232.jpeg" alt=""></p>
+<p>从图可以推断出EM算法不能保证找到全局最优值。事实上，它只能保证找到稳定点。因此在应用中，初值的选择变得非常重要，常用的方法是选择几个不同的初值进行迭代，然后对得到的各个估值加以比较，从中选择最好的。</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>《统计学习方法》 -李航</li>
+<li><a href="http://blog.csdn.net/liu1194397014/article/details/52766760" target="_blank" rel="external">极大似然估计与贝叶斯估计 - Jim_Liu - CSDN博客</a></li>
+<li><a href="https://www.zhihu.com/question/27976634" target="_blank" rel="external">怎么通俗易懂地解释EM算法并且举个例子? - 知乎</a></li>
+</ul>
+<p><br></p>
+</the></excerpt>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ZangBo
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://zangbo.me/2017/10/07/EM/" title="EM算法基础">http://zangbo.me/2017/10/07/EM/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据挖掘十大算法/" rel="tag"># 数据挖掘十大算法</a>
+          
+            <a href="/tags/半监督学习/" rel="tag"># 半监督学习</a>
+          
+            <a href="/tags/概率模型/" rel="tag"># 概率模型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/27/CutConcatVideo/" rel="next" title="用ffmpeg无损分割和合并视频">
+                <i class="fa fa-chevron-left"></i> 用ffmpeg无损分割和合并视频
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avatar.jpg"
+              alt="ZangBo" />
+          
+            <p class="site-author-name" itemprop="name">ZangBo</p>
+            <p class="site-description motion-element" itemprop="description">A student from SJTU</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="http://zangbo.me/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#预知识"><span class="nav-number">1.</span> <span class="nav-text">预知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#符号说明"><span class="nav-number">1.1.</span> <span class="nav-text">符号说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#先验概率-amp-后验概率"><span class="nav-number">1.2.</span> <span class="nav-text">先验概率&后验概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯定理"><span class="nav-number">1.3.</span> <span class="nav-text">贝叶斯定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极大似然估计"><span class="nav-number">1.4.</span> <span class="nav-text">极大似然估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jensen不等式"><span class="nav-number">1.5.</span> <span class="nav-text">Jensen不等式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EM算法"><span class="nav-number">2.</span> <span class="nav-text">EM算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引入"><span class="nav-number">2.1.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感性的理解"><span class="nav-number">2.2.</span> <span class="nav-text">感性的理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数学推导"><span class="nav-number">2.3.</span> <span class="nav-text">数学推导</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZangBo</span>
+
+  
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
