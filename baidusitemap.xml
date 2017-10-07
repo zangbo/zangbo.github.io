@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://zangbo.me/2017/10/07/EM/</loc>
-    <lastmod>2017-10-07T15:11:39.000Z</lastmod>
+    <lastmod>2017-10-07T15:17:26.000Z</lastmod>
     <data>
         <display>
-        <title>EM算法基础</title>
+        <title>EM算法</title>
         <pubTime>2017-10-07T08:16:08.000Z</pubTime>
         
         <tag>数据挖掘十大算法</tag>
@@ -433,9 +433,9 @@
         <title>TensorFlow 笔记（四）：TensorBoard可视化</title>
         <pubTime>2017-06-27T13:50:54.000Z</pubTime>
         
-        <tag>TensorFlow</tag>
-         
         <tag>可视化</tag>
+         
+        <tag>TensorFlow</tag>
          
          
            

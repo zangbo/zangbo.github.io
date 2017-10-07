@@ -3,11 +3,11 @@
   
     
     <entry>
-      <title><![CDATA[EM算法基础]]></title>
+      <title><![CDATA[EM算法]]></title>
       <url>/2017/10/07/EM/</url>
       <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><excerpt in="" index="" |="" 首页摘要=""> 
 
-<p>本文介绍了机器学习领域经典算法之一的EM算法，也被称为数据挖掘十法算法之一。EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计或极大后验概率估计。EM算法的每次迭代由两步组成：E步，求期望（expectation）；M步，求极大（maximization）。所以这一算法称为<strong>期望极大算法（expectation maximization algorithm）</strong>，简称为EM算法。</p>
+<p>本文介绍了机器学习领域经典算法之一的EM算法，也被称为数据挖掘十大算法之一。EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计或极大后验概率估计。EM算法的每次迭代由两步组成：E步，求期望（expectation）；M步，求极大（maximization）。所以这一算法称为<strong>期望极大算法（expectation maximization algorithm）</strong>，简称为EM算法。</p>
 <a id="more"></a>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -2419,9 +2419,9 @@
         
         <tags>
             
-            <tag> TensorFlow </tag>
-            
             <tag> 可视化 </tag>
+            
+            <tag> TensorFlow </tag>
             
         </tags>
         
